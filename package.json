@@ -8,13 +8,19 @@
     "start": "node node_modules/next/dist/bin/next start"
   },
   "dependencies": {
+    "@types/bcryptjs": "^2.4.6",
     "@types/pg": "^8.20.0",
     "@types/qrcode": "^1.5.6",
+    "@vercel/blob": "^2.4.0",
+    "bcryptjs": "^3.0.3",
+    "html5-qrcode": "^2.3.8",
+    "iron-session": "^8.0.4",
     "next": "16.2.7",
     "pg": "^8.21.0",
     "qrcode": "^1.5.4",
     "react": "19.2.4",
-    "react-dom": "19.2.4"
+    "react-dom": "19.2.4",
+    "resend": "^6.12.4"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

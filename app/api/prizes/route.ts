@@ -1,13 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { insertPrize, getPrizeById } from '@/lib/db';
+import { insertPrize, getPrizeById, logActivity } from '@/lib/db';
 import { randomUUID } from 'crypto';
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { name, reason, start_date, end_date, description, location } = body;
+    const { name, reason, start_date, end_date, description, restaurant_id } = body;
 
-    if (!name || !reason || !start_date || !end_date || !description || !location) {
+    if (!name || !reason || !start_date || !end_date || !description) {
       return NextResponse.json(
         { error: 'Todos los campos son obligatorios.' },
         { status: 400 }
@@ -15,7 +15,18 @@ export async function POST(request: NextRequest) {
     }
 
     const id = randomUUID();
-    const prize = await insertPrize({ id, name, reason, start_date, end_date, description, location });
+    const prize = await insertPrize({ id, name, reason, start_date, end_date, description, location: '', restaurant_id: restaurant_id ?? null, cancelled: false });
+
+    if (restaurant_id) {
+      await logActivity({
+        id: randomUUID(),
+        restaurant_id,
+        action: 'prize_created',
+        description: `Premio creado: ${name}`,
+        user_name: 'Admin',
+        metadata: { prize_id: id },
+      }).catch(() => {});
+    }
 
     return NextResponse.json({ prize }, { status: 201 });
   } catch (error) {

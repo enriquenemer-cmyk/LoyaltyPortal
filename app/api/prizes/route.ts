@@ -1,11 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { insertPrize, getPrizeById, logActivity } from '@/lib/db';
-import { randomUUID } from 'crypto';
+import { randomUUID, createHmac } from 'crypto';
+import { cookies } from 'next/headers';
+import { getIronSession } from 'iron-session';
+import { SessionData, sessionOptions } from '@/lib/session';
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { name, reason, start_date, end_date, description, restaurant_id } = body;
+    const { name, reason, start_date, end_date, description, restaurant_id, max_uses, photo_url, campaign_id, valid_hours, valid_days, activate_at, game_type } = body;
 
     if (!name || !reason || !start_date || !end_date || !description) {
       return NextResponse.json(
@@ -14,8 +17,33 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Get session user for generated_by
+    let generatedBy: string | null = null;
+    try {
+      const cookieStore = await cookies();
+      const session = await getIronSession<SessionData>(cookieStore, sessionOptions);
+      if (session.username) generatedBy = session.username;
+    } catch {
+      // session not available
+    }
+
     const id = randomUUID();
-    const prize = await insertPrize({ id, name, reason, start_date, end_date, description, location: '', restaurant_id: restaurant_id ?? null, cancelled: false });
+    const prize = await insertPrize({
+      id, name, reason, start_date, end_date, description,
+      location: '', restaurant_id: restaurant_id || null, cancelled: false,
+      generated_by: generatedBy,
+      max_uses: typeof max_uses === 'number' && max_uses >= 1 ? max_uses : 1,
+      photo_url: photo_url || null,
+      campaign_id: campaign_id || null,
+      valid_hours: valid_hours ?? null,
+      valid_days: valid_days ?? null,
+      activate_at: activate_at ?? null,
+      game_type: game_type ?? null,
+    });
+
+    // Generate HMAC signature for QR
+    const secret = process.env.SESSION_SECRET ?? 'fallback-secret';
+    const sig = createHmac('sha256', secret).update(prize.id).digest('hex').slice(0, 16);
 
     if (restaurant_id) {
       await logActivity({
@@ -28,7 +56,7 @@ export async function POST(request: NextRequest) {
       }).catch(() => {});
     }
 
-    return NextResponse.json({ prize }, { status: 201 });
+    return NextResponse.json({ prize, sig }, { status: 201 });
   } catch (error) {
     console.error('Error creating prize:', error);
     return NextResponse.json(

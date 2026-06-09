@@ -1,7 +1,11 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { EmptyState } from '@/app/components/EmptyState';
+import Tooltip from '@/app/components/Tooltip';
+import RelativeDate from '@/app/components/RelativeDate';
 
 type Prize = {
   id: string;
@@ -15,14 +19,22 @@ type Prize = {
   cancelled: boolean;
   claim_count: number;
   created_at: string;
+  generated_by?: string | null;
+  max_uses?: number;
 };
 
-function getPrizeStatus(p: Prize): { label: string; color: string; dot: string } {
-  if (p.cancelled) return { label: 'Cancelado', color: 'bg-red-50 text-red-700 border-red-200', dot: '⛔' };
-  if (p.claim_count > 0) return { label: 'Canjeado', color: 'bg-orange-50 text-orange-700 border-orange-200', dot: '✅' };
+type Restaurant = { id: string; name: string };
+
+type StatusInfo = { label: string; bg: string; text: string; dotColor: string; animate: boolean };
+
+type StatusFilter = 'todos' | 'activos' | 'canjeados' | 'expirados' | 'cancelados';
+
+function getPrizeStatus(p: Prize): StatusInfo {
+  if (p.cancelled) return { label: 'Cancelado', bg: 'bg-red-50', text: 'text-red-700', dotColor: 'bg-red-500', animate: false };
+  if (p.claim_count > 0) return { label: 'Canjeado', bg: 'bg-blue-50', text: 'text-blue-700', dotColor: 'bg-blue-500', animate: false };
   const today = new Date().toISOString().split('T')[0];
-  if (today > p.end_date) return { label: 'Expirado', color: 'bg-slate-100 text-slate-500 border-slate-200', dot: '🔴' };
-  return { label: 'Activo', color: 'bg-green-50 text-green-700 border-green-200', dot: '🟢' };
+  if (today > p.end_date) return { label: 'Expirado', bg: 'bg-stone-100', text: 'text-stone-500', dotColor: 'bg-stone-400', animate: false };
+  return { label: 'Activo', bg: 'bg-green-50', text: 'text-green-700', dotColor: 'bg-green-500', animate: true };
 }
 
 function formatDate(d: string) {
@@ -30,21 +42,370 @@ function formatDate(d: string) {
   return new Date(y, m - 1, day).toLocaleDateString('es-MX', { day: 'numeric', month: 'short', year: 'numeric' });
 }
 
+function formatDatetime(d: string) {
+  return new Date(d).toLocaleDateString('es-MX', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+}
+
+function StatusPill({ status }: { status: StatusInfo }) {
+  return (
+    <span className={`inline-flex items-center gap-1.5 text-xs font-bold px-2.5 py-1 rounded-full border ${status.bg} ${status.text} border-current/20`}>
+      <span className="relative flex h-2 w-2">
+        {status.animate && (
+          <span className={`animate-ping absolute inline-flex h-full w-full rounded-full ${status.dotColor} opacity-60`} />
+        )}
+        <span className={`relative inline-flex rounded-full h-2 w-2 ${status.dotColor}`} />
+      </span>
+      {status.label}
+    </span>
+  );
+}
+
+function QRModal({ prize, onClose }: { prize: Prize; onClose: () => void }) {
+  const [qrDataUrl, setQrDataUrl] = useState<string | null>(null);
+  const imgRef = useRef<HTMLImageElement>(null);
+  const url = typeof window !== 'undefined'
+    ? `${window.location.origin}/premio/${prize.id}`
+    : `/premio/${prize.id}`;
+
+  useEffect(() => {
+    import('qrcode').then((QR) => {
+      QR.toDataURL(url, { width: 280, color: { dark: '#1c0a00', light: '#ffffff' } }).then(setQrDataUrl);
+    });
+  }, [url]);
+
+  function handleDownload() {
+    if (!qrDataUrl) return;
+    const a = document.createElement('a');
+    a.href = qrDataUrl;
+    a.download = `qr-${prize.id}.png`;
+    a.click();
+  }
+
+  function handlePrint() {
+    if (!qrDataUrl) return;
+    const win = window.open('', '_blank');
+    if (!win) return;
+    win.document.write(`
+      <html>
+        <head><title>QR - ${prize.name}</title></head>
+        <body style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;font-family:sans-serif;background:#fff;">
+          <h2 style="color:#1c0a00;margin-bottom:8px;">${prize.name}</h2>
+          <img src="${qrDataUrl}" width="280" height="280" style="display:block;" />
+          <p style="color:#555;font-size:12px;margin-top:12px;word-break:break-all;max-width:300px;text-align:center;">${url}</p>
+          <script>window.onload=function(){window.print();window.close();}</script>
+        </body>
+      </html>
+    `);
+    win.document.close();
+  }
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      style={{ backdropFilter: 'blur(6px)', backgroundColor: 'rgba(0,0,0,0.45)' }}
+      onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
+    >
+      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden border border-[#E8E3DC] pop-in">
+        {/* Header */}
+        <div className="bg-gradient-to-r from-orange-600 to-orange-500 px-5 py-4 flex items-center justify-between">
+          <div>
+            <p className="text-xs font-bold text-orange-100 uppercase tracking-widest mb-0.5">Ver QR</p>
+            <h2 className="text-white font-extrabold text-base leading-tight truncate max-w-[220px]">{prize.name}</h2>
+          </div>
+          <button
+            onClick={onClose}
+            className="text-white/80 hover:text-white transition-colors p-1 rounded-lg hover:bg-white/10"
+            aria-label="Cerrar"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        {/* Body */}
+        <div className="p-6 flex flex-col items-center gap-4">
+          {qrDataUrl ? (
+            <div className="rounded-xl border border-[#E8E3DC] shadow-inner bg-white p-2">
+              <img ref={imgRef} src={qrDataUrl} alt="QR Code" width={280} height={280} className="block" />
+            </div>
+          ) : (
+            <div className="flex items-center justify-center w-[280px] h-[280px] rounded-xl border border-[#E8E3DC] bg-stone-50">
+              <svg className="animate-spin w-8 h-8 text-orange-400" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
+              </svg>
+            </div>
+          )}
+
+          {/* URL text */}
+          <p className="text-xs text-stone-400 break-all text-center max-w-[280px] leading-relaxed">{url}</p>
+
+          {/* Actions */}
+          <div className="flex gap-3 w-full">
+            <button
+              onClick={handleDownload}
+              disabled={!qrDataUrl}
+              className="flex-1 flex items-center justify-center gap-2 bg-orange-50 hover:bg-orange-100 text-orange-700 border border-orange-200 font-bold text-sm px-4 py-2.5 rounded-xl transition-colors disabled:opacity-40"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              Descargar
+            </button>
+            <button
+              onClick={handlePrint}
+              disabled={!qrDataUrl}
+              className="flex-1 flex items-center justify-center gap-2 bg-stone-50 hover:bg-stone-100 text-stone-700 border border-[#E8E3DC] font-bold text-sm px-4 py-2.5 rounded-xl transition-colors disabled:opacity-40"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+              </svg>
+              Imprimir
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ExpandedDetail({ prize }: { prize: Prize }) {
+  const status = getPrizeStatus(prize);
+  return (
+    <tr>
+      <td colSpan={8} className="px-0 py-0">
+        <div className="bg-orange-50/20 border-t border-[#E8E3DC] px-6 py-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div>
+              <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest mb-1">Creado</p>
+              <p className="text-xs text-[#1C1917] font-medium"><RelativeDate dateStr={prize.created_at} /></p>
+              {prize.generated_by && (
+                <p className="text-[10px] text-stone-400 mt-0.5">por {prize.generated_by}</p>
+              )}
+            </div>
+            <div>
+              <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest mb-1">Restaurante</p>
+              <p className="text-xs text-[#1C1917] font-medium">{prize.restaurant_name || '—'}</p>
+            </div>
+            <div>
+              <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest mb-1">Razón</p>
+              <p className="text-xs text-[#1C1917] font-medium">{prize.reason || '—'}</p>
+            </div>
+            <div>
+              <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest mb-1">Descripción</p>
+              <p className="text-xs text-stone-500 leading-relaxed line-clamp-3">{prize.description || '—'}</p>
+            </div>
+          </div>
+
+          {/* Mini timeline */}
+          <div className="mt-4 pt-4 border-t border-[#E8E3DC]/60">
+            <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest mb-3">Historial</p>
+            <div className="flex flex-col gap-2">
+              {/* Generado */}
+              <div className="flex items-start gap-2.5">
+                <span className="mt-0.5 flex-shrink-0 w-5 h-5 rounded-full bg-emerald-100 flex items-center justify-center">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500" />
+                </span>
+                <div>
+                  <span className="text-xs font-semibold text-[#1C1917]">Generado</span>
+                  <span className="text-xs text-stone-400 ml-2"><RelativeDate dateStr={prize.created_at} /></span>
+                  {prize.generated_by && (
+                    <span className="text-xs text-stone-400 ml-1">por {prize.generated_by}</span>
+                  )}
+                </div>
+              </div>
+
+              {/* Canjeado */}
+              {prize.claim_count > 0 && (
+                <div className="flex items-start gap-2.5">
+                  <span className="mt-0.5 flex-shrink-0 w-5 h-5 rounded-full bg-blue-100 flex items-center justify-center">
+                    <span className="w-2 h-2 rounded-full bg-blue-500" />
+                  </span>
+                  <div>
+                    <span className="text-xs font-semibold text-[#1C1917]">Canjeado</span>
+                    <span className="text-xs text-stone-400 ml-2">{prize.claim_count} {prize.claim_count === 1 ? 'vez' : 'veces'}</span>
+                  </div>
+                </div>
+              )}
+
+              {/* Expirado */}
+              {status.label === 'Expirado' && (
+                <div className="flex items-start gap-2.5">
+                  <span className="mt-0.5 flex-shrink-0 w-5 h-5 rounded-full bg-stone-100 flex items-center justify-center">
+                    <span className="w-2 h-2 rounded-full bg-stone-400" />
+                  </span>
+                  <div>
+                    <span className="text-xs font-semibold text-stone-500">Expirado</span>
+                    <span className="text-xs text-stone-400 ml-2">{formatDate(prize.end_date)}</span>
+                  </div>
+                </div>
+              )}
+
+              {/* Cancelado */}
+              {prize.cancelled && (
+                <div className="flex items-start gap-2.5">
+                  <span className="mt-0.5 flex-shrink-0 w-5 h-5 rounded-full bg-red-100 flex items-center justify-center">
+                    <span className="w-2 h-2 rounded-full bg-red-500" />
+                  </span>
+                  <div>
+                    <span className="text-xs font-semibold text-red-600">Cancelado</span>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </td>
+    </tr>
+  );
+}
+
+const STATUS_TABS: { key: StatusFilter; label: string }[] = [
+  { key: 'todos', label: 'Todos' },
+  { key: 'activos', label: 'Activos' },
+  { key: 'canjeados', label: 'Canjeados' },
+  { key: 'expirados', label: 'Expirados' },
+  { key: 'cancelados', label: 'Cancelados' },
+];
+
+async function fetchWithRetry(url: string, retries = 2): Promise<Response> {
+  try { return await fetch(url); }
+  catch (err) {
+    if (retries > 0) {
+      await new Promise(r => setTimeout(r, 1000));
+      return fetchWithRetry(url, retries - 1);
+    }
+    throw err;
+  }
+}
+
 export default function PremiosPage() {
   const router = useRouter();
   const [prizes, setPrizes] = useState<Prize[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
+  const [restaurantFilter, setRestaurantFilter] = useState('');
+  const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
   const [cancelling, setCancelling] = useState<string | null>(null);
+  const [qrPrize, setQrPrize] = useState<Prize | null>(null);
+  const [expandedPrizeId, setExpandedPrizeId] = useState<string | null>(null);
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>('todos');
+
+  // Bulk selection state
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [selectAll, setSelectAll] = useState(false);
+  const [bulkCancelling, setBulkCancelling] = useState(false);
 
   async function fetchPrizes() {
-    const res = await fetch('/api/prizes/list');
+    const res = await fetchWithRetry('/api/prizes/list');
     const data = await res.json();
     if (data.prizes) setPrizes(data.prizes);
     setLoading(false);
   }
 
-  useEffect(() => { fetchPrizes(); }, []);
+  useEffect(() => {
+    fetchPrizes();
+    fetch('/api/restaurants').then(r => r.json()).then(d => {
+      if (d.restaurants) setRestaurants(d.restaurants);
+    }).catch(() => {});
+  }, []);
+
+  const today = new Date().toISOString().split('T')[0];
+
+  function matchesStatusFilter(p: Prize): boolean {
+    if (statusFilter === 'todos') return true;
+    if (statusFilter === 'activos') return !p.cancelled && p.claim_count === 0 && today <= p.end_date;
+    if (statusFilter === 'canjeados') return p.claim_count > 0;
+    if (statusFilter === 'expirados') return !p.cancelled && p.claim_count === 0 && today > p.end_date;
+    if (statusFilter === 'cancelados') return p.cancelled;
+    return true;
+  }
+
+  // Keep selectAll in sync when filtered set changes
+  const filtered = prizes.filter((p) => {
+    const q = search.toLowerCase();
+    const matchesSearch = p.name.toLowerCase().includes(q) || (p.restaurant_name || '').toLowerCase().includes(q);
+    const matchesRestaurant = !restaurantFilter || (p.restaurant_name ?? '') === restaurantFilter;
+    return matchesSearch && matchesRestaurant && matchesStatusFilter(p);
+  });
+
+  useEffect(() => {
+    if (filtered.length === 0) { setSelectAll(false); return; }
+    const allSelected = filtered.every((p) => selectedIds.has(p.id));
+    setSelectAll(allSelected);
+  }, [selectedIds, filtered.length]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  function handleToggleSelectAll() {
+    if (selectAll) {
+      setSelectedIds((prev) => {
+        const next = new Set(prev);
+        filtered.forEach((p) => next.delete(p.id));
+        return next;
+      });
+    } else {
+      setSelectedIds((prev) => {
+        const next = new Set(prev);
+        filtered.forEach((p) => next.add(p.id));
+        return next;
+      });
+    }
+  }
+
+  function handleToggleRow(id: string) {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id); else next.add(id);
+      return next;
+    });
+  }
+
+  function handleClearSelection() {
+    setSelectedIds(new Set());
+    setSelectAll(false);
+  }
+
+  function handleExportCSV() {
+    const selected = prizes.filter((p) => selectedIds.has(p.id));
+    const header = ['ID', 'Nombre', 'Razón', 'Descripción', 'Restaurante', 'Inicio', 'Fin', 'Estado', 'Cobros', 'Creado'];
+    const rows = selected.map((p) => {
+      const status = getPrizeStatus(p);
+      return [
+        p.id,
+        p.name,
+        p.reason,
+        p.description,
+        p.restaurant_name ?? '',
+        p.start_date,
+        p.end_date,
+        status.label,
+        String(p.claim_count),
+        p.created_at,
+      ].map((v) => `"${v.replace(/"/g, '""')}"`).join(',');
+    });
+    const csv = [header.join(','), ...rows].join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `premios-${new Date().toISOString().split('T')[0]}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  async function handleBulkCancel() {
+    const cancellable = prizes.filter((p) => selectedIds.has(p.id) && !p.cancelled && p.claim_count === 0);
+    if (cancellable.length === 0) {
+      alert('Ninguno de los premios seleccionados puede ser cancelado (ya están cancelados o han sido canjeados).');
+      return;
+    }
+    if (!confirm(`¿Cancelar ${cancellable.length} premio${cancellable.length !== 1 ? 's' : ''}? Esta acción no se puede deshacer.`)) return;
+    setBulkCancelling(true);
+    await Promise.all(cancellable.map((p) => fetch(`/api/prizes/${p.id}/cancel`, { method: 'POST' })));
+    await fetchPrizes();
+    setSelectedIds(new Set());
+    setBulkCancelling(false);
+  }
 
   async function handleCancel(id: string) {
     if (!confirm('¿Cancelar este premio? Esta acción no se puede deshacer.')) return;
@@ -64,52 +425,97 @@ export default function PremiosPage() {
     router.push(`/admin/generate?${params.toString()}`);
   }
 
-  const filtered = prizes.filter((p) => {
-    const q = search.toLowerCase();
-    return p.name.toLowerCase().includes(q) || (p.restaurant_name || '').toLowerCase().includes(q);
-  });
+  function handleToggleExpand(id: string, e: React.MouseEvent) {
+    const target = e.target as HTMLElement;
+    if (target.closest('button') || target.closest('a') || target.closest('input')) return;
+    setExpandedPrizeId((prev) => (prev === id ? null : id));
+  }
 
   const total = prizes.length;
-  const activos = prizes.filter((p) => !p.cancelled && p.claim_count === 0 && new Date().toISOString().split('T')[0] <= p.end_date).length;
+  const activos = prizes.filter((p) => !p.cancelled && p.claim_count === 0 && today <= p.end_date).length;
   const canjeados = prizes.filter((p) => p.claim_count > 0).length;
-  const expirados = prizes.filter((p) => !p.cancelled && p.claim_count === 0 && new Date().toISOString().split('T')[0] > p.end_date).length;
+  const expirados = prizes.filter((p) => !p.cancelled && p.claim_count === 0 && today > p.end_date).length;
   const cancelados = prizes.filter((p) => p.cancelled).length;
 
+  const selectedCount = selectedIds.size;
+  const hasSelection = selectedCount > 0;
+
   return (
-    <div className="min-h-screen bg-[#fdf8f5]">
+    <div className="min-h-screen admin-bg">
+      {qrPrize && <QRModal prize={qrPrize} onClose={() => setQrPrize(null)} />}
+
       <div className="max-w-7xl mx-auto px-4 py-10">
 
-        <div className="mb-8">
-          <div className="inline-flex items-center gap-2 bg-orange-50 text-orange-700 rounded-full px-3 py-1.5 text-xs font-bold uppercase tracking-widest mb-4 border border-orange-200">
-            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4h.01M8 8h.01M16 8h.01M4 12h.01M20 12h.01M8 16h.01M16 16h.01M12 20h.01M4 4h4v4H4zm12 0h4v4h-4zM4 16h4v4H4zm12 0h4v4h-4z" />
-            </svg>
-            Premios
+        {/* Page header with subtle QR dot-pattern background */}
+        <div
+          className="mb-8 flex items-start justify-between flex-wrap gap-4 rounded-2xl px-6 py-6 -mx-2"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23E8521A' fill-opacity='0.06'%3E%3Crect x='0' y='0' width='8' height='8' rx='1'/%3E%3Crect x='10' y='0' width='4' height='4' rx='0.5'/%3E%3Crect x='16' y='0' width='4' height='4' rx='0.5'/%3E%3Crect x='0' y='10' width='4' height='4' rx='0.5'/%3E%3Crect x='0' y='16' width='4' height='4' rx='0.5'/%3E%3Crect x='32' y='0' width='8' height='8' rx='1'/%3E%3Crect x='26' y='0' width='4' height='4' rx='0.5'/%3E%3Crect x='36' y='10' width='4' height='4' rx='0.5'/%3E%3Crect x='36' y='16' width='4' height='4' rx='0.5'/%3E%3Crect x='0' y='32' width='8' height='8' rx='1'/%3E%3Crect x='10' y='36' width='4' height='4' rx='0.5'/%3E%3Crect x='16' y='36' width='4' height='4' rx='0.5'/%3E%3Crect x='0' y='26' width='4' height='4' rx='0.5'/%3E%3Crect x='16' y='16' width='8' height='8' rx='1'/%3E%3C/g%3E%3C/svg%3E")`,
+            backgroundSize: '40px 40px',
+          }}
+        >
+          <div>
+            <div className="inline-flex items-center gap-2 bg-orange-50 text-orange-700 rounded-full px-3 py-1.5 text-xs font-bold uppercase tracking-widest mb-4 border border-orange-200">
+              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4h.01M8 8h.01M16 8h.01M4 12h.01M20 12h.01M8 16h.01M16 16h.01M12 20h.01M4 4h4v4H4zm12 0h4v4h-4zM4 16h4v4H4zm12 0h4v4h-4z" />
+              </svg>
+              Premios
+            </div>
+            <h1 className="text-3xl font-black text-[#1C1917] tracking-tight border-l-4 border-[#E8521A] pl-4">Mis <span className="gradient-text">Premios</span></h1>
+            <p className="text-stone-500 mt-2 text-sm pl-4">Historial completo de premios generados.</p>
           </div>
-          <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">Todos los <span className="gradient-text">Premios</span></h1>
-          <p className="text-slate-500 mt-2 text-sm">Historial completo de premios generados.</p>
+          <Link
+            href="/admin/generate"
+            className="flex items-center gap-2 text-white font-bold px-5 py-3 rounded-xl text-sm transition-all"
+            style={{ background: 'linear-gradient(135deg,#E8521A,#C2410C)', boxShadow: '0 4px 16px rgba(232,82,26,0.35)' }}
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+            </svg>
+            Crear Premio
+          </Link>
         </div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 mb-8">
+        {/* Stats bar */}
+        <div className="flex gap-3 mb-8 overflow-x-auto pb-1">
           {[
-            { label: 'Total', value: total, color: 'text-slate-800' },
-            { label: 'Activos', value: activos, color: 'text-green-700' },
-            { label: 'Canjeados', value: canjeados, color: 'text-orange-700' },
-            { label: 'Expirados', value: expirados, color: 'text-slate-500' },
-            { label: 'Cancelados', value: cancelados, color: 'text-red-600' },
-          ].map(({ label, value, color }) => (
-            <div key={label} className="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 text-center">
-              <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">{label}</p>
-              <p className={`text-3xl font-extrabold ${color}`}>{value}</p>
+            { label: 'Total', value: total, border: 'border-l-stone-400', num: 'text-[#1C1917]', bg: 'bg-stone-50', dot: '#78716c' },
+            { label: 'Activos', value: activos, border: 'border-l-emerald-500', num: 'text-emerald-600', bg: 'bg-emerald-50', dot: '#059669' },
+            { label: 'Canjeados', value: canjeados, border: 'border-l-blue-500', num: 'text-blue-600', bg: 'bg-blue-50', dot: '#2563eb' },
+            { label: 'Expirados', value: expirados, border: 'border-l-stone-300', num: 'text-stone-500', bg: 'bg-stone-50', dot: '#a8a29e' },
+            { label: 'Cancelados', value: cancelados, border: 'border-l-red-400', num: 'text-red-500', bg: 'bg-red-50', dot: '#ef4444' },
+          ].map(({ label, value, border, num, bg, dot }) => (
+            <div key={label} className={`${bg} rounded-2xl border border-[#E8E3DC] border-l-4 ${border} shadow-[0_1px_2px_rgba(28,25,23,0.04),_0_4px_16px_rgba(28,25,23,0.06)] px-5 py-4 flex-shrink-0 min-w-[120px]`}>
+              <div className="flex items-center gap-1.5 mb-2">
+                <span className="inline-block w-2 h-2 rounded-full" style={{ background: dot }} />
+                <p className="text-xs font-bold text-stone-500 uppercase tracking-widest">{label}</p>
+              </div>
+              <p className={`text-3xl font-black ${num} leading-none`}>{value}</p>
             </div>
           ))}
         </div>
 
-        {/* Search */}
-        <div className="mb-5 flex items-center gap-3">
+        {/* Status filter tabs */}
+        <div className="mb-5 flex items-center gap-1.5 flex-wrap">
+          {STATUS_TABS.map(({ key, label }) => (
+            <button
+              key={key}
+              onClick={() => setStatusFilter(key)}
+              className={`px-4 py-2 rounded-xl text-sm font-bold transition-all border ${
+                statusFilter === key
+                  ? 'bg-orange-500 text-white border-orange-500 shadow-sm'
+                  : 'bg-stone-50 text-stone-600 border-[#E8E3DC] hover:bg-stone-100'
+              }`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+
+        {/* Search + filter */}
+        <div className="mb-5 flex items-center gap-3 flex-wrap">
           <div className="relative max-w-sm flex-1">
-            <svg className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
             <input
@@ -117,79 +523,231 @@ export default function PremiosPage() {
               placeholder="Buscar por nombre o restaurante..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-orange-500 transition-all shadow-sm"
+              className="w-full pl-10 pr-4 py-2.5 bg-white border border-[#E8E3DC] rounded-xl text-sm text-[#1C1917] placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-orange-400 transition-all shadow-sm"
             />
           </div>
+          {restaurants.length > 0 && (
+            <select
+              value={restaurantFilter}
+              onChange={(e) => setRestaurantFilter(e.target.value)}
+              className="text-sm border border-[#E8E3DC] rounded-xl px-3 py-2.5 bg-white focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-orange-400 transition-all shadow-sm"
+              style={restaurantFilter ? { borderColor: '#E8521A', color: '#E8521A', fontWeight: 700 } : {}}
+            >
+              <option value="">Todos los restaurantes</option>
+              {restaurants.map((r) => (
+                <option key={r.id} value={r.name}>{r.name}</option>
+              ))}
+            </select>
+          )}
         </div>
 
         {loading ? (
-          <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-20 text-center">
-            <svg className="animate-spin w-8 h-8 text-orange-500 mx-auto mb-3" fill="none" viewBox="0 0 24 24">
-              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
-            </svg>
-            <p className="text-slate-400 text-sm">Cargando premios...</p>
+          <div className="bg-white rounded-2xl border border-[#E8E3DC] shadow-sm p-20 flex flex-col items-center gap-3">
+            <div className="spinner-brand spinner-lg" />
+            <p className="text-stone-400 text-sm">Cargando premios...</p>
           </div>
         ) : filtered.length === 0 ? (
-          <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-16 text-center">
-            <p className="text-slate-500 font-semibold">No hay premios{search ? ' que coincidan' : ' aún'}</p>
-          </div>
+          <EmptyState
+            type={search || restaurantFilter || statusFilter !== 'todos' ? 'no-results' : 'no-prizes'}
+            title={search || restaurantFilter || statusFilter !== 'todos' ? 'Sin premios que coincidan' : 'Aún no has generado ningún premio'}
+            subtitle={
+              search || restaurantFilter || statusFilter !== 'todos'
+                ? 'Prueba ajustando la búsqueda o los filtros.'
+                : 'Los premios son códigos QR únicos que puedes imprimir, enviar por WhatsApp o mostrar en tu restaurante.'
+            }
+            action={
+              !search && !restaurantFilter && statusFilter === 'todos' ? (
+                <Link
+                  href="/admin/generate"
+                  className="inline-flex items-center gap-2 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition-all"
+                  style={{ background: 'linear-gradient(135deg,#E8521A,#C2410C)', boxShadow: '0 4px 16px rgba(232,82,26,0.35)' }}
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                  </svg>
+                  Generar mi primer premio
+                </Link>
+              ) : undefined
+            }
+          />
         ) : (
-          <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+          <div className="relative bg-white rounded-2xl border border-[#E8E3DC] shadow-sm overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="bg-slate-50 border-b border-slate-100">
-                    <th className="text-left px-5 py-3.5 font-bold text-slate-500 text-xs uppercase tracking-wider">Nombre</th>
-                    <th className="text-left px-5 py-3.5 font-bold text-slate-500 text-xs uppercase tracking-wider">Restaurante</th>
-                    <th className="text-left px-5 py-3.5 font-bold text-slate-500 text-xs uppercase tracking-wider">Razón</th>
-                    <th className="text-left px-5 py-3.5 font-bold text-slate-500 text-xs uppercase tracking-wider">Inicio</th>
-                    <th className="text-left px-5 py-3.5 font-bold text-slate-500 text-xs uppercase tracking-wider">Fin</th>
-                    <th className="text-left px-5 py-3.5 font-bold text-slate-500 text-xs uppercase tracking-wider">Estado</th>
-                    <th className="text-left px-5 py-3.5 font-bold text-slate-500 text-xs uppercase tracking-wider">Acciones</th>
+                  <tr className="bg-[#FAFAF9] border-b border-[#E8E3DC]">
+                    {/* Checkbox header */}
+                    <th className="px-4 py-3.5 w-10">
+                      <input
+                        type="checkbox"
+                        checked={selectAll}
+                        onChange={handleToggleSelectAll}
+                        className="w-4 h-4 rounded border-stone-300 cursor-pointer"
+                        style={{ accentColor: '#E8521A' }}
+                        aria-label="Seleccionar todos"
+                      />
+                    </th>
+                    <th className="text-left px-5 py-3.5 font-bold text-stone-400 text-xs uppercase tracking-wider">Nombre</th>
+                    <th className="text-left px-5 py-3.5 font-bold text-stone-400 text-xs uppercase tracking-wider">Restaurante</th>
+                    <th className="text-left px-5 py-3.5 font-bold text-stone-400 text-xs uppercase tracking-wider">Razón</th>
+                    <th className="text-left px-5 py-3.5 font-bold text-stone-400 text-xs uppercase tracking-wider">Inicio</th>
+                    <th className="text-left px-5 py-3.5 font-bold text-stone-400 text-xs uppercase tracking-wider">Fin</th>
+                    <th className="text-left px-5 py-3.5 font-bold text-stone-400 text-xs uppercase tracking-wider">Estado</th>
+                    <th className="text-left px-5 py-3.5 font-bold text-stone-400 text-xs uppercase tracking-wider">Acciones</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-50">
+                <tbody className="divide-y divide-[#F0EBE4]">
                   {filtered.map((p) => {
                     const status = getPrizeStatus(p);
                     const canCancel = !p.cancelled && p.claim_count === 0;
+                    const isSelected = selectedIds.has(p.id);
+                    const isExpanded = expandedPrizeId === p.id;
                     return (
-                      <tr key={p.id} className="hover:bg-slate-50/70 transition-colors">
-                        <td className="px-5 py-4 font-semibold text-slate-900 max-w-[180px] truncate">{p.name}</td>
-                        <td className="px-5 py-4 text-slate-500 text-xs">{p.restaurant_name || '—'}</td>
-                        <td className="px-5 py-4 text-slate-500 text-xs max-w-[160px] truncate">{p.reason}</td>
-                        <td className="px-5 py-4 text-slate-400 text-xs whitespace-nowrap">{formatDate(p.start_date)}</td>
-                        <td className="px-5 py-4 text-slate-400 text-xs whitespace-nowrap">{formatDate(p.end_date)}</td>
-                        <td className="px-5 py-4">
-                          <span className={`inline-flex items-center gap-1.5 text-xs font-bold px-2.5 py-1 rounded-full border ${status.color}`}>
-                            {status.dot} {status.label}
-                          </span>
-                        </td>
-                        <td className="px-5 py-4">
-                          <div className="flex items-center gap-2">
-                            <button
-                              onClick={() => handleDuplicate(p)}
-                              className="text-xs font-semibold text-orange-700 border border-orange-200 bg-orange-50 hover:bg-orange-100 px-2.5 py-1.5 rounded-lg transition-colors"
-                            >
-                              Duplicar
-                            </button>
-                            {canCancel && (
-                              <button
-                                onClick={() => handleCancel(p.id)}
-                                disabled={cancelling === p.id}
-                                className="text-xs font-semibold text-red-600 border border-red-200 bg-red-50 hover:bg-red-100 px-2.5 py-1.5 rounded-lg transition-colors disabled:opacity-50"
+                      <>
+                        <tr
+                          key={p.id}
+                          className={`hover:bg-[#faf7f5] transition-colors cursor-pointer ${isSelected ? 'bg-orange-50/60' : ''} ${isExpanded ? 'bg-orange-50/30' : ''}`}
+                          onClick={(e) => handleToggleExpand(p.id, e)}
+                        >
+                          <td className="px-4 py-4 w-10">
+                            <input
+                              type="checkbox"
+                              checked={isSelected}
+                              onChange={() => handleToggleRow(p.id)}
+                              className="w-4 h-4 rounded border-stone-300 cursor-pointer"
+                              style={{ accentColor: '#E8521A' }}
+                              aria-label={`Seleccionar ${p.name}`}
+                            />
+                          </td>
+                          <td className="px-5 py-4 max-w-[200px]">
+                            <div className="flex items-center gap-1.5">
+                              <svg
+                                className={`w-3.5 h-3.5 text-stone-400 flex-shrink-0 transition-transform ${isExpanded ? 'rotate-90' : ''}`}
+                                fill="none" stroke="currentColor" viewBox="0 0 24 24"
                               >
-                                {cancelling === p.id ? '...' : 'Cancelar'}
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                              </svg>
+                              <span className="font-medium text-[#1C1917] truncate block">{p.name}</span>
+                            </div>
+                            <div className="flex flex-wrap gap-1 mt-1 pl-5">
+                              {p.restaurant_name && (
+                                <span className="inline-block text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-orange-50 text-orange-700 border border-orange-200">{p.restaurant_name}</span>
+                              )}
+                              {p.generated_by && (
+                                <span className="inline-block text-[10px] font-medium px-1.5 py-0.5 rounded-full bg-stone-100 text-stone-500">por {p.generated_by}</span>
+                              )}
+                            </div>
+                          </td>
+                          <td className="px-5 py-4 text-stone-500 text-xs">{p.restaurant_name || '—'}</td>
+                          <td className="px-5 py-4 text-stone-500 text-xs max-w-[160px] truncate">{p.reason}</td>
+                          <td className="px-5 py-4 text-stone-400 text-xs whitespace-nowrap">{formatDate(p.start_date)}</td>
+                          <td className="px-5 py-4 text-stone-400 text-xs whitespace-nowrap">{formatDate(p.end_date)}</td>
+                          <td className="px-5 py-4">
+                            <StatusPill status={status} />
+                          </td>
+                          <td className="px-5 py-4">
+                            <div className="flex items-center gap-2">
+                              {/* Ver QR */}
+                              <button
+                                onClick={() => setQrPrize(p)}
+                                className="inline-flex items-center gap-1.5 text-xs font-semibold text-orange-700 border border-orange-200 bg-orange-50 hover:bg-orange-100 px-2.5 py-1.5 rounded-lg transition-colors"
+                              >
+                                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4h.01M8 8h.01M16 8h.01M4 12h.01M20 12h.01M8 16h.01M16 16h.01M12 20h.01M4 4h4v4H4zm12 0h4v4h-4zM4 16h4v4H4zm12 0h4v4h-4z" />
+                                </svg>
+                                Ver QR
                               </button>
-                            )}
-                          </div>
-                        </td>
-                      </tr>
+                              {/* Duplicar */}
+                              <Tooltip text="Duplicar premio">
+                                <button
+                                  onClick={() => handleDuplicate(p)}
+                                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-stone-700 border border-[#E8E3DC] bg-stone-50 hover:bg-stone-100 px-2.5 py-1.5 rounded-lg transition-colors"
+                                >
+                                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                                  </svg>
+                                  Duplicar
+                                </button>
+                              </Tooltip>
+                              {/* Cancelar individual */}
+                              {canCancel && (
+                                <Tooltip text="Cancelar premio">
+                                  <button
+                                    onClick={() => handleCancel(p.id)}
+                                    disabled={cancelling === p.id}
+                                    className="inline-flex items-center gap-1.5 text-xs font-semibold text-red-700 border border-red-200 bg-red-50 hover:bg-red-100 px-2.5 py-1.5 rounded-lg transition-colors disabled:opacity-50"
+                                  >
+                                    {cancelling === p.id ? (
+                                      <svg className="animate-spin w-3.5 h-3.5" fill="none" viewBox="0 0 24 24">
+                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
+                                      </svg>
+                                    ) : (
+                                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                      </svg>
+                                    )}
+                                    Cancelar
+                                  </button>
+                                </Tooltip>
+                              )}
+                            </div>
+                          </td>
+                        </tr>
+                        {isExpanded && <ExpandedDetail key={`${p.id}-detail`} prize={p} />}
+                      </>
                     );
                   })}
                 </tbody>
               </table>
             </div>
+
+            {/* Sticky bulk action bar */}
+            {hasSelection && (
+              <div className="sticky bottom-0 left-0 right-0 border-t border-[#E8E3DC] bg-white/95 backdrop-blur-sm px-5 py-3 flex items-center gap-3 flex-wrap shadow-[0_-4px_16px_rgba(28,25,23,0.08)]">
+                <span className="text-sm font-bold text-[#1C1917] mr-1">
+                  {selectedCount} {selectedCount === 1 ? 'premio seleccionado' : 'premios seleccionados'}
+                </span>
+
+                <button
+                  onClick={handleClearSelection}
+                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-stone-700 border border-[#E8E3DC] bg-stone-50 hover:bg-stone-100 px-3 py-1.5 rounded-lg transition-colors"
+                >
+                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                  Cancelar selección
+                </button>
+
+                <button
+                  onClick={handleExportCSV}
+                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-stone-700 border border-[#E8E3DC] bg-stone-50 hover:bg-stone-100 px-3 py-1.5 rounded-lg transition-colors"
+                >
+                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                  </svg>
+                  Exportar CSV
+                </button>
+
+                <button
+                  onClick={handleBulkCancel}
+                  disabled={bulkCancelling}
+                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-red-700 border border-red-200 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-lg transition-colors disabled:opacity-50 ml-auto"
+                >
+                  {bulkCancelling ? (
+                    <svg className="animate-spin w-3.5 h-3.5" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
+                    </svg>
+                  ) : (
+                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+                    </svg>
+                  )}
+                  Cancelar todos
+                </button>
+              </div>
+            )}
           </div>
         )}
       </div>

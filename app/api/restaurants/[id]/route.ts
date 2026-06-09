@@ -38,6 +38,7 @@ export async function PUT(
     let address: string | undefined;
     let phone: string | null | undefined;
     let logo_url: string | null | undefined;
+    let google_maps_url: string | null | undefined;
 
     if (contentType.includes('multipart/form-data')) {
       const formData = await request.formData();
@@ -45,6 +46,8 @@ export async function PUT(
       address = (formData.get('address') as string) || undefined;
       const phoneVal = formData.get('phone') as string;
       phone = phoneVal || null;
+      const googleMapsVal = formData.get('google_maps_url') as string;
+      google_maps_url = googleMapsVal || null;
       const file = formData.get('logo') as File | null;
       if (file && file.size > 0) {
         if (!process.env.BLOB_READ_WRITE_TOKEN) {
@@ -62,9 +65,10 @@ export async function PUT(
       address = body.address;
       phone = body.phone;
       logo_url = body.logo_url;
+      google_maps_url = body.google_maps_url;
     }
 
-    const updated = await updateRestaurant(id, { name, address, phone, logo_url });
+    const updated = await updateRestaurant(id, { name, address, phone, logo_url, google_maps_url });
     return NextResponse.json({ restaurant: updated });
   } catch (error) {
     console.error('Error updating restaurant:', error);

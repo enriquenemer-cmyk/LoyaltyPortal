@@ -20,7 +20,7 @@ function timeAgo(dateStr: string) {
   if (diff < 60) return 'hace un momento';
   if (diff < 3600) return `hace ${Math.floor(diff / 60)} min`;
   if (diff < 86400) return `hace ${Math.floor(diff / 3600)} h`;
-  return new Date(dateStr).toLocaleDateString('es-MX', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+  return new Date(dateStr).toLocaleDateString('es-ES', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
 }
 
 function Avatar({ name }: { name: string }) {

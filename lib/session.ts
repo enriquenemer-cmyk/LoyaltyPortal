@@ -2,7 +2,7 @@ import { SessionOptions } from 'iron-session';
 
 export interface SessionData {
   username: string;
-  role: 'admin' | 'manager';
+  role: 'admin' | 'manager' | 'cajero';
   restaurantId?: string;
 }
 

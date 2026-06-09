@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Allow: /privacidad
+Allow: /mis-premios
+Disallow: /admin/
+Disallow: /api/
+Disallow: /cajero/
+
+Sitemap: https://premia-tierra.vercel.app/sitemap.xml

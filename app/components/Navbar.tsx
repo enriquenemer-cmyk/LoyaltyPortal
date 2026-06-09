@@ -3,12 +3,15 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import DarkModeToggle from './DarkModeToggle';
 
 export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
   const [username, setUsername] = useState<string | null>(null);
   const [loggingOut, setLoggingOut] = useState(false);
+  const [logoHovered, setLogoHovered] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
     fetch('/api/auth/me').then((r) => r.json()).then((d) => {
@@ -16,7 +19,6 @@ export default function Navbar() {
     }).catch(() => {});
   }, [pathname]);
 
-  // La sección del cajero es completamente independiente — sin navbar de admin
   if (pathname.startsWith('/cajero')) return null;
   if (pathname === '/admin/login') return null;
 
@@ -31,6 +33,16 @@ export default function Navbar() {
   }
 
   const links = [
+    {
+      href: '/admin',
+      label: 'Dashboard',
+      exact: true,
+      icon: (
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+        </svg>
+      ),
+    },
     {
       href: '/admin/generate',
       label: 'Generar Premio',
@@ -59,6 +71,24 @@ export default function Navbar() {
       ),
     },
     {
+      href: '/admin/clientes',
+      label: 'Clientes',
+      icon: (
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+        </svg>
+      ),
+    },
+    {
+      href: '/admin/campanas',
+      label: 'Campanas',
+      icon: (
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+        </svg>
+      ),
+    },
+    {
       href: '/admin/restaurantes',
       label: 'Restaurantes',
       icon: (
@@ -67,66 +97,148 @@ export default function Navbar() {
         </svg>
       ),
     },
+    {
+      href: '/admin/reporte',
+      label: 'Reportes',
+      icon: (
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+        </svg>
+      ),
+    },
+    {
+      href: '/admin/usuarios',
+      label: 'Usuarios',
+      icon: (
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+      ),
+    },
   ];
 
   return (
-    <nav className="bg-white border-b border-slate-200 shadow-sm sticky top-0 z-50">
+    <nav className="bg-white border-b border-[#E8E3DC] sticky top-0 z-50" style={{ boxShadow: '0 1px 0 #E8E3DC' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          <Link href="/admin/generate" className="flex items-center gap-3 group">
-            <div className="w-9 h-9 rounded-xl flex items-center justify-center transition-all group-hover:scale-105" style={{ background: 'linear-gradient(135deg,#E8521A,#C2410C)', boxShadow: '0 4px 12px rgba(232,82,26,0.35)' }}>
-              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="flex items-center justify-between h-14">
+          {/* Logo */}
+          <Link href="/admin" className="flex items-center gap-2.5 shrink-0">
+            <div
+              className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0"
+              onMouseEnter={() => setLogoHovered(true)}
+              onMouseLeave={() => setLogoHovered(false)}
+              style={{
+                background: 'linear-gradient(135deg,#E8521A,#C2410C)',
+                boxShadow: '0 3px 10px rgba(232,82,26,0.30)',
+                transform: logoHovered ? 'scale(1.12) rotate(-6deg)' : 'scale(1)',
+                transition: 'transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1)',
+              }}
+            >
+              <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
               </svg>
             </div>
-            <div>
-              <span className="text-base font-bold text-slate-900 block leading-tight tracking-tight">
-                Premia Tierra
-              </span>
-              <span className="text-xs text-slate-400 leading-none">Panel de administración</span>
-            </div>
+            <span className="text-sm font-extrabold text-[#1C1917] tracking-tight leading-none hidden sm:block">Premia Tierra</span>
           </Link>
 
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-1 bg-slate-100 rounded-xl p-1 border border-slate-200/60">
-              {links.map((link) => {
-                const isActive = pathname === link.href || (link.href !== '/cajero' && pathname.startsWith(link.href) && link.href !== '/admin/generate') || pathname === link.href;
-                const exactActive = pathname === link.href || (link.href === '/admin/generate' && pathname === '/admin/generate') || (link.href !== '/admin/generate' && pathname.startsWith(link.href));
-                return (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                      exactActive
-                        ? 'bg-white text-orange-700 shadow-sm border border-slate-200/60 font-semibold'
-                        : 'text-slate-500 hover:text-slate-800 hover:bg-white/60'
-                    }`}
-                  >
-                    {link.icon}
-                    {link.label}
-                  </Link>
-                );
-              })}
-            </div>
+          {/* Nav links — center */}
+          <div className="hidden md:flex items-center h-14">
+            {links.map((link) => {
+              const exactActive = link.exact
+                ? pathname === link.href
+                : pathname === link.href || pathname.startsWith(link.href + '/');
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`relative flex items-center gap-1.5 px-3.5 h-14 text-sm transition-all ${
+                    exactActive
+                      ? 'font-semibold text-[#E8521A]'
+                      : 'font-medium text-stone-500 hover:text-[#1C1917]'
+                  }`}
+                >
+                  {link.icon}
+                  <span>{link.label}</span>
+                  {exactActive && (
+                    <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#E8521A] rounded-t-full" style={{ animation: 'scale-in 0.2s ease-out' }} />
+                  )}
+                </Link>
+              );
+            })}
+          </div>
+
+          {/* Right side */}
+          <div className="flex items-center gap-2">
+            <DarkModeToggle />
 
             {username && (
-              <div className="flex items-center gap-2">
-                <span className="text-xs text-slate-500 hidden sm:block">{username}</span>
+              <>
+                <span className="hidden sm:inline-flex items-center gap-1.5 bg-[#FAFAF9] border border-[#E8E3DC] text-stone-500 text-xs font-semibold rounded-full px-3 py-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block" />
+                  {username}
+                </span>
+                <Link
+                  href="/admin/perfil"
+                  title="Mi perfil"
+                  className="flex items-center justify-center w-8 h-8 rounded-lg text-stone-400 hover:text-[#E8521A] hover:bg-orange-50 border border-[#E8E3DC] transition-all"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                </Link>
                 <button
                   onClick={handleLogout}
                   disabled={loggingOut}
-                  className="flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-red-600 border border-slate-200 hover:border-red-200 hover:bg-red-50 px-3 py-2 rounded-lg transition-all"
+                  className="flex items-center gap-1.5 text-xs font-semibold text-stone-500 hover:text-red-600 border border-[#E8E3DC] hover:border-red-200 hover:bg-red-50 px-3 py-1.5 rounded-xl transition-all btn-press"
                 >
                   <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                   </svg>
-                  {loggingOut ? '...' : 'Salir'}
+                  <span className="hidden sm:inline">{loggingOut ? '...' : 'Salir'}</span>
                 </button>
-              </div>
+              </>
             )}
+
+            {/* Mobile hamburger */}
+            <button
+              className="md:hidden p-2 rounded-lg text-stone-500 hover:bg-[#FAFAF9] transition-colors"
+              onClick={() => setMobileOpen((v) => !v)}
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                {mobileOpen
+                  ? <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  : <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />}
+              </svg>
+            </button>
           </div>
         </div>
       </div>
+
+      {/* Mobile nav drawer */}
+      {mobileOpen && (
+        <div className="md:hidden border-t border-[#E8E3DC] bg-white py-2">
+          {links.map((link) => {
+            const exactActive = link.exact
+              ? pathname === link.href
+              : pathname === link.href || pathname.startsWith(link.href + '/');
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setMobileOpen(false)}
+                className={`flex items-center gap-3 px-5 py-3 text-sm transition-colors ${
+                  exactActive
+                    ? 'text-[#E8521A] font-semibold bg-orange-50'
+                    : 'text-stone-600 font-medium hover:bg-[#FAFAF9]'
+                }`}
+              >
+                {link.icon}
+                {link.label}
+              </Link>
+            );
+          })}
+        </div>
+      )}
     </nav>
   );
 }

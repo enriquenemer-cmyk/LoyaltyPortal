@@ -8,7 +8,7 @@ import CountdownBadge from './CountdownBadge';
 
 function formatDate(dateStr: string) {
   const [y, m, d] = dateStr.split('-').map(Number);
-  return new Date(y, m - 1, d).toLocaleDateString('es-MX', { day: 'numeric', month: 'long', year: 'numeric' });
+  return new Date(y, m - 1, d).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
 }
 
 interface PrizeClientProps {

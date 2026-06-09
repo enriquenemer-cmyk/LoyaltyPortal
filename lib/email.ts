@@ -1,53 +1,114 @@
-import { Resend } from 'resend';
+// Email utility — uses Resend if RESEND_API_KEY is set, else logs to console.
 
-let resend: Resend | null = null;
-function getResend() {
-  if (!resend && process.env.RESEND_API_KEY) {
-    resend = new Resend(process.env.RESEND_API_KEY);
+interface SendEmailOptions {
+  to: string;
+  subject: string;
+  html: string;
+}
+
+async function sendEmail(opts: SendEmailOptions): Promise<void> {
+  const apiKey = process.env.RESEND_API_KEY;
+  const from = process.env.EMAIL_FROM ?? 'Premia Tierra <noreply@premias.tierra.mx>';
+
+  if (!apiKey) {
+    console.log('[email] No RESEND_API_KEY — skipping send to:', opts.to, '|', opts.subject);
+    return;
   }
-  return resend;
+
+  const res = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${apiKey}`,
+    },
+    body: JSON.stringify({
+      from,
+      to: opts.to,
+      subject: opts.subject,
+      html: opts.html,
+    }),
+  });
+
+  if (!res.ok) {
+    const err = await res.text();
+    console.error('[email] Resend error:', err);
+  }
+}
+
+export async function sendClaimLink(opts: {
+  to: string;
+  full_name: string;
+  prize_name: string;
+  claim_url: string;
+}): Promise<void> {
+  const html = `
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body style="margin:0;padding:0;background:#f8fafc;font-family:system-ui,Arial,sans-serif;">
+  <div style="max-width:480px;margin:40px auto;background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08);">
+    <div style="background:linear-gradient(135deg,#E8521A,#C2410C);padding:28px 32px;">
+      <p style="margin:0;color:#fff;font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;opacity:.8;">Tierra Burrito Bar</p>
+      <h1 style="margin:8px 0 0;color:#fff;font-size:22px;font-weight:900;">Tu código de cobro</h1>
+    </div>
+    <div style="padding:32px;">
+      <p style="color:#334155;font-size:15px;margin-bottom:8px;">Hola <strong>${opts.full_name}</strong>,</p>
+      <p style="color:#64748b;font-size:14px;line-height:1.6;margin-bottom:24px;">
+        Aquí tienes el enlace para cobrar tu premio <strong style="color:#E8521A;">${opts.prize_name}</strong> en cualquiera de nuestras sucursales.
+      </p>
+      <a href="${opts.claim_url}"
+         style="display:block;background:linear-gradient(135deg,#E8521A,#C2410C);color:#fff;text-decoration:none;font-size:15px;font-weight:800;padding:14px 24px;border-radius:14px;text-align:center;">
+        Cobrar mi premio →
+      </a>
+      <p style="color:#94a3b8;font-size:11px;margin-top:20px;text-align:center;word-break:break-all;">${opts.claim_url}</p>
+    </div>
+    <div style="background:#f8fafc;padding:16px 32px;border-top:1px solid #e2e8f0;">
+      <p style="margin:0;color:#94a3b8;font-size:11px;text-align:center;">© ${new Date().getFullYear()} Tierra Burrito Bar · Premia Tierra</p>
+    </div>
+  </div>
+</body>
+</html>`;
+
+  await sendEmail({
+    to: opts.to,
+    subject: `Tu código de cobro: ${opts.prize_name}`,
+    html,
+  });
 }
 
 export async function sendExpirationReminder(opts: {
   to: string;
-  prizeName: string;
-  description: string;
-  endDate: string;
-  location: string;
-  claimId: string;
-}) {
-  try {
-    const client = getResend();
-    if (!client) return;
-    const claimUrl = `${process.env.NEXT_PUBLIC_BASE_URL || 'https://premia-tierra.vercel.app'}/cajero/${opts.claimId}`;
-    await client.emails.send({
-      from: 'Premia Tierra <noreply@premia-tierra.vercel.app>',
-      to: opts.to,
-      subject: `Tu premio está por vencer — ${opts.prizeName}`,
-      html: `
-        <div style="font-family:sans-serif;max-width:560px;margin:0 auto;background:#f8fafc;padding:32px 16px;">
-          <div style="background:linear-gradient(135deg,#059669,#0d9488);border-radius:16px;padding:32px 24px;text-align:center;margin-bottom:24px;">
-            <h1 style="color:white;font-size:28px;font-weight:900;margin:0 0 8px;">¡Tu premio está por vencer!</h1>
-            <p style="color:rgba(255,255,255,0.8);margin:0;font-size:16px;">${opts.prizeName}</p>
-          </div>
-          <div style="background:white;border-radius:16px;padding:24px;margin-bottom:16px;border:1px solid #e2e8f0;">
-            <p style="color:#64748b;font-size:14px;margin:0 0 16px;">Tienes un premio pendiente por cobrar. No dejes que expire.</p>
-            <div style="background:#f0fdf4;border-radius:12px;padding:16px;margin-bottom:16px;">
-              <p style="color:#166534;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin:0 0 4px;">Premio</p>
-              <p style="color:#15803d;font-size:18px;font-weight:800;margin:0;">${opts.prizeName}</p>
-            </div>
-            <p style="color:#475569;font-size:14px;margin:0 0 8px;">${opts.description}</p>
-            <p style="color:#ef4444;font-size:14px;font-weight:700;margin:0 0 16px;">Válido hasta: ${opts.endDate}</p>
-            <p style="color:#64748b;font-size:13px;margin:0 0 20px;">Sucursal: ${opts.location}</p>
-            <a href="${claimUrl}" style="display:inline-block;background:linear-gradient(135deg,#059669,#0d9488);color:white;font-weight:700;font-size:16px;padding:14px 32px;border-radius:12px;text-decoration:none;">
-              Ver mi código de cobro
-            </a>
-          </div>
-          <p style="text-align:center;color:#94a3b8;font-size:12px;margin:0;">Premia Tierra · Plataforma de Premios</p>
-        </div>
-      `,
-    });
-  } catch (err) {
-    console.error('Error sending email:', err);
-  }
+  full_name: string;
+  prize_name: string;
+  end_date: string;
+  claim_url: string;
+}): Promise<void> {
+  const html = `
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"></head>
+<body style="margin:0;padding:0;background:#f8fafc;font-family:system-ui,Arial,sans-serif;">
+  <div style="max-width:480px;margin:40px auto;background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08);">
+    <div style="background:linear-gradient(135deg,#E8521A,#C2410C);padding:28px 32px;">
+      <h1 style="margin:0;color:#fff;font-size:22px;font-weight:900;">¡Tu premio vence pronto!</h1>
+    </div>
+    <div style="padding:32px;">
+      <p style="color:#334155;font-size:15px;">Hola <strong>${opts.full_name}</strong>,</p>
+      <p style="color:#64748b;font-size:14px;line-height:1.6;">
+        Tu premio <strong>${opts.prize_name}</strong> vence el <strong>${opts.end_date}</strong>. ¡No olvides cobrarlo!
+      </p>
+      <a href="${opts.claim_url}"
+         style="display:block;background:linear-gradient(135deg,#E8521A,#C2410C);color:#fff;text-decoration:none;font-size:15px;font-weight:800;padding:14px 24px;border-radius:14px;text-align:center;margin-top:20px;">
+        Cobrar mi premio →
+      </a>
+    </div>
+  </div>
+</body>
+</html>`;
+
+  await sendEmail({
+    to: opts.to,
+    subject: `Recordatorio: tu premio "${opts.prize_name}" vence pronto`,
+    html,
+  });
 }

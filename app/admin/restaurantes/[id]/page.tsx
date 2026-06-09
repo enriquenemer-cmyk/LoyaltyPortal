@@ -80,14 +80,14 @@ function Avatar({ name }: { name: string }) {
 
 function StatCard({ label, value, color, icon }: { label: string; value: number | string; color: 'gray' | 'orange' | 'blue' | 'amber'; icon: React.ReactNode }) {
   const colorMap = {
-    gray:    { border: 'border-l-gray-400',   bg: 'bg-gray-100',   text: 'text-gray-600',   num: 'text-gray-900'   },
-    orange: { border: 'border-l-orange-500', bg: 'bg-orange-50', text: 'text-orange-700', num: 'text-orange-600' },
-    blue:    { border: 'border-l-blue-500',    bg: 'bg-blue-50',    text: 'text-blue-700',    num: 'text-blue-600'   },
+    gray:    { border: 'border-l-stone-400',   bg: 'bg-stone-50',   text: 'text-stone-600',   num: 'text-stone-700'   },
+    orange: { border: 'border-l-[#E8521A]', bg: 'bg-orange-50', text: 'text-[#E8521A]', num: 'text-[#E8521A]' },
+    blue:    { border: 'border-l-violet-500',    bg: 'bg-violet-50',    text: 'text-violet-700',    num: 'text-violet-600'   },
     amber:   { border: 'border-l-amber-500',   bg: 'bg-amber-50',   text: 'text-amber-700',   num: 'text-amber-600'  },
   };
   const c = colorMap[color];
   return (
-    <div className={`bg-white rounded-2xl border border-gray-200 border-l-4 ${c.border} shadow-sm p-5 flex items-center gap-4`}>
+    <div className={`bg-white rounded-2xl border border-[#E8E3DC] border-l-4 ${c.border} shadow-sm p-5 flex items-center gap-4`}>
       <div className={`w-11 h-11 rounded-xl ${c.bg} flex items-center justify-center shrink-0`}>
         <span className={c.text}>{icon}</span>
       </div>
@@ -99,8 +99,8 @@ function StatCard({ label, value, color, icon }: { label: string; value: number 
   );
 }
 
-const inputClass = 'w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-orange-500 transition-all shadow-sm';
-const labelClass = 'block text-sm font-semibold text-slate-700 mb-1.5';
+const inputClass = 'w-full bg-white border border-[#E8E3DC] rounded-xl px-4 py-3 text-sm text-[#1C1917] placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all shadow-sm';
+const labelClass = 'block text-sm font-semibold text-stone-700 mb-1.5';
 
 export default function RestaurantProfilePage() {
   const { id } = useParams<{ id: string }>();
@@ -196,7 +196,7 @@ export default function RestaurantProfilePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#f4f6f8] flex items-center justify-center">
+      <div className="min-h-screen bg-[#FAFAF9] flex items-center justify-center">
         <svg className="animate-spin w-10 h-10 text-orange-500" fill="none" viewBox="0 0 24 24">
           <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
@@ -207,7 +207,7 @@ export default function RestaurantProfilePage() {
 
   if (error || !restaurant) {
     return (
-      <div className="min-h-screen bg-[#f4f6f8] flex items-center justify-center">
+      <div className="min-h-screen bg-[#FAFAF9] flex items-center justify-center">
         <div className="bg-white rounded-2xl border border-red-200 p-10 text-center max-w-md">
           <p className="text-red-600 font-semibold">{error || 'Restaurante no encontrado.'}</p>
           <Link href="/admin/restaurantes" className="mt-4 inline-block text-orange-600 hover:underline text-sm">Volver a Restaurantes</Link>
@@ -217,22 +217,29 @@ export default function RestaurantProfilePage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#f4f6f8]">
+    <div className="min-h-screen bg-[#FAFAF9]">
       <div className="max-w-7xl mx-auto px-4 py-10">
 
-        {/* Back */}
-        <Link href="/admin/restaurantes" className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-orange-700 font-medium mb-6 transition-colors">
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-          </svg>
-          Volver a Restaurantes
-        </Link>
+        {/* Breadcrumb */}
+        <div className="flex items-center gap-3 mb-6">
+          <Link
+            href="/admin/restaurantes"
+            className="inline-flex items-center gap-1.5 text-sm font-bold text-[#E8521A] bg-orange-50 border border-orange-200 hover:bg-orange-100 px-3 py-1.5 rounded-full transition-colors"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+            Restaurantes
+          </Link>
+          <span className="text-stone-300">/</span>
+          <span className="text-sm font-bold text-[#1C1917] truncate">{restaurant?.name}</span>
+        </div>
 
         {/* Profile header */}
-        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden mb-6">
-          <div className="bg-gradient-to-br from-orange-500 to-orange-700 p-6 flex items-center justify-between gap-5 flex-wrap">
+        <div className="bg-white rounded-2xl border border-[#E8E3DC] shadow-[0_1px_2px_rgba(28,25,23,0.04),_0_4px_16px_rgba(28,25,23,0.06)] overflow-hidden mb-6">
+          <div className="p-6 flex items-center justify-between gap-5 flex-wrap" style={{ background: 'linear-gradient(135deg,#1C1917 0%,#292524 60%,#3c1a10 100%)' }}>
             <div className="flex items-center gap-5">
-              <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center text-white text-2xl font-extrabold shrink-0 overflow-hidden">
+              <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-white text-2xl font-extrabold shrink-0 overflow-hidden" style={{ background: 'linear-gradient(135deg,#E8521A,#C2410C)', boxShadow: '0 6px 20px rgba(232,82,26,0.40)' }}>
                 {restaurant.logo_url ? (
                   <img src={restaurant.logo_url} alt={restaurant.name} className="w-full h-full object-cover" />
                 ) : (
@@ -319,6 +326,41 @@ export default function RestaurantProfilePage() {
           </div>
         )}
 
+        {/* Cajero QR */}
+        <div className="bg-white rounded-2xl border border-[#E8E3DC] shadow-sm p-5 mb-6 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+          <div className="flex-1">
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-widest mb-1">Acceso Rápido</p>
+            <h3 className="text-base font-extrabold text-[#1C1917] mb-1">Panel del Cajero</h3>
+            <p className="text-sm text-stone-500">Comparte este enlace con el cajero para que pueda escanear y entregar premios.</p>
+            <div className="mt-3 flex items-center gap-2 flex-wrap">
+              <code className="text-xs bg-orange-50 border border-orange-200 text-orange-800 rounded-lg px-3 py-1.5 font-mono break-all">
+                {typeof window !== 'undefined' ? `${window.location.origin}/cajero/${restaurant.id}` : `/cajero/${restaurant.id}`}
+              </code>
+              <button
+                onClick={() => {
+                  const url = `${window.location.origin}/cajero/${restaurant.id}`;
+                  navigator.clipboard.writeText(url);
+                }}
+                className="inline-flex items-center gap-1.5 text-xs font-bold text-[#E8521A] bg-orange-50 border border-orange-200 hover:bg-orange-100 px-3 py-1.5 rounded-lg transition-colors"
+              >
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
+                Copiar
+              </button>
+              <Link
+                href={`/cajero/${restaurant.id}`}
+                target="_blank"
+                className="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-[#E8521A] hover:bg-orange-600 px-3 py-1.5 rounded-lg transition-colors"
+              >
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+                Abrir
+              </Link>
+            </div>
+          </div>
+          <div className="shrink-0 w-10 h-10 rounded-xl bg-orange-50 border border-orange-200 flex items-center justify-center">
+            <svg className="w-5 h-5 text-[#E8521A]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4h.01M8 8h.01M16 8h.01M4 12h.01M20 12h.01M8 16h.01M16 16h.01M12 20h.01M4 4h4v4H4zm12 0h4v4h-4zM4 16h4v4H4zm12 0h4v4h-4z" /></svg>
+          </div>
+        </div>
+
         {/* Claims table */}
         <div className="mb-4 flex items-center gap-3">
           <h2 className="text-lg font-extrabold text-gray-900 flex-1">Cobros de este Restaurante</h2>
@@ -337,15 +379,15 @@ export default function RestaurantProfilePage() {
         </div>
 
         {filtered.length === 0 ? (
-          <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-14 text-center mb-8">
+          <div className="bg-white rounded-2xl border border-[#E8E3DC] shadow-sm p-14 text-center mb-8">
             <p className="text-gray-500 font-semibold">{search ? 'Sin resultados' : 'Aún no hay cobros para este restaurante'}</p>
           </div>
         ) : (
-          <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden mb-8">
+          <div className="bg-white rounded-2xl border border-[#E8E3DC] shadow-sm overflow-hidden mb-8">
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="bg-gray-50 border-b border-gray-100">
+                  <tr className="bg-[#FAFAF9] border-b border-[#E8E3DC]">
                     <th className="text-left px-5 py-3.5 font-bold text-gray-500 text-xs uppercase tracking-wider">Persona</th>
                     <th className="text-left px-5 py-3.5 font-bold text-gray-500 text-xs uppercase tracking-wider">Celular</th>
                     <th className="text-left px-5 py-3.5 font-bold text-gray-500 text-xs uppercase tracking-wider">Correo</th>
@@ -354,7 +396,7 @@ export default function RestaurantProfilePage() {
                     <th className="text-left px-5 py-3.5 font-bold text-gray-500 text-xs uppercase tracking-wider">Fecha y Hora</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-50">
+                <tbody className="divide-y divide-[#F0EDE8]">
                   {filtered.map((claim) => (
                     <tr key={claim.id} className="hover:bg-gray-50/70 transition-colors group">
                       <td className="px-5 py-4">
@@ -370,18 +412,18 @@ export default function RestaurantProfilePage() {
                       <td className="px-5 py-4">
                         {claim.status === 'delivered' ? (
                           <span className="inline-flex items-center gap-1.5 bg-orange-50 text-orange-700 text-xs font-bold px-2.5 py-1 rounded-full border border-orange-200">
-                            <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>
+                            <span className="w-1.5 h-1.5 rounded-full bg-orange-500 inline-block" />
                             Entregado
                           </span>
                         ) : (
                           <span className="inline-flex items-center gap-1.5 bg-amber-50 text-amber-700 text-xs font-bold px-2.5 py-1 rounded-full border border-amber-200">
-                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            <span className="w-1.5 h-1.5 rounded-full bg-amber-400 inline-block animate-pulse" />
                             Pendiente
                           </span>
                         )}
                       </td>
                       <td className="px-5 py-4">
-                        <span className="inline-flex bg-indigo-50 text-indigo-700 text-xs font-semibold px-2.5 py-1 rounded-full border border-indigo-200">{claim.prize_name}</span>
+                        <span className="inline-flex bg-orange-50 text-[#E8521A] text-xs font-semibold px-2.5 py-1 rounded-full border border-orange-200">{claim.prize_name}</span>
                       </td>
                       <td className="px-5 py-4 text-gray-400 text-xs whitespace-nowrap">{formatDate(claim.claimed_at)}</td>
                     </tr>
@@ -389,7 +431,7 @@ export default function RestaurantProfilePage() {
                 </tbody>
               </table>
             </div>
-            <div className="px-5 py-3.5 bg-gray-50 border-t border-gray-100">
+            <div className="px-5 py-3.5 bg-[#FAFAF9] border-t border-[#E8E3DC]">
               <p className="text-xs text-gray-400">
                 Mostrando <span className="font-semibold text-gray-600">{filtered.length}</span> de <span className="font-semibold text-gray-600">{claims.length}</span> registros
               </p>
@@ -398,11 +440,11 @@ export default function RestaurantProfilePage() {
         )}
 
         {/* Manager creation */}
-        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden mb-8">
-          <div className="p-5 border-b border-slate-100 flex items-center justify-between">
+        <div className="bg-white rounded-2xl border border-[#E8E3DC] shadow-[0_1px_2px_rgba(28,25,23,0.04),_0_4px_16px_rgba(28,25,23,0.06)] overflow-hidden mb-8">
+          <div className="p-5 border-b border-[#E8E3DC] flex items-center justify-between">
             <div>
-              <h2 className="text-base font-bold text-slate-900">Usuarios</h2>
-              <p className="text-xs text-slate-400 mt-0.5">Crea una cuenta de manager para este restaurante</p>
+              <h2 className="text-base font-bold text-[#1C1917]">Usuarios</h2>
+              <p className="text-xs text-stone-400 mt-0.5">Crea una cuenta de manager para este restaurante</p>
             </div>
             <button onClick={() => setShowManager((v) => !v)} className="text-xs font-semibold text-orange-700 border border-orange-200 bg-orange-50 hover:bg-orange-100 px-3 py-1.5 rounded-lg transition-colors">
               {showManager ? 'Cancelar' : '+ Nuevo usuario'}
@@ -430,24 +472,30 @@ export default function RestaurantProfilePage() {
         </div>
 
         {/* Activity log */}
-        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-          <div className="p-5 border-b border-slate-100">
-            <h2 className="text-base font-bold text-slate-900">Actividad Reciente</h2>
+        <div className="bg-white rounded-2xl border border-[#E8E3DC] shadow-[0_1px_2px_rgba(28,25,23,0.04),_0_4px_16px_rgba(28,25,23,0.06)] overflow-hidden">
+          <div className="p-5 border-b border-[#E8E3DC]">
+            <h2 className="text-base font-bold text-[#1C1917]">Actividad Reciente</h2>
           </div>
           {activity.length === 0 ? (
-            <div className="p-10 text-center text-slate-400 text-sm">Sin actividad registrada</div>
+            <div className="p-10 text-center text-stone-400 text-sm">Sin actividad registrada</div>
           ) : (
-            <div className="divide-y divide-slate-50">
-              {activity.map((a) => (
-                <div key={a.id} className="px-5 py-4 flex items-start gap-4">
-                  <div className="w-9 h-9 bg-slate-100 rounded-full flex items-center justify-center text-lg shrink-0">{activityIcon(a.action)}</div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-slate-800">{a.description}</p>
-                    {a.user_name && <p className="text-xs text-slate-400 mt-0.5">por {a.user_name}</p>}
-                  </div>
-                  <p className="text-xs text-slate-400 whitespace-nowrap shrink-0">{timeAgo(a.created_at)}</p>
+            <div className="p-5">
+              <div className="relative">
+                {/* Vertical timeline line */}
+                <div className="absolute left-[17px] top-0 bottom-0 w-px bg-[#E8E3DC]" />
+                <div className="space-y-4">
+                  {activity.map((a) => (
+                    <div key={a.id} className="flex items-start gap-4 relative">
+                      <div className="w-9 h-9 bg-[#FAFAF9] border border-[#E8E3DC] rounded-full flex items-center justify-center text-base shrink-0 z-10">{activityIcon(a.action)}</div>
+                      <div className="flex-1 min-w-0 bg-[#FAFAF9] border border-[#E8E3DC] rounded-xl px-4 py-3">
+                        <p className="text-sm font-semibold text-[#1C1917]">{a.description}</p>
+                        {a.user_name && <p className="text-xs text-stone-400 mt-0.5">por {a.user_name}</p>}
+                      </div>
+                      <p className="text-xs text-stone-400 whitespace-nowrap shrink-0 pt-2.5">{timeAgo(a.created_at)}</p>
+                    </div>
+                  ))}
                 </div>
-              ))}
+              </div>
             </div>
           )}
         </div>

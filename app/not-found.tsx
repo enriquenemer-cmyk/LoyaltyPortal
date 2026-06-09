@@ -1,23 +1,40 @@
+'use client';
 import Link from 'next/link';
 
 export default function NotFound() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-[60vh] px-4 text-center">
-      <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-        <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
+    <div style={{ minHeight: '100vh', background: '#FAFAF9', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24, fontFamily: 'system-ui,-apple-system,sans-serif' }}>
+      <div style={{ textAlign: 'center', maxWidth: 440, width: '100%' }}>
+        {/* Brand icon */}
+        <div style={{ marginBottom: 16, display: 'flex', justifyContent: 'center' }}>
+          <div style={{ width: 64, height: 64, borderRadius: 16, background: 'linear-gradient(135deg,#E8521A,#C2410C)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 8px 24px rgba(232,82,26,0.25)' }}>
+            <span style={{ fontSize: 32 }}>🌯</span>
+          </div>
+        </div>
+
+        {/* Big 404 with gradient */}
+        <div style={{ fontSize: 120, fontWeight: 900, lineHeight: 1, background: 'linear-gradient(135deg,#E8521A,#fb923c,#E8521A)', backgroundSize: '200% auto', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', marginBottom: 8 }}>
+          404
+        </div>
+
+        <h1 style={{ fontSize: 24, fontWeight: 800, color: '#1C1917', marginBottom: 10 }}>
+          Esta página no existe
+        </h1>
+        <p style={{ color: '#78716c', fontSize: 15, lineHeight: 1.6, marginBottom: 32 }}>
+          El enlace que seguiste ya no es válido, fue removido o nunca existió en el sistema de Tierra Burrito Bar.
+        </p>
+
+        <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
+          <Link href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'linear-gradient(135deg,#E8521A,#C2410C)', color: 'white', fontWeight: 700, fontSize: 15, padding: '12px 24px', borderRadius: 14, textDecoration: 'none', boxShadow: '0 8px 24px rgba(232,82,26,0.30)' }}>
+            ← Volver al inicio
+          </Link>
+          <Link href="/admin" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'white', color: '#44403c', fontWeight: 700, fontSize: 15, padding: '12px 24px', borderRadius: 14, textDecoration: 'none', border: '1px solid #E8E3DC', boxShadow: '0 1px 4px rgba(28,25,23,0.06)' }}>
+            Ir al panel
+          </Link>
+        </div>
+
+        <p style={{ color: '#a8a29e', fontSize: 12, marginTop: 40 }}>Tierra Burrito Bar · Plataforma de Premios</p>
       </div>
-      <h1 className="text-2xl font-bold text-gray-900 mb-2">Premio no encontrado</h1>
-      <p className="text-gray-500 mb-6 max-w-sm">
-        El premio que buscas no existe o el enlace es incorrecto.
-      </p>
-      <Link
-        href="/admin/generate"
-        className="bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-5 py-2 rounded-lg text-sm transition-colors"
-      >
-        Ir al panel de administración
-      </Link>
     </div>
   );
 }

@@ -2,7 +2,7 @@ import { Pool } from 'pg';
 
 let pool: Pool;
 
-function getPool(): Pool {
+export function getPool(): Pool {
   if (!pool) {
     pool = new Pool({ connectionString: process.env.DATABASE_URL });
   }
@@ -53,6 +53,49 @@ async function ensureSchema(): Promise<void> {
       ALTER TABLE prizes ADD COLUMN IF NOT EXISTS restaurant_id TEXT REFERENCES restaurants(id);
       ALTER TABLE prizes ADD COLUMN IF NOT EXISTS cancelled BOOLEAN NOT NULL DEFAULT FALSE;
       ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS logo_url TEXT;
+      ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS accent_color TEXT DEFAULT '#E8521A';
+      ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS google_maps_url TEXT;
+      ALTER TABLE claims ADD COLUMN IF NOT EXISTS referral_code TEXT;
+      ALTER TABLE claims ADD COLUMN IF NOT EXISTS referred_by TEXT;
+      ALTER TABLE claims ADD COLUMN IF NOT EXISTS expires_at TIMESTAMPTZ;
+      ALTER TABLE prizes ADD COLUMN IF NOT EXISTS generated_by TEXT;
+      ALTER TABLE prizes ADD COLUMN IF NOT EXISTS max_uses INTEGER NOT NULL DEFAULT 1;
+      ALTER TABLE prizes ADD COLUMN IF NOT EXISTS photo_url TEXT;
+      ALTER TABLE prizes ADD COLUMN IF NOT EXISTS campaign_id TEXT;
+      ALTER TABLE prizes ADD COLUMN IF NOT EXISTS stock_limit INTEGER;
+      ALTER TABLE prizes ADD COLUMN IF NOT EXISTS valid_hours TEXT;
+      ALTER TABLE prizes ADD COLUMN IF NOT EXISTS valid_days TEXT;
+      ALTER TABLE prizes ADD COLUMN IF NOT EXISTS activate_at TIMESTAMPTZ;
+      ALTER TABLE prizes ADD COLUMN IF NOT EXISTS game_type TEXT;
+    `);
+    await client.query(`
+      ALTER TABLE claims ADD COLUMN IF NOT EXISTS points_earned INTEGER NOT NULL DEFAULT 0;
+      CREATE TABLE IF NOT EXISTS customer_points (
+        id TEXT PRIMARY KEY,
+        phone TEXT NOT NULL,
+        email TEXT NOT NULL,
+        total_points INTEGER NOT NULL DEFAULT 0,
+        lifetime_points INTEGER NOT NULL DEFAULT 0,
+        tier TEXT NOT NULL DEFAULT 'bronze',
+        updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      );
+      CREATE UNIQUE INDEX IF NOT EXISTS customer_points_phone ON customer_points(phone);
+    `);
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS campaigns (
+        id TEXT PRIMARY KEY,
+        name TEXT NOT NULL,
+        description TEXT,
+        restaurant_id TEXT REFERENCES restaurants(id),
+        created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      );
+    `);
+    await client.query(`
+      ALTER TABLE campaigns ADD COLUMN IF NOT EXISTS qr_dot_color TEXT DEFAULT '#0f172a';
+      ALTER TABLE campaigns ADD COLUMN IF NOT EXISTS qr_background TEXT DEFAULT '#ffffff';
+      ALTER TABLE campaigns ADD COLUMN IF NOT EXISTS qr_dot_style TEXT DEFAULT 'square';
+      ALTER TABLE campaigns ADD COLUMN IF NOT EXISTS qr_corner_style TEXT DEFAULT 'square';
+      ALTER TABLE campaigns ADD COLUMN IF NOT EXISTS qr_gradient_end TEXT;
     `);
     await client.query(`
       CREATE TABLE IF NOT EXISTS users (
@@ -73,6 +116,93 @@ async function ensureSchema(): Promise<void> {
         created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
       );
     `);
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS prize_rules (
+        id TEXT PRIMARY KEY,
+        name TEXT NOT NULL,
+        trigger_type TEXT NOT NULL,
+        trigger_value INTEGER NOT NULL DEFAULT 5,
+        prize_template TEXT NOT NULL,
+        prize_reason TEXT NOT NULL,
+        prize_description TEXT NOT NULL,
+        validity_days INTEGER NOT NULL DEFAULT 30,
+        restaurant_id TEXT REFERENCES restaurants(id),
+        active BOOLEAN NOT NULL DEFAULT TRUE,
+        created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      );
+    `);
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS ticket_tiers (
+        id TEXT PRIMARY KEY,
+        restaurant_id TEXT NOT NULL REFERENCES restaurants(id),
+        min_amount NUMERIC NOT NULL DEFAULT 0,
+        max_amount NUMERIC,
+        prize_name TEXT NOT NULL,
+        prize_description TEXT NOT NULL,
+        game_type TEXT,
+        sort_order INTEGER NOT NULL DEFAULT 0,
+        created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      );
+      CREATE TABLE IF NOT EXISTS ticket_claims (
+        id TEXT PRIMARY KEY,
+        restaurant_id TEXT NOT NULL REFERENCES restaurants(id),
+        amount NUMERIC NOT NULL,
+        prize_name TEXT NOT NULL,
+        prize_description TEXT NOT NULL,
+        full_name TEXT NOT NULL,
+        phone TEXT NOT NULL,
+        location TEXT,
+        claimed_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      );
+      ALTER TABLE ticket_claims ADD COLUMN IF NOT EXISTS image_hash TEXT;
+      ALTER TABLE ticket_claims ADD COLUMN IF NOT EXISTS expires_at TIMESTAMPTZ;
+      ALTER TABLE ticket_claims ADD COLUMN IF NOT EXISTS redeemed_at TIMESTAMPTZ;
+      ALTER TABLE ticket_claims ADD COLUMN IF NOT EXISTS redeemed_by TEXT;
+      ALTER TABLE ticket_claims ADD COLUMN IF NOT EXISTS consolation_code TEXT;
+    `);
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS restaurant_ticket_config (
+        restaurant_id TEXT PRIMARY KEY REFERENCES restaurants(id),
+        consolation_prize_name TEXT NOT NULL DEFAULT 'Premio de consolación',
+        consolation_prize_description TEXT NOT NULL DEFAULT '¡Gracias por visitarnos! Vuelve pronto.',
+        min_amount_for_game NUMERIC NOT NULL DEFAULT 0,
+        updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      );
+    `);
+    await client.query(`
+      ALTER TABLE restaurant_ticket_config ADD COLUMN IF NOT EXISTS welcome_title TEXT;
+      ALTER TABLE restaurant_ticket_config ADD COLUMN IF NOT EXISTS welcome_subtitle TEXT;
+      ALTER TABLE restaurant_ticket_config ADD COLUMN IF NOT EXISTS primary_color TEXT DEFAULT '#E8521A';
+    `);
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS restaurant_events (
+        id TEXT PRIMARY KEY,
+        restaurant_id TEXT NOT NULL REFERENCES restaurants(id),
+        name TEXT NOT NULL,
+        description TEXT,
+        event_type TEXT NOT NULL DEFAULT 'double_points',
+        multiplier NUMERIC NOT NULL DEFAULT 2,
+        max_participants INTEGER,
+        participants_count INTEGER NOT NULL DEFAULT 0,
+        starts_at TIMESTAMPTZ NOT NULL,
+        ends_at TIMESTAMPTZ NOT NULL,
+        active BOOLEAN NOT NULL DEFAULT TRUE,
+        created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      );
+    `);
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS stamp_cards (
+        id TEXT PRIMARY KEY,
+        phone TEXT NOT NULL,
+        email TEXT NOT NULL,
+        restaurant_id TEXT REFERENCES restaurants(id),
+        stamps_count INTEGER NOT NULL DEFAULT 0,
+        stamps_required INTEGER NOT NULL DEFAULT 5,
+        completed_at TIMESTAMPTZ,
+        prize_claimed BOOLEAN NOT NULL DEFAULT FALSE,
+        created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      );
+    `);
     schemaInitialized = true;
   } finally {
     client.release();
@@ -85,6 +215,8 @@ export type Restaurant = {
   address: string;
   phone: string | null;
   logo_url: string | null;
+  accent_color: string;
+  google_maps_url: string | null;
   created_at: string;
 };
 
@@ -93,6 +225,19 @@ export type RestaurantStats = {
   total_claims: number;
   delivered: number;
   pending: number;
+};
+
+export type Campaign = {
+  id: string;
+  name: string;
+  description: string | null;
+  restaurant_id: string | null;
+  created_at: string;
+  qr_dot_color: string;
+  qr_background: string;
+  qr_dot_style: string;
+  qr_corner_style: string;
+  qr_gradient_end: string | null;
 };
 
 export type Prize = {
@@ -106,6 +251,15 @@ export type Prize = {
   restaurant_id: string | null;
   cancelled: boolean;
   created_at: string;
+  generated_by?: string | null;
+  max_uses: number;
+  photo_url?: string | null;
+  campaign_id?: string | null;
+  stock_limit?: number | null;
+  valid_hours?: string | null;   // "HH:MM-HH:MM" or null
+  valid_days?: string | null;    // "1,2,3,4,5" (Mon=1…Sun=7) or null
+  activate_at?: string | null;   // ISO timestamp or null
+  game_type?: string | null;     // 'slots' | 'roulette' | 'penalty' | 'scratch' | null
 };
 
 export type PrizeWithRestaurant = Prize & {
@@ -127,7 +281,7 @@ export type DbUser = {
   id: string;
   username: string;
   password_hash: string;
-  role: 'admin' | 'manager';
+  role: 'admin' | 'manager' | 'cajero';
   restaurant_id: string | null;
   created_at: string;
 };
@@ -143,19 +297,34 @@ export type Claim = {
   status: 'pending' | 'delivered';
   delivered_at: string | null;
   delivered_by: string | null;
+  referral_code: string | null;
+  referred_by: string | null;
+  expires_at?: string | null;
+  points_earned?: number;
 };
 
 export type ClaimWithPrize = Claim & {
   prize_name: string;
   prize_location: string;   // all available branches (from prize)
   prize_description: string;
+  restaurant_name: string | null;
+};
+
+export type CustomerPoints = {
+  id: string;
+  phone: string;
+  email: string;
+  total_points: number;
+  lifetime_points: number;
+  tier: 'bronze' | 'silver' | 'gold';
+  updated_at: string;
 };
 
 export async function insertRestaurant(r: Omit<Restaurant, 'created_at'>): Promise<Restaurant> {
   await ensureSchema();
   const { rows } = await getPool().query<Restaurant>(
-    `INSERT INTO restaurants (id, name, address, phone) VALUES ($1,$2,$3,$4) RETURNING *`,
-    [r.id, r.name, r.address, r.phone ?? null]
+    `INSERT INTO restaurants (id, name, address, phone, accent_color, google_maps_url) VALUES ($1,$2,$3,$4,$5,$6) RETURNING *`,
+    [r.id, r.name, r.address, r.phone ?? null, r.accent_color ?? '#E8521A', r.google_maps_url ?? null]
   );
   return rows[0];
 }
@@ -196,8 +365,10 @@ export async function getRestaurantStats(restaurantId: string): Promise<Restaura
 export async function getClaimsByRestaurant(restaurantId: string): Promise<ClaimWithPrize[]> {
   await ensureSchema();
   const { rows } = await getPool().query<ClaimWithPrize>(`
-    SELECT c.*, p.name AS prize_name, p.location AS prize_location, p.description AS prize_description
+    SELECT c.*, p.name AS prize_name, p.location AS prize_location, p.description AS prize_description,
+           r.name AS restaurant_name
     FROM claims c JOIN prizes p ON c.prize_id = p.id
+    LEFT JOIN restaurants r ON r.id = p.restaurant_id
     WHERE p.restaurant_id = $1
     ORDER BY c.claimed_at DESC
   `, [restaurantId]);
@@ -207,9 +378,9 @@ export async function getClaimsByRestaurant(restaurantId: string): Promise<Claim
 export async function insertPrize(prize: Omit<Prize, 'created_at'>): Promise<Prize> {
   await ensureSchema();
   const { rows } = await getPool().query<Prize>(
-    `INSERT INTO prizes (id, name, reason, start_date, end_date, description, location, restaurant_id)
-     VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *`,
-    [prize.id, prize.name, prize.reason, prize.start_date, prize.end_date, prize.description, prize.location, prize.restaurant_id ?? null]
+    `INSERT INTO prizes (id, name, reason, start_date, end_date, description, location, restaurant_id, generated_by, max_uses, photo_url, campaign_id, stock_limit, valid_hours, valid_days, activate_at, game_type)
+     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17) RETURNING *`,
+    [prize.id, prize.name, prize.reason, prize.start_date, prize.end_date, prize.description, prize.location, prize.restaurant_id ?? null, prize.generated_by ?? null, prize.max_uses ?? 1, prize.photo_url ?? null, prize.campaign_id ?? null, prize.stock_limit ?? null, prize.valid_hours ?? null, prize.valid_days ?? null, prize.activate_at ?? null, prize.game_type ?? null]
   );
   return rows[0];
 }
@@ -228,24 +399,118 @@ export async function getPrizeClaimCount(prizeId: string): Promise<number> {
   return parseInt(rows[0].count, 10);
 }
 
+export function calcProportionalPoints(amount: number | null | undefined, minimum = 5): number {
+  if (!amount || amount <= 0) return minimum;
+  return Math.max(minimum, Math.floor(amount / 10));
+}
+
 export async function insertClaim(
-  claim: Omit<Claim, 'claimed_at' | 'status' | 'delivered_at' | 'delivered_by'>
+  claim: Omit<Claim, 'claimed_at' | 'status' | 'delivered_at' | 'delivered_by'> & { ticket_amount?: number | null }
 ): Promise<Claim> {
   await ensureSchema();
+  const points = calcProportionalPoints(claim.ticket_amount ?? null, 10);
   const { rows } = await getPool().query<Claim>(
-    `INSERT INTO claims (id, prize_id, full_name, phone, email, location)
-     VALUES ($1,$2,$3,$4,$5,$6) RETURNING *`,
-    [claim.id, claim.prize_id, claim.full_name, claim.phone, claim.email, claim.location ?? null]
+    `INSERT INTO claims (id, prize_id, full_name, phone, email, location, referral_code, referred_by, expires_at, points_earned)
+     VALUES ($1,$2,$3,$4,$5,$6,$7,$8, NOW() + INTERVAL '2 hours', $9) RETURNING *`,
+    [claim.id, claim.prize_id, claim.full_name, claim.phone, claim.email, claim.location ?? null, claim.referral_code ?? null, claim.referred_by ?? null, points]
+  );
+  // Award points non-blocking
+  upsertCustomerPoints(claim.phone, claim.email, points).catch(() => {});
+  return rows[0];
+}
+
+export async function upsertCustomerPoints(phone: string, email: string, pointsDelta: number): Promise<CustomerPoints> {
+  await ensureSchema();
+  
+  const id = crypto.randomUUID();
+  await getPool().query(
+    `INSERT INTO customer_points (id, phone, email, total_points, lifetime_points, tier, updated_at)
+     VALUES ($1, $2, $3, $4, $4, 'bronze', NOW())
+     ON CONFLICT (phone) DO UPDATE SET
+       email = EXCLUDED.email,
+       total_points = customer_points.total_points + $4,
+       lifetime_points = customer_points.lifetime_points + $4,
+       updated_at = NOW()`,
+    [id, phone, email, pointsDelta]
+  );
+  const { rows } = await getPool().query<CustomerPoints>(
+    `UPDATE customer_points
+     SET tier = CASE
+       WHEN total_points >= 300 THEN 'gold'
+       WHEN total_points >= 100 THEN 'silver'
+       ELSE 'bronze'
+     END
+     WHERE phone = $1
+     RETURNING *`,
+    [phone]
   );
   return rows[0];
+}
+
+export async function getCustomerPoints(phone: string): Promise<CustomerPoints | undefined> {
+  await ensureSchema();
+  const { rows } = await getPool().query<CustomerPoints>(
+    `SELECT * FROM customer_points WHERE phone = $1`,
+    [phone]
+  );
+  return rows[0];
+}
+
+export async function getAllCustomerPoints(): Promise<CustomerPoints[]> {
+  await ensureSchema();
+  const { rows } = await getPool().query<CustomerPoints>(
+    `SELECT * FROM customer_points ORDER BY lifetime_points DESC`
+  );
+  return rows;
+}
+
+export async function getReferralStats(): Promise<{
+  total_referrals: number;
+  top_referrers: Array<{ referral_code: string; full_name: string; count: number }>;
+  chains: Array<{ referrer_name: string; referral_code: string; referred_name: string; referred_at: string }>;
+}> {
+  await ensureSchema();
+  const { rows: totalRows } = await getPool().query<{ count: string }>(
+    `SELECT COUNT(*) as count FROM claims WHERE referred_by IS NOT NULL`
+  );
+  const { rows: topRows } = await getPool().query<{ referral_code: string; full_name: string; count: string }>(
+    `SELECT c.referral_code, c.full_name, COUNT(r.id)::text as count
+     FROM claims c
+     JOIN claims r ON r.referred_by = c.referral_code
+     GROUP BY c.referral_code, c.full_name
+     ORDER BY count DESC
+     LIMIT 10`
+  );
+  const { rows: chainRows } = await getPool().query<{ referrer_name: string; referral_code: string; referred_name: string; referred_at: string }>(
+    `SELECT c.full_name as referrer_name, c.referral_code, r.full_name as referred_name, r.claimed_at as referred_at
+     FROM claims r
+     JOIN claims c ON c.referral_code = r.referred_by
+     ORDER BY r.claimed_at DESC
+     LIMIT 50`
+  );
+  return {
+    total_referrals: parseInt(totalRows[0].count, 10),
+    top_referrers: topRows.map(r => ({ ...r, count: parseInt(r.count, 10) })),
+    chains: chainRows,
+  };
+}
+
+export async function getReferralCount(code: string): Promise<number> {
+  await ensureSchema();
+  const { rows } = await getPool().query<{ count: string }>(
+    `SELECT COUNT(*) as count FROM claims WHERE referred_by = $1`,
+    [code]
+  );
+  return parseInt(rows[0].count, 10);
 }
 
 export async function getClaimById(id: string): Promise<ClaimWithPrize | undefined> {
   await ensureSchema();
   const { rows } = await getPool().query<ClaimWithPrize>(`
     SELECT c.*, p.name AS prize_name, p.location AS prize_location, p.description AS prize_description,
-           p.reason, p.start_date, p.end_date
+           p.reason, p.start_date, p.end_date, r.name AS restaurant_name
     FROM claims c JOIN prizes p ON c.prize_id = p.id
+    LEFT JOIN restaurants r ON r.id = p.restaurant_id
     WHERE c.id = $1
   `, [id]);
   return rows[0];
@@ -261,15 +526,32 @@ export async function deliverClaim(id: string, deliveredBy: string): Promise<Cla
   return rows[0];
 }
 
-export async function getAllClaims(status?: 'pending' | 'delivered'): Promise<ClaimWithPrize[]> {
+export async function getAllClaims(
+  status?: 'pending' | 'delivered',
+  since?: string,
+  opts?: { offset?: number; limit?: number },
+): Promise<ClaimWithPrize[]> {
   await ensureSchema();
-  const where = status ? `WHERE c.status = $1` : '';
-  const params = status ? [status] : [];
+  const conditions: string[] = [];
+  const params: unknown[] = [];
+  let i = 1;
+  if (status) { conditions.push(`c.status = $${i++}`); params.push(status); }
+  if (since) { conditions.push(`c.claimed_at > $${i++}`); params.push(since); }
+  const where = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : '';
+  const limitClause = opts?.limit != null ? `LIMIT $${i++}` : '';
+  if (opts?.limit != null) params.push(opts.limit);
+  const offsetClause = opts?.offset != null ? `OFFSET $${i++}` : '';
+  if (opts?.offset != null) params.push(opts.offset);
   const { rows } = await getPool().query<ClaimWithPrize>(`
-    SELECT c.*, p.name AS prize_name, p.location AS prize_location, p.description AS prize_description
-    FROM claims c JOIN prizes p ON c.prize_id = p.id
+    SELECT c.*, p.name AS prize_name, p.location AS prize_location, p.description AS prize_description,
+           r.name AS restaurant_name
+    FROM claims c
+    JOIN prizes p ON c.prize_id = p.id
+    LEFT JOIN restaurants r ON r.id = p.restaurant_id
     ${where}
     ORDER BY c.claimed_at DESC
+    ${limitClause}
+    ${offsetClause}
   `, params);
   return rows;
 }
@@ -286,6 +568,22 @@ export async function getAllPrizes(): Promise<PrizeWithRestaurant[]> {
   return rows;
 }
 
+export async function getExpiringPrizes(days: number): Promise<Array<{ id: string; name: string; end_date: string; claim_count: number }>> {
+  await ensureSchema();
+  const { rows } = await getPool().query<{ id: string; name: string; end_date: string; claim_count: number }>(
+    `SELECT p.id, p.name, p.end_date,
+            (SELECT COUNT(*) FROM claims c WHERE c.prize_id = p.id)::int AS claim_count
+     FROM prizes p
+     WHERE p.cancelled = FALSE
+       AND p.end_date::date >= CURRENT_DATE
+       AND p.end_date::date <= CURRENT_DATE + ($1 || ' days')::INTERVAL
+       AND (SELECT COUNT(*) FROM claims c WHERE c.prize_id = p.id) = 0
+     ORDER BY p.end_date ASC`,
+    [days]
+  );
+  return rows;
+}
+
 export async function cancelPrize(id: string): Promise<Prize | undefined> {
   await ensureSchema();
   const { rows } = await getPool().query<Prize>(
@@ -295,7 +593,7 @@ export async function cancelPrize(id: string): Promise<Prize | undefined> {
   return rows[0];
 }
 
-export async function updateRestaurant(id: string, fields: { name?: string; address?: string; phone?: string | null; logo_url?: string | null }): Promise<Restaurant | undefined> {
+export async function updateRestaurant(id: string, fields: { name?: string; address?: string; phone?: string | null; logo_url?: string | null; google_maps_url?: string | null }): Promise<Restaurant | undefined> {
   await ensureSchema();
   const sets: string[] = [];
   const vals: unknown[] = [];
@@ -304,6 +602,7 @@ export async function updateRestaurant(id: string, fields: { name?: string; addr
   if (fields.address !== undefined) { sets.push(`address = $${i++}`); vals.push(fields.address); }
   if (fields.phone !== undefined) { sets.push(`phone = $${i++}`); vals.push(fields.phone); }
   if (fields.logo_url !== undefined) { sets.push(`logo_url = $${i++}`); vals.push(fields.logo_url); }
+  if (fields.google_maps_url !== undefined) { sets.push(`google_maps_url = $${i++}`); vals.push(fields.google_maps_url); }
   if (sets.length === 0) return getRestaurantById(id);
   vals.push(id);
   const { rows } = await getPool().query<Restaurant>(
@@ -313,6 +612,48 @@ export async function updateRestaurant(id: string, fields: { name?: string; addr
   return rows[0];
 }
 
+export type CashierPerformance = {
+  delivered_by: string;
+  count: number;
+  avg_delivery_time_hours: number | null;
+  last_delivery: string | null;
+};
+
+export async function getCashierPerformance(
+  restaurantId: string,
+  range: 'today' | 'week' | 'month' = 'week'
+): Promise<CashierPerformance[]> {
+  await ensureSchema();
+  const interval = range === 'today' ? '1 day' : range === 'week' ? '7 days' : '30 days';
+  const { rows } = await getPool().query<{
+    delivered_by: string;
+    count: string;
+    avg_delivery_time_hours: string | null;
+    last_delivery: string | null;
+  }>(
+    `SELECT
+       c.delivered_by,
+       COUNT(*)::text AS count,
+       AVG(EXTRACT(EPOCH FROM (c.delivered_at - c.claimed_at)) / 3600)::text AS avg_delivery_time_hours,
+       MAX(c.delivered_at)::text AS last_delivery
+     FROM claims c
+     JOIN prizes p ON p.id = c.prize_id
+     WHERE p.restaurant_id = $1
+       AND c.status = 'delivered'
+       AND c.delivered_by IS NOT NULL
+       AND c.delivered_at >= NOW() - ($2 || ' days')::INTERVAL
+     GROUP BY c.delivered_by
+     ORDER BY COUNT(*) DESC`,
+    [restaurantId, range === 'today' ? 1 : range === 'week' ? 7 : 30]
+  );
+  return rows.map((r) => ({
+    delivered_by: r.delivered_by,
+    count: parseInt(r.count, 10),
+    avg_delivery_time_hours: r.avg_delivery_time_hours ? parseFloat(r.avg_delivery_time_hours) : null,
+    last_delivery: r.last_delivery ?? null,
+  }));
+}
+
 export async function logActivity(entry: Omit<ActivityLogEntry, 'created_at'>): Promise<void> {
   await ensureSchema();
   await getPool().query(
@@ -320,6 +661,22 @@ export async function logActivity(entry: Omit<ActivityLogEntry, 'created_at'>): 
      VALUES ($1,$2,$3,$4,$5,$6)`,
     [entry.id, entry.restaurant_id ?? null, entry.action, entry.description, entry.user_name ?? null, entry.metadata ? JSON.stringify(entry.metadata) : null]
   );
+}
+
+export async function getFeedbackStats(): Promise<{ avg_rating: number; total: number; entries: Array<{ claim_id: string; rating: number; comment: string | null; created_at: string }> }> {
+  await ensureSchema();
+  const { rows } = await getPool().query<{ metadata: Record<string, unknown>; created_at: string }>(
+    `SELECT metadata, created_at FROM activity_log WHERE action = 'feedback' AND metadata->>'rating' IS NOT NULL ORDER BY created_at DESC`
+  );
+  const entries = rows.map((r) => ({
+    claim_id: String(r.metadata.claim_id ?? ''),
+    rating: Number(r.metadata.rating),
+    comment: r.metadata.comment != null ? String(r.metadata.comment) : null,
+    created_at: r.created_at,
+  }));
+  const total = entries.length;
+  const avg_rating = total > 0 ? Math.round((entries.reduce((s, e) => s + e.rating, 0) / total) * 10) / 10 : 0;
+  return { avg_rating, total, entries };
 }
 
 export async function getRestaurantActivity(restaurantId: string, limit = 20): Promise<ActivityLogEntry[]> {
@@ -343,5 +700,1027 @@ export async function createUser(u: Omit<DbUser, 'created_at'>): Promise<DbUser>
 export async function getUserByUsername(username: string): Promise<DbUser | undefined> {
   await ensureSchema();
   const { rows } = await getPool().query<DbUser>('SELECT * FROM users WHERE username = $1', [username]);
+  return rows[0];
+}
+
+export async function insertCampaign(c: Omit<Campaign, 'created_at'>): Promise<Campaign> {
+  await ensureSchema();
+  const { rows } = await getPool().query<Campaign>(
+    `INSERT INTO campaigns (id, name, description, restaurant_id, qr_dot_color, qr_background, qr_dot_style, qr_corner_style, qr_gradient_end)
+     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING *`,
+    [c.id, c.name, c.description ?? null, c.restaurant_id ?? null,
+     c.qr_dot_color ?? '#0f172a', c.qr_background ?? '#ffffff',
+     c.qr_dot_style ?? 'square', c.qr_corner_style ?? 'square', c.qr_gradient_end ?? null]
+  );
+  return rows[0];
+}
+
+export async function getAllCampaigns(restaurantId?: string): Promise<Campaign[]> {
+  await ensureSchema();
+  if (restaurantId) {
+    const { rows } = await getPool().query<Campaign>(
+      'SELECT * FROM campaigns WHERE restaurant_id = $1 ORDER BY created_at DESC',
+      [restaurantId]
+    );
+    return rows;
+  }
+  const { rows } = await getPool().query<Campaign>('SELECT * FROM campaigns ORDER BY created_at DESC');
+  return rows;
+}
+
+export async function getCampaignById(id: string): Promise<Campaign | undefined> {
+  await ensureSchema();
+  const { rows } = await getPool().query<Campaign>('SELECT * FROM campaigns WHERE id = $1', [id]);
+  return rows[0];
+}
+
+export async function updateCampaign(id: string, fields: Partial<Omit<Campaign, 'id' | 'created_at'>>): Promise<Campaign | undefined> {
+  await ensureSchema();
+  const sets: string[] = [];
+  const vals: unknown[] = [];
+  let i = 1;
+  const allowed: Array<keyof typeof fields> = ['name', 'description', 'restaurant_id', 'qr_dot_color', 'qr_background', 'qr_dot_style', 'qr_corner_style', 'qr_gradient_end'];
+  for (const key of allowed) {
+    if (fields[key] !== undefined) {
+      sets.push(`${key} = $${i++}`);
+      vals.push(fields[key] ?? null);
+    }
+  }
+  if (sets.length === 0) return getCampaignById(id);
+  vals.push(id);
+  const { rows } = await getPool().query<Campaign>(
+    `UPDATE campaigns SET ${sets.join(', ')} WHERE id = $${i} RETURNING *`,
+    vals
+  );
+  return rows[0];
+}
+
+export async function deleteCampaign(id: string): Promise<void> {
+  await ensureSchema();
+  await getPool().query('DELETE FROM campaigns WHERE id = $1', [id]);
+}
+
+export async function getClaimsByContact(
+  phoneOrEmail: string
+): Promise<(ClaimWithPrize & { start_date: string; end_date: string })[]> {
+  await ensureSchema();
+  const { rows } = await getPool().query<ClaimWithPrize & { start_date: string; end_date: string }>(`
+    SELECT c.*, p.name AS prize_name, p.location AS prize_location, p.description AS prize_description,
+           p.start_date, p.end_date, r.name AS restaurant_name
+    FROM claims c JOIN prizes p ON c.prize_id = p.id
+    LEFT JOIN restaurants r ON r.id = p.restaurant_id
+    WHERE c.phone = $1 OR c.email = $1
+    ORDER BY c.claimed_at DESC
+  `, [phoneOrEmail]);
+  return rows;
+}
+
+export async function getRecentClaimsByContact(
+  phoneOrEmail: string,
+  days = 30
+): Promise<ClaimWithPrize[]> {
+  await ensureSchema();
+  const { rows } = await getPool().query<ClaimWithPrize>(`
+    SELECT c.*, p.name AS prize_name, p.location AS prize_location, p.description AS prize_description,
+           r.name AS restaurant_name
+    FROM claims c JOIN prizes p ON c.prize_id = p.id
+    LEFT JOIN restaurants r ON r.id = p.restaurant_id
+    WHERE (c.phone = $1 OR c.email = $1)
+      AND c.claimed_at >= NOW() - ($2 || ' days')::INTERVAL
+    ORDER BY c.claimed_at DESC
+  `, [phoneOrEmail, days]);
+  return rows;
+}
+
+// ── Prize Rules ──────────────────────────────────────────────────────────────
+
+export type PrizeRule = {
+  id: string;
+  name: string;
+  trigger_type: 'nth_claim' | 'birthday' | 'points_milestone';
+  trigger_value: number;
+  prize_template: string;
+  prize_reason: string;
+  prize_description: string;
+  validity_days: number;
+  restaurant_id: string | null;
+  active: boolean;
+  created_at: string;
+};
+
+export async function insertPrizeRule(rule: Omit<PrizeRule, 'created_at'>): Promise<PrizeRule> {
+  await ensureSchema();
+  const { rows } = await getPool().query<PrizeRule>(
+    `INSERT INTO prize_rules (id, name, trigger_type, trigger_value, prize_template, prize_reason, prize_description, validity_days, restaurant_id, active)
+     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING *`,
+    [rule.id, rule.name, rule.trigger_type, rule.trigger_value, rule.prize_template, rule.prize_reason, rule.prize_description, rule.validity_days, rule.restaurant_id ?? null, rule.active]
+  );
+  return rows[0];
+}
+
+export async function getAllPrizeRules(): Promise<PrizeRule[]> {
+  await ensureSchema();
+  const { rows } = await getPool().query<PrizeRule>('SELECT * FROM prize_rules ORDER BY created_at DESC');
+  return rows;
+}
+
+export async function getPrizeRulesByRestaurant(restaurantId: string): Promise<PrizeRule[]> {
+  await ensureSchema();
+  const { rows } = await getPool().query<PrizeRule>(
+    `SELECT * FROM prize_rules WHERE restaurant_id = $1 OR restaurant_id IS NULL ORDER BY created_at DESC`,
+    [restaurantId]
+  );
+  return rows;
+}
+
+export async function togglePrizeRule(id: string, active: boolean): Promise<PrizeRule | undefined> {
+  await ensureSchema();
+  const { rows } = await getPool().query<PrizeRule>(
+    `UPDATE prize_rules SET active = $2 WHERE id = $1 RETURNING *`,
+    [id, active]
+  );
+  return rows[0];
+}
+
+export async function countClaimsByContact(phoneOrEmail: string): Promise<number> {
+  await ensureSchema();
+  const { rows } = await getPool().query<{ count: string }>(
+    `SELECT COUNT(*) as count FROM claims WHERE phone = $1 OR email = $1`,
+    [phoneOrEmail]
+  );
+  return parseInt(rows[0].count, 10);
+}
+
+// ── Game Bundles ──────────────────────────────────────────────────────────────
+
+export type GameBundle = {
+  id: string;
+  name: string;
+  game_type: 'roulette' | 'slots' | 'penalty' | 'scratch';
+  restaurant_id: string | null;
+  active: boolean;
+  created_at: string;
+};
+
+export type GamePrize = {
+  id: string;
+  bundle_id: string;
+  name: string;
+  description: string;
+  probability: number;
+  max_winners: number | null;
+  winners_count: number;
+  sort_order: number;
+  created_at: string;
+};
+
+export type GamePlay = {
+  id: string;
+  bundle_id: string;
+  game_prize_id: string;
+  full_name: string;
+  phone: string;
+  email: string;
+  location: string | null;
+  played_at: string;
+};
+
+async function ensureGameSchema(): Promise<void> {
+  const client = await getPool().connect();
+  try {
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS game_bundles (
+        id TEXT PRIMARY KEY,
+        name TEXT NOT NULL,
+        game_type TEXT NOT NULL DEFAULT 'roulette',
+        restaurant_id TEXT REFERENCES restaurants(id),
+        active BOOLEAN NOT NULL DEFAULT TRUE,
+        created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      );
+      CREATE TABLE IF NOT EXISTS game_prizes (
+        id TEXT PRIMARY KEY,
+        bundle_id TEXT NOT NULL REFERENCES game_bundles(id),
+        name TEXT NOT NULL,
+        description TEXT NOT NULL,
+        probability INTEGER NOT NULL,
+        max_winners INTEGER,
+        winners_count INTEGER NOT NULL DEFAULT 0,
+        sort_order INTEGER NOT NULL DEFAULT 0,
+        created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      );
+      CREATE TABLE IF NOT EXISTS game_plays (
+        id TEXT PRIMARY KEY,
+        bundle_id TEXT NOT NULL REFERENCES game_bundles(id),
+        game_prize_id TEXT NOT NULL REFERENCES game_prizes(id),
+        full_name TEXT NOT NULL,
+        phone TEXT NOT NULL,
+        email TEXT NOT NULL,
+        location TEXT,
+        played_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      );
+    `);
+  } finally {
+    client.release();
+  }
+}
+
+export async function insertGameBundle(
+  bundle: Omit<GameBundle, 'created_at'>
+): Promise<GameBundle> {
+  await ensureSchema();
+  await ensureGameSchema();
+  const { rows } = await getPool().query<GameBundle>(
+    `INSERT INTO game_bundles (id, name, game_type, restaurant_id, active)
+     VALUES ($1,$2,$3,$4,$5) RETURNING *`,
+    [bundle.id, bundle.name, bundle.game_type, bundle.restaurant_id ?? null, bundle.active]
+  );
+  return rows[0];
+}
+
+export async function insertGamePrize(
+  prize: Omit<GamePrize, 'created_at' | 'winners_count'>
+): Promise<GamePrize> {
+  await ensureGameSchema();
+  const { rows } = await getPool().query<GamePrize>(
+    `INSERT INTO game_prizes (id, bundle_id, name, description, probability, max_winners, sort_order)
+     VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING *`,
+    [prize.id, prize.bundle_id, prize.name, prize.description, prize.probability, prize.max_winners ?? null, prize.sort_order]
+  );
+  return rows[0];
+}
+
+export async function getGameBundleById(id: string): Promise<GameBundle | undefined> {
+  await ensureGameSchema();
+  const { rows } = await getPool().query<GameBundle>(
+    'SELECT * FROM game_bundles WHERE id = $1',
+    [id]
+  );
+  return rows[0];
+}
+
+export async function getGamePrizesForBundle(bundleId: string): Promise<GamePrize[]> {
+  await ensureGameSchema();
+  const { rows } = await getPool().query<GamePrize>(
+    'SELECT * FROM game_prizes WHERE bundle_id = $1 ORDER BY sort_order ASC',
+    [bundleId]
+  );
+  return rows;
+}
+
+export async function insertGamePlay(play: Omit<GamePlay, 'played_at'>): Promise<GamePlay> {
+  await ensureGameSchema();
+  const { rows } = await getPool().query<GamePlay>(
+    `INSERT INTO game_plays (id, bundle_id, game_prize_id, full_name, phone, email, location)
+     VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING *`,
+    [play.id, play.bundle_id, play.game_prize_id, play.full_name, play.phone, play.email, play.location ?? null]
+  );
+  return rows[0];
+}
+
+export async function incrementWinnersCount(prizeid: string): Promise<void> {
+  await ensureGameSchema();
+  await getPool().query(
+    'UPDATE game_prizes SET winners_count = winners_count + 1 WHERE id = $1',
+    [prizeid]
+  );
+}
+
+export async function getAllGameBundles(): Promise<(GameBundle & { restaurant_name: string | null; prize_count: number; play_count: number })[]> {
+  await ensureGameSchema();
+  const { rows } = await getPool().query<GameBundle & { restaurant_name: string | null; prize_count: number; play_count: number }>(`
+    SELECT gb.*,
+           r.name AS restaurant_name,
+           (SELECT COUNT(*) FROM game_prizes gp WHERE gp.bundle_id = gb.id)::int AS prize_count,
+           (SELECT COUNT(*) FROM game_plays gpl WHERE gpl.bundle_id = gb.id)::int AS play_count
+    FROM game_bundles gb
+    LEFT JOIN restaurants r ON r.id = gb.restaurant_id
+    ORDER BY gb.created_at DESC
+  `);
+  return rows;
+}
+
+export async function toggleGameBundle(id: string, active: boolean): Promise<GameBundle | undefined> {
+  await ensureGameSchema();
+  const { rows } = await getPool().query<GameBundle>(
+    'UPDATE game_bundles SET active = $2 WHERE id = $1 RETURNING *',
+    [id, active]
+  );
+  return rows[0];
+}
+
+// ── Ticket Tiers ──────────────────────────────────────────────────────────────
+
+export type TicketTier = {
+  id: string;
+  restaurant_id: string;
+  min_amount: number;
+  max_amount: number | null;
+  prize_name: string;
+  prize_description: string;
+  game_type: string | null;
+  sort_order: number;
+  created_at: string;
+};
+
+export type TicketClaim = {
+  id: string;
+  restaurant_id: string;
+  amount: number;
+  prize_name: string;
+  prize_description: string;
+  full_name: string;
+  phone: string;
+  location: string | null;
+  image_hash: string | null;
+  claimed_at: string;
+  expires_at: string | null;
+  redeemed_at: string | null;
+  redeemed_by: string | null;
+  consolation_code: string | null;
+};
+
+export async function insertTicketTier(tier: Omit<TicketTier, 'created_at'>): Promise<TicketTier> {
+  await ensureSchema();
+  const { rows } = await getPool().query<TicketTier>(
+    `INSERT INTO ticket_tiers (id, restaurant_id, min_amount, max_amount, prize_name, prize_description, game_type, sort_order)
+     VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *`,
+    [tier.id, tier.restaurant_id, tier.min_amount, tier.max_amount ?? null, tier.prize_name, tier.prize_description, tier.game_type ?? null, tier.sort_order]
+  );
+  return rows[0];
+}
+
+export async function getTicketTiersByRestaurant(restaurantId: string): Promise<TicketTier[]> {
+  await ensureSchema();
+  const { rows } = await getPool().query<TicketTier>(
+    `SELECT * FROM ticket_tiers WHERE restaurant_id = $1 ORDER BY sort_order ASC, min_amount ASC`,
+    [restaurantId]
+  );
+  return rows;
+}
+
+export async function upsertTicketTiers(restaurantId: string, tiers: Omit<TicketTier, 'id' | 'restaurant_id' | 'created_at'>[]): Promise<TicketTier[]> {
+  await ensureSchema();
+  const client = await getPool().connect();
+  try {
+    await client.query('BEGIN');
+    await client.query('DELETE FROM ticket_tiers WHERE restaurant_id = $1', [restaurantId]);
+    const result: TicketTier[] = [];
+    for (let i = 0; i < tiers.length; i++) {
+      const t = tiers[i];
+      const id = crypto.randomUUID();
+      const { rows } = await client.query<TicketTier>(
+        `INSERT INTO ticket_tiers (id, restaurant_id, min_amount, max_amount, prize_name, prize_description, game_type, sort_order)
+         VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *`,
+        [id, restaurantId, t.min_amount, t.max_amount ?? null, t.prize_name, t.prize_description, t.game_type ?? null, i]
+      );
+      result.push(rows[0]);
+    }
+    await client.query('COMMIT');
+    return result;
+  } catch (err) {
+    await client.query('ROLLBACK');
+    throw err;
+  } finally {
+    client.release();
+  }
+}
+
+export async function insertTicketClaim(claim: Omit<TicketClaim, 'claimed_at'>): Promise<TicketClaim> {
+  await ensureSchema();
+  const { rows } = await getPool().query<TicketClaim>(
+    `INSERT INTO ticket_claims (id, restaurant_id, amount, prize_name, prize_description, full_name, phone, location, image_hash, expires_at, consolation_code)
+     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11) RETURNING *`,
+    [claim.id, claim.restaurant_id, claim.amount, claim.prize_name, claim.prize_description, claim.full_name, claim.phone, claim.location ?? null, claim.image_hash ?? null, claim.expires_at ?? null, claim.consolation_code ?? null]
+  );
+  return rows[0];
+}
+
+export async function getTicketClaimByConsolationCode(code: string): Promise<(TicketClaim & { restaurant_name: string | null }) | undefined> {
+  await ensureSchema();
+  const { rows } = await getPool().query<TicketClaim & { restaurant_name: string | null }>(
+    `SELECT tc.*, r.name AS restaurant_name
+     FROM ticket_claims tc
+     LEFT JOIN restaurants r ON r.id = tc.restaurant_id
+     WHERE tc.consolation_code = $1`,
+    [code]
+  );
+  return rows[0];
+}
+
+export async function redeemConsolationCode(code: string, redeemedBy: string): Promise<TicketClaim | undefined> {
+  await ensureSchema();
+  const { rows } = await getPool().query<TicketClaim>(
+    `UPDATE ticket_claims SET redeemed_at = NOW(), redeemed_by = $2
+     WHERE consolation_code = $1 AND redeemed_at IS NULL
+     RETURNING *`,
+    [code, redeemedBy]
+  );
+  return rows[0];
+}
+
+export async function findTicketClaimByImageHash(imageHash: string): Promise<{ id: string } | undefined> {
+  await ensureSchema();
+  const { rows } = await getPool().query<{ id: string }>(
+    `SELECT id FROM ticket_claims WHERE image_hash = $1 LIMIT 1`,
+    [imageHash]
+  );
+  return rows[0];
+}
+
+export async function countTicketClaimsByPhoneToday(phone: string, restaurantId: string): Promise<number> {
+  await ensureSchema();
+  const { rows } = await getPool().query<{ count: string }>(
+    `SELECT COUNT(*) as count FROM ticket_claims
+     WHERE phone = $1 AND restaurant_id = $2
+       AND claimed_at >= CURRENT_DATE AND claimed_at < CURRENT_DATE + INTERVAL '1 day'`,
+    [phone, restaurantId]
+  );
+  return parseInt(rows[0].count, 10);
+}
+
+export async function getTicketClaimsByRestaurant(restaurantId: string): Promise<TicketClaim[]> {
+  await ensureSchema();
+  const { rows } = await getPool().query<TicketClaim>(
+    `SELECT * FROM ticket_claims WHERE restaurant_id = $1 ORDER BY claimed_at DESC`,
+    [restaurantId]
+  );
+  return rows;
+}
+
+// ── Restaurant Ticket Config ──────────────────────────────────────────────────
+
+export type RestaurantTicketConfig = {
+  restaurant_id: string;
+  consolation_prize_name: string;
+  consolation_prize_description: string;
+  min_amount_for_game: number;
+  welcome_title: string | null;
+  welcome_subtitle: string | null;
+  primary_color: string | null;
+  updated_at: string;
+};
+
+export async function getRestaurantTicketConfig(restaurantId: string): Promise<RestaurantTicketConfig | null> {
+  await ensureSchema();
+  const { rows } = await getPool().query<RestaurantTicketConfig>(
+    `SELECT * FROM restaurant_ticket_config WHERE restaurant_id = $1`,
+    [restaurantId]
+  );
+  return rows[0] ?? null;
+}
+
+export async function upsertRestaurantTicketConfig(
+  restaurantId: string,
+  config: Pick<RestaurantTicketConfig, 'consolation_prize_name' | 'consolation_prize_description' | 'min_amount_for_game'> &
+    Partial<Pick<RestaurantTicketConfig, 'welcome_title' | 'welcome_subtitle' | 'primary_color'>>
+): Promise<RestaurantTicketConfig> {
+  await ensureSchema();
+  const { rows } = await getPool().query<RestaurantTicketConfig>(
+    `INSERT INTO restaurant_ticket_config (restaurant_id, consolation_prize_name, consolation_prize_description, min_amount_for_game, welcome_title, welcome_subtitle, primary_color, updated_at)
+     VALUES ($1, $2, $3, $4, $5, $6, $7, NOW())
+     ON CONFLICT (restaurant_id) DO UPDATE SET
+       consolation_prize_name = EXCLUDED.consolation_prize_name,
+       consolation_prize_description = EXCLUDED.consolation_prize_description,
+       min_amount_for_game = EXCLUDED.min_amount_for_game,
+       welcome_title = EXCLUDED.welcome_title,
+       welcome_subtitle = EXCLUDED.welcome_subtitle,
+       primary_color = EXCLUDED.primary_color,
+       updated_at = NOW()
+     RETURNING *`,
+    [restaurantId, config.consolation_prize_name, config.consolation_prize_description, config.min_amount_for_game,
+     config.welcome_title ?? null, config.welcome_subtitle ?? null, config.primary_color ?? '#E8521A']
+  );
+  return rows[0];
+}
+
+export async function getTicketFeedbackStats(restaurantId: string): Promise<{ avg_rating: number; total: number }> {
+  await ensureSchema();
+  const { rows } = await getPool().query<{ avg_rating: string | null; total: string }>(
+    `SELECT AVG((metadata->>'stars')::numeric)::text AS avg_rating, COUNT(*)::text AS total
+     FROM activity_log
+     WHERE action = 'ticket_feedback' AND restaurant_id = $1 AND metadata->>'stars' IS NOT NULL`,
+    [restaurantId]
+  );
+  return {
+    avg_rating: rows[0].avg_rating ? Math.round(parseFloat(rows[0].avg_rating) * 10) / 10 : 0,
+    total: parseInt(rows[0].total, 10),
+  };
+}
+
+export async function getGamePlaysByBundle(bundleId: string): Promise<(GamePlay & { prize_name: string })[]> {
+  await ensureGameSchema();
+  const { rows } = await getPool().query<GamePlay & { prize_name: string }>(`
+    SELECT gpl.*, gp.name AS prize_name
+    FROM game_plays gpl
+    JOIN game_prizes gp ON gp.id = gpl.game_prize_id
+    WHERE gpl.bundle_id = $1
+    ORDER BY gpl.played_at DESC
+  `, [bundleId]);
+  return rows;
+}
+
+// ── Restaurant Events ─────────────────────────────────────────────────────────
+
+export type RestaurantEvent = {
+  id: string;
+  restaurant_id: string;
+  name: string;
+  description: string | null;
+  event_type: 'double_points' | 'first_N' | 'min_amount_boost';
+  multiplier: number;
+  max_participants: number | null;
+  participants_count: number;
+  starts_at: string;
+  ends_at: string;
+  active: boolean;
+  created_at: string;
+};
+
+export type RestaurantEventWithRestaurant = RestaurantEvent & {
+  restaurant_name: string | null;
+};
+
+export async function getActiveEvents(restaurantId: string): Promise<RestaurantEvent[]> {
+  await ensureSchema();
+  const now = new Date().toISOString();
+  const { rows } = await getPool().query<RestaurantEvent>(
+    `SELECT * FROM restaurant_events
+     WHERE restaurant_id = $1
+       AND active = TRUE
+       AND starts_at <= $2
+       AND ends_at >= $2
+     ORDER BY starts_at ASC`,
+    [restaurantId, now]
+  );
+  return rows;
+}
+
+export async function getAllEvents(): Promise<RestaurantEventWithRestaurant[]> {
+  await ensureSchema();
+  const { rows } = await getPool().query<RestaurantEventWithRestaurant>(`
+    SELECT e.*, r.name AS restaurant_name
+    FROM restaurant_events e
+    LEFT JOIN restaurants r ON r.id = e.restaurant_id
+    ORDER BY e.starts_at DESC
+  `);
+  return rows;
+}
+
+export async function createEvent(
+  event: Omit<RestaurantEvent, 'created_at' | 'participants_count'>
+): Promise<RestaurantEvent> {
+  await ensureSchema();
+  const { rows } = await getPool().query<RestaurantEvent>(
+    `INSERT INTO restaurant_events
+       (id, restaurant_id, name, description, event_type, multiplier, max_participants, starts_at, ends_at, active)
+     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING *`,
+    [
+      event.id,
+      event.restaurant_id,
+      event.name,
+      event.description ?? null,
+      event.event_type,
+      event.multiplier,
+      event.max_participants ?? null,
+      event.starts_at,
+      event.ends_at,
+      event.active,
+    ]
+  );
+  return rows[0];
+}
+
+export async function endEvent(id: string): Promise<RestaurantEvent | undefined> {
+  await ensureSchema();
+  const { rows } = await getPool().query<RestaurantEvent>(
+    `UPDATE restaurant_events SET active = FALSE, ends_at = NOW() WHERE id = $1 RETURNING *`,
+    [id]
+  );
+  return rows[0];
+}
+
+export async function incrementParticipants(eventId: string): Promise<RestaurantEvent | undefined> {
+  await ensureSchema();
+  const { rows } = await getPool().query<RestaurantEvent>(
+    `UPDATE restaurant_events SET participants_count = participants_count + 1 WHERE id = $1 RETURNING *`,
+    [eventId]
+  );
+  return rows[0];
+}
+
+// ── Game Analytics ────────────────────────────────────────────────────────────
+
+export type GameAnalytics = {
+  id: string;
+  bundle_id: string | null;
+  game_type: string;
+  restaurant_id: string | null;
+  started_at: string;
+  completed_at: string | null;
+  time_spent_ms: number | null;
+  prize_won: string | null;
+  claim_completed: boolean;
+};
+
+async function ensureGameAnalyticsSchema(): Promise<void> {
+  const client = await getPool().connect();
+  try {
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS game_analytics (
+        id TEXT PRIMARY KEY,
+        bundle_id TEXT REFERENCES game_bundles(id),
+        game_type TEXT NOT NULL,
+        restaurant_id TEXT REFERENCES restaurants(id),
+        started_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+        completed_at TIMESTAMPTZ,
+        time_spent_ms INTEGER,
+        prize_won TEXT,
+        claim_completed BOOLEAN NOT NULL DEFAULT FALSE
+      );
+    `);
+  } finally {
+    client.release();
+  }
+}
+
+export async function logGameStart(entry: {
+  id: string;
+  bundle_id?: string | null;
+  game_type: string;
+  restaurant_id?: string | null;
+}): Promise<GameAnalytics> {
+  await ensureGameSchema();
+  await ensureGameAnalyticsSchema();
+  const { rows } = await getPool().query<GameAnalytics>(
+    `INSERT INTO game_analytics (id, bundle_id, game_type, restaurant_id)
+     VALUES ($1,$2,$3,$4) RETURNING *`,
+    [entry.id, entry.bundle_id ?? null, entry.game_type, entry.restaurant_id ?? null]
+  );
+  return rows[0];
+}
+
+export async function logGameComplete(sessionId: string, data: {
+  time_spent_ms?: number | null;
+  prize_won?: string | null;
+}): Promise<GameAnalytics | undefined> {
+  await ensureGameAnalyticsSchema();
+  const { rows } = await getPool().query<GameAnalytics>(
+    `UPDATE game_analytics
+     SET completed_at = NOW(), time_spent_ms = $2, prize_won = $3
+     WHERE id = $1 RETURNING *`,
+    [sessionId, data.time_spent_ms ?? null, data.prize_won ?? null]
+  );
+  return rows[0];
+}
+
+export async function markGameClaimCompleted(sessionId: string): Promise<void> {
+  await ensureGameAnalyticsSchema();
+  await getPool().query(
+    `UPDATE game_analytics SET claim_completed = TRUE WHERE id = $1`,
+    [sessionId]
+  );
+}
+
+export async function getGameAnalytics(restaurantId?: string): Promise<{
+  rows: GameAnalytics[];
+  byType: Array<{ game_type: string; play_count: number; completion_rate: number; avg_time_ms: number | null }>;
+  hourly: Array<{ hour: number; count: number }>;
+  prizes: Array<{ prize_won: string; count: number }>;
+}> {
+  await ensureGameAnalyticsSchema();
+  const condition = restaurantId ? `WHERE restaurant_id = $1` : '';
+  const params: unknown[] = restaurantId ? [restaurantId] : [];
+
+  const { rows } = await getPool().query<GameAnalytics>(
+    `SELECT * FROM game_analytics ${condition} ORDER BY started_at DESC LIMIT 1000`,
+    params
+  );
+
+  const byTypeCondition = restaurantId ? `WHERE restaurant_id = $1` : '';
+  const { rows: byType } = await getPool().query<{
+    game_type: string; play_count: string; completion_rate: string; avg_time_ms: string | null;
+  }>(
+    `SELECT game_type,
+            COUNT(*)::text AS play_count,
+            ROUND(100.0 * COUNT(*) FILTER (WHERE claim_completed) / NULLIF(COUNT(*), 0), 1)::text AS completion_rate,
+            AVG(time_spent_ms)::text AS avg_time_ms
+     FROM game_analytics ${byTypeCondition}
+     GROUP BY game_type ORDER BY play_count DESC`,
+    params
+  );
+
+  const { rows: hourly } = await getPool().query<{ hour: string; count: string }>(
+    `SELECT EXTRACT(HOUR FROM started_at)::int::text AS hour, COUNT(*)::text AS count
+     FROM game_analytics ${byTypeCondition}
+     GROUP BY 1 ORDER BY 1`,
+    params
+  );
+
+  const prizeCondition = restaurantId
+    ? `WHERE restaurant_id = $1 AND prize_won IS NOT NULL`
+    : `WHERE prize_won IS NOT NULL`;
+  const { rows: prizes } = await getPool().query<{ prize_won: string; count: string }>(
+    `SELECT prize_won, COUNT(*)::text AS count
+     FROM game_analytics ${prizeCondition}
+     GROUP BY prize_won ORDER BY count DESC LIMIT 20`,
+    params
+  );
+
+  return {
+    rows,
+    byType: byType.map((r) => ({
+      game_type: r.game_type,
+      play_count: parseInt(r.play_count, 10),
+      completion_rate: parseFloat(r.completion_rate ?? '0'),
+      avg_time_ms: r.avg_time_ms ? parseFloat(r.avg_time_ms) : null,
+    })),
+    hourly: hourly.map((r) => ({ hour: parseInt(r.hour, 10), count: parseInt(r.count, 10) })),
+    prizes: prizes.map((r) => ({ prize_won: r.prize_won, count: parseInt(r.count, 10) })),
+  };
+}
+
+// ── Stamp Cards ───────────────────────────────────────────────────────────────
+
+export type StampCard = {
+  id: string;
+  phone: string;
+  email: string;
+  restaurant_id: string | null;
+  stamps_count: number;
+  stamps_required: number;
+  completed_at: string | null;
+  prize_claimed: boolean;
+  created_at: string;
+};
+
+export async function getOrCreateStampCard(
+  phone: string,
+  email: string,
+  restaurantId: string | null
+): Promise<StampCard> {
+  await ensureSchema();
+  // Try to find an active (incomplete) card
+  const { rows: existing } = await getPool().query<StampCard>(
+    `SELECT * FROM stamp_cards WHERE phone = $1 AND (restaurant_id = $2 OR ($2::text IS NULL AND restaurant_id IS NULL)) AND completed_at IS NULL LIMIT 1`,
+    [phone, restaurantId ?? null]
+  );
+  if (existing[0]) return existing[0];
+  // Create a new card
+  const id = crypto.randomUUID();
+  const { rows } = await getPool().query<StampCard>(
+    `INSERT INTO stamp_cards (id, phone, email, restaurant_id) VALUES ($1,$2,$3,$4) RETURNING *`,
+    [id, phone, email, restaurantId ?? null]
+  );
+  return rows[0];
+}
+
+export async function addStamp(cardId: string): Promise<StampCard> {
+  await ensureSchema();
+  const { rows } = await getPool().query<StampCard>(
+    `UPDATE stamp_cards SET stamps_count = stamps_count + 1 WHERE id = $1 RETURNING *`,
+    [cardId]
+  );
+  return rows[0];
+}
+
+export async function completeStampCard(cardId: string): Promise<StampCard> {
+  await ensureSchema();
+  const { rows } = await getPool().query<StampCard>(
+    `UPDATE stamp_cards SET completed_at = NOW() WHERE id = $1 RETURNING *`,
+    [cardId]
+  );
+  return rows[0];
+}
+
+export async function getStampCardsByPhone(phone: string): Promise<StampCard[]> {
+  await ensureSchema();
+  const { rows } = await getPool().query<StampCard>(
+    `SELECT * FROM stamp_cards WHERE phone = $1 ORDER BY created_at DESC`,
+    [phone]
+  );
+  return rows;
+}
+
+// ── Password Reset Tokens ─────────────────────────────────────────────────────
+
+export type PasswordResetToken = {
+  id: string;
+  username: string;
+  token: string;
+  expires_at: string;
+  used_at: string | null;
+};
+
+async function ensurePasswordResetSchema(): Promise<void> {
+  const client = await getPool().connect();
+  try {
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS password_reset_tokens (
+        id TEXT PRIMARY KEY,
+        username TEXT NOT NULL,
+        token TEXT NOT NULL UNIQUE,
+        expires_at TIMESTAMPTZ NOT NULL,
+        used_at TIMESTAMPTZ
+      );
+    `);
+  } finally {
+    client.release();
+  }
+}
+
+export async function insertResetToken(
+  id: string,
+  username: string,
+  token: string
+): Promise<PasswordResetToken> {
+  await ensurePasswordResetSchema();
+  const { rows } = await getPool().query<PasswordResetToken>(
+    `INSERT INTO password_reset_tokens (id, username, token, expires_at)
+     VALUES ($1, $2, $3, NOW() + INTERVAL '1 hour')
+     RETURNING *`,
+    [id, username, token]
+  );
+  return rows[0];
+}
+
+export async function getResetToken(token: string): Promise<PasswordResetToken | undefined> {
+  await ensurePasswordResetSchema();
+  const { rows } = await getPool().query<PasswordResetToken>(
+    `SELECT * FROM password_reset_tokens WHERE token = $1`,
+    [token]
+  );
+  return rows[0];
+}
+
+export async function markTokenUsed(token: string): Promise<void> {
+  await ensurePasswordResetSchema();
+  await getPool().query(
+    `UPDATE password_reset_tokens SET used_at = NOW() WHERE token = $1`,
+    [token]
+  );
+}
+
+export async function updateUserPassword(username: string, passwordHash: string): Promise<void> {
+  await ensureSchema();
+  await getPool().query(
+    `UPDATE users SET password_hash = $2 WHERE username = $1`,
+    [username, passwordHash]
+  );
+}
+
+// ── Notifications ─────────────────────────────────────────────────────────────
+
+export type NotificationType = 'new_claim' | 'prize_expiring' | 'vip_customer' | 'new_delivery' | 'low_prizes' | 'daily_summary';
+
+export type Notification = {
+  id: string;
+  type: NotificationType;
+  title: string;
+  body: string;
+  link: string | null;
+  restaurant_id: string | null;
+  read_at: string | null;
+  created_at: string;
+};
+
+async function ensureNotificationsSchema(): Promise<void> {
+  const client = await getPool().connect();
+  try {
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS notifications (
+        id TEXT PRIMARY KEY,
+        type TEXT NOT NULL,
+        title TEXT NOT NULL,
+        body TEXT NOT NULL,
+        link TEXT,
+        restaurant_id TEXT REFERENCES restaurants(id),
+        read_at TIMESTAMPTZ,
+        created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      );
+    `);
+  } finally {
+    client.release();
+  }
+}
+
+export async function createNotification(n: {
+  type: NotificationType;
+  title: string;
+  body: string;
+  link?: string | null;
+  restaurant_id?: string | null;
+}): Promise<Notification> {
+  await ensureNotificationsSchema();
+  const id = crypto.randomUUID();
+  const { rows } = await getPool().query<Notification>(
+    `INSERT INTO notifications (id, type, title, body, link, restaurant_id)
+     VALUES ($1,$2,$3,$4,$5,$6) RETURNING *`,
+    [id, n.type, n.title, n.body, n.link ?? null, n.restaurant_id ?? null]
+  );
+  return rows[0];
+}
+
+export async function getUnreadNotifications(restaurantId?: string | null): Promise<Notification[]> {
+  await ensureNotificationsSchema();
+  if (restaurantId) {
+    const { rows } = await getPool().query<Notification>(
+      `SELECT * FROM notifications
+       WHERE read_at IS NULL AND (restaurant_id = $1 OR restaurant_id IS NULL)
+       ORDER BY created_at DESC LIMIT 50`,
+      [restaurantId]
+    );
+    return rows;
+  }
+  const { rows } = await getPool().query<Notification>(
+    `SELECT * FROM notifications WHERE read_at IS NULL ORDER BY created_at DESC LIMIT 50`
+  );
+  return rows;
+}
+
+export async function markAllRead(restaurantId?: string | null): Promise<void> {
+  await ensureNotificationsSchema();
+  if (restaurantId) {
+    await getPool().query(
+      `UPDATE notifications SET read_at = NOW()
+       WHERE read_at IS NULL AND (restaurant_id = $1 OR restaurant_id IS NULL)`,
+      [restaurantId]
+    );
+  } else {
+    await getPool().query(`UPDATE notifications SET read_at = NOW() WHERE read_at IS NULL`);
+  }
+}
+
+// ── Internal Messages ─────────────────────────────────────────────────────────
+
+export type InternalMessage = {
+  id: string;
+  from_role: string;
+  to_phone: string;
+  to_email: string | null;
+  subject: string;
+  body: string;
+  prize_id: string | null;
+  claim_id: string | null;
+  read_at: string | null;
+  created_at: string;
+};
+
+export type InternalMessageWithPrize = InternalMessage & {
+  prize_name: string | null;
+};
+
+async function ensureMessagesSchema(): Promise<void> {
+  const client = await getPool().connect();
+  try {
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS internal_messages (
+        id TEXT PRIMARY KEY,
+        from_role TEXT NOT NULL DEFAULT 'system',
+        to_phone TEXT NOT NULL,
+        to_email TEXT,
+        subject TEXT NOT NULL,
+        body TEXT NOT NULL,
+        prize_id TEXT REFERENCES prizes(id),
+        claim_id TEXT REFERENCES claims(id),
+        read_at TIMESTAMPTZ,
+        created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      );
+    `);
+  } finally {
+    client.release();
+  }
+}
+
+export async function insertInternalMessage(
+  msg: Omit<InternalMessage, 'created_at' | 'read_at'>
+): Promise<InternalMessage> {
+  await ensureMessagesSchema();
+  const { rows } = await getPool().query<InternalMessage>(
+    `INSERT INTO internal_messages (id, from_role, to_phone, to_email, subject, body, prize_id, claim_id)
+     VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *`,
+    [msg.id, msg.from_role, msg.to_phone, msg.to_email ?? null, msg.subject, msg.body, msg.prize_id ?? null, msg.claim_id ?? null]
+  );
+  return rows[0];
+}
+
+export async function getMessagesForContact(phone: string): Promise<InternalMessageWithPrize[]> {
+  await ensureMessagesSchema();
+  const { rows } = await getPool().query<InternalMessageWithPrize>(
+    `SELECT m.*, p.name AS prize_name
+     FROM internal_messages m
+     LEFT JOIN prizes p ON p.id = m.prize_id
+     WHERE m.to_phone = $1
+     ORDER BY m.read_at NULLS FIRST, m.created_at DESC`,
+    [phone]
+  );
+  return rows;
+}
+
+export async function markMessageRead(id: string): Promise<InternalMessage | undefined> {
+  await ensureMessagesSchema();
+  const { rows } = await getPool().query<InternalMessage>(
+    `UPDATE internal_messages SET read_at = NOW() WHERE id = $1 AND read_at IS NULL RETURNING *`,
+    [id]
+  );
   return rows[0];
 }

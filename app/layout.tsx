@@ -1,11 +1,19 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Plus_Jakarta_Sans, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Navbar from "./components/Navbar";
+import { ToastProvider } from "./components/Toast";
+import RealtimeNotifications from "./components/RealtimeNotifications";
+import ServiceWorkerRegister from "./components/ServiceWorkerRegister";
+import AppShell from "./components/AppShell";
+import ScrollToTop from "./components/ScrollToTop";
+import InactivityLogout from "./components/InactivityLogout";
+import OnboardingTour from "./components/OnboardingTour";
+import OfflineIndicator from "./components/OfflineIndicator";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const plusJakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
+  variable: "--font-jakarta",
+  weight: ["400", "500", "600", "700", "800"],
 });
 
 const geistMono = Geist_Mono({
@@ -15,7 +23,40 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Premia Tierra - Plataforma de Premios QR",
-  description: "Genera y gestiona premios con códigos QR",
+  description: "Genera y gestiona premios con códigos QR para Tierra Burrito Bar",
+  manifest: "/manifest.json",
+  icons: {
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+    ],
+    apple: "/favicon.svg",
+    shortcut: "/favicon.svg",
+  },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Premia Tierra",
+  },
+  openGraph: {
+    siteName: "Tierra Burrito Bar · Premia Tierra",
+    type: "website",
+    title: "Premia Tierra",
+    description: "Plataforma de premios QR de Tierra Burrito Bar",
+  },
+  twitter: {
+    card: "summary",
+    title: "Premia Tierra",
+    description: "Plataforma de premios QR de Tierra Burrito Bar",
+  },
+  other: {
+    "mobile-web-app-capable": "yes",
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#E8521A",
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({
@@ -26,11 +67,18 @@ export default function RootLayout({
   return (
     <html
       lang="es"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${plusJakarta.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-gray-50">
-        <Navbar />
-        <main className="flex-1">{children}</main>
+      <body className="min-h-full bg-[#FAFAF9]">
+        <ToastProvider>
+          <OfflineIndicator />
+          <ScrollToTop />
+          <ServiceWorkerRegister />
+          <RealtimeNotifications />
+          <InactivityLogout />
+          <OnboardingTour />
+          <AppShell>{children}</AppShell>
+        </ToastProvider>
       </body>
     </html>
   );

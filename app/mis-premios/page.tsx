@@ -30,7 +30,7 @@ type CustomerPoints = {
 } | null;
 
 function formatDate(iso: string) {
-  return new Date(iso).toLocaleDateString('es-MX', {
+  return new Date(iso).toLocaleDateString('es-ES', {
     year: 'numeric', month: 'long', day: 'numeric',
   });
 }
@@ -94,7 +94,7 @@ function TierCard({ points }: { points: CustomerPoints }) {
           <div>
             <p className="text-white/60 text-xs font-bold uppercase tracking-widest mb-1">Tus puntos</p>
             <p className="text-5xl font-black leading-none tabular-nums">
-              {points.total_points.toLocaleString('es-MX')}
+              {points.total_points.toLocaleString('es-ES')}
             </p>
           </div>
           <span className="flex items-center gap-1.5 text-sm font-bold px-3 py-1.5 rounded-full"
@@ -129,7 +129,7 @@ function TierCard({ points }: { points: CustomerPoints }) {
       {/* Bottom strip */}
       <div className="bg-white px-6 py-3.5 flex items-center justify-between">
         <p className="text-[#78716c] text-xs">
-          <span className="font-bold text-[#1C1917]">{points.lifetime_points.toLocaleString('es-MX')}</span> puntos acumulados en total
+          <span className="font-bold text-[#1C1917]">{points.lifetime_points.toLocaleString('es-ES')}</span> puntos acumulados en total
         </p>
         <svg className="w-4 h-4 text-[#E8E3DC]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />

@@ -68,194 +68,91 @@ export default function ClaimForm({ prizeId, prizeName }: Props) {
     }
   }
 
-  // ── SUCCESS: boarding pass ──────────────────────────────────────────────────
+  // ── SUCCESS: QR card ──────────────────────────────────────────────────────
   if (claimId) {
     const folio = claimId.slice(-8).toUpperCase();
+    const waPhone = form.phone.replace(/\D/g, '');
     const cajeroUrl = typeof window !== 'undefined'
       ? `${window.location.origin}/cajero/${claimId}`
       : '';
-    const waPhone = form.phone.replace(/\D/g, '');
-    const waMsg = `🎁 Tu premio en Tierra Burrito Bar está listo!\n\nPremio: ${prizeName}\nFolio: #${folio}\n\nMuestra este mensaje al cajero:\n${cajeroUrl}`;
-
-    const PARTICLE_ANGLES = [0, 45, 90, 135, 180, 225, 270, 315];
-    const PARTICLE_COLORS = ['#E8521A', '#F59E0B', '#FBBF24', '#F97316', '#EF4444', '#FB923C', '#FCD34D', '#E8521A'];
+    const waMsg = `🎁 Mi premio en Tierra Burrito Bar\n\nPremio: ${prizeName}\nFolio: #${folio}\n\n${cajeroUrl}`;
 
     return (
-      <div style={{ position: 'relative' }}>
-        {/* Burst particles */}
-        {showParticles && (
-          <div className="particles-container">
-            {PARTICLE_ANGLES.map((angle, i) => {
-              const rad = (angle * Math.PI) / 180;
-              const dist = 60 + (i % 3) * 20;
-              return (
-                <span
-                  key={i}
-                  className="particle"
-                  style={{
-                    background: PARTICLE_COLORS[i],
-                    '--px': `${Math.round(Math.cos(rad) * dist)}px`,
-                    '--py': `${Math.round(Math.sin(rad) * dist)}px`,
-                    width: 8 + (i % 3) * 3,
-                    height: 8 + (i % 3) * 3,
-                    animationDelay: `${i * 30}ms`,
-                  } as React.CSSProperties}
-                />
-              );
-            })}
-          </div>
-        )}
+      <div className="text-center space-y-5">
 
-        {/* Check icon + title */}
-        <div className="text-center mb-6 spring-in">
-          <div
-            className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3"
-            style={{ background: 'linear-gradient(135deg,#E8521A,#C2410C)', boxShadow: '0 8px 24px rgba(232,82,26,0.35)' }}
-          >
-            <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        {/* Título */}
+        <div>
+          <div className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-3"
+            style={{ background: 'linear-gradient(135deg,#E8521A,#C2410C)', boxShadow: '0 8px 24px rgba(232,82,26,0.35)' }}>
+            <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <h3 className="text-xl font-extrabold text-[#1C1917] mb-1">¡Registro exitoso!</h3>
-          <p className="text-[#78716c] text-sm">Muestra este pase al cajero para cobrar tu premio</p>
+          <h3 className="text-lg font-extrabold text-[#1C1917] mb-1">¡Listo! Muestra este QR</h3>
+          <p className="text-[#78716c] text-sm">Premio: <strong className="text-[#1C1917]">{prizeName}</strong></p>
+          <p className="text-[#a8a29e] text-xs mt-0.5 font-mono">#{folio}</p>
         </div>
 
-        {/* Boarding pass */}
-        <div
-          className="rounded-2xl overflow-hidden mb-5"
-          style={{ boxShadow: '0 8px 40px rgba(0,0,0,0.13), 0 0 0 1px rgba(232,82,26,0.12)' }}
-        >
-          {/* Header */}
-          <div
-            className="relative overflow-hidden px-5 pt-4 pb-5"
-            style={{ background: 'linear-gradient(135deg,#E8521A 0%,#C2410C 100%)' }}
-          >
-            <div aria-hidden className="absolute inset-0 opacity-[0.04]"
-              style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E")`, backgroundSize: '200px' }} />
-            <div className="relative flex items-start justify-between">
-              <div className="flex-1 pr-4">
-                <p className="text-white/70 text-[10px] font-bold uppercase tracking-[0.2em] mb-1">Tierra Burrito Bar</p>
-                <p className="text-white font-black text-xl leading-tight">{prizeName}</p>
-              </div>
-              <span aria-hidden className="text-white/20 font-black text-xs tracking-[0.15em] uppercase mt-1"
-                style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)', letterSpacing: '0.18em' }}>
-                PREMIO
-              </span>
-            </div>
-          </div>
-
-          {/* Perforation */}
-          <div className="flex items-center bg-white">
-            <div className="w-5 h-5 rounded-full shrink-0 -ml-2.5" style={{ background: '#F9FAFB', border: '1px solid #E8E3DC' }} />
-            <div className="flex-1 border-t-[1.5px] border-dashed border-[#E8E3DC] mx-1" />
-            <div className="w-5 h-5 rounded-full shrink-0 -mr-2.5" style={{ background: '#F9FAFB', border: '1px solid #E8E3DC' }} />
-          </div>
-
-          {/* Body: info + QR */}
-          <div className="bg-white px-5 pt-4 pb-3">
-            <div className="flex gap-4 items-stretch">
-              {/* Info */}
-              <div className="flex-1 flex flex-col gap-3 justify-center">
-                {[
-                  { label: 'Titular', value: form.full_name },
-                  { label: 'Teléfono', value: form.phone },
-                  { label: 'Folio', value: '#' + folio, mono: true },
-                ].map(({ label, value, mono }) => (
-                  <div key={label}>
-                    <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#a8a29e] mb-0.5">{label}</p>
-                    <p className={`text-sm font-semibold text-[#1C1917] leading-tight truncate ${mono ? 'font-mono tracking-wider' : ''}`}>
-                      {value}
-                    </p>
-                  </div>
-                ))}
-              </div>
-
-              {/* Vertical dashed divider */}
-              <div style={{ borderLeft: '1.5px dashed #E8E3DC' }} />
-
-              {/* QR */}
-              <div className="shrink-0 flex flex-col items-center justify-center gap-1.5">
-                <p className="text-[9px] font-bold uppercase tracking-[0.18em] text-[#a8a29e]">Escanear en caja</p>
-                <div className="p-2 rounded-xl" style={{ border: '2px solid #FED7AA', background: '#FFF7ED' }}>
-                  {qrDataUrl
-                    ? <img src={qrDataUrl} alt="QR de cobro" style={{ borderRadius: 8, display: 'block', width: 120, height: 120 }} />
-                    : (
-                      <div className="w-[120px] h-[120px] flex items-center justify-center">
-                        <svg className="animate-spin w-7 h-7 text-orange-400" fill="none" viewBox="0 0 24 24">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
-                        </svg>
-                      </div>
-                    )
-                  }
+        {/* QR grande y centrado */}
+        <div className="flex justify-center">
+          <div className="p-4 rounded-3xl bg-white"
+            style={{ boxShadow: '0 4px 32px rgba(0,0,0,0.12)', border: '2px solid #E8E3DC' }}>
+            {qrDataUrl
+              ? <img src={qrDataUrl} alt="QR de cobro" style={{ display: 'block', width: 220, height: 220, borderRadius: 12 }} />
+              : (
+                <div className="w-[220px] h-[220px] flex items-center justify-center">
+                  <svg className="animate-spin w-10 h-10 text-orange-400" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
+                  </svg>
                 </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Second perforation */}
-          <div className="flex items-center bg-white">
-            <div className="w-4 h-4 rounded-full shrink-0 -ml-2" style={{ background: '#F9FAFB', border: '1px solid #E8E3DC' }} />
-            <div className="flex-1 border-t border-dashed border-[#E8E3DC] mx-1" />
-            <div className="w-4 h-4 rounded-full shrink-0 -mr-2" style={{ background: '#F9FAFB', border: '1px solid #E8E3DC' }} />
-          </div>
-
-          {/* Footer */}
-          <div className="bg-white rounded-b-2xl px-5 py-3 flex items-center justify-between">
-            <p className="text-[#a8a29e] text-[10px] font-mono tracking-wider">ÚNICO · NO TRANSFERIBLE · UNA SOLA VEZ</p>
-            <p className="text-[#E8521A] text-[10px] font-bold uppercase tracking-wide ml-2 shrink-0">Tierra Burrito Bar</p>
+              )
+            }
           </div>
         </div>
 
-        {/* Tip */}
-        <div className="flex items-center gap-3 bg-orange-50 border border-orange-200 rounded-2xl px-4 py-3 mb-4">
-          <span className="text-xl shrink-0">💡</span>
-          <p className="text-orange-700 text-sm font-medium">
-            <strong>Toma captura</strong> de este pase o guárdalo en WhatsApp. El cajero lo escaneará al llegar.
-          </p>
-        </div>
-
-        {/* WhatsApp button */}
+        {/* Botones */}
         {qrDataUrl && (
-          <a
-            href={`https://wa.me/${waPhone}?text=${encodeURIComponent(waMsg)}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-full flex items-center justify-center gap-3 font-black py-4 rounded-2xl text-white text-base mb-3"
-            style={{ background: '#25D366', boxShadow: '0 8px 24px rgba(37,211,102,0.35)' }}
-          >
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
-            </svg>
-            Guardar en WhatsApp
-          </a>
+          <div className="space-y-3">
+            {/* WhatsApp */}
+            <a
+              href={`https://wa.me/${waPhone}?text=${encodeURIComponent(waMsg)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full flex items-center justify-center gap-3 font-bold py-4 rounded-2xl text-white text-sm"
+              style={{ background: '#25D366', boxShadow: '0 6px 20px rgba(37,211,102,0.35)' }}
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+              </svg>
+              Guardar en WhatsApp
+            </a>
+
+            {/* Share/Download */}
+            <button
+              onClick={async () => {
+                try {
+                  const blob = await (await fetch(qrDataUrl)).blob();
+                  const file = new File([blob], 'mi-premio.png', { type: 'image/png' });
+                  if (navigator.canShare?.({ files: [file] })) {
+                    await navigator.share({ files: [file], title: 'Premio: ' + prizeName, text: '¡Gané un premio en Tierra Burrito Bar!' });
+                  } else {
+                    const a = document.createElement('a');
+                    a.href = qrDataUrl; a.download = 'mi-premio.png'; a.click();
+                  }
+                } catch { /* cancelado */ }
+              }}
+              className="w-full flex items-center justify-center gap-2 font-bold py-3.5 rounded-2xl text-sm border border-[#E8E3DC] bg-white text-[#1C1917] hover:bg-[#FAFAF9] transition-colors"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+              </svg>
+              Compartir / Guardar imagen
+            </button>
+          </div>
         )}
 
-        {/* Share / download */}
-        {qrDataUrl && (
-          <button
-            onClick={async () => {
-              try {
-                const blob = await (await fetch(qrDataUrl)).blob();
-                const file = new File([blob], 'mi-premio.png', { type: 'image/png' });
-                if (navigator.canShare?.({ files: [file] })) {
-                  await navigator.share({ files: [file], title: 'Premio: ' + prizeName, text: '¡Gané un premio en Tierra Burrito Bar!' });
-                } else {
-                  const a = document.createElement('a');
-                  a.href = qrDataUrl; a.download = 'mi-premio.png'; a.click();
-                }
-              } catch { /* cancelado */ }
-            }}
-            className="w-full flex items-center justify-center gap-2 font-bold py-3.5 rounded-2xl text-sm border border-[#E8E3DC] bg-white text-[#1C1917] hover:bg-[#FAFAF9] transition-colors"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
-            </svg>
-            Compartir / Descargar
-          </button>
-        )}
-
-        <p className="text-center text-[#a8a29e] text-xs mt-5">Tierra Burrito Bar · Plataforma de Premios</p>
+        <p className="text-[#a8a29e] text-xs">Tierra Burrito Bar · Plataforma de Premios</p>
       </div>
     );
   }

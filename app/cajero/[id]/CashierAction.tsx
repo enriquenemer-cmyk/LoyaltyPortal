@@ -50,6 +50,8 @@ export default function CashierAction({ claimId, prizeName, defaultCajero = '', 
   const [countdown, setCountdown] = useState(3);
   const [messageSent, setMessageSent] = useState(false);
   const [sendingMessage, setSendingMessage] = useState(false);
+  // Confirmation guard: first tap arms it, second tap fires
+  const [armed, setArmed] = useState(false);
 
   useEffect(() => {
     if (!done) return;
@@ -65,7 +67,8 @@ export default function CashierAction({ claimId, prizeName, defaultCajero = '', 
   const feedbackText = googleMapsUrl
     ? `Hola ${fullName}, esperamos que hayas disfrutado tu premio. ¿Nos dejas una reseña en Google Maps? Tu opinión nos ayuda mucho. 🧡 ${googleMapsLink}`
     : `Hola ${fullName}, esperamos que hayas disfrutado tu premio. ¿Nos dejas una reseña? 🧡 ${googleMapsLink}`;
-  const waPhone = phone.replace(/\D/g, '');
+  const digits = phone.replace(/\D/g, '');
+  const waPhone = digits.startsWith('34') ? digits : `34${digits}`;
   const waUrl = `https://wa.me/${waPhone}?text=${encodeURIComponent(feedbackText)}`;
 
   async function handleDeliver() {
@@ -128,8 +131,8 @@ export default function CashierAction({ claimId, prizeName, defaultCajero = '', 
 
         {/* WhatsApp self-send for client backup */}
         {(() => {
-          const digits = phone.replace(/\D/g, '');
-          const waPhoneSelf = digits.length === 10 ? `52${digits}` : digits;
+          const rawDigits = phone.replace(/\D/g, '');
+          const waPhoneSelf = rawDigits.startsWith('34') ? rawDigits : `34${rawDigits}`;
           const folio = claimId.slice(-8).toUpperCase();
           const cajeroUrl = `${typeof window !== 'undefined' ? window.location.origin : ''}/cajero/${claimId}`;
           const selfMsg = `🎁 Tu premio en Tierra Burrito Bar está listo!\n\nPremio: ${prizeName}\nFolio: #${folio}\n\nMuestra este mensaje al cajero cuando llegues:\n${cajeroUrl}`;
@@ -294,46 +297,81 @@ export default function CashierAction({ claimId, prizeName, defaultCajero = '', 
         </div>
       )}
 
-      {/* Big prominent confirm button */}
-      <button
-        onClick={handleDeliver}
-        disabled={loading}
-        className="w-full disabled:opacity-50 text-white font-black py-6 rounded-2xl transition-all text-xl tracking-wide"
-        style={{
-          background: loading ? '#6b7280' : isExpired
-            ? 'linear-gradient(135deg,#d97706,#b45309)'
-            : 'linear-gradient(135deg,#059669,#047857)',
-          boxShadow: loading ? 'none' : isExpired
-            ? '0 12px 36px rgba(217,119,6,0.45)'
-            : '0 12px 36px rgba(5,150,105,0.50)',
-          letterSpacing: '-0.01em',
-        }}
-      >
-        {loading ? (
-          <span className="flex items-center justify-center gap-3">
-            <svg className="animate-spin w-6 h-6" fill="none" viewBox="0 0 24 24">
-              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
-            </svg>
-            Confirmando entrega...
-          </span>
-        ) : (
+      {/* Two-step CANJEAR button */}
+      {!armed ? (
+        /* Step 1 — arm */
+        <button
+          onClick={() => setArmed(true)}
+          disabled={loading}
+          className="w-full disabled:opacity-50 text-white font-black py-6 rounded-2xl transition-all text-xl tracking-wide"
+          style={{
+            background: isExpired
+              ? 'linear-gradient(135deg,#d97706,#b45309)'
+              : 'linear-gradient(135deg,#E8521A,#C2410C)',
+            boxShadow: isExpired
+              ? '0 12px 36px rgba(217,119,6,0.45)'
+              : '0 12px 36px rgba(232,82,26,0.50)',
+            letterSpacing: '-0.01em',
+          }}
+        >
           <span className="flex items-center justify-center gap-3">
             <div className="w-8 h-8 bg-white/25 rounded-full flex items-center justify-center">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4h.01M8 8h.01M16 8h.01M4 12h.01M20 12h.01M8 16h.01M16 16h.01M12 20h.01M4 4h4v4H4zm12 0h4v4h-4zM4 16h4v4H4zm12 0h4v4h-4z" />
               </svg>
             </div>
-            {isExpired ? 'Entregar Premio (Vencido)' : 'Confirmar Entrega'}
+            {isExpired ? 'Canjear Premio (Vencido)' : 'Canjear Premio'}
           </span>
-        )}
-      </button>
+        </button>
+      ) : (
+        /* Step 2 — confirm or cancel */
+        <div className="rounded-2xl border-2 border-green-500 bg-green-50 p-4 space-y-3">
+          <p className="text-green-800 font-bold text-sm text-center">
+            ¿Confirmas que el cliente está presente y recibirá el premio ahora?
+          </p>
+          <div className="flex gap-3">
+            <button
+              onClick={() => setArmed(false)}
+              disabled={loading}
+              className="flex-1 font-bold py-3.5 rounded-xl border border-[#E8E3DC] bg-white text-stone-600 text-sm hover:bg-stone-50 transition-all disabled:opacity-50"
+            >
+              Cancelar
+            </button>
+            <button
+              onClick={handleDeliver}
+              disabled={loading}
+              className="flex-1 font-black py-3.5 rounded-xl text-white text-sm transition-all disabled:opacity-50"
+              style={{
+                background: loading ? '#6b7280' : 'linear-gradient(135deg,#059669,#047857)',
+                boxShadow: loading ? 'none' : '0 8px 24px rgba(5,150,105,0.45)',
+              }}
+            >
+              {loading ? (
+                <span className="flex items-center justify-center gap-2">
+                  <svg className="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
+                  </svg>
+                  Canjeando...
+                </span>
+              ) : (
+                <span className="flex items-center justify-center gap-2">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                  </svg>
+                  Sí, Canjear
+                </span>
+              )}
+            </button>
+          </div>
+        </div>
+      )}
 
       <div className="flex items-center justify-center gap-2 text-stone-400 text-xs">
         <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
         </svg>
-        Esta acción es irreversible y queda registrada en el sistema
+        El QR se invalida al canjear — acción irreversible
       </div>
     </div>
   );

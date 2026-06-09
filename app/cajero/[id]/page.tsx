@@ -206,8 +206,8 @@ export default async function CajeroPage({ params, searchParams }: Props) {
           ) : (
             <>
               <div className="px-5 py-4 border-b border-[#E8E3DC] bg-[#FAFAF9]">
-                <h2 className="text-base font-bold text-[#1C1917]">Confirmar Entrega</h2>
-                <p className="text-stone-500 text-xs mt-0.5">El QR se invalida al confirmar y queda registrado en el sistema.</p>
+                <h2 className="text-base font-bold text-[#1C1917]">Canjear Premio</h2>
+                <p className="text-stone-500 text-xs mt-0.5">Solo pulsar "Canjear Premio" invalida el QR y registra la entrega.</p>
               </div>
               <div className="p-6">
                 <CashierAction claimId={claim.id} prizeName={claim.prize_name} defaultCajero={cajero ?? ''} phone={claim.phone} fullName={claim.full_name} isExpired={isExpired} googleMapsUrl={googleMapsUrl} />

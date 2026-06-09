@@ -154,7 +154,7 @@ function SlotsGame({
         <div
           key={i}
           className="w-24 h-28 rounded-xl flex items-center justify-center text-center font-bold text-sm border-2"
-          style={{ background: '#292524', borderColor: '#E8521A', color: '#fff', padding: 8 }}
+          style={{ background: '#FFF7F3', borderColor: '#E8521A', color: '#1C1917', padding: 8 }}
         >
           <span style={{ lineHeight: 1.3 }}>
             {prizes[idx]?.name ?? '?'}
@@ -213,9 +213,9 @@ function PenaltyGame({
             onClick={() => { setChosen(i); }}
             className="h-16 rounded-lg text-xs font-bold text-center border-2 transition-all p-1"
             style={{
-              background: chosen === i ? (revealed ? '#E8521A' : '#292524') : '#292524',
-              borderColor: chosen === i ? '#E8521A' : '#44403c',
-              color: '#fff',
+              background: chosen === i ? (revealed ? '#E8521A' : '#FFF0E8') : '#FAFAF9',
+              borderColor: chosen === i ? '#E8521A' : '#E8E3DC',
+              color: chosen === i && revealed ? '#fff' : '#1C1917',
               opacity: chosen !== null && chosen !== i ? 0.4 : 1,
             }}
           >
@@ -272,9 +272,9 @@ function ScratchGame({
               disabled={!spinning || scratched.size > 0}
               className="w-28 h-24 rounded-xl border-2 flex flex-col items-center justify-center text-center p-2 text-xs font-bold transition-all"
               style={{
-                background: isScratched ? (isWinner ? '#E8521A' : '#292524') : '#78716c',
-                borderColor: isScratched && isWinner ? '#fdba74' : '#44403c',
-                color: isScratched ? '#fff' : '#1C1917',
+                background: isScratched ? (isWinner ? '#E8521A' : '#FAFAF9') : '#E8E3DC',
+                borderColor: isScratched && isWinner ? '#E8521A' : '#E8E3DC',
+                color: isScratched && isWinner ? '#fff' : '#1C1917',
                 cursor: spinning && scratched.size === 0 ? 'pointer' : 'default',
               }}
             >
@@ -380,53 +380,68 @@ export default function GamePlayer({
     }
   }
 
-  const labelClass = 'block text-[10px] font-semibold text-[#a8a29e] uppercase tracking-widest mb-1';
-  const inputClass = 'w-full bg-[#292524] border border-[#44403c] rounded-lg px-3 py-2.5 text-sm text-white placeholder-[#78716c] focus:outline-none focus:ring-1 focus:ring-[#E8521A]/50 focus:border-[#E8521A] transition-colors';
+  const labelCls = 'block text-[10px] font-bold text-[#78716c] uppercase tracking-widest mb-1.5';
+  const inputCls = [
+    'w-full bg-white border border-[#E8E3DC] rounded-xl px-4 py-3.5',
+    'text-sm text-[#1C1917] placeholder-[#a8a29e]',
+    'focus:outline-none focus:ring-2 focus:ring-[#E8521A]/20 focus:border-[#E8521A] transition-all',
+  ].join(' ');
+
+  const gameLabel = bundle.game_type === 'roulette' ? '🎡 Ruleta'
+    : bundle.game_type === 'slots' ? '🎰 Tragamonedas'
+    : bundle.game_type === 'penalty' ? '⚽ Penalti'
+    : '🃏 Rasca y Gana';
 
   // ── READY ──
   if (gameState === 'ready') {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center px-4 py-10" style={{ background: '#1C1917' }}>
-        <div className="w-full max-w-md">
-          <div className="text-center mb-6">
-            <p className="text-[10px] font-bold uppercase tracking-widest mb-2" style={{ color: '#E8521A' }}>
-              {bundle.game_type === 'roulette' ? '🎡 Ruleta' : bundle.game_type === 'slots' ? '🎰 Tragamonedas' : bundle.game_type === 'penalty' ? '⚽ Penalti' : '🃏 Rasca y Gana'}
-            </p>
-            <h1 className="text-2xl font-bold text-white leading-tight">{bundle.name}</h1>
-          </div>
+      <div className="min-h-screen" style={{ background: '#FAFAF9' }}>
+        {/* Header */}
+        <div style={{ background: 'linear-gradient(135deg,#E8521A,#C2410C)' }} className="px-5 pt-10 pb-8 text-center">
+          <p className="text-white/70 text-xs font-bold uppercase tracking-widest mb-2">{gameLabel}</p>
+          <h1 className="text-2xl font-black text-white leading-tight">{bundle.name}</h1>
+          <p className="text-white/60 text-sm mt-1">Tierra Burrito Bar</p>
+        </div>
 
-          {/* Prize pills */}
-          <div className="mb-8">
-            <p className="text-xs font-semibold text-[#78716c] uppercase tracking-widest mb-3 text-center">¿Qué puedes ganar?</p>
-            <div className="flex flex-wrap gap-2 justify-center">
+        <div className="max-w-md mx-auto px-4 py-6 space-y-5">
+          {/* Prizes card */}
+          <div className="bg-white rounded-2xl border border-[#E8E3DC] p-5" style={{ boxShadow: '0 1px 4px rgba(28,25,23,0.06)' }}>
+            <p className="text-[10px] font-bold text-[#a8a29e] uppercase tracking-widest mb-3">¿Qué puedes ganar?</p>
+            <div className="flex flex-wrap gap-2">
               {prizes.map((p, i) => {
                 const shade = ORANGE_SHADES[i % ORANGE_SHADES.length];
                 return (
                   <span
                     key={p.id}
                     className="px-3 py-1.5 rounded-full text-xs font-bold"
-                    style={{ background: shade + '22', color: shade, border: `1px solid ${shade}44` }}
+                    style={{ background: shade + '18', color: shade, border: `1px solid ${shade}40` }}
                   >
-                    {p.name} — {p.probability}%
+                    {p.name}
                   </span>
                 );
               })}
             </div>
           </div>
 
-          {/* Mini preview for roulette */}
+          {/* Mini roulette preview */}
           {bundle.game_type === 'roulette' && (
-            <div className="flex justify-center mb-8 opacity-60">
-              <RouletteWheel prizes={prizes} winnerIdx={0} spinning={false} onDone={() => {}} />
+            <div className="bg-white rounded-2xl border border-[#E8E3DC] p-4 flex justify-center" style={{ boxShadow: '0 1px 4px rgba(28,25,23,0.06)' }}>
+              <div className="opacity-70">
+                <RouletteWheel prizes={prizes} winnerIdx={0} spinning={false} onDone={() => {}} />
+              </div>
             </div>
           )}
 
           <button
             onClick={startGame}
-            className="w-full py-4 rounded-2xl text-white text-lg font-bold transition-all active:scale-95"
-            style={{ background: 'linear-gradient(135deg,#E8521A,#c2410c)', boxShadow: '0 8px 32px rgba(232,82,26,0.4)' }}
+            className="w-full py-5 rounded-2xl text-white text-lg font-black transition-all active:scale-95 flex items-center justify-center gap-3"
+            style={{ background: 'linear-gradient(135deg,#E8521A,#C2410C)', boxShadow: '0 8px 32px rgba(232,82,26,0.40)' }}
           >
-            🎮 ¡Jugar ahora!
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            ¡Jugar ahora!
           </button>
         </div>
       </div>
@@ -436,21 +451,24 @@ export default function GamePlayer({
   // ── PLAYING ──
   if (gameState === 'playing') {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center px-4 py-10" style={{ background: '#1C1917' }}>
+      <div className="min-h-screen flex flex-col items-center justify-center px-4 py-10" style={{ background: '#FAFAF9' }}>
         <div className="w-full max-w-md">
-          <p className="text-center text-[#a8a29e] text-sm mb-6 font-semibold">{bundle.name}</p>
-          {bundle.game_type === 'roulette' && (
-            <RouletteWheel prizes={prizes} winnerIdx={winnerIdx} spinning={true} onDone={onGameDone} />
-          )}
-          {bundle.game_type === 'slots' && (
-            <SlotsGame prizes={prizes} winnerIdx={winnerIdx} spinning={true} onDone={onGameDone} />
-          )}
-          {bundle.game_type === 'penalty' && (
-            <PenaltyGame prizes={prizes} winnerIdx={winnerIdx} spinning={true} onDone={onGameDone} />
-          )}
-          {bundle.game_type === 'scratch' && (
-            <ScratchGame prizes={prizes} winnerIdx={winnerIdx} spinning={true} onDone={onGameDone} />
-          )}
+          <p className="text-center text-[#a8a29e] text-xs font-bold uppercase tracking-widest mb-2">{gameLabel}</p>
+          <p className="text-center text-[#1C1917] font-extrabold text-lg mb-6">{bundle.name}</p>
+          <div className="bg-white rounded-2xl border border-[#E8E3DC] p-6 flex justify-center" style={{ boxShadow: '0 2px 16px rgba(28,25,23,0.08)' }}>
+            {bundle.game_type === 'roulette' && (
+              <RouletteWheel prizes={prizes} winnerIdx={winnerIdx} spinning={true} onDone={onGameDone} />
+            )}
+            {bundle.game_type === 'slots' && (
+              <SlotsGame prizes={prizes} winnerIdx={winnerIdx} spinning={true} onDone={onGameDone} />
+            )}
+            {bundle.game_type === 'penalty' && (
+              <PenaltyGame prizes={prizes} winnerIdx={winnerIdx} spinning={true} onDone={onGameDone} />
+            )}
+            {bundle.game_type === 'scratch' && (
+              <ScratchGame prizes={prizes} winnerIdx={winnerIdx} spinning={true} onDone={onGameDone} />
+            )}
+          </div>
         </div>
       </div>
     );
@@ -461,17 +479,19 @@ export default function GamePlayer({
     return (
       <>
         <Confetti />
-        <div className="min-h-screen flex flex-col items-center justify-center px-4 py-10" style={{ background: '#1C1917' }}>
+        <div className="min-h-screen flex flex-col items-center justify-center px-4 py-10" style={{ background: '#FAFAF9' }}>
           <div className="w-full max-w-md text-center">
-            <div className="text-7xl mb-4 animate-bounce">🎉</div>
-            <h1 className="text-4xl font-black text-white mb-2">¡GANASTE!</h1>
-            <p
-              className="text-3xl font-black mb-3 leading-tight"
-              style={{ color: '#E8521A' }}
+            <div
+              className="w-28 h-28 rounded-full flex items-center justify-center mx-auto mb-5"
+              style={{ background: 'linear-gradient(135deg,#E8521A,#C2410C)', boxShadow: '0 12px 40px rgba(232,82,26,0.45)' }}
             >
-              {winnerPrize?.name}
-            </p>
-            <p className="text-[#a8a29e] text-base">{winnerPrize?.description}</p>
+              <span className="text-5xl">🎁</span>
+            </div>
+            <p className="text-[10px] font-bold text-[#E8521A] uppercase tracking-widest mb-2">¡Felicidades!</p>
+            <h1 className="text-3xl font-black text-[#1C1917] mb-2 leading-tight">{winnerPrize?.name}</h1>
+            {winnerPrize?.description && (
+              <p className="text-[#78716c] text-base">{winnerPrize.description}</p>
+            )}
           </div>
         </div>
       </>
@@ -481,64 +501,69 @@ export default function GamePlayer({
   // ── CLAIMING ──
   if (gameState === 'claiming') {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center px-4 py-10" style={{ background: '#1C1917' }}>
-        <div className="w-full max-w-md">
-          <div className="text-center mb-6">
-            <p className="text-[#E8521A] font-bold text-sm mb-1">🎁 Tu premio</p>
-            <h2 className="text-2xl font-black text-white">{winnerPrize?.name}</h2>
-            <p className="text-[#a8a29e] text-sm mt-1">{winnerPrize?.description}</p>
-          </div>
-          <div className="bg-[#292524] rounded-2xl border border-[#44403c] p-6">
-            <p className="text-sm text-[#a8a29e] mb-4">Regístra tus datos para reclamar tu premio:</p>
+      <div className="min-h-screen" style={{ background: '#FAFAF9' }}>
+        {/* Prize banner */}
+        <div style={{ background: 'linear-gradient(135deg,#E8521A,#C2410C)' }} className="px-5 pt-8 pb-6 text-center">
+          <p className="text-white/70 text-xs font-bold uppercase tracking-widest mb-1">Tu premio</p>
+          <h2 className="text-xl font-black text-white leading-tight">{winnerPrize?.name}</h2>
+        </div>
+
+        <div className="max-w-md mx-auto px-4 py-6">
+          <div className="bg-white rounded-2xl border border-[#E8E3DC] p-6" style={{ boxShadow: '0 1px 4px rgba(28,25,23,0.06)' }}>
+            <p className="text-[#1C1917] font-extrabold text-base mb-1">Completa tus datos</p>
+            <p className="text-[#a8a29e] text-sm mb-5">Solo necesitamos tu nombre, teléfono y correo</p>
             <form onSubmit={handleClaim} className="space-y-4">
               <div>
-                <label className={labelClass}>Nombre completo <span style={{ color: '#E8521A' }}>*</span></label>
+                <label className={labelCls}>Nombre completo</label>
                 <input
                   required
                   value={claimForm.full_name}
                   onChange={(e) => setClaimForm((f) => ({ ...f, full_name: e.target.value }))}
-                  placeholder="Tu nombre"
-                  className={inputClass}
+                  placeholder="Tu nombre completo"
+                  className={inputCls}
                 />
               </div>
               <div>
-                <label className={labelClass}>Teléfono <span style={{ color: '#E8521A' }}>*</span></label>
-                <input
-                  required
-                  type="tel"
-                  value={claimForm.phone}
-                  onChange={(e) => setClaimForm((f) => ({ ...f, phone: e.target.value }))}
-                  placeholder="10 dígitos"
-                  className={inputClass}
-                />
+                <label className={labelCls}>Teléfono</label>
+                <div className="relative">
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm font-semibold text-[#a8a29e] select-none pointer-events-none">+34</span>
+                  <input
+                    required
+                    type="tel"
+                    value={claimForm.phone}
+                    onChange={(e) => setClaimForm((f) => ({ ...f, phone: e.target.value.replace(/\D/g,'') }))}
+                    placeholder="612 345 678"
+                    maxLength={9}
+                    className={inputCls + ' pl-12'}
+                  />
+                </div>
               </div>
               <div>
-                <label className={labelClass}>Correo electrónico <span style={{ color: '#E8521A' }}>*</span></label>
+                <label className={labelCls}>Correo electrónico</label>
                 <input
                   required
                   type="email"
                   value={claimForm.email}
                   onChange={(e) => setClaimForm((f) => ({ ...f, email: e.target.value }))}
-                  placeholder="tu@email.com"
-                  className={inputClass}
-                />
-              </div>
-              <div>
-                <label className={labelClass}>Sucursal <span className="font-normal normal-case text-[#78716c]">(opcional)</span></label>
-                <input
-                  value={claimForm.location}
-                  onChange={(e) => setClaimForm((f) => ({ ...f, location: e.target.value }))}
-                  placeholder="¿En qué sucursal jugarás?"
-                  className={inputClass}
+                  placeholder="tu@correo.com"
+                  className={inputCls}
                 />
               </div>
               <button
                 type="submit"
                 disabled={submitting}
-                className="w-full py-3 rounded-xl text-white font-bold text-sm transition-all disabled:opacity-60"
-                style={{ background: '#E8521A' }}
+                className="w-full py-4 rounded-xl text-white font-black text-base transition-all disabled:opacity-60 flex items-center justify-center gap-2"
+                style={{ background: 'linear-gradient(135deg,#E8521A,#C2410C)', boxShadow: '0 6px 20px rgba(232,82,26,0.35)' }}
               >
-                {submitting ? 'Registrando...' : 'Reclamar mi premio →'}
+                {submitting ? (
+                  <>
+                    <svg className="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
+                    </svg>
+                    Registrando...
+                  </>
+                ) : 'Reclamar mi premio →'}
               </button>
             </form>
           </div>
@@ -549,49 +574,55 @@ export default function GamePlayer({
 
   // ── DONE ──
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-4 py-10" style={{ background: '#1C1917' }}>
-      <div className="w-full max-w-md">
-        <div className="text-center mb-6">
-          <div className="text-5xl mb-3">✅</div>
-          <h2 className="text-2xl font-black text-white mb-1">¡Premio registrado!</h2>
-          <p className="text-[#a8a29e] text-sm">
-            Preséntate con tu nombre y teléfono{claimForm.location ? ` en ${claimForm.location}` : ''} y di que jugaste{' '}
-            <strong className="text-white">{bundle.name}</strong>.
-          </p>
+    <div className="min-h-screen" style={{ background: '#FAFAF9' }}>
+      {/* Success header */}
+      <div style={{ background: 'linear-gradient(135deg,#059669,#047857)' }} className="px-5 pt-10 pb-8 text-center">
+        <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-3 border border-white/30">
+          <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+          </svg>
         </div>
-        {/* Confirmation ticket */}
-        <div
-          className="rounded-2xl border-2 p-5 font-mono"
-          style={{ background: '#292524', borderColor: '#E8521A', borderStyle: 'dashed' }}
-        >
-          <div className="flex justify-between items-start mb-4">
-            <div>
-              <p className="text-[10px] font-bold text-[#E8521A] uppercase tracking-widest">Premia Tierra</p>
-              <p className="text-white font-bold text-base mt-0.5">{bundle.name}</p>
+        <h2 className="text-2xl font-black text-white">¡Premio registrado!</h2>
+        <p className="text-white/70 text-sm mt-1">Muéstrale este comprobante al cajero</p>
+      </div>
+
+      <div className="max-w-md mx-auto px-4 py-6">
+        {/* Boarding pass style ticket */}
+        <div className="bg-white rounded-2xl border border-[#E8E3DC] overflow-hidden" style={{ boxShadow: '0 4px 20px rgba(28,25,23,0.10)' }}>
+          <div className="px-5 py-4 border-b border-[#E8E3DC]" style={{ background: '#FAFAF9' }}>
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-[10px] font-bold text-[#E8521A] uppercase tracking-widest">Premia Tierra</p>
+                <p className="text-[#1C1917] font-extrabold text-base mt-0.5">{bundle.name}</p>
+              </div>
+              <span className="text-3xl">🎁</span>
             </div>
-            <span className="text-[#E8521A] text-2xl">🎁</span>
           </div>
-          <div className="border-t border-[#44403c] pt-4 space-y-2">
-            <div className="flex justify-between text-sm">
-              <span className="text-[#78716c]">Premio</span>
-              <span className="text-white font-bold">{winnerPrize?.name}</span>
-            </div>
-            <div className="flex justify-between text-sm">
-              <span className="text-[#78716c]">Nombre</span>
-              <span className="text-white">{claimForm.full_name}</span>
-            </div>
-            <div className="flex justify-between text-sm">
-              <span className="text-[#78716c]">Teléfono</span>
-              <span className="text-white">{claimForm.phone}</span>
-            </div>
-            <div className="flex justify-between text-sm">
-              <span className="text-[#78716c]">Fecha</span>
-              <span className="text-white">{submittedAt}</span>
-            </div>
-            <div className="flex justify-between text-sm">
-              <span className="text-[#78716c]">Folio</span>
-              <span style={{ color: '#E8521A' }} className="font-bold">{folio}</span>
-            </div>
+          <div className="px-5 py-4 space-y-3">
+            {[
+              { label: 'Premio', value: winnerPrize?.name ?? '' },
+              { label: 'Nombre', value: claimForm.full_name },
+              { label: 'Teléfono', value: '+34 ' + claimForm.phone },
+              { label: 'Fecha', value: submittedAt },
+              { label: 'Folio', value: folio, accent: true },
+            ].map(({ label, value, accent }) => (
+              <div key={label} className="flex items-center justify-between">
+                <span className="text-[#a8a29e] text-sm">{label}</span>
+                <span
+                  className="text-sm font-bold"
+                  style={{ color: accent ? '#E8521A' : '#1C1917' }}
+                >
+                  {value}
+                </span>
+              </div>
+            ))}
+          </div>
+          {/* Dashed divider */}
+          <div className="border-t border-dashed border-[#E8E3DC] mx-5" />
+          <div className="px-5 py-4 bg-orange-50">
+            <p className="text-[#E8521A] text-xs font-bold text-center">
+              Presenta este comprobante al cajero para recibir tu premio
+            </p>
           </div>
         </div>
       </div>

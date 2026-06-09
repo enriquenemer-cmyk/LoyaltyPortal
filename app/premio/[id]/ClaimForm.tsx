@@ -24,8 +24,8 @@ export default function ClaimForm({ prizeId, prizeName }: Props) {
   const [qrDataUrl, setQrDataUrl] = useState<string | null>(null);
   const [showParticles, setShowParticles] = useState(false);
 
-  // Spain: 9 digits starting with 6, 7 or 9
-  const phoneValid = /^[6789]\d{8}$/.test(form.phone.replace(/\s/g, ''));
+  // Basic: at least 7 digits
+  const phoneValid = form.phone.replace(/\D/g, '').length >= 7;
   const phoneError = phoneTouched && form.phone.length > 0 && !phoneValid;
   const phoneOk = phoneTouched && phoneValid;
 
@@ -74,8 +74,7 @@ export default function ClaimForm({ prizeId, prizeName }: Props) {
     const cajeroUrl = typeof window !== 'undefined'
       ? `${window.location.origin}/cajero/${claimId}`
       : '';
-    const digits = form.phone.replace(/\D/g, '');
-    const waPhone = digits.length === 9 ? `34${digits}` : digits;
+    const waPhone = form.phone.replace(/\D/g, '');
     const waMsg = `🎁 Tu premio en Tierra Burrito Bar está listo!\n\nPremio: ${prizeName}\nFolio: #${folio}\n\nMuestra este mensaje al cajero:\n${cajeroUrl}`;
 
     const PARTICLE_ANGLES = [0, 45, 90, 135, 180, 225, 270, 315];
@@ -159,7 +158,7 @@ export default function ClaimForm({ prizeId, prizeName }: Props) {
               <div className="flex-1 flex flex-col gap-3 justify-center">
                 {[
                   { label: 'Titular', value: form.full_name },
-                  { label: 'Teléfono', value: '+34 ' + form.phone },
+                  { label: 'Teléfono', value: form.phone },
                   { label: 'Folio', value: '#' + folio, mono: true },
                 ].map(({ label, value, mono }) => (
                   <div key={label}>
@@ -279,13 +278,12 @@ export default function ClaimForm({ prizeId, prizeName }: Props) {
       <div>
         <label className={labelCls}>Celular</label>
         <div className="relative flex items-center">
-          <span className="absolute left-4 text-sm font-semibold text-[#a8a29e] select-none pointer-events-none">+34</span>
           <input
-            name="phone" type="tel" value={form.phone} required maxLength={9}
-            placeholder="612 345 678"
-            onChange={e => setForm(p => ({ ...p, phone: e.target.value.replace(/\D/g, '').slice(0, 9) }))}
+            name="phone" type="tel" value={form.phone} required
+            placeholder="Ej: +34 612 345 678"
+            onChange={e => setForm(p => ({ ...p, phone: e.target.value }))}
             onBlur={() => setPhoneTouched(true)}
-            className={inp + ' pl-12 pr-10 ' + (phoneError ? 'border-red-400 focus:border-red-400' : phoneOk ? 'border-green-400 focus:border-green-400' : '')}
+            className={inp + ' pr-10 ' + (phoneError ? 'border-red-400 focus:border-red-400' : phoneOk ? 'border-green-400 focus:border-green-400' : '')}
           />
           {phoneOk && (
             <span className="absolute right-3 text-green-500">
@@ -298,7 +296,7 @@ export default function ClaimForm({ prizeId, prizeName }: Props) {
             </span>
           )}
         </div>
-        {phoneError && <p className="text-xs text-red-500 mt-1">Debe tener 9 dígitos (ej: 612 345 678)</p>}
+        {phoneError && <p className="text-xs text-red-500 mt-1">Introduce un número de teléfono válido</p>}
       </div>
 
       {/* Email */}

@@ -526,15 +526,13 @@ export default function GamePlayer({
               <div>
                 <label className={labelCls}>Teléfono</label>
                 <div className="relative">
-                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm font-semibold text-[#a8a29e] select-none pointer-events-none">+34</span>
                   <input
                     required
                     type="tel"
                     value={claimForm.phone}
-                    onChange={(e) => setClaimForm((f) => ({ ...f, phone: e.target.value.replace(/\D/g,'') }))}
-                    placeholder="612 345 678"
-                    maxLength={9}
-                    className={inputCls + ' pl-12'}
+                    onChange={(e) => setClaimForm((f) => ({ ...f, phone: e.target.value }))}
+                    placeholder="Ej: +34 612 345 678"
+                    className={inputCls}
                   />
                 </div>
               </div>
@@ -602,7 +600,7 @@ export default function GamePlayer({
             {[
               { label: 'Premio', value: winnerPrize?.name ?? '' },
               { label: 'Nombre', value: claimForm.full_name },
-              { label: 'Teléfono', value: '+34 ' + claimForm.phone },
+              { label: 'Teléfono', value: claimForm.phone },
               { label: 'Fecha', value: submittedAt },
               { label: 'Folio', value: folio, accent: true },
             ].map(({ label, value, accent }) => (

@@ -2,32 +2,44 @@
 
 import { useState, useEffect } from 'react';
 
-type Props = { prizeId: string; prizeName: string; prizeEndDate?: string; prizeLocation?: string };
+type Props = { prizeId: string; prizeName: string };
+
+const inp = [
+  'w-full bg-white border border-[#E8E3DC] rounded-xl px-4 py-3.5',
+  'text-sm text-[#1C1917] placeholder-[#a8a29e]',
+  'focus:outline-none focus:ring-2 focus:ring-[#E8521A]/20 focus:border-[#E8521A]',
+  'transition-all',
+].join(' ');
+
+const labelCls = 'block text-[10px] font-bold text-[#78716c] uppercase tracking-widest mb-1.5';
 
 export default function ClaimForm({ prizeId, prizeName }: Props) {
-  const [form, setForm] = useState({ full_name: '', phone: '', email: '', location: '' });
+  const [form, setForm] = useState({ full_name: '', phone: '', email: '' });
+  const [phoneTouched, setPhoneTouched] = useState(false);
+  const [privacyAccepted, setPrivacyAccepted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
   const [claimId, setClaimId] = useState<string | null>(null);
   const [qrDataUrl, setQrDataUrl] = useState<string | null>(null);
+  const [showParticles, setShowParticles] = useState(false);
 
+  const phoneValid = /^\d{10}$/.test(form.phone.replace(/\s/g, ''));
+  const phoneError = phoneTouched && form.phone.length > 0 && !phoneValid;
+  const phoneOk = phoneTouched && phoneValid;
+
+  // Generate cashier QR once we have a claimId
   useEffect(() => {
     if (!claimId) return;
-    import('qrcode').then((QRCode) => {
-      const url = `${window.location.origin}/cajero/${claimId}`;
-      QRCode.toDataURL(url, {
-        width: 300,
-        margin: 2,
-        color: { dark: '#3D1200', light: '#ffffff' },
+    import('qrcode').then(QR => {
+      QR.toDataURL(`${window.location.origin}/cajero/${claimId}`, {
+        width: 300, margin: 2,
+        color: { dark: '#1c0a00', light: '#ffffff' },
       }).then(setQrDataUrl);
     });
   }, [claimId]);
 
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  }
-
-  async function handleSubmit(e: React.FormEvent) {
+  async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError('');
     setLoading(true);
@@ -35,11 +47,19 @@ export default function ClaimForm({ prizeId, prizeName }: Props) {
       const res = await fetch('/api/claims', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prize_id: prizeId, ...form }),
+        body: JSON.stringify({
+          prize_id: prizeId,
+          full_name: form.full_name,
+          phone: form.phone,
+          email: form.email,
+          location: '',
+        }),
       });
       const data = await res.json();
       if (!res.ok) { setError(data.error || 'Error al registrar.'); return; }
       setClaimId(data.claim.id);
+      setShowParticles(true);
+      setTimeout(() => setShowParticles(false), 900);
     } catch {
       setError('Error de conexión. Intenta de nuevo.');
     } finally {
@@ -47,221 +67,308 @@ export default function ClaimForm({ prizeId, prizeName }: Props) {
     }
   }
 
-  const inputBase: React.CSSProperties = {
-    width: '100%',
-    background: 'rgba(255,255,255,0.07)',
-    border: '1px solid rgba(255,255,255,0.14)',
-    borderRadius: 12,
-    padding: '13px 16px',
-    color: 'white',
-    fontSize: 15,
-    outline: 'none',
-    boxSizing: 'border-box',
-    transition: 'border-color 0.2s, box-shadow 0.2s, background 0.2s',
-  };
-
-  const focusHandlers = {
-    onFocus: (e: React.FocusEvent<HTMLInputElement>) => {
-      e.target.style.borderColor = 'rgba(232,82,26,0.55)';
-      e.target.style.boxShadow = '0 0 0 3px rgba(232,82,26,0.12)';
-      e.target.style.background = 'rgba(232,82,26,0.06)';
-    },
-    onBlur: (e: React.FocusEvent<HTMLInputElement>) => {
-      e.target.style.borderColor = 'rgba(255,255,255,0.14)';
-      e.target.style.boxShadow = 'none';
-      e.target.style.background = 'rgba(255,255,255,0.07)';
-    },
-  };
-
-  /* ── SUCCESS: Digital Ticket ── */
+  // ── SUCCESS: boarding pass ──────────────────────────────────────────────────
   if (claimId) {
+    const folio = claimId.slice(-8).toUpperCase();
+    const cajeroUrl = typeof window !== 'undefined'
+      ? `${window.location.origin}/cajero/${claimId}`
+      : '';
+    const digits = form.phone.replace(/\D/g, '');
+    const waPhone = digits.length === 10 ? `52${digits}` : digits;
+    const waMsg = `🎁 Tu premio en Tierra Burrito Bar está listo!\n\nPremio: ${prizeName}\nFolio: #${folio}\n\nMuestra este mensaje al cajero:\n${cajeroUrl}`;
+
+    const PARTICLE_ANGLES = [0, 45, 90, 135, 180, 225, 270, 315];
+    const PARTICLE_COLORS = ['#E8521A', '#F59E0B', '#FBBF24', '#F97316', '#EF4444', '#FB923C', '#FCD34D', '#E8521A'];
+
     return (
-      <div className="fade-in-up">
-        <div className="text-center mb-6">
-          <div style={{
-            width: 64, height: 64, borderRadius: '50%',
-            background: 'linear-gradient(135deg,#F97316,#C2410C)',
-            boxShadow: '0 0 0 8px rgba(232,82,26,0.15), 0 0 0 16px rgba(232,82,26,0.07)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            margin: '0 auto 16px',
-          }}>
-            <svg style={{ width: 32, height: 32, color: 'white' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div style={{ position: 'relative' }}>
+        {/* Burst particles */}
+        {showParticles && (
+          <div className="particles-container">
+            {PARTICLE_ANGLES.map((angle, i) => {
+              const rad = (angle * Math.PI) / 180;
+              const dist = 60 + (i % 3) * 20;
+              return (
+                <span
+                  key={i}
+                  className="particle"
+                  style={{
+                    background: PARTICLE_COLORS[i],
+                    '--px': `${Math.round(Math.cos(rad) * dist)}px`,
+                    '--py': `${Math.round(Math.sin(rad) * dist)}px`,
+                    width: 8 + (i % 3) * 3,
+                    height: 8 + (i % 3) * 3,
+                    animationDelay: `${i * 30}ms`,
+                  } as React.CSSProperties}
+                />
+              );
+            })}
+          </div>
+        )}
+
+        {/* Check icon + title */}
+        <div className="text-center mb-6 spring-in">
+          <div
+            className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3"
+            style={{ background: 'linear-gradient(135deg,#E8521A,#C2410C)', boxShadow: '0 8px 24px rgba(232,82,26,0.35)' }}
+          >
+            <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <h3 style={{ color: 'white', fontSize: 24, fontWeight: 900, marginBottom: 6 }}>¡Ya eres oficial!</h3>
-          <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: 14 }}>
-            Tu premio <strong style={{ color: '#F97316' }}>{prizeName}</strong> está registrado
-          </p>
+          <h3 className="text-xl font-extrabold text-[#1C1917] mb-1">¡Registro exitoso!</h3>
+          <p className="text-[#78716c] text-sm">Muestra este pase al cajero para cobrar tu premio</p>
         </div>
 
-        {/* Ticket */}
-        <div style={{
-          background: 'white', borderRadius: 24, overflow: 'hidden',
-          boxShadow: '0 0 0 1px rgba(232,82,26,0.3), 0 0 0 6px rgba(232,82,26,0.10), 0 30px 80px rgba(0,0,0,0.6)',
-          marginBottom: 20,
-        }}>
-          <div style={{ background: 'linear-gradient(135deg,#3D1200,#7C2D12,#9A3412)', padding: '20px 24px', textAlign: 'center' }}>
-            <p style={{ color: 'rgba(251,146,60,0.7)', fontSize: 10, fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: 4 }}>
-              🎉 Premia Tierra — Ticket de Cobro
-            </p>
-            <p style={{ color: 'white', fontSize: 18, fontWeight: 900, lineHeight: 1.2 }}>{prizeName}</p>
+        {/* Boarding pass */}
+        <div
+          className="rounded-2xl overflow-hidden mb-5"
+          style={{ boxShadow: '0 8px 40px rgba(0,0,0,0.13), 0 0 0 1px rgba(232,82,26,0.12)' }}
+        >
+          {/* Header */}
+          <div
+            className="relative overflow-hidden px-5 pt-4 pb-5"
+            style={{ background: 'linear-gradient(135deg,#E8521A 0%,#C2410C 100%)' }}
+          >
+            <div aria-hidden className="absolute inset-0 opacity-[0.04]"
+              style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E")`, backgroundSize: '200px' }} />
+            <div className="relative flex items-start justify-between">
+              <div className="flex-1 pr-4">
+                <p className="text-white/70 text-[10px] font-bold uppercase tracking-[0.2em] mb-1">Tierra Burrito Bar</p>
+                <p className="text-white font-black text-xl leading-tight">{prizeName}</p>
+              </div>
+              <span aria-hidden className="text-white/20 font-black text-xs tracking-[0.15em] uppercase mt-1"
+                style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)', letterSpacing: '0.18em' }}>
+                PREMIO
+              </span>
+            </div>
           </div>
 
-          {/* Perforated edge */}
-          <div style={{ display: 'flex', alignItems: 'center', padding: '0 8px' }}>
-            <div style={{ width: 20, height: 20, borderRadius: '50%', background: '#150800', flexShrink: 0, marginLeft: -10 }} />
-            <div style={{ flex: 1, borderTop: '2px dashed #e5e7eb' }} />
-            <div style={{ width: 20, height: 20, borderRadius: '50%', background: '#150800', flexShrink: 0, marginRight: -10 }} />
+          {/* Perforation */}
+          <div className="flex items-center bg-white">
+            <div className="w-5 h-5 rounded-full shrink-0 -ml-2.5" style={{ background: '#F9FAFB', border: '1px solid #E8E3DC' }} />
+            <div className="flex-1 border-t-[1.5px] border-dashed border-[#E8E3DC] mx-1" />
+            <div className="w-5 h-5 rounded-full shrink-0 -mr-2.5" style={{ background: '#F9FAFB', border: '1px solid #E8E3DC' }} />
           </div>
 
-          <div style={{ padding: '20px 24px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <p style={{ color: '#6b7280', fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 12 }}>
-              Muestra este código al cajero
-            </p>
-            <div style={{ padding: 12, borderRadius: 16, border: '2px solid #ffedd5', background: '#fff7ed' }}>
-              {qrDataUrl ? (
-                <img src={qrDataUrl} alt="QR de cobro" style={{ borderRadius: 10, display: 'block', width: 220, height: 220 }} />
-              ) : (
-                <div style={{ width: 220, height: 220, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <svg style={{ width: 36, height: 36, color: '#F97316', animation: 'spin 1s linear infinite' }} fill="none" viewBox="0 0 24 24">
-                    <circle style={{ opacity: 0.25 }} cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                    <path style={{ opacity: 0.75 }} fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
-                  </svg>
+          {/* Body: info + QR */}
+          <div className="bg-white px-5 pt-4 pb-3">
+            <div className="flex gap-4 items-stretch">
+              {/* Info */}
+              <div className="flex-1 flex flex-col gap-3 justify-center">
+                {[
+                  { label: 'Titular', value: form.full_name },
+                  { label: 'Teléfono', value: '+52 ' + form.phone },
+                  { label: 'Folio', value: '#' + folio, mono: true },
+                ].map(({ label, value, mono }) => (
+                  <div key={label}>
+                    <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#a8a29e] mb-0.5">{label}</p>
+                    <p className={`text-sm font-semibold text-[#1C1917] leading-tight truncate ${mono ? 'font-mono tracking-wider' : ''}`}>
+                      {value}
+                    </p>
+                  </div>
+                ))}
+              </div>
+
+              {/* Vertical dashed divider */}
+              <div style={{ borderLeft: '1.5px dashed #E8E3DC' }} />
+
+              {/* QR */}
+              <div className="shrink-0 flex flex-col items-center justify-center gap-1.5">
+                <p className="text-[9px] font-bold uppercase tracking-[0.18em] text-[#a8a29e]">Escanear en caja</p>
+                <div className="p-2 rounded-xl" style={{ border: '2px solid #FED7AA', background: '#FFF7ED' }}>
+                  {qrDataUrl
+                    ? <img src={qrDataUrl} alt="QR de cobro" style={{ borderRadius: 8, display: 'block', width: 120, height: 120 }} />
+                    : (
+                      <div className="w-[120px] h-[120px] flex items-center justify-center">
+                        <svg className="animate-spin w-7 h-7 text-orange-400" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
+                        </svg>
+                      </div>
+                    )
+                  }
                 </div>
-              )}
-            </div>
-
-            <div style={{ display: 'flex', alignItems: 'center', width: '100%', margin: '20px 0 16px', padding: '0 8px' }}>
-              <div style={{ width: 16, height: 16, borderRadius: '50%', background: '#f3f4f6', flexShrink: 0, marginLeft: -32 }} />
-              <div style={{ flex: 1, borderTop: '1px dashed #d1d5db' }} />
-              <div style={{ width: 16, height: 16, borderRadius: '50%', background: '#f3f4f6', flexShrink: 0, marginRight: -32 }} />
-            </div>
-
-            {/* Chosen location */}
-            <div style={{ width: '100%', background: '#fffbeb', borderRadius: 12, padding: '12px 16px', display: 'flex', gap: 12, alignItems: 'flex-start' }}>
-              <span style={{ fontSize: 22, flexShrink: 0 }}>📍</span>
-              <div>
-                <p style={{ color: '#92400e', fontSize: 10, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 2 }}>
-                  Tu sucursal elegida
-                </p>
-                <p style={{ color: '#78350f', fontSize: 16, fontWeight: 900, lineHeight: 1.2 }}>{form.location}</p>
               </div>
             </div>
+          </div>
 
-            <p style={{ color: '#9ca3af', fontSize: 11, marginTop: 14, textAlign: 'center' }}>
-              Código único · No transferible · Válido una vez
-            </p>
+          {/* Second perforation */}
+          <div className="flex items-center bg-white">
+            <div className="w-4 h-4 rounded-full shrink-0 -ml-2" style={{ background: '#F9FAFB', border: '1px solid #E8E3DC' }} />
+            <div className="flex-1 border-t border-dashed border-[#E8E3DC] mx-1" />
+            <div className="w-4 h-4 rounded-full shrink-0 -mr-2" style={{ background: '#F9FAFB', border: '1px solid #E8E3DC' }} />
+          </div>
+
+          {/* Footer */}
+          <div className="bg-white rounded-b-2xl px-5 py-3 flex items-center justify-between">
+            <p className="text-[#a8a29e] text-[10px] font-mono tracking-wider">ÚNICO · NO TRANSFERIBLE · UNA SOLA VEZ</p>
+            <p className="text-[#E8521A] text-[10px] font-bold uppercase tracking-wide ml-2 shrink-0">Tierra Burrito Bar</p>
           </div>
         </div>
 
-        <div style={{ background: 'rgba(232,82,26,0.10)', border: '1px solid rgba(232,82,26,0.25)', borderRadius: 14, padding: '12px 16px', display: 'flex', gap: 10, alignItems: 'center', marginBottom: 12 }}>
-          <span style={{ fontSize: 18, flexShrink: 0 }}>💡</span>
-          <p style={{ color: 'rgba(255,255,255,0.60)', fontSize: 13, lineHeight: 1.5 }}>
-            Guarda o toma captura de este QR. El cajero lo escaneará para confirmar tu entrega.
+        {/* Tip */}
+        <div className="flex items-center gap-3 bg-orange-50 border border-orange-200 rounded-2xl px-4 py-3 mb-4">
+          <span className="text-xl shrink-0">💡</span>
+          <p className="text-orange-700 text-sm font-medium">
+            <strong>Toma captura</strong> de este pase o guárdalo en WhatsApp. El cajero lo escaneará al llegar.
           </p>
         </div>
 
-        {/* WhatsApp share */}
-        <a
-          href={`https://wa.me/?text=${encodeURIComponent(`¡Gané un premio! 🎁 Aquí está mi código de cobro: ${typeof window !== 'undefined' ? window.location.origin : 'https://premia-tierra.vercel.app'}/cajero/${claimId}`)}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{
-            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
-            background: '#25D366', color: 'white', fontWeight: 800, fontSize: 15,
-            padding: '13px 24px', borderRadius: 14, textDecoration: 'none',
-            boxShadow: '0 8px 24px rgba(37,211,102,0.30)',
-          }}
-        >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-          </svg>
-          Compartir por WhatsApp
-        </a>
+        {/* WhatsApp button */}
+        {qrDataUrl && (
+          <a
+            href={`https://wa.me/${waPhone}?text=${encodeURIComponent(waMsg)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full flex items-center justify-center gap-3 font-black py-4 rounded-2xl text-white text-base mb-3"
+            style={{ background: '#25D366', boxShadow: '0 8px 24px rgba(37,211,102,0.35)' }}
+          >
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+            </svg>
+            Guardar en WhatsApp
+          </a>
+        )}
+
+        {/* Share / download */}
+        {qrDataUrl && (
+          <button
+            onClick={async () => {
+              try {
+                const blob = await (await fetch(qrDataUrl)).blob();
+                const file = new File([blob], 'mi-premio.png', { type: 'image/png' });
+                if (navigator.canShare?.({ files: [file] })) {
+                  await navigator.share({ files: [file], title: 'Premio: ' + prizeName, text: '¡Gané un premio en Tierra Burrito Bar!' });
+                } else {
+                  const a = document.createElement('a');
+                  a.href = qrDataUrl; a.download = 'mi-premio.png'; a.click();
+                }
+              } catch { /* cancelado */ }
+            }}
+            className="w-full flex items-center justify-center gap-2 font-bold py-3.5 rounded-2xl text-sm border border-[#E8E3DC] bg-white text-[#1C1917] hover:bg-[#FAFAF9] transition-colors"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+            </svg>
+            Compartir / Descargar
+          </button>
+        )}
+
+        <p className="text-center text-[#a8a29e] text-xs mt-5">Tierra Burrito Bar · Plataforma de Premios</p>
       </div>
     );
   }
 
-  /* ── FORM ── */
+  // ── FORM ───────────────────────────────────────────────────────────────────
   return (
-    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
+    <form onSubmit={onSubmit} className="space-y-4">
+      {/* Nombre */}
+      <div>
+        <label className={labelCls}>Nombre completo</label>
+        <input
+          name="full_name" type="text" value={form.full_name} required
+          placeholder="Ej: Juan García López"
+          onChange={e => setForm(p => ({ ...p, full_name: e.target.value }))}
+          className={inp}
+        />
+      </div>
 
-      {/* Personal fields */}
-      {[
-        { name: 'full_name', label: 'Nombre completo', type: 'text',  placeholder: 'Ej: Juan García López', icon: '👤' },
-        { name: 'phone',     label: 'Celular',         type: 'tel',   placeholder: 'Ej: 5512345678',       icon: '📱' },
-        { name: 'email',     label: 'Correo',          type: 'email', placeholder: 'Ej: juan@correo.com',  icon: '✉️'  },
-        { name: 'location',  label: '¿En qué sucursal vas a cobrar?', type: 'text', placeholder: 'Ej: Sucursal Centro, Av. Juárez 45', icon: '📍' },
-      ].map(({ name, label, type, placeholder, icon }) => (
-        <div key={name}>
-          <label style={{ display: 'flex', alignItems: 'center', gap: 6, color: 'rgba(255,255,255,0.40)', fontSize: 11, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 7 }}>
-            <span>{icon}</span> {label}
-          </label>
+      {/* Teléfono */}
+      <div>
+        <label className={labelCls}>Celular</label>
+        <div className="relative flex items-center">
+          <span className="absolute left-4 text-sm font-semibold text-[#a8a29e] select-none pointer-events-none">+52</span>
           <input
-            name={name}
-            value={form[name as keyof typeof form]}
-            onChange={handleChange}
-            required
-            type={type}
-            placeholder={placeholder}
-            style={inputBase}
-            {...focusHandlers}
+            name="phone" type="tel" value={form.phone} required maxLength={10}
+            placeholder="5512345678"
+            onChange={e => setForm(p => ({ ...p, phone: e.target.value.replace(/\D/g, '').slice(0, 10) }))}
+            onBlur={() => setPhoneTouched(true)}
+            className={inp + ' pl-12 pr-10 ' + (phoneError ? 'border-red-400 focus:border-red-400' : phoneOk ? 'border-green-400 focus:border-green-400' : '')}
           />
+          {phoneOk && (
+            <span className="absolute right-3 text-green-500">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" /></svg>
+            </span>
+          )}
+          {phoneError && (
+            <span className="absolute right-3 text-red-400">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" /></svg>
+            </span>
+          )}
         </div>
-      ))}
+        {phoneError && <p className="text-xs text-red-500 mt-1">Debe tener 10 dígitos</p>}
+      </div>
 
+      {/* Email */}
+      <div>
+        <label className={labelCls}>Correo electrónico</label>
+        <input
+          name="email" type="email" value={form.email} required
+          placeholder="Ej: juan@correo.com"
+          onChange={e => setForm(p => ({ ...p, email: e.target.value }))}
+          className={inp}
+        />
+      </div>
+
+      {/* Error */}
       {error && (
-        <div style={{ background: 'rgba(239,68,68,0.12)', border: '1px solid rgba(239,68,68,0.30)', borderRadius: 12, padding: '12px 16px', color: '#fca5a5', fontSize: 14, display: 'flex', gap: 8, alignItems: 'center' }}>
-          <svg style={{ width: 16, height: 16, flexShrink: 0 }} fill="currentColor" viewBox="0 0 20 20">
+        <div className="bg-red-50 border border-red-200 text-red-600 rounded-xl px-4 py-3 text-sm flex gap-2 items-center">
+          <svg className="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20">
             <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
           </svg>
           {error}
         </div>
       )}
 
+      {/* Privacy */}
+      <div className="flex items-start gap-2.5">
+        <input
+          id="privacy-cb" type="checkbox" required checked={privacyAccepted}
+          onChange={e => setPrivacyAccepted(e.target.checked)}
+          className="mt-0.5 shrink-0 cursor-pointer accent-[#E8521A]"
+          style={{ width: 16, height: 16 }}
+        />
+        <label htmlFor="privacy-cb" className="text-xs text-[#78716c] leading-snug cursor-pointer select-none">
+          Acepto el{' '}
+          <a href="/privacidad" target="_blank" rel="noopener noreferrer"
+            className="text-[#E8521A] hover:underline font-semibold">
+            Aviso de Privacidad
+          </a>{' '}
+          de Tierra Burrito Bar
+        </label>
+      </div>
+
+      {/* Submit */}
       <button
         type="submit"
-        disabled={loading}
+        disabled={loading || !privacyAccepted}
+        className="w-full font-extrabold py-4 rounded-xl text-white text-base flex items-center justify-center gap-2 transition-all disabled:opacity-60"
         style={{
-          width: '100%',
-          background: loading ? 'rgba(232,82,26,0.25)' : 'linear-gradient(135deg,#F97316 0%,#C2410C 100%)',
-          color: 'white',
-          fontWeight: 800,
-          fontSize: 16,
-          padding: '15px 24px',
-          borderRadius: 14,
-          border: 'none',
-          cursor: loading ? 'not-allowed' : 'pointer',
-          boxShadow: loading ? 'none' : '0 10px 30px rgba(232,82,26,0.35)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: 8,
-          transition: 'all 0.2s',
-          marginTop: 4,
-          letterSpacing: '0.02em',
+          background: (loading || !privacyAccepted)
+            ? '#FED7AA'
+            : 'linear-gradient(135deg,#E8521A,#C2410C)',
+          boxShadow: (loading || !privacyAccepted) ? 'none' : '0 8px 24px rgba(232,82,26,0.35)',
         }}
       >
-        {loading ? (
-          <>
-            <svg style={{ width: 18, height: 18, animation: 'spin 1s linear infinite' }} fill="none" viewBox="0 0 24 24">
-              <circle style={{ opacity: 0.25 }} cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-              <path style={{ opacity: 0.75 }} fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
-            </svg>
-            Registrando...
-          </>
-        ) : (
-          <>
-            Reclamar mi premio
-            <svg style={{ width: 18, height: 18 }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-            </svg>
-          </>
-        )}
+        {loading
+          ? <>
+              <svg className="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
+              </svg>
+              Registrando...
+            </>
+          : <>
+              Reclamar mi premio
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
+            </>
+        }
       </button>
 
-      <p style={{ textAlign: 'center', color: 'rgba(255,255,255,0.20)', fontSize: 12, marginTop: 4 }}>
+      <p className="text-center text-[#a8a29e] text-xs">
         Tus datos son privados y solo se usan para verificar la entrega
       </p>
     </form>

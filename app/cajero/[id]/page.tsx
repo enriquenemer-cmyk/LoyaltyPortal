@@ -1,11 +1,11 @@
-import { getClaimById } from '@/lib/db';
+import { getClaimById, getRecentClaimsByContact, getRestaurantById } from '@/lib/db';
 import { notFound } from 'next/navigation';
 import CashierAction from './CashierAction';
 
-type Props = { params: Promise<{ id: string }>; searchParams: Promise<{ cajero?: string }> };
+type Props = { params: Promise<{ id: string }>; searchParams: Promise<{ cajero?: string; restaurante?: string }> };
 
 function formatDateTime(dateStr: string) {
-  return new Date(dateStr).toLocaleString('es-MX', {
+  return new Date(dateStr).toLocaleString('es-ES', {
     year: 'numeric', month: 'long', day: 'numeric',
     hour: '2-digit', minute: '2-digit',
   });
@@ -13,135 +13,210 @@ function formatDateTime(dateStr: string) {
 
 export default async function CajeroPage({ params, searchParams }: Props) {
   const { id } = await params;
-  const { cajero } = await searchParams;
+  const { cajero, restaurante } = await searchParams;
   const claim = await getClaimById(id);
   if (!claim) notFound();
 
+  // Fetch restaurant for google_maps_url
+  let googleMapsUrl: string | null = null;
+  {
+    const { getPool } = await import('@/lib/db');
+    const pool = getPool();
+    const { rows } = await pool.query<{ restaurant_id: string | null }>(
+      `SELECT restaurant_id FROM prizes WHERE id = $1`,
+      [claim.prize_id]
+    );
+    const restaurantId = rows[0]?.restaurant_id;
+    if (restaurantId) {
+      const restaurant = await getRestaurantById(restaurantId);
+      googleMapsUrl = restaurant?.google_maps_url ?? null;
+    }
+  }
+
+  const [recentByPhone, recentByEmail] = await Promise.all([
+    getRecentClaimsByContact(claim.phone),
+    getRecentClaimsByContact(claim.email),
+  ]);
+  const seenIds = new Set<string>();
+  const recentClaims = [...recentByPhone, ...recentByEmail].filter(c => {
+    if (seenIds.has(c.id)) return false;
+    seenIds.add(c.id);
+    return true;
+  });
+  const recentOtherClaimsCount = recentClaims.filter(c => c.id !== claim.id).length;
+
   const alreadyDelivered = claim.status === 'delivered';
+  const isExpired = claim.expires_at ? new Date(claim.expires_at) < new Date() : false;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-800 via-slate-900 to-slate-800">
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-orange-500/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-orange-700/5 rounded-full blur-3xl" />
-      </div>
+    <div className="min-h-screen" style={{ backgroundColor: '#FAFAF9' }}>
 
-      <div className="relative z-10 max-w-md mx-auto px-4 py-10 pb-20">
-
-        {/* Cajero badge */}
-        <div className="text-center mb-6">
-          <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-2">
-            <svg className="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-            </svg>
-            <span className="text-white/90 text-sm font-medium">Vista del Cajero</span>
+      {/* Sticky header */}
+      <header className="sticky top-0 z-20 bg-white border-b border-[#E8E3DC] shadow-sm fade-in-up">
+        <div className="max-w-md mx-auto px-4 h-14 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2.5">
+            {/* Orange logo icon */}
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style={{ background: 'linear-gradient(135deg, #E8521A, #C2410C)' }}>
+              <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
+              </svg>
+            </div>
+            <div>
+              <p className="text-xs text-stone-400 font-medium leading-none mb-0.5">Cajero · Tierra Burrito Bar</p>
+              {cajero && <p className="text-xs text-[#1C1917] font-semibold leading-none">{cajero}</p>}
+            </div>
           </div>
+          {restaurante && (
+            <span className="text-xs font-semibold px-3 py-1 rounded-full border border-[#E8E3DC] bg-[#FAFAF9] text-stone-600 shrink-0">
+              {restaurante}
+            </span>
+          )}
         </div>
+      </header>
 
-        {/* Prize info */}
-        <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl overflow-hidden shadow-2xl mb-5">
-          <div className={`p-6 ${alreadyDelivered ? 'bg-gradient-to-br from-gray-600 to-gray-700' : 'bg-gradient-to-br from-orange-500 to-orange-700'}`}>
+      <div className="max-w-md mx-auto px-4 py-6 pb-20 space-y-4">
+
+        {/* Expiry warning */}
+        {isExpired && !alreadyDelivered && (
+          <div className="bg-amber-50 border border-amber-200 rounded-2xl px-5 py-4 flex items-start gap-3">
+            <span className="text-xl shrink-0">⚠️</span>
+            <p className="text-amber-800 font-semibold text-sm leading-snug">
+              Este cobro expiró — el cliente tardó más de 2 horas. Puedes entregarlo de todas formas.
+            </p>
+          </div>
+        )}
+
+        {/* Duplicate warning */}
+        {recentOtherClaimsCount > 0 && (
+          <div className="bg-amber-50 border border-amber-200 rounded-2xl px-5 py-4 flex items-start gap-3 slide-up-sm">
+            <span className="text-xl shrink-0">⚠️</span>
+            <p className="text-amber-800 font-semibold text-sm leading-snug">
+              Este cliente tiene {recentOtherClaimsCount} {recentOtherClaimsCount === 1 ? 'premio reclamado recientemente' : 'premios reclamados recientemente'}
+            </p>
+          </div>
+        )}
+
+        {/* Main card */}
+        <div
+          className="bg-white rounded-3xl overflow-hidden border border-[#E8E3DC] pop-in"
+          style={{ animationDelay: '0.1s', boxShadow: '0 1px 2px rgba(28,25,23,0.04), 0 8px 32px rgba(28,25,23,0.10)' }}
+        >
+          {/* Prize header gradient */}
+          <div
+            className="px-6 pt-6 pb-6"
+            style={{ background: alreadyDelivered ? 'linear-gradient(135deg,#1C1917,#292524)' : 'linear-gradient(135deg,#E8521A,#C2410C)' }}
+          >
             <div className="flex items-start gap-4">
-              <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center shrink-0">
+              <div
+                className="w-14 h-14 rounded-2xl flex items-center justify-center shrink-0"
+                style={{ background: 'rgba(255,255,255,0.18)', backdropFilter: 'blur(4px)', border: '1px solid rgba(255,255,255,0.25)' }}
+              >
                 <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
                 </svg>
               </div>
-              <div>
-                <p className="text-white/70 text-xs font-bold uppercase tracking-widest mb-1">Premio a entregar</p>
-                <h1 className="text-2xl font-extrabold text-white leading-tight">{claim.prize_name}</h1>
+              <div className="flex-1 min-w-0">
+                <p className="text-white/60 text-xs font-bold uppercase tracking-widest mb-1.5">Premio a entregar</p>
+                <h1 className="text-2xl font-black text-white leading-tight">{claim.prize_name}</h1>
                 {alreadyDelivered && (
-                  <span className="inline-flex items-center gap-1 mt-2 bg-gray-500/40 text-gray-200 text-xs font-bold px-2.5 py-1 rounded-full">
-                    <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                  <span className="inline-flex items-center gap-1.5 mt-3 bg-white/15 text-white text-xs font-bold px-3 py-1.5 rounded-full border border-white/25">
+                    <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
-                    Ya entregado
+                    Ya fue entregado
                   </span>
                 )}
               </div>
             </div>
           </div>
 
-          {/* Customer info */}
+          {/* Customer section */}
           <div className="p-6 space-y-4">
-            <p className="text-white/50 text-xs font-bold uppercase tracking-widest">Datos del Cliente</p>
+            <p className="text-stone-400 text-xs font-bold uppercase tracking-widest flex items-center gap-2">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+              Datos del Cliente
+            </p>
 
+            {/* Info chips grid */}
             <div className="grid grid-cols-1 gap-3">
-              <div className="bg-white/10 rounded-2xl p-4 border border-white/10 flex items-center gap-3">
-                <div className="w-10 h-10 bg-orange-500/30 rounded-xl flex items-center justify-center shrink-0">
-                  <svg className="w-5 h-5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                  </svg>
+              {/* Name — full width, prominent */}
+              <div className="rounded-xl border border-[#E8E3DC] bg-[#FAFAF9] px-4 py-3.5 stagger-item">
+                <p className="text-stone-400 text-[10px] font-bold uppercase tracking-widest mb-1">Nombre completo</p>
+                <p className="text-[#1C1917] font-extrabold text-lg leading-tight">{claim.full_name}</p>
+              </div>
+
+              {/* Phone + Date side by side */}
+              <div className="grid grid-cols-2 gap-3 stagger-item">
+                <div className="rounded-xl border border-[#E8E3DC] bg-[#FAFAF9] px-4 py-3">
+                  <p className="text-stone-400 text-[10px] font-bold uppercase tracking-widest mb-1">Celular</p>
+                  <p className="text-[#1C1917] font-bold text-sm font-mono">{claim.phone}</p>
                 </div>
-                <div>
-                  <p className="text-white/40 text-xs font-bold uppercase tracking-wide">Nombre</p>
-                  <p className="text-white font-bold text-lg">{claim.full_name}</p>
+                <div className="rounded-xl border border-[#E8E3DC] bg-[#FAFAF9] px-4 py-3">
+                  <p className="text-stone-400 text-[10px] font-bold uppercase tracking-widest mb-1">Registrado</p>
+                  <p className="text-[#1C1917] font-semibold text-xs leading-snug">{formatDateTime(claim.claimed_at)}</p>
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
-                <div className="bg-white/10 rounded-2xl p-4 border border-white/10">
-                  <p className="text-white/40 text-xs font-bold uppercase tracking-wide mb-1">Celular</p>
-                  <p className="text-white font-semibold">{claim.phone}</p>
-                </div>
-                <div className="bg-white/10 rounded-2xl p-4 border border-white/10">
-                  <p className="text-white/40 text-xs font-bold uppercase tracking-wide mb-1">Registrado</p>
-                  <p className="text-white/80 text-xs font-medium">{formatDateTime(claim.claimed_at)}</p>
-                </div>
-              </div>
-
-              <div className="bg-white/10 rounded-2xl p-4 border border-white/10">
-                <p className="text-white/40 text-xs font-bold uppercase tracking-wide mb-1">Correo</p>
-                <p className="text-white/80 text-sm">{claim.email}</p>
-              </div>
-
-              <div className="bg-white/10 rounded-2xl p-4 border border-white/10">
-                <p className="text-white/40 text-xs font-bold uppercase tracking-wide mb-1">Descripción del premio</p>
-                <p className="text-white/80 text-sm">{claim.prize_description}</p>
+              {/* Email */}
+              <div className="rounded-xl border border-[#E8E3DC] bg-[#FAFAF9] px-4 py-3 stagger-item">
+                <p className="text-stone-400 text-[10px] font-bold uppercase tracking-widest mb-1">Correo electrónico</p>
+                <p className="text-[#1C1917] font-semibold text-sm">{claim.email}</p>
               </div>
             </div>
 
-            {/* Location */}
-            <div className="bg-gradient-to-r from-amber-400/20 to-orange-400/20 border border-amber-400/30 rounded-2xl p-4 flex items-center gap-3">
-              <svg className="w-5 h-5 text-amber-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-              </svg>
+            {/* Location chip — prominent */}
+            <div
+              className="rounded-xl px-4 py-3.5 flex items-center gap-3"
+              style={{ background: 'linear-gradient(135deg,#FEF3C7,#FEF9C3)', border: '1px solid #FCD34D' }}
+            >
+              <div className="w-9 h-9 bg-amber-400/20 rounded-xl flex items-center justify-center shrink-0 pulse-glow">
+                <svg className="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+              </div>
               <div>
-                <p className="text-amber-300 text-xs font-bold uppercase tracking-wide">Sucursal elegida por el cliente</p>
-                <p className="text-white font-bold">{claim.location ?? claim.prize_location}</p>
+                <p className="text-amber-600 text-[10px] font-bold uppercase tracking-widest mb-0.5">Sucursal elegida</p>
+                <p className="text-amber-900 font-extrabold text-sm">{claim.location ?? claim.prize_location}</p>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Action or delivered state */}
-        <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl p-6 shadow-2xl">
+        {/* Delivery card */}
+        <div
+          className="bg-white rounded-3xl border border-[#E8E3DC] overflow-hidden pop-in"
+          style={{ boxShadow: '0 1px 2px rgba(28,25,23,0.04), 0 8px 32px rgba(28,25,23,0.08)', animationDelay: '0.2s' }}
+        >
           {alreadyDelivered ? (
-            <div className="text-center py-2">
-              <div className="w-16 h-16 bg-gray-500/30 border-2 border-gray-400/30 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="text-center py-10 px-6">
+              <div className="w-16 h-16 bg-stone-100 border-2 border-stone-200 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8 text-stone-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
               </div>
-              <h3 className="text-xl font-extrabold text-white mb-2">Este premio ya fue entregado</h3>
-              <p className="text-white/50 text-sm">
+              <h3 className="text-xl font-extrabold text-[#1C1917] mb-2">Este premio ya fue entregado</h3>
+              <p className="text-stone-400 text-sm">
                 Entregado el {formatDateTime(claim.delivered_at!)}
-                {claim.delivered_by && <> por <strong className="text-white/70">{claim.delivered_by}</strong></>}
+                {claim.delivered_by && <> por <strong className="text-stone-600">{claim.delivered_by}</strong></>}
               </p>
             </div>
           ) : (
             <>
-              <div className="mb-5">
-                <h2 className="text-lg font-bold text-white">Confirmar Entrega</h2>
-                <p className="text-white/50 text-sm mt-1">Una vez que confirmes, quedará registrado en el sistema y el QR se invalida.</p>
+              <div className="px-5 py-4 border-b border-[#E8E3DC] bg-[#FAFAF9]">
+                <h2 className="text-base font-bold text-[#1C1917]">Confirmar Entrega</h2>
+                <p className="text-stone-500 text-xs mt-0.5">El QR se invalida al confirmar y queda registrado en el sistema.</p>
               </div>
-              <CashierAction claimId={claim.id} prizeName={claim.prize_name} defaultCajero={cajero ?? ''} />
+              <div className="p-6">
+                <CashierAction claimId={claim.id} prizeName={claim.prize_name} defaultCajero={cajero ?? ''} phone={claim.phone} fullName={claim.full_name} isExpired={isExpired} googleMapsUrl={googleMapsUrl} />
+              </div>
             </>
           )}
         </div>
 
-        <p className="text-center text-white/20 text-xs mt-6">Premia Tierra · Panel de Cajero</p>
+        <p className="text-center text-stone-300 text-xs">Premia Tierra · Panel de Cajero</p>
       </div>
     </div>
   );

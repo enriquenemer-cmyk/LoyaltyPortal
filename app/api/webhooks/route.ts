@@ -14,7 +14,7 @@ export const WEBHOOK_EVENTS = [
   {
     event: 'claim.delivered',
     description: 'El cajero marca un premio como entregado',
-    payload_example: { claim_id: 'uuid', prize_id: 'uuid', full_name: 'Juan García', delivered_at: '2026-01-01T00:00:00Z', cashier: 'cajero@tierra.mx' },
+    payload_example: { claim_id: 'uuid', prize_id: 'uuid', full_name: 'Juan García', delivered_at: '2026-01-01T00:00:00Z', cashier: 'cajero@ejemplo.mx' },
   },
 ];
 

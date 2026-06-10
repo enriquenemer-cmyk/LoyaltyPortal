@@ -30,7 +30,7 @@ function getWeekRange() {
 
 function buildMessage(stats: WeeklyStats) {
   return (
-    `📊 Reporte Semanal · Tierra Burrito Bar\n\n` +
+    `📊 Reporte Semanal · Burrito Bar\n\n` +
     `✅ Premios generados: ${stats.generados}\n` +
     `🎁 Cobros realizados: ${stats.cobrados}\n` +
     `⏳ Pendientes de cobro: ${stats.pendientes}\n` +
@@ -73,7 +73,7 @@ function WhatsAppAlertsSection() {
   function handleTest() {
     const n = number.replace(/\D/g, '');
     if (!n) { alert('Ingresa un número primero'); return; }
-    const msg = encodeURIComponent('🧪 Prueba de alerta SuperTierra — configuración correcta ✅');
+    const msg = encodeURIComponent('🧪 Prueba de alerta Premia — configuración correcta ✅');
     window.open(`https://wa.me/${n}?text=${msg}`, '_blank');
   }
 
@@ -392,7 +392,7 @@ export default function ReportePage() {
       doc.setTextColor(...WHITE);
       doc.setFontSize(28);
       doc.setFont('helvetica', 'bold');
-      doc.text('Tierra Burrito Bar', marginL, 28);
+      doc.text('Burrito Bar', marginL, 28);
 
       doc.setFontSize(14);
       doc.setFont('helvetica', 'normal');
@@ -666,7 +666,7 @@ export default function ReportePage() {
         doc.setFontSize(8);
         doc.setTextColor(...GRAY);
         doc.text(
-          `SuperTierra · ${generatedDate} · Pagina ${p} de ${pageCount}`,
+          `Premia · ${generatedDate} · Pagina ${p} de ${pageCount}`,
           pageW / 2,
           290,
           { align: 'center' }
@@ -721,7 +721,7 @@ export default function ReportePage() {
       </tr>`).join('');
 
     container.innerHTML = `
-      <h2>SuperTierra — Reporte de Cobros</h2>
+      <h2>Premia — Reporte de Cobros</h2>
       <p class="sub">Generado: ${new Date().toLocaleString('es-MX', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })} · Total: ${claimsToPrint.length} registros</p>
       <table>
         <thead><tr><th>Fecha</th><th>Cliente</th><th>Premio</th><th>Restaurante</th><th>Estado</th><th>Cajero</th></tr></thead>
@@ -800,7 +800,7 @@ export default function ReportePage() {
           <div className="rounded-2xl border border-[#E8E3DC] bg-white overflow-hidden mb-5"
             style={{ boxShadow: '0 2px 16px rgba(0,0,0,0.06)' }}>
             <div className="p-4 text-center" style={{ background: 'linear-gradient(135deg, #2563EB, #0891B2)' }}>
-              <p className="text-white/70 text-xs font-bold uppercase tracking-widest mb-0.5">Tierra Burrito Bar</p>
+              <p className="text-white/70 text-xs font-bold uppercase tracking-widest mb-0.5">Burrito Bar</p>
               <p className="text-white font-extrabold text-lg">📊 Reporte Semanal</p>
             </div>
             <div className="divide-y divide-[#F3EFE9]">

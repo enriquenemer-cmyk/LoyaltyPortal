@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
     `, [days]);
 
     const now = Date.now();
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://premiatierra.com';
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://premia-tierra.vercel.app';
 
     const customers = rows.map((row) => {
       const lastDate = new Date(row.last_claim_date);
@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
       const prizeUrl = `${appUrl}/premio/regreso`;
 
       const name = row.full_name.split(' ')[0];
-      const message = `¡Hola ${name}! Te extrañamos en Tierra Burrito Bar 🌯 Aquí tienes un premio especial de regreso: ${prizeUrl}`;
+      const message = `¡Hola ${name}! Te extrañamos en Burrito Bar 🌯 Aquí tienes un premio especial de regreso: ${prizeUrl}`;
       const waUrl = `https://wa.me/${row.phone.replace(/\D/g, '')}?text=${encodeURIComponent(message)}`;
 
       return {
@@ -63,7 +63,7 @@ export async function POST(request: NextRequest) {
         body: JSON.stringify({
           phone: c.phone,
           title: `¡Te extrañamos, ${name}! 🌯`,
-          body: 'Tenemos un premio especial de regreso esperándote en Tierra Burrito Bar.',
+          body: 'Tenemos un premio especial de regreso esperándote en Burrito Bar.',
           url: `${appUrl}/premio/regreso`,
         }),
       }).catch(() => {});

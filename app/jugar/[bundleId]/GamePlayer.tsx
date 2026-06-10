@@ -400,7 +400,7 @@ export default function GamePlayer({
         <div style={{ background: 'linear-gradient(135deg,#2563EB,#0891B2)' }} className="px-5 pt-10 pb-8 text-center">
           <p className="text-white/70 text-xs font-bold uppercase tracking-widest mb-2">{gameLabel}</p>
           <h1 className="text-2xl font-black text-white leading-tight">{bundle.name}</h1>
-          <p className="text-white/60 text-sm mt-1">Tierra Burrito Bar</p>
+          <p className="text-white/60 text-sm mt-1">Burrito Bar</p>
         </div>
 
         <div className="max-w-md mx-auto px-4 py-6 space-y-5">
@@ -590,7 +590,7 @@ export default function GamePlayer({
           <div className="px-5 py-4 border-b border-[#E8E3DC]" style={{ background: '#FAFAF9' }}>
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-[10px] font-bold text-[#2563EB] uppercase tracking-widest">SuperTierra</p>
+                <p className="text-[10px] font-bold text-[#2563EB] uppercase tracking-widest">Premia</p>
                 <p className="text-[#1C1917] font-extrabold text-base mt-0.5">{bundle.name}</p>
               </div>
               <span className="text-3xl">🎁</span>

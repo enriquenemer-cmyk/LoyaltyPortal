@@ -77,7 +77,7 @@ interface TourStep {
 const TOUR_STEPS: TourStep[] = [
   {
     id: 1,
-    message: '👋 Bienvenido a SuperTierra. Te mostramos cómo funciona en 4 pasos.',
+    message: '👋 Bienvenido a Premia. Te mostramos cómo funciona en 4 pasos.',
     targetSelector: null,
     position: 'center',
   },

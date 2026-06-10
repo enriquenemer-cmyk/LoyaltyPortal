@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
     const prize = await insertPrize({
       id: prizeId,
       name: `Premio de Cumpleaños - ${full_name}`,
-      reason: '¡Feliz cumpleaños! De parte de todo el equipo de Tierra Burrito Bar',
+      reason: '¡Feliz cumpleaños! De parte de todo el equipo de Burrito Bar',
       description: 'Un postre de temporada completamente gratis para celebrar tu día especial.',
       start_date: startDate,
       end_date: endDate,

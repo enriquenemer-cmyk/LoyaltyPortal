@@ -1058,7 +1058,7 @@ function SetupChecklist({
           <span className="text-3xl shrink-0">🎉</span>
           <div>
             <p className="font-bold text-blue-900 text-base">¡Configuracion completa!</p>
-            <p className="text-sm text-blue-700 mt-0.5">Tu plataforma SuperTierra esta lista para usarse.</p>
+            <p className="text-sm text-blue-700 mt-0.5">Tu plataforma Premia esta lista para usarse.</p>
           </div>
         </div>
         <button
@@ -1353,7 +1353,7 @@ export default function AdminDashboard() {
             <h1 className="h1 font-black text-3xl">
               Panel Principal
             </h1>
-            <p className="text-sm text-[#78716c] mt-0.5">Plataforma Tierra Burrito — SuperTierra</p>
+            <p className="text-sm text-[#78716c] mt-0.5">Plataforma Burrito — Premia</p>
           </div>
           <div className="flex flex-col items-end gap-2">
             <div className="flex gap-3">
@@ -1411,7 +1411,7 @@ export default function AdminDashboard() {
               <span className="text-3xl shrink-0">👋</span>
               <div>
                 <p className="font-bold text-[#1C1917] text-base">¡Bienvenido! Comienza configurando tu primer restaurante.</p>
-                <p className="text-sm text-[#78716c] mt-0.5">Sigue el asistente de configuración para poner en marcha SuperTierra.</p>
+                <p className="text-sm text-[#78716c] mt-0.5">Sigue el asistente de configuración para poner en marcha Premia.</p>
               </div>
             </div>
             <div className="flex items-center gap-3 shrink-0">

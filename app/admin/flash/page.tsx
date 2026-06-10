@@ -10,7 +10,7 @@ const TEMPLATES = [
   { name: '10% de descuento', reason: 'Cliente frecuente', description: '10% de descuento en tu consumo total del día.', short: 'En el consumo total' },
   { name: 'Postre gratis', reason: 'Por tu cumpleaños', description: 'Un postre de temporada gratis para celebrar tu cumpleaños.', short: 'El día de tu cumpleaños' },
   { name: 'Burrito gratis', reason: 'Concurso ganador', description: 'Un burrito de tu elección completamente gratis, del tamaño que prefieras.', short: 'Del tamaño que prefieras' },
-  { name: 'Combo especial', reason: 'Premio especial Tierra', description: 'Combo especial: principal + bebida + postre a precio especial.', short: 'Principal + bebida + postre' },
+  { name: 'Combo especial', reason: 'Premio especial', description: 'Combo especial: principal + bebida + postre a precio especial.', short: 'Principal + bebida + postre' },
 ];
 
 const DURATIONS = [
@@ -113,7 +113,7 @@ export default function FlashPage() {
   const restaurantName = restaurants.find((r) => r.id === restaurantId)?.name ?? '';
 
   const defaultMessage = selectedTemplate
-    ? `⚡ CAMPAÑA FLASH - ${selectedTemplate.name.toUpperCase()}\n\nPor tiempo limitado (${durationHours}h) en ${restaurantName || 'Tierra'}:\n\n${selectedTemplate.description}\n\n¡Escanea tu QR exclusivo y canjea hoy mismo!`
+    ? `⚡ CAMPAÑA FLASH - ${selectedTemplate.name.toUpperCase()}\n\nPor tiempo limitado (${durationHours}h) en ${restaurantName || 'el restaurante'}:\n\n${selectedTemplate.description}\n\n¡Escanea tu QR exclusivo y canjea hoy mismo!`
     : '';
 
   async function handleLaunch() {

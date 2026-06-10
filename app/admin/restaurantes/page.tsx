@@ -458,7 +458,7 @@ export default function RestaurantesPage() {
                   value={form.name}
                   onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))}
                   required
-                  placeholder="Ej: Tierra Burrito Centro"
+                  placeholder="Ej: Burrito Centro"
                   className={inputClass}
                 />
               </div>

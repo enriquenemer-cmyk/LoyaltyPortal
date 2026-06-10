@@ -124,13 +124,13 @@ function ReferidosContent() {
 
   const handleWhatsApp = () => {
     const msg = encodeURIComponent(
-      `¡Hola! Te invito a ganar premios gratis en SuperTierra. Regístrate con mi link y ambos ganamos: ${referralLink}`
+      `¡Hola! Te invito a ganar premios gratis en Premia. Regístrate con mi link y ambos ganamos: ${referralLink}`
     );
     window.open(`https://wa.me/?text=${msg}`, '_blank');
   };
 
   const handleSMS = () => {
-    const msg = encodeURIComponent(`¡Gana premios en SuperTierra! Usa mi link: ${referralLink}`);
+    const msg = encodeURIComponent(`¡Gana premios en Premia! Usa mi link: ${referralLink}`);
     window.open(`sms:?body=${msg}`, '_blank');
   };
 
@@ -192,7 +192,7 @@ function ReferidosContent() {
               <path stroke="rgba(255,255,255,0.85)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2z" />
             </svg>
             <span style={{ color: 'rgba(255,255,255,0.85)', fontSize: 13, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-              SuperTierra — Referidos
+              Premia — Referidos
             </span>
           </div>
 

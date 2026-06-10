@@ -1,4 +1,4 @@
-// Skeleton loader components — blue-tinted shimmer matching SuperTierra palette
+// Skeleton loader components — blue-tinted shimmer matching Premia palette
 
 export function Skeleton({ className = '' }: { className?: string }) {
   return (

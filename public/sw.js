@@ -1,4 +1,4 @@
-// SuperTierra Service Worker
+// Premia Service Worker
 // Caches cajero pages for offline use and queues delivery confirmations.
 
 const CACHE_NAME = 'supertierra-v2';
@@ -172,7 +172,7 @@ async function flushDeliveryQueue() {
 // ---- Push Notifications -----------------------------------------------------
 
 self.addEventListener('push', (event) => {
-  let data = { title: 'SuperTierra', body: '¡Tienes un mensaje!', url: '/', icon: '/icon-192.png' };
+  let data = { title: 'Premia', body: '¡Tienes un mensaje!', url: '/', icon: '/icon-192.png' };
   if (event.data) {
     try { data = { ...data, ...event.data.json() }; } catch {}
   }

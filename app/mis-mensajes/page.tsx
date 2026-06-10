@@ -105,7 +105,7 @@ export default function MisMensajesPage() {
             </svg>
           </div>
           <h1 className="text-2xl font-extrabold text-white mb-1">Mis Mensajes</h1>
-          <p className="text-white/70 text-sm">Mensajes de Tierra Burrito Bar para ti</p>
+          <p className="text-white/70 text-sm">Mensajes de Burrito Bar para ti</p>
           {/* Tab navigation */}
           <div className="flex justify-center gap-2 mt-5">
             <Link
@@ -349,7 +349,7 @@ export default function MisMensajesPage() {
 
         {/* Footer */}
         <p className="text-center text-gray-400 text-xs pb-6">
-          Tierra Burrito Bar · supertierra.vercel.app
+          Burrito Bar · supertierra.vercel.app
         </p>
       </div>
     </div>

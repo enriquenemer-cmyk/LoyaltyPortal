@@ -16,7 +16,7 @@ type Props = {
   size?: number;
 };
 
-export default function QRPreview({ url = 'https://premia.tierra/preview', style, size = 120 }: Props) {
+export default function QRPreview({ url = 'https://premia-tierra.vercel.app/preview', style, size = 120 }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

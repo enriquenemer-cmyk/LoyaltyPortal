@@ -62,7 +62,7 @@ export default async function CajeroPage({ params, searchParams }: Props) {
               </svg>
             </div>
             <div>
-              <p className="text-xs text-stone-400 font-medium leading-none mb-0.5">Cajero · Tierra Burrito Bar</p>
+              <p className="text-xs text-stone-400 font-medium leading-none mb-0.5">Cajero · Burrito Bar</p>
               {cajero && <p className="text-xs text-[#1C1917] font-semibold leading-none">{cajero}</p>}
             </div>
           </div>
@@ -216,7 +216,7 @@ export default async function CajeroPage({ params, searchParams }: Props) {
           )}
         </div>
 
-        <p className="text-center text-stone-300 text-xs">SuperTierra · Panel de Cajero</p>
+        <p className="text-center text-stone-300 text-xs">Premia · Panel de Cajero</p>
       </div>
     </div>
   );

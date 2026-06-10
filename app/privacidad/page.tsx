@@ -1,6 +1,6 @@
 export const metadata = {
-  title: 'Aviso de Privacidad | Tierra Burrito Bar',
-  description: 'Aviso de Privacidad de Tierra Burrito Bar conforme a la LFPDPPP.',
+  title: 'Aviso de Privacidad | Burrito Bar',
+  description: 'Aviso de Privacidad de Burrito Bar conforme a la LFPDPPP.',
 };
 
 export default function PrivacidadPage() {
@@ -23,9 +23,9 @@ export default function PrivacidadPage() {
             1. Identidad y domicilio del Responsable
           </h2>
           <p style={{ fontSize: 15, lineHeight: 1.7, color: '#1C1917' }}>
-            <strong>Tierra Burrito Bar</strong> (en adelante "el Responsable"), con domicilio en la
+            <strong>Burrito Bar</strong> (en adelante "el Responsable"), con domicilio en la
             República Mexicana, es responsable del tratamiento de los datos personales que usted
-            nos proporciona a través de la plataforma de fidelización SuperTierra, en cumplimiento
+            nos proporciona a través de la plataforma de fidelización Premia, en cumplimiento
             con lo establecido en la{' '}
             <em>Ley Federal de Protección de Datos Personales en Posesión de los Particulares</em>{' '}
             (LFPDPPP) y su Reglamento.
@@ -61,7 +61,7 @@ export default function PrivacidadPage() {
             las cuales son necesarias para la relación jurídica entre usted y el Responsable:
           </p>
           <ul style={{ fontSize: 15, lineHeight: 1.8, color: '#1C1917', paddingLeft: 24, margin: 0 }}>
-            <li>Administrar su participación en el programa de fidelización y premios de Tierra Burrito Bar.</li>
+            <li>Administrar su participación en el programa de fidelización y premios de Burrito Bar.</li>
             <li>Verificar la entrega de premios y beneficios.</li>
             <li>Identificarle y contactarle en caso de que sea necesario validar un premio o registro.</li>
             <li>Enviar notificaciones relacionadas con sus premios, vigencias y beneficios del programa.</li>
@@ -85,7 +85,7 @@ export default function PrivacidadPage() {
             4. Transferencias de datos personales
           </h2>
           <p style={{ fontSize: 15, lineHeight: 1.7, color: '#1C1917' }}>
-            Tierra Burrito Bar no comparte, vende ni transfiere sus datos personales a terceros con
+            Burrito Bar no comparte, vende ni transfiere sus datos personales a terceros con
             fines comerciales. Únicamente se podrán realizar transferencias a encargados que presten
             servicios de tecnología (hospedaje de plataforma, envío de correos electrónicos), quienes
             estarán obligados a proteger sus datos conforme a la ley.
@@ -109,7 +109,7 @@ export default function PrivacidadPage() {
           </ul>
           <p style={{ fontSize: 15, lineHeight: 1.7, color: '#1C1917', marginTop: 12 }}>
             Puede enviar su solicitud al correo electrónico:{' '}
-            <strong>privacidad@tierraburritobar.com</strong> o presentarse en cualquiera de nuestras
+            <strong>privacidad@burritobar.com</strong> o presentarse en cualquiera de nuestras
             sucursales. Responderemos en un plazo máximo de <strong>20 días hábiles</strong> a partir
             de la recepción de su solicitud.
           </p>
@@ -120,7 +120,7 @@ export default function PrivacidadPage() {
             6. Uso de cookies y tecnologías de rastreo
           </h2>
           <p style={{ fontSize: 15, lineHeight: 1.7, color: '#1C1917' }}>
-            La plataforma SuperTierra utiliza <strong>cookies de sesión</strong> con la finalidad
+            La plataforma Premia utiliza <strong>cookies de sesión</strong> con la finalidad
             exclusiva de mantener su sesión activa y garantizar la seguridad de la navegación. No se
             utilizan cookies de rastreo publicitario ni se comparte información de navegación con
             terceros con fines de mercadotecnia. Puede configurar su navegador para bloquear o
@@ -165,7 +165,7 @@ export default function PrivacidadPage() {
             Este aviso de privacidad fue elaborado conforme a lo dispuesto por la{' '}
             <em>Ley Federal de Protección de Datos Personales en Posesión de los Particulares</em>,
             publicada en el Diario Oficial de la Federación el 5 de julio de 2010, y su Reglamento.
-            Responsable: <strong>Tierra Burrito Bar</strong> &mdash; Mexico.
+            Responsable: <strong>Burrito Bar</strong> &mdash; Mexico.
           </p>
         </div>
 

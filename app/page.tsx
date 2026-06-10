@@ -60,7 +60,7 @@ export default function HomePage() {
           <span>Plataforma de premios QR</span>
         </div>
         <h1 className="text-5xl md:text-6xl font-black tracking-tight text-stone-900 max-w-3xl leading-tight">
-          Fideliza a tus clientes con <span className="text-blue-600">SuperTierra</span>
+          Fideliza a tus clientes con <span className="text-blue-600">Premia</span>
         </h1>
         <p className="text-lg text-stone-500 max-w-xl">
           Genera códigos QR de premios, gestiona tus restaurantes y haz seguimiento de canjes en tiempo real.

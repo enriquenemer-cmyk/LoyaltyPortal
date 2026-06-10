@@ -205,7 +205,7 @@ export default function ScannerClient() {
 
           <div className="flex-1 min-w-0">
             <p className="text-white font-extrabold text-base leading-tight truncate">{restaurantName}</p>
-            <p className="text-white/70 text-xs">Cajero · Tierra Burrito Bar</p>
+            <p className="text-white/70 text-xs">Cajero · Burrito Bar</p>
           </div>
 
           {kioskMode && (

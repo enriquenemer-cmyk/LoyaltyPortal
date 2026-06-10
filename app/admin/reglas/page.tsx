@@ -24,7 +24,7 @@ const TEMPLATES = [
   { name: '10% de descuento', reason: 'Cliente frecuente', description: '10% de descuento en tu consumo total del día.' },
   { name: 'Postre gratis', reason: 'Por tu cumpleaños', description: 'Un postre de temporada gratis para celebrar tu cumpleaños.' },
   { name: 'Burrito gratis', reason: 'Concurso ganador', description: 'Un burrito de tu elección completamente gratis, del tamaño que prefieras.' },
-  { name: 'Combo especial', reason: 'Premio especial Tierra', description: 'Combo especial: principal + bebida + postre a precio especial.' },
+  { name: 'Combo especial', reason: 'Premio especial', description: 'Combo especial: principal + bebida + postre a precio especial.' },
 ];
 
 const TRIGGER_LABELS: Record<string, string> = {

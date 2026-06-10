@@ -62,7 +62,7 @@ export default function CajeroPage() {
             </svg>
           </div>
           <div>
-            <h1 className="text-stone-900 text-lg font-extrabold leading-tight">SuperTierra</h1>
+            <h1 className="text-stone-900 text-lg font-extrabold leading-tight">Premia</h1>
             <p className="text-stone-400 text-xs font-medium">Selecciona tu sucursal para escanear</p>
           </div>
         </div>
@@ -177,7 +177,7 @@ export default function CajeroPage() {
         )}
 
         <p className="text-center text-stone-300 text-xs mt-10">
-          Tierra Burrito Bar · Panel de Cajeros · SuperTierra
+          Burrito Bar · Panel de Cajeros · Premia
         </p>
       </div>
     </div>

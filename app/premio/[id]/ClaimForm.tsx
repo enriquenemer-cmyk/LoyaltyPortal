@@ -75,7 +75,7 @@ export default function ClaimForm({ prizeId, prizeName }: Props) {
     const cajeroUrl = typeof window !== 'undefined'
       ? `${window.location.origin}/cajero/${claimId}`
       : '';
-    const waMsg = `🎁 Mi premio en Tierra Burrito Bar\n\nPremio: ${prizeName}\nFolio: #${folio}\n\n${cajeroUrl}`;
+    const waMsg = `🎁 Mi premio en Burrito Bar\n\nPremio: ${prizeName}\nFolio: #${folio}\n\n${cajeroUrl}`;
 
     return (
       <div className="text-center space-y-5">
@@ -135,7 +135,7 @@ export default function ClaimForm({ prizeId, prizeName }: Props) {
                   const blob = await (await fetch(qrDataUrl)).blob();
                   const file = new File([blob], 'mi-premio.png', { type: 'image/png' });
                   if (navigator.canShare?.({ files: [file] })) {
-                    await navigator.share({ files: [file], title: 'Premio: ' + prizeName, text: '¡Gané un premio en Tierra Burrito Bar!' });
+                    await navigator.share({ files: [file], title: 'Premio: ' + prizeName, text: '¡Gané un premio en Burrito Bar!' });
                   } else {
                     const a = document.createElement('a');
                     a.href = qrDataUrl; a.download = 'mi-premio.png'; a.click();
@@ -152,7 +152,7 @@ export default function ClaimForm({ prizeId, prizeName }: Props) {
           </div>
         )}
 
-        <p className="text-[#a8a29e] text-xs">Tierra Burrito Bar · Plataforma de Premios</p>
+        <p className="text-[#a8a29e] text-xs">Burrito Bar · Plataforma de Premios</p>
       </div>
     );
   }
@@ -231,7 +231,7 @@ export default function ClaimForm({ prizeId, prizeName }: Props) {
             className="text-[#2563EB] hover:underline font-semibold">
             Aviso de Privacidad
           </a>{' '}
-          de Tierra Burrito Bar
+          de Burrito Bar
         </label>
       </div>
 

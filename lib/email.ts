@@ -8,7 +8,7 @@ interface SendEmailOptions {
 
 async function sendEmail(opts: SendEmailOptions): Promise<void> {
   const apiKey = process.env.RESEND_API_KEY;
-  const from = process.env.EMAIL_FROM ?? 'SuperTierra <noreply@premias.tierra.mx>';
+  const from = process.env.EMAIL_FROM ?? 'Premia <noreply@burritobar.mx>';
 
   if (!apiKey) {
     console.log('[email] No RESEND_API_KEY — skipping send to:', opts.to, '|', opts.subject);
@@ -48,7 +48,7 @@ export async function sendClaimLink(opts: {
 <body style="margin:0;padding:0;background:#f8fafc;font-family:system-ui,Arial,sans-serif;">
   <div style="max-width:480px;margin:40px auto;background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08);">
     <div style="background:linear-gradient(135deg,#2563EB,#0891B2);padding:28px 32px;">
-      <p style="margin:0;color:#fff;font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;opacity:.8;">Tierra Burrito Bar</p>
+      <p style="margin:0;color:#fff;font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;opacity:.8;">Burrito Bar</p>
       <h1 style="margin:8px 0 0;color:#fff;font-size:22px;font-weight:900;">Tu código de cobro</h1>
     </div>
     <div style="padding:32px;">
@@ -63,7 +63,7 @@ export async function sendClaimLink(opts: {
       <p style="color:#94a3b8;font-size:11px;margin-top:20px;text-align:center;word-break:break-all;">${opts.claim_url}</p>
     </div>
     <div style="background:#f8fafc;padding:16px 32px;border-top:1px solid #e2e8f0;">
-      <p style="margin:0;color:#94a3b8;font-size:11px;text-align:center;">© ${new Date().getFullYear()} Tierra Burrito Bar · SuperTierra</p>
+      <p style="margin:0;color:#94a3b8;font-size:11px;text-align:center;">© ${new Date().getFullYear()} Burrito Bar · Premia</p>
     </div>
   </div>
 </body>

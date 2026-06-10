@@ -63,7 +63,7 @@ export default function CashierAction({ claimId, prizeName, defaultCajero = '', 
     return () => clearTimeout(t);
   }, [done, countdown, router]);
 
-  const googleMapsLink = googleMapsUrl || `https://www.google.com/maps/search/Premia+Tierra`;
+  const googleMapsLink = googleMapsUrl || `https://www.google.com/maps/search/Burrito+Bar`;
   const feedbackText = googleMapsUrl
     ? `Hola ${fullName}, esperamos que hayas disfrutado tu premio. ¿Nos dejas una reseña en Google Maps? Tu opinión nos ayuda mucho. 🧡 ${googleMapsLink}`
     : `Hola ${fullName}, esperamos que hayas disfrutado tu premio. ¿Nos dejas una reseña? 🧡 ${googleMapsLink}`;
@@ -135,7 +135,7 @@ export default function CashierAction({ claimId, prizeName, defaultCajero = '', 
           const waPhoneSelf = rawDigits.startsWith('34') ? rawDigits : `34${rawDigits}`;
           const folio = claimId.slice(-8).toUpperCase();
           const cajeroUrl = `${typeof window !== 'undefined' ? window.location.origin : ''}/cajero/${claimId}`;
-          const selfMsg = `🎁 Tu premio en Tierra Burrito Bar está listo!\n\nPremio: ${prizeName}\nFolio: #${folio}\n\nMuestra este mensaje al cajero cuando llegues:\n${cajeroUrl}`;
+          const selfMsg = `🎁 Tu premio en Burrito Bar está listo!\n\nPremio: ${prizeName}\nFolio: #${folio}\n\nMuestra este mensaje al cajero cuando llegues:\n${cajeroUrl}`;
           const waSelfUrl = `https://wa.me/${waPhoneSelf}?text=${encodeURIComponent(selfMsg)}`;
           return (
             <a

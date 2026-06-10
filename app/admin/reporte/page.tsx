@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useMemo } from 'react';
 
 interface WeeklyStats {
   generados: number;
@@ -136,13 +136,137 @@ function WhatsAppAlertsSection() {
   );
 }
 
+// ── Advanced Filters ──────────────────────────────────────────────────────────
+type Filters = {
+  sucursal: string;
+  from: string;
+  to: string;
+  status: '' | 'pending' | 'delivered' | 'cancelled';
+  premio: string;
+};
+
+const EMPTY_FILTERS: Filters = { sucursal: '', from: '', to: '', status: '', premio: '' };
+
+function AdvancedFilters({
+  allClaims,
+  filters,
+  setFilters,
+}: {
+  allClaims: ClaimRow[];
+  filters: Filters;
+  setFilters: (f: Filters) => void;
+}) {
+  const sucursales = useMemo(
+    () => [...new Set(allClaims.map((c) => c.restaurant_name ?? '').filter(Boolean))].sort(),
+    [allClaims]
+  );
+  const premios = useMemo(
+    () => [...new Set(allClaims.map((c) => c.prize_name).filter(Boolean))].sort(),
+    [allClaims]
+  );
+
+  return (
+    <div className="rounded-2xl border border-blue-200 bg-blue-50 p-4 mb-4">
+      <div className="flex items-center justify-between mb-3">
+        <span className="text-xs font-bold text-blue-700 uppercase tracking-widest">Filtros avanzados</span>
+        <button
+          onClick={() => setFilters(EMPTY_FILTERS)}
+          className="text-xs text-blue-500 hover:text-blue-700 font-semibold underline underline-offset-2 transition-colors"
+        >
+          Limpiar filtros
+        </button>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        {/* Sucursal */}
+        <div>
+          <label className="block text-[10px] font-bold text-blue-700 uppercase tracking-widest mb-1">Sucursal</label>
+          <select
+            value={filters.sucursal}
+            onChange={(e) => setFilters({ ...filters, sucursal: e.target.value })}
+            className="w-full border border-blue-200 rounded-xl px-3 py-2 text-sm bg-white text-[#1C1917] focus:outline-none focus:border-[#2563EB]"
+          >
+            <option value="">Todas las sucursales</option>
+            {sucursales.map((s) => <option key={s} value={s}>{s}</option>)}
+          </select>
+        </div>
+
+        {/* Estado */}
+        <div>
+          <label className="block text-[10px] font-bold text-blue-700 uppercase tracking-widest mb-1">Estado del cobro</label>
+          <select
+            value={filters.status}
+            onChange={(e) => setFilters({ ...filters, status: e.target.value as Filters['status'] })}
+            className="w-full border border-blue-200 rounded-xl px-3 py-2 text-sm bg-white text-[#1C1917] focus:outline-none focus:border-[#2563EB]"
+          >
+            <option value="">Todos los estados</option>
+            <option value="pending">Pendiente</option>
+            <option value="delivered">Entregado</option>
+            <option value="cancelled">Cancelado</option>
+          </select>
+        </div>
+
+        {/* Desde */}
+        <div>
+          <label className="block text-[10px] font-bold text-blue-700 uppercase tracking-widest mb-1">Desde</label>
+          <input
+            type="date"
+            value={filters.from}
+            onChange={(e) => setFilters({ ...filters, from: e.target.value })}
+            className="w-full border border-blue-200 rounded-xl px-3 py-2 text-sm bg-white text-[#1C1917] focus:outline-none focus:border-[#2563EB]"
+          />
+        </div>
+
+        {/* Hasta */}
+        <div>
+          <label className="block text-[10px] font-bold text-blue-700 uppercase tracking-widest mb-1">Hasta</label>
+          <input
+            type="date"
+            value={filters.to}
+            onChange={(e) => setFilters({ ...filters, to: e.target.value })}
+            className="w-full border border-blue-200 rounded-xl px-3 py-2 text-sm bg-white text-[#1C1917] focus:outline-none focus:border-[#2563EB]"
+          />
+        </div>
+
+        {/* Tipo de premio */}
+        <div className="sm:col-span-2">
+          <label className="block text-[10px] font-bold text-blue-700 uppercase tracking-widest mb-1">Tipo de premio</label>
+          <select
+            value={filters.premio}
+            onChange={(e) => setFilters({ ...filters, premio: e.target.value })}
+            className="w-full border border-blue-200 rounded-xl px-3 py-2 text-sm bg-white text-[#1C1917] focus:outline-none focus:border-[#2563EB]"
+          >
+            <option value="">Todos los premios</option>
+            {premios.map((p) => <option key={p} value={p}>{p}</option>)}
+          </select>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function applyFilters(claims: ClaimRow[], filters: Filters): ClaimRow[] {
+  return claims.filter((c) => {
+    if (filters.sucursal && (c.restaurant_name ?? '') !== filters.sucursal) return false;
+    if (filters.status && c.status !== filters.status) return false;
+    if (filters.premio && c.prize_name !== filters.premio) return false;
+    if (filters.from && c.claimed_at.slice(0, 10) < filters.from) return false;
+    if (filters.to && c.claimed_at.slice(0, 10) > filters.to) return false;
+    return true;
+  });
+}
+
+// ── Main Page ─────────────────────────────────────────────────────────────────
 export default function ReportePage() {
   const [stats, setStats] = useState<WeeklyStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [copied, setCopied] = useState(false);
   const [allClaims, setAllClaims] = useState<ClaimRow[]>([]);
   const [generatingPdf, setGeneratingPdf] = useState(false);
+  const [filters, setFilters] = useState<Filters>(EMPTY_FILTERS);
   const printStyleRef = useRef<HTMLStyleElement | null>(null);
+
+  const filteredClaims = useMemo(() => applyFilters(allClaims, filters), [allClaims, filters]);
+  const hasActiveFilter = Object.values(filters).some((v) => v !== '');
 
   useEffect(() => {
     async function load() {
@@ -217,13 +341,14 @@ export default function ReportePage() {
   }
 
   function exportCSV() {
+    const claimsToExport = filteredClaims;
     const headers = ['Fecha', 'Cliente', 'Premio', 'Restaurante', 'Estado', 'Cajero'];
-    const rows = allClaims.map((c) => [
+    const rows = claimsToExport.map((c) => [
       new Date(c.claimed_at).toLocaleString('es-MX', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }),
       c.full_name,
       c.prize_name,
       c.restaurant_name ?? '—',
-      c.status === 'delivered' ? 'Entregado' : 'Pendiente',
+      c.status === 'delivered' ? 'Entregado' : c.status === 'cancelled' ? 'Cancelado' : 'Pendiente',
       c.delivered_by ?? '—',
     ]);
     const csv = [headers, ...rows]
@@ -242,10 +367,11 @@ export default function ReportePage() {
     if (generatingPdf) return;
     setGeneratingPdf(true);
     try {
+      const claimsForPdf = filteredClaims;
       const jsPDF = (await import('jspdf')).default;
       const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
 
-      const ORANGE: [number, number, number] = [232, 82, 26];
+      const BLUE: [number, number, number] = [37, 99, 235];
       const BLACK: [number, number, number] = [28, 25, 23];
       const GRAY: [number, number, number] = [120, 113, 108];
       const LIGHT_GRAY: [number, number, number] = [245, 243, 241];
@@ -259,9 +385,8 @@ export default function ReportePage() {
         day: 'numeric', month: 'long', year: 'numeric',
       });
 
-      // ── Cover page ───────────────────────────────────────────────
-      // Orange header band
-      doc.setFillColor(...ORANGE);
+      // Cover header
+      doc.setFillColor(...BLUE);
       doc.rect(0, 0, 210, 60, 'F');
 
       doc.setTextColor(...WHITE);
@@ -278,31 +403,42 @@ export default function ReportePage() {
         doc.text(`Semana del ${stats.weekStart} al ${stats.weekEnd}`, marginL, 52);
       }
 
-      // Meta info below banner
       doc.setTextColor(...GRAY);
       doc.setFontSize(9);
       doc.text(`Generado el ${generatedDate}`, marginL, 70);
 
-      // ── Executive summary ────────────────────────────────────────
-      let y = 85;
-      doc.setTextColor(...ORANGE);
+      // Active filters note
+      const activeFilterLabels: string[] = [];
+      if (filters.sucursal) activeFilterLabels.push(`Sucursal: ${filters.sucursal}`);
+      if (filters.status) activeFilterLabels.push(`Estado: ${filters.status}`);
+      if (filters.premio) activeFilterLabels.push(`Premio: ${filters.premio}`);
+      if (filters.from) activeFilterLabels.push(`Desde: ${filters.from}`);
+      if (filters.to) activeFilterLabels.push(`Hasta: ${filters.to}`);
+      if (activeFilterLabels.length > 0) {
+        doc.setFontSize(8);
+        doc.text(`Filtros activos: ${activeFilterLabels.join(' · ')}`, marginL, 78);
+      }
+
+      let y = activeFilterLabels.length > 0 ? 90 : 85;
+
+      doc.setTextColor(...BLUE);
       doc.setFontSize(13);
       doc.setFont('helvetica', 'bold');
       doc.text('Resumen Ejecutivo', marginL, y);
       y += 6;
 
-      doc.setDrawColor(...ORANGE);
+      doc.setDrawColor(...BLUE);
       doc.setLineWidth(0.5);
       doc.line(marginL, y, marginL + contentW, y);
       y += 8;
 
-      const totalClaims = allClaims.length;
-      const delivered = allClaims.filter(c => c.status === 'delivered').length;
-      const pending = allClaims.filter(c => c.status === 'pending').length;
+      const totalClaims = claimsForPdf.length;
+      const delivered = claimsForPdf.filter(c => c.status === 'delivered').length;
+      const pending = claimsForPdf.filter(c => c.status === 'pending').length;
       const deliveryRate = totalClaims > 0 ? Math.round((delivered / totalClaims) * 100) : 0;
 
       const summaryData = [
-        ['Total de cobros registrados', String(totalClaims)],
+        ['Total de cobros (filtrados)', String(totalClaims)],
         ['Premios entregados', String(delivered)],
         ['Premios pendientes', String(pending)],
         ['Tasa de entrega', `${deliveryRate}%`],
@@ -329,25 +465,22 @@ export default function ReportePage() {
 
       y += 6;
 
-      // ── Claims table ─────────────────────────────────────────────
-      if (allClaims.length > 0) {
-        // Section header
-        doc.setTextColor(...ORANGE);
+      if (claimsForPdf.length > 0) {
+        doc.setTextColor(...BLUE);
         doc.setFontSize(13);
         doc.setFont('helvetica', 'bold');
         doc.text('Detalle de Cobros', marginL, y);
         y += 6;
 
-        doc.setDrawColor(...ORANGE);
+        doc.setDrawColor(...BLUE);
         doc.setLineWidth(0.5);
         doc.line(marginL, y, marginL + contentW, y);
         y += 6;
 
-        // Table header
         const colWidths = [28, 35, 35, 28, 22, 22];
         const colHeaders = ['Fecha', 'Cliente', 'Premio', 'Sucursal', 'Estado', 'Cajero'];
 
-        doc.setFillColor(...ORANGE);
+        doc.setFillColor(...BLUE);
         doc.rect(marginL, y - 4, contentW, 8, 'F');
         doc.setTextColor(...WHITE);
         doc.setFontSize(8);
@@ -360,19 +493,16 @@ export default function ReportePage() {
         });
         y += 8;
 
-        // Table rows
         doc.setFont('helvetica', 'normal');
         doc.setFontSize(7.5);
 
-        for (let i = 0; i < allClaims.length; i++) {
-          const c = allClaims[i];
+        for (let i = 0; i < claimsForPdf.length; i++) {
+          const c = claimsForPdf[i];
 
-          // New page if needed
           if (y > 270) {
             doc.addPage();
             y = 20;
-            // Repeat header
-            doc.setFillColor(...ORANGE);
+            doc.setFillColor(...BLUE);
             doc.rect(marginL, y - 4, contentW, 8, 'F');
             doc.setTextColor(...WHITE);
             doc.setFontSize(8);
@@ -395,7 +525,7 @@ export default function ReportePage() {
           const dateStr = new Date(c.claimed_at).toLocaleDateString('es-MX', {
             day: '2-digit', month: '2-digit', year: '2-digit',
           });
-          const statusLabel = c.status === 'delivered' ? 'Entregado' : 'Pendiente';
+          const statusLabel = c.status === 'delivered' ? 'Entregado' : c.status === 'cancelled' ? 'Cancelado' : 'Pendiente';
 
           doc.setTextColor(...BLACK);
           const cellValues = [
@@ -411,7 +541,6 @@ export default function ReportePage() {
           cellValues.forEach((val, idx) => {
             const maxW = colWidths[idx] - 3;
             const truncated = doc.splitTextToSize(String(val), maxW)[0] ?? '';
-            // Color status
             if (idx === 4) {
               doc.setTextColor(c.status === 'delivered' ? 5 : 180, c.status === 'delivered' ? 150 : 100, c.status === 'delivered' ? 90 : 0);
             } else {
@@ -425,10 +554,9 @@ export default function ReportePage() {
         y += 8;
       }
 
-      // ── Prize performance ────────────────────────────────────────
-      // Aggregate by prize name
+      // Prize performance
       const prizeMap: Record<string, { total: number; delivered: number }> = {};
-      for (const c of allClaims) {
+      for (const c of claimsForPdf) {
         if (!prizeMap[c.prize_name]) prizeMap[c.prize_name] = { total: 0, delivered: 0 };
         prizeMap[c.prize_name].total++;
         if (c.status === 'delivered') prizeMap[c.prize_name].delivered++;
@@ -436,24 +564,20 @@ export default function ReportePage() {
       const prizes = Object.entries(prizeMap).sort((a, b) => b[1].total - a[1].total);
 
       if (prizes.length > 0) {
-        if (y > 230) {
-          doc.addPage();
-          y = 20;
-        }
+        if (y > 230) { doc.addPage(); y = 20; }
 
-        doc.setTextColor(...ORANGE);
+        doc.setTextColor(...BLUE);
         doc.setFontSize(13);
         doc.setFont('helvetica', 'bold');
         doc.text('Rendimiento por Premio', marginL, y);
         y += 6;
 
-        doc.setDrawColor(...ORANGE);
+        doc.setDrawColor(...BLUE);
         doc.setLineWidth(0.5);
         doc.line(marginL, y, marginL + contentW, y);
         y += 6;
 
-        // Header
-        doc.setFillColor(...ORANGE);
+        doc.setFillColor(...BLUE);
         doc.rect(marginL, y - 4, contentW, 8, 'F');
         doc.setTextColor(...WHITE);
         doc.setFontSize(8);
@@ -468,10 +592,7 @@ export default function ReportePage() {
         doc.setFontSize(8);
 
         prizes.forEach(([name, data], i) => {
-          if (y > 270) {
-            doc.addPage();
-            y = 20;
-          }
+          if (y > 270) { doc.addPage(); y = 20; }
           if (i % 2 === 0) {
             doc.setFillColor(...LIGHT_GRAY);
             doc.rect(marginL, y - 3.5, contentW, 7, 'F');
@@ -488,33 +609,28 @@ export default function ReportePage() {
         y += 8;
       }
 
-      // ── Top clients ──────────────────────────────────────────────
+      // Top clients
       const clientMap: Record<string, number> = {};
-      for (const c of allClaims) {
+      for (const c of claimsForPdf) {
         clientMap[c.full_name] = (clientMap[c.full_name] ?? 0) + 1;
       }
-      const topClients = Object.entries(clientMap)
-        .sort((a, b) => b[1] - a[1])
-        .slice(0, 10);
+      const topClients = Object.entries(clientMap).sort((a, b) => b[1] - a[1]).slice(0, 10);
 
       if (topClients.length > 0) {
-        if (y > 230) {
-          doc.addPage();
-          y = 20;
-        }
+        if (y > 230) { doc.addPage(); y = 20; }
 
-        doc.setTextColor(...ORANGE);
+        doc.setTextColor(...BLUE);
         doc.setFontSize(13);
         doc.setFont('helvetica', 'bold');
         doc.text('Top Clientes', marginL, y);
         y += 6;
 
-        doc.setDrawColor(...ORANGE);
+        doc.setDrawColor(...BLUE);
         doc.setLineWidth(0.5);
         doc.line(marginL, y, marginL + contentW, y);
         y += 6;
 
-        doc.setFillColor(...ORANGE);
+        doc.setFillColor(...BLUE);
         doc.rect(marginL, y - 4, contentW, 8, 'F');
         doc.setTextColor(...WHITE);
         doc.setFontSize(8);
@@ -528,10 +644,7 @@ export default function ReportePage() {
         doc.setFontSize(8);
 
         topClients.forEach(([name, count], i) => {
-          if (y > 270) {
-            doc.addPage();
-            y = 20;
-          }
+          if (y > 270) { doc.addPage(); y = 20; }
           if (i % 2 === 0) {
             doc.setFillColor(...LIGHT_GRAY);
             doc.rect(marginL, y - 3.5, contentW, 7, 'F');
@@ -546,7 +659,7 @@ export default function ReportePage() {
         });
       }
 
-      // ── Footer on all pages ──────────────────────────────────────
+      // Footer
       const pageCount = doc.getNumberOfPages();
       for (let p = 1; p <= pageCount; p++) {
         doc.setPage(p);
@@ -567,7 +680,6 @@ export default function ReportePage() {
   }
 
   function handlePdfPrint() {
-    // Inject print style if not already present
     if (!printStyleRef.current) {
       const style = document.createElement('style');
       style.setAttribute('media', 'print');
@@ -578,8 +690,8 @@ export default function ReportePage() {
         #print-report h2 { font-size: 18px; font-weight: 900; margin-bottom: 4px; }
         #print-report p.sub { color: #64748b; font-size: 11px; margin-bottom: 16px; }
         #print-report table { width: 100%; border-collapse: collapse; }
-        #print-report thead tr { background: #1e293b; }
-        #print-report thead th { color: #94a3b8; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; padding: 7px 10px; text-align: left; }
+        #print-report thead tr { background: #1e3a8a; }
+        #print-report thead th { color: #bfdbfe; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; padding: 7px 10px; text-align: left; }
         #print-report tbody tr:nth-child(even) { background: #f8fafc; }
         #print-report tbody td { padding: 6px 10px; border-bottom: 1px solid #e2e8f0; }
         .s-delivered { color: #059669; font-weight: 700; }
@@ -597,7 +709,8 @@ export default function ReportePage() {
       document.body.appendChild(container);
     }
 
-    const rows = allClaims.map((c) => `
+    const claimsToPrint = filteredClaims;
+    const rows = claimsToPrint.map((c) => `
       <tr>
         <td>${new Date(c.claimed_at).toLocaleString('es-MX', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</td>
         <td>${c.full_name}</td>
@@ -609,7 +722,7 @@ export default function ReportePage() {
 
     container.innerHTML = `
       <h2>SuperTierra — Reporte de Cobros</h2>
-      <p class="sub">Generado: ${new Date().toLocaleString('es-MX', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })} · Total: ${allClaims.length} registros</p>
+      <p class="sub">Generado: ${new Date().toLocaleString('es-MX', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })} · Total: ${claimsToPrint.length} registros</p>
       <table>
         <thead><tr><th>Fecha</th><th>Cliente</th><th>Premio</th><th>Restaurante</th><th>Estado</th><th>Cajero</th></tr></thead>
         <tbody>${rows}</tbody>
@@ -704,6 +817,31 @@ export default function ReportePage() {
               ))}
             </div>
           </div>
+
+          {/* Advanced Filters */}
+          {allClaims.length > 0 && (
+            <AdvancedFilters allClaims={allClaims} filters={filters} setFilters={setFilters} />
+          )}
+
+          {/* Counter */}
+          {allClaims.length > 0 && (
+            <div className="mb-4 flex items-center gap-2">
+              <span className="text-sm text-stone-500">
+                Mostrando{' '}
+                <span className={`font-bold ${hasActiveFilter ? 'text-[#2563EB]' : 'text-stone-700'}`}>
+                  {filteredClaims.length}
+                </span>
+                {' '}de{' '}
+                <span className="font-bold text-stone-700">{allClaims.length}</span>
+                {' '}cobros
+              </span>
+              {hasActiveFilter && (
+                <span className="text-[10px] font-bold uppercase tracking-widest text-[#0891B2] bg-blue-50 border border-blue-200 px-2 py-0.5 rounded-full">
+                  Filtros activos
+                </span>
+              )}
+            </div>
+          )}
 
           <WhatsAppAlertsSection />
 

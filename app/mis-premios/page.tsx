@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import PushNotificationManager from '@/app/components/PushNotificationManager';
 
 type ClaimRecord = {
   id: string;
@@ -360,6 +361,11 @@ export default function MisPremiosPage() {
               </button>
             </form>
           </div>
+        </div>
+
+        {/* ── PUSH NOTIFICATIONS ── */}
+        <div className="flex justify-start">
+          <PushNotificationManager phone={contact.trim() || undefined} />
         </div>
 
         {/* ── RESULTS ── */}

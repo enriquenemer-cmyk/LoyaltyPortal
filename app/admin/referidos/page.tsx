@@ -2,110 +2,277 @@ import { getReferralStats } from '@/lib/db';
 
 export const dynamic = 'force-dynamic';
 
-export default async function ReferidosPage() {
+// Build weekly bar chart data from chain dates (last 8 weeks)
+function buildWeeklyData(chains: Array<{ referred_at: string }>) {
+  const weeks: Record<string, number> = {};
+  const now = Date.now();
+  for (let i = 7; i >= 0; i--) {
+    const d = new Date(now - i * 7 * 24 * 60 * 60 * 1000);
+    const key = getWeekLabel(d);
+    weeks[key] = 0;
+  }
+  for (const c of chains) {
+    const key = getWeekLabel(new Date(c.referred_at));
+    if (key in weeks) weeks[key]++;
+  }
+  return Object.entries(weeks).map(([week, count]) => ({ week, count }));
+}
+
+function getWeekLabel(d: Date) {
+  const start = new Date(d);
+  start.setDate(d.getDate() - d.getDay());
+  return start.toLocaleDateString('es-MX', { month: 'short', day: 'numeric' });
+}
+
+export default async function ReferidosAdminPage() {
   const stats = await getReferralStats();
+  const weeklyData = buildWeeklyData(stats.chains);
+  const maxWeekly = Math.max(...weeklyData.map((w) => w.count), 1);
+
+  const gradient = 'linear-gradient(135deg, #2563EB 0%, #0891B2 100%)';
 
   const card: React.CSSProperties = {
-    background: 'rgba(255,255,255,0.05)',
-    border: '1px solid rgba(255,255,255,0.10)',
+    background: 'white',
+    border: '1px solid #E2E8F0',
     borderRadius: 16,
     padding: '20px 24px',
   };
 
   return (
-    <div style={{ minHeight: '100vh', background: 'linear-gradient(135deg,#150800 0%,#3D1200 50%,#150800 100%)', padding: '32px 16px', color: 'white', fontFamily: 'system-ui,sans-serif' }}>
-      <div style={{ maxWidth: 900, margin: '0 auto' }}>
+    <div style={{
+      minHeight: '100vh',
+      background: '#F8FAFC',
+      padding: '32px 16px',
+      fontFamily: 'system-ui, -apple-system, sans-serif',
+    }}>
+      <style>{`
+        .copy-btn { cursor: pointer; transition: background 0.15s, transform 0.1s; }
+        .copy-btn:hover { background: #EFF6FF !important; }
+        .copy-btn:active { transform: scale(0.96); }
+        .row-hover { transition: background 0.1s; }
+        .row-hover:hover { background: #F8FAFC !important; }
+      `}</style>
 
-        {/* Header */}
-        <div style={{ marginBottom: 32 }}>
-          <a href="/admin" style={{ color: 'rgba(255,255,255,0.40)', fontSize: 13, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 6, marginBottom: 16 }}>
+      <div style={{ maxWidth: 960, margin: '0 auto' }}>
+
+        {/* ── HEADER ── */}
+        <div style={{ marginBottom: 28 }}>
+          <a href="/admin" style={{
+            color: '#94A3B8', fontSize: 13, textDecoration: 'none',
+            display: 'inline-flex', alignItems: 'center', gap: 6, marginBottom: 16,
+            fontWeight: 600,
+          }}>
             <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
             Volver al panel
           </a>
-          <h1 style={{ fontSize: 28, fontWeight: 900, marginBottom: 6 }}>Referidos</h1>
-          <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: 14 }}>Rastrea quien esta trayendo nuevos clientes</p>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+            <div style={{
+              width: 48, height: 48, borderRadius: 14, background: gradient,
+              display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+            }}>
+              <svg width="22" height="22" fill="none" stroke="white" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+            </div>
+            <div>
+              <h1 style={{ fontSize: 26, fontWeight: 900, color: '#1E293B', lineHeight: 1.1, marginBottom: 4 }}>Referidos</h1>
+              <p style={{ color: '#64748B', fontSize: 14 }}>Rastrea quién está trayendo nuevos clientes</p>
+            </div>
+          </div>
         </div>
 
-        {/* Summary stat */}
-        <div style={{ ...card, display: 'flex', alignItems: 'center', gap: 16, marginBottom: 28, background: 'linear-gradient(135deg,rgba(249,115,22,0.18),rgba(194,65,12,0.12))', border: '1px solid rgba(249,115,22,0.30)' }}>
-          <div style={{ width: 52, height: 52, borderRadius: '50%', background: 'linear-gradient(135deg,#0891B2,#0891B2)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-            <svg width="24" height="24" fill="none" stroke="white" viewBox="0 0 24 24">
+        {/* ── SUMMARY CARD ── */}
+        <div style={{
+          ...card, background: gradient, border: 'none',
+          display: 'flex', alignItems: 'center', gap: 20, marginBottom: 20, color: 'white',
+        }}>
+          <div style={{
+            width: 64, height: 64, borderRadius: '50%', background: 'rgba(255,255,255,0.15)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+          }}>
+            <svg width="28" height="28" fill="none" stroke="white" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
             </svg>
           </div>
           <div>
-            <p style={{ color: 'rgba(255,255,255,0.50)', fontSize: 11, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 4 }}>Total de referidos</p>
-            <p style={{ fontSize: 40, fontWeight: 900, color: '#0891B2', lineHeight: 1 }}>{stats.total_referrals}</p>
+            <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 4 }}>
+              Total de referidos
+            </p>
+            <p style={{ fontSize: 48, fontWeight: 900, lineHeight: 1 }}>{stats.total_referrals}</p>
+          </div>
+          <div style={{ marginLeft: 'auto', textAlign: 'right' }}>
+            <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 4 }}>
+              Referidores activos
+            </p>
+            <p style={{ fontSize: 48, fontWeight: 900, lineHeight: 1 }}>{stats.top_referrers.length}</p>
           </div>
         </div>
 
-        {/* Top referrers */}
-        <div style={{ ...card, marginBottom: 28 }}>
-          <h2 style={{ fontSize: 16, fontWeight: 800, marginBottom: 16, display: 'flex', alignItems: 'center', gap: 8 }}>
-            <span style={{ fontSize: 18 }}>🏆</span> Top Referidores
+        {/* ── WEEKLY BAR CHART ── */}
+        <div style={{ ...card, marginBottom: 20 }}>
+          <h2 style={{ fontSize: 15, fontWeight: 800, color: '#1E293B', marginBottom: 20, display: 'flex', alignItems: 'center', gap: 8 }}>
+            <span>📊</span> Referidos por semana (últimas 8 semanas)
           </h2>
-          {stats.top_referrers.length === 0 ? (
-            <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: 14, textAlign: 'center', padding: '24px 0' }}>
-              Aun no hay referidos registrados
-            </p>
-          ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-              {stats.top_referrers.map((r, i) => (
-                <div key={r.referral_code} style={{
-                  display: 'flex', alignItems: 'center', gap: 14,
-                  background: i === 0 ? 'rgba(249,115,22,0.12)' : 'rgba(255,255,255,0.04)',
-                  border: i === 0 ? '1px solid rgba(249,115,22,0.28)' : '1px solid rgba(255,255,255,0.07)',
-                  borderRadius: 12, padding: '12px 16px',
-                }}>
+          <div style={{ display: 'flex', alignItems: 'flex-end', gap: 8, height: 120 }}>
+            {weeklyData.map((w) => {
+              const pct = (w.count / maxWeekly) * 100;
+              return (
+                <div key={w.week} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 5, height: '100%', justifyContent: 'flex-end' }}>
+                  {w.count > 0 && (
+                    <span style={{ fontSize: 11, fontWeight: 700, color: '#2563EB' }}>{w.count}</span>
+                  )}
                   <div style={{
-                    width: 32, height: 32, borderRadius: '50%', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    background: i === 0 ? 'linear-gradient(135deg,#0891B2,#0891B2)' : 'rgba(255,255,255,0.10)',
-                    fontWeight: 900, fontSize: 14, color: 'white',
-                  }}>
-                    {i + 1}
-                  </div>
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <p style={{ fontWeight: 800, fontSize: 15, marginBottom: 2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{r.full_name}</p>
-                    <p style={{ color: 'rgba(255,255,255,0.40)', fontSize: 12, fontFamily: 'monospace', letterSpacing: '0.06em' }}>{r.referral_code}</p>
-                  </div>
-                  <div style={{ textAlign: 'right', flexShrink: 0 }}>
-                    <p style={{ fontSize: 22, fontWeight: 900, color: i === 0 ? '#0891B2' : 'white', lineHeight: 1 }}>{r.count}</p>
-                    <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: 11 }}>referidos</p>
-                  </div>
+                    width: '100%', borderRadius: '6px 6px 0 0',
+                    height: `${Math.max(pct, 3)}%`,
+                    background: w.count > 0 ? gradient : '#E2E8F0',
+                    minHeight: 3,
+                  }} />
+                  <span style={{ fontSize: 9, color: '#94A3B8', fontWeight: 600, textAlign: 'center', lineHeight: 1.2 }}>{w.week}</span>
                 </div>
-              ))}
-            </div>
-          )}
+              );
+            })}
+          </div>
         </div>
 
-        {/* Referral chains table */}
+        {/* ── TWO-COLUMN: TOP REFERRERS + CHAINS ── */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 20 }}>
+
+          {/* TOP REFERRERS */}
+          <div style={card}>
+            <h2 style={{ fontSize: 15, fontWeight: 800, color: '#1E293B', marginBottom: 16, display: 'flex', alignItems: 'center', gap: 8 }}>
+              <span>🏆</span> Top Referidores
+            </h2>
+            {stats.top_referrers.length === 0 ? (
+              <p style={{ color: '#94A3B8', fontSize: 14, textAlign: 'center', padding: '24px 0' }}>
+                Aún no hay referidos registrados
+              </p>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                {stats.top_referrers.map((r, i) => {
+                  const referralLink = `https://premia-tierra.vercel.app?ref=${r.referral_code}`;
+                  return (
+                    <div key={r.referral_code} style={{
+                      display: 'flex', alignItems: 'center', gap: 10,
+                      background: i === 0 ? '#EFF6FF' : '#F8FAFC',
+                      border: `1px solid ${i === 0 ? '#BFDBFE' : '#E2E8F0'}`,
+                      borderRadius: 12, padding: '10px 12px',
+                    }}>
+                      <div style={{
+                        width: 28, height: 28, borderRadius: '50%', flexShrink: 0,
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        background: i === 0 ? gradient : '#E2E8F0',
+                        fontWeight: 900, fontSize: 12, color: i === 0 ? 'white' : '#64748B',
+                      }}>
+                        {i + 1}
+                      </div>
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+                          <p style={{ fontWeight: 800, fontSize: 13, color: '#1E293B', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: 100 }}>
+                            {r.full_name}
+                          </p>
+                          {i === 0 && (
+                            <span style={{ background: '#FEF3C7', color: '#D97706', borderRadius: 20, padding: '1px 7px', fontSize: 10, fontWeight: 700, whiteSpace: 'nowrap' }}>
+                              🔥 Top referidor
+                            </span>
+                          )}
+                        </div>
+                        <p style={{ color: '#94A3B8', fontSize: 10, fontFamily: 'monospace', letterSpacing: '0.05em' }}>{r.referral_code}</p>
+                      </div>
+                      <p style={{ fontSize: 20, fontWeight: 900, color: '#2563EB', lineHeight: 1, flexShrink: 0 }}>{r.count}</p>
+                      {/* Copy button */}
+                      <button
+                        className="copy-btn"
+                        data-link={referralLink}
+                        title="Copiar link de referido"
+                        style={{
+                          padding: '5px 8px', borderRadius: 7, background: 'white',
+                          border: '1px solid #E2E8F0', flexShrink: 0,
+                          display: 'flex', alignItems: 'center',
+                        }}
+                      >
+                        <svg width="13" height="13" fill="none" viewBox="0 0 24 24">
+                          <rect x="9" y="9" width="13" height="13" rx="2" stroke="#64748B" strokeWidth="2" />
+                          <path stroke="#64748B" strokeWidth="2" strokeLinecap="round" d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" />
+                        </svg>
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+
+          {/* RECENT CHAINS */}
+          <div style={card}>
+            <h2 style={{ fontSize: 15, fontWeight: 800, color: '#1E293B', marginBottom: 16, display: 'flex', alignItems: 'center', gap: 8 }}>
+              <span>🔗</span> Cadenas recientes
+            </h2>
+            {stats.chains.length === 0 ? (
+              <p style={{ color: '#94A3B8', fontSize: 14, textAlign: 'center', padding: '24px 0' }}>
+                Aún no hay cadenas de referidos
+              </p>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', maxHeight: 320, overflowY: 'auto' }}>
+                {stats.chains.slice(0, 20).map((c, i) => (
+                  <div key={i} className="row-hover" style={{
+                    display: 'flex', alignItems: 'center', gap: 8,
+                    padding: '9px 4px', background: 'white',
+                    borderBottom: i < Math.min(stats.chains.length, 20) - 1 ? '1px solid #F1F5F9' : 'none',
+                  }}>
+                    <div style={{ minWidth: 0, flex: 1 }}>
+                      <p style={{ fontSize: 12, fontWeight: 700, color: '#1E293B', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{c.referrer_name}</p>
+                      <p style={{ fontSize: 10, color: '#38BDF8', fontFamily: 'monospace', fontWeight: 600 }}>{c.referral_code}</p>
+                    </div>
+                    <svg width="12" height="12" fill="none" stroke="#CBD5E1" viewBox="0 0 24 24" style={{ flexShrink: 0 }}>
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                    <div style={{ minWidth: 0, flex: 1 }}>
+                      <p style={{ fontSize: 12, fontWeight: 600, color: '#475569', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{c.referred_name}</p>
+                      <p style={{ fontSize: 10, color: '#94A3B8' }}>
+                        {new Date(c.referred_at).toLocaleDateString('es-MX', { day: '2-digit', month: 'short' })}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+        </div>
+
+        {/* ── FULL TABLE ── */}
         <div style={card}>
-          <h2 style={{ fontSize: 16, fontWeight: 800, marginBottom: 16, display: 'flex', alignItems: 'center', gap: 8 }}>
-            <span style={{ fontSize: 18 }}>🔗</span> Cadenas de Referidos
+          <h2 style={{ fontSize: 15, fontWeight: 800, color: '#1E293B', marginBottom: 16, display: 'flex', alignItems: 'center', gap: 8 }}>
+            <span>📋</span> Registro completo ({stats.chains.length})
           </h2>
           {stats.chains.length === 0 ? (
-            <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: 14, textAlign: 'center', padding: '24px 0' }}>
-              Aun no hay cadenas de referidos
-            </p>
+            <p style={{ color: '#94A3B8', fontSize: 14, textAlign: 'center', padding: '24px 0' }}>No hay registros aún</p>
           ) : (
             <div style={{ overflowX: 'auto' }}>
               <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
                 <thead>
-                  <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.10)' }}>
-                    {['Quien refirió', 'Codigo', 'Nuevo cliente', 'Fecha'].map((h) => (
-                      <th key={h} style={{ textAlign: 'left', padding: '8px 12px', color: 'rgba(255,255,255,0.40)', fontWeight: 700, fontSize: 11, letterSpacing: '0.08em', textTransform: 'uppercase' }}>{h}</th>
+                  <tr style={{ borderBottom: '2px solid #E2E8F0' }}>
+                    {['Quién refirió', 'Código', 'Nuevo cliente', 'Fecha'].map((h) => (
+                      <th key={h} style={{
+                        textAlign: 'left', padding: '8px 12px', color: '#94A3B8',
+                        fontWeight: 700, fontSize: 11, letterSpacing: '0.08em', textTransform: 'uppercase',
+                      }}>{h}</th>
                     ))}
                   </tr>
                 </thead>
                 <tbody>
                   {stats.chains.map((c, i) => (
-                    <tr key={i} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-                      <td style={{ padding: '10px 12px', fontWeight: 700 }}>{c.referrer_name}</td>
-                      <td style={{ padding: '10px 12px', fontFamily: 'monospace', color: '#0891B2', letterSpacing: '0.06em' }}>{c.referral_code}</td>
-                      <td style={{ padding: '10px 12px' }}>{c.referred_name}</td>
-                      <td style={{ padding: '10px 12px', color: 'rgba(255,255,255,0.45)' }}>
+                    <tr key={i} className="row-hover" style={{ borderBottom: '1px solid #F1F5F9', background: 'white' }}>
+                      <td style={{ padding: '11px 12px', fontWeight: 700, color: '#1E293B' }}>{c.referrer_name}</td>
+                      <td style={{ padding: '11px 12px' }}>
+                        <span style={{ background: '#EFF6FF', color: '#2563EB', borderRadius: 6, padding: '3px 8px', fontSize: 11, fontFamily: 'monospace', fontWeight: 700, letterSpacing: '0.06em' }}>
+                          {c.referral_code}
+                        </span>
+                      </td>
+                      <td style={{ padding: '11px 12px', color: '#475569' }}>{c.referred_name}</td>
+                      <td style={{ padding: '11px 12px', color: '#94A3B8' }}>
                         {new Date(c.referred_at).toLocaleDateString('es-MX', { day: '2-digit', month: 'short', year: 'numeric' })}
                       </td>
                     </tr>
@@ -117,6 +284,25 @@ export default async function ReferidosPage() {
         </div>
 
       </div>
+
+      {/* Client-side copy-link handler */}
+      <script dangerouslySetInnerHTML={{ __html: `
+        document.addEventListener('DOMContentLoaded', function() {
+          document.querySelectorAll('.copy-btn[data-link]').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+              var link = btn.getAttribute('data-link');
+              if (!link) return;
+              navigator.clipboard.writeText(link).then(function() {
+                var orig = btn.innerHTML;
+                btn.innerHTML = '<svg width="13" height="13" fill="none" viewBox="0 0 24 24"><path stroke="#16A34A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg>';
+                btn.style.background = '#F0FDF4';
+                btn.style.borderColor = '#BBF7D0';
+                setTimeout(function() { btn.innerHTML = orig; btn.style.background = 'white'; btn.style.borderColor = '#E2E8F0'; }, 1500);
+              });
+            });
+          });
+        });
+      ` }} />
     </div>
   );
 }

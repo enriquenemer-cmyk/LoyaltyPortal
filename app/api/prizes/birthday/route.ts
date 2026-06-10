@@ -56,6 +56,17 @@ export async function POST(req: NextRequest) {
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://supertierra.vercel.app';
     const prizeUrl = `${baseUrl}/premio/${prize.id}`;
 
+    // Send push notification (non-blocking)
+    fetch(`${baseUrl}/api/push/send`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        title: `¡Feliz cumpleaños, ${full_name.split(' ')[0]}! 🎂`,
+        body: 'Tienes un premio especial de cumpleaños esperándote.',
+        url: prizeUrl,
+      }),
+    }).catch(() => {});
+
     return NextResponse.json({ prize, prizeUrl });
   } catch (err) {
     console.error('[birthday] error:', err);

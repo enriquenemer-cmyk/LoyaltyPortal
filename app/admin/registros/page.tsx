@@ -84,31 +84,31 @@ function SkeletonLoading() {
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
         {[1,2,3,4].map(i => (
           <div key={i} className="bg-white rounded-2xl border border-[#E8E3DC] p-5 flex items-center gap-4">
-            <div className="skeleton w-11 h-11 rounded-xl" />
+            <div className="skeleton-blue w-11 h-11 rounded-xl" />
             <div className="flex-1">
-              <div className="skeleton h-3 w-20 mb-2" />
-              <div className="skeleton h-8 w-16" />
+              <div className="skeleton-blue h-3 w-20 mb-2" />
+              <div className="skeleton-blue h-8 w-16" />
             </div>
           </div>
         ))}
       </div>
       {/* Skeleton search bar */}
-      <div className="skeleton h-10 w-full max-w-sm mb-5 rounded-xl" />
+      <div className="skeleton-blue h-10 w-full max-w-sm mb-5 rounded-xl" />
       {/* Skeleton table */}
       <div className="bg-white rounded-2xl border border-[#E8E3DC] overflow-hidden shadow-[0_1px_2px_rgba(28,25,23,0.04),_0_4px_16px_rgba(28,25,23,0.06)]">
         <div className="p-4 border-b border-[#E8E3DC]">
-          <div className="skeleton h-4 w-48" />
+          <div className="skeleton-blue h-4 w-48" />
         </div>
         {[1,2,3,4,5].map(i => (
           <div key={i} className="flex items-center gap-4 px-5 py-4 border-b border-[#E8E3DC] last:border-0">
-            <div className="skeleton w-9 h-9 rounded-full shrink-0" />
+            <div className="skeleton-blue w-9 h-9 rounded-full shrink-0" />
             <div className="flex-1 min-w-0">
-              <div className="skeleton h-4 w-32 mb-1.5" />
-              <div className="skeleton h-3 w-40" />
+              <div className="skeleton-blue h-4 w-32 mb-1.5" />
+              <div className="skeleton-blue h-3 w-40" />
             </div>
-            <div className="skeleton h-6 w-20 rounded-full hidden sm:block" />
-            <div className="skeleton h-6 w-24 rounded-full hidden sm:block" />
-            <div className="skeleton h-3 w-28 hidden md:block" />
+            <div className="skeleton-blue h-6 w-20 rounded-full hidden sm:block" />
+            <div className="skeleton-blue h-6 w-24 rounded-full hidden sm:block" />
+            <div className="skeleton-blue h-3 w-28 hidden md:block" />
           </div>
         ))}
       </div>

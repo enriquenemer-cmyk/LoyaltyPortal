@@ -53,6 +53,22 @@ export async function POST(request: NextRequest) {
     // Sort by most inactive first
     customers.sort((a, b) => b.days_inactive - a.days_inactive);
 
+    // Send push notifications to inactive customers (non-blocking, per-phone)
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL ?? process.env.NEXT_PUBLIC_APP_URL ?? 'https://premia-tierra.vercel.app';
+    for (const c of customers.slice(0, 50)) {
+      const name = c.full_name.split(' ')[0];
+      fetch(`${baseUrl}/api/push/send`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          phone: c.phone,
+          title: `¡Te extrañamos, ${name}! 🌯`,
+          body: 'Tenemos un premio especial de regreso esperándote en Tierra Burrito Bar.',
+          url: `${appUrl}/premio/regreso`,
+        }),
+      }).catch(() => {});
+    }
+
     return NextResponse.json({ customers, total: customers.length, days_threshold: days });
   } catch (error) {
     console.error('Error fetching inactive customers:', error);

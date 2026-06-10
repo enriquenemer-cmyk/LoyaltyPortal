@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useMemo } from 'react';
 import { Avatar } from '@/app/components/Avatar';
+import { SkeletonCard, SkeletonTable } from '@/app/components/Skeleton';
 
 type Claim = {
   id: string;
@@ -416,12 +417,17 @@ export default function ClientesPage() {
         </div>
 
         {/* Stats row */}
+        {loading ? (
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
+            <SkeletonCard /><SkeletonCard /><SkeletonCard /><SkeletonCard />
+          </div>
+        ) : (
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
           {[
-            { label: 'Clientes únicos', value: loading ? '—' : customers.length, icon: '👥', borderColor: '#2563EB', bgColor: '#fde8e0', numColor: '#2563EB' },
-            { label: 'Frecuentes', value: loading ? '—' : segmentCounts.frecuentes, icon: '⭐', borderColor: '#0284C7', bgColor: '#fef3c7', numColor: '#0EA5E9' },
-            { label: 'Sin canjear', value: loading ? '—' : segmentCounts.sin_canjear, icon: '⏳', borderColor: '#0284C7', bgColor: '#fef9c3', numColor: '#1D4ED8' },
-            { label: 'Nuevos (30d)', value: loading ? '—' : segmentCounts.nuevos, icon: '✨', borderColor: '#8b5cf6', bgColor: '#ede9fe', numColor: '#7c3aed' },
+            { label: 'Clientes únicos', value: customers.length, icon: '👥', borderColor: '#2563EB', bgColor: '#fde8e0', numColor: '#2563EB' },
+            { label: 'Frecuentes', value: segmentCounts.frecuentes, icon: '⭐', borderColor: '#0284C7', bgColor: '#fef3c7', numColor: '#0EA5E9' },
+            { label: 'Sin canjear', value: segmentCounts.sin_canjear, icon: '⏳', borderColor: '#0284C7', bgColor: '#fef9c3', numColor: '#1D4ED8' },
+            { label: 'Nuevos (30d)', value: segmentCounts.nuevos, icon: '✨', borderColor: '#8b5cf6', bgColor: '#ede9fe', numColor: '#7c3aed' },
           ].map(({ label, value, icon, borderColor, bgColor, numColor }) => (
             <div
               key={label}
@@ -438,6 +444,7 @@ export default function ClientesPage() {
             </div>
           ))}
         </div>
+        )}
 
         {/* Segment chips */}
         <div className="flex items-center gap-2 flex-wrap mb-4">
@@ -493,13 +500,7 @@ export default function ClientesPage() {
 
         {/* Content */}
         {loading ? (
-          <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-20 text-center">
-            <svg className="animate-spin w-8 h-8 text-[#2563EB] mx-auto mb-3" fill="none" viewBox="0 0 24 24">
-              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
-            </svg>
-            <p className="text-slate-400 text-sm">Cargando clientes...</p>
-          </div>
+          <SkeletonTable rows={8} />
         ) : filtered.length === 0 ? (
           <div className="bg-white rounded-2xl border border-[#E8E3DC] shadow-sm p-12 text-center">
             {search || segment !== 'todos' ? (

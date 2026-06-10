@@ -110,12 +110,12 @@ function StatCard({
 
 function SkeletonCard() {
   return (
-    <div className="bg-white rounded-2xl border border-[#E8E3DC] p-6 flex flex-col gap-3" style={{ boxShadow: cardShadow }}>
+    <div className="bg-white rounded-2xl border border-[#DBEAFE] p-6 flex flex-col gap-3" style={{ boxShadow: cardShadow }}>
       <div className="flex items-center justify-between">
-        <div className="skeleton h-4 w-32" />
-        <div className="skeleton w-10 h-10 rounded-xl" />
+        <div className="skeleton-blue h-4 w-32" />
+        <div className="skeleton-blue w-10 h-10 rounded-xl" />
       </div>
-      <div className="skeleton h-10 w-20" />
+      <div className="skeleton-blue h-10 w-20" />
     </div>
   );
 }
@@ -1603,8 +1603,8 @@ export default function AdminDashboard() {
             <div className="flex flex-col gap-4">
               {[80, 55, 30].map((w, i) => (
                 <div key={i} className="flex items-center gap-4">
-                  <div className="h-9 rounded-lg animate-pulse bg-stone-100" style={{ width: `${w}%` }} />
-                  <div className="h-4 w-20 rounded animate-pulse bg-stone-100" />
+                  <div className="h-9 rounded-lg skeleton-blue" style={{ width: `${w}%` }} />
+                  <div className="h-4 w-20 rounded skeleton-blue" />
                 </div>
               ))}
             </div>
@@ -1687,7 +1687,7 @@ export default function AdminDashboard() {
             {loading ? (
               <div className="flex items-end gap-3 h-36">
                 {Array.from({ length: 7 }).map((_, i) => (
-                  <div key={i} className="flex-1 rounded-lg bg-stone-100 animate-pulse" style={{ height: `${30 + (i * 13) % 70}%` }} />
+                  <div key={i} className="flex-1 rounded-lg skeleton-blue" style={{ height: `${30 + (i * 13) % 70}%` }} />
                 ))}
               </div>
             ) : (
@@ -1706,13 +1706,13 @@ export default function AdminDashboard() {
             {loading ? (
               <div className="flex flex-col gap-3">
                 {Array.from({ length: 5 }).map((_, i) => (
-                  <div key={i} className="flex items-center gap-3 animate-pulse">
-                    <div className="w-9 h-9 rounded-full bg-stone-100 shrink-0" />
+                  <div key={i} className="flex items-center gap-3">
+                    <div className="skeleton-blue w-9 h-9 rounded-full shrink-0" />
                     <div className="flex-1 flex flex-col gap-1.5">
-                      <div className="h-3 bg-stone-100 rounded w-3/4" />
-                      <div className="h-2.5 bg-stone-100 rounded w-1/2" />
+                      <div className="skeleton-blue h-3 rounded w-3/4" />
+                      <div className="skeleton-blue h-2.5 rounded w-1/2" />
                     </div>
-                    <div className="h-5 w-16 bg-stone-100 rounded-full" />
+                    <div className="skeleton-blue h-5 w-16 rounded-full" />
                   </div>
                 ))}
               </div>

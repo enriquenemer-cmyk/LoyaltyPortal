@@ -2,13 +2,14 @@ import { NextRequest, NextResponse } from 'next/server';
 import webpush from 'web-push';
 import { getPool } from '@/lib/db';
 
-webpush.setVapidDetails(
-  process.env.VAPID_SUBJECT || 'mailto:admin@supertierra.mx',
-  process.env.VAPID_PUBLIC_KEY || '',
-  process.env.VAPID_PRIVATE_KEY || ''
-);
+export const dynamic = 'force-dynamic';
 
 export async function POST(req: NextRequest) {
+  webpush.setVapidDetails(
+    process.env.VAPID_SUBJECT || 'mailto:admin@supertierra.mx',
+    process.env.VAPID_PUBLIC_KEY!,
+    process.env.VAPID_PRIVATE_KEY!
+  );
   try {
     const body = await req.json();
     const { phone, title, body: msgBody, url } = body as {

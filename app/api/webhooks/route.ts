@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
     event: body.event,
     data: body.data,
     timestamp: new Date().toISOString(),
-    source: 'premia-tierra',
+    source: 'supertierra',
   };
 
   try {

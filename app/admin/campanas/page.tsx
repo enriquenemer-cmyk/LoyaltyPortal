@@ -21,7 +21,7 @@ type Campaign = {
 type Restaurant = { id: string; name: string };
 
 const labelClass = 'block text-[10px] font-semibold text-[#78716c] uppercase tracking-widest mb-1.5';
-const inputClass = 'w-full bg-[#FAFAF9] border border-[#E8E3DC] rounded-xl px-4 py-3 text-sm text-[#1C1917] focus:outline-none focus:border-[#E8521A] transition-colors';
+const inputClass = 'w-full bg-[#FAFAF9] border border-[#E8E3DC] rounded-xl px-4 py-3 text-sm text-[#1C1917] focus:outline-none focus:border-[#2563EB] transition-colors';
 
 const DOT_STYLES = [
   { value: 'square', label: 'Cuadrados' },
@@ -157,7 +157,7 @@ export default function CampanasPage() {
       <div className="max-w-5xl mx-auto">
         <div className="flex items-center justify-between mb-8">
           <div>
-            <div className="inline-flex items-center gap-2 bg-orange-50 text-[#E8521A] rounded-full px-3 py-1.5 text-xs font-bold uppercase tracking-widest mb-3 border border-orange-200">
+            <div className="inline-flex items-center gap-2 bg-blue-50 text-[#2563EB] rounded-full px-3 py-1.5 text-xs font-bold uppercase tracking-widest mb-3 border border-blue-200">
               <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.952 9.168-5" /></svg>
               Marketing
             </div>
@@ -167,7 +167,7 @@ export default function CampanasPage() {
           <button
             onClick={openNew}
             className="flex items-center gap-2 px-4 py-2 rounded-xl text-white text-sm font-bold"
-            style={{ background: '#E8521A' }}
+            style={{ background: '#2563EB' }}
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -281,8 +281,8 @@ export default function CampanasPage() {
                           onClick={() => setForm(p => ({ ...p, qr_dot_style: s.value }))}
                           className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all ${
                             form.qr_dot_style === s.value
-                              ? 'border-[#E8521A] bg-orange-50 text-[#E8521A]'
-                              : 'border-[#E8E3DC] text-[#78716c] hover:border-[#E8521A]/40'
+                              ? 'border-[#2563EB] bg-blue-50 text-[#2563EB]'
+                              : 'border-[#E8E3DC] text-[#78716c] hover:border-[#2563EB]/40'
                           }`}
                         >
                           {s.label}
@@ -301,8 +301,8 @@ export default function CampanasPage() {
                           onClick={() => setForm(p => ({ ...p, qr_corner_style: s.value }))}
                           className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all ${
                             form.qr_corner_style === s.value
-                              ? 'border-[#E8521A] bg-orange-50 text-[#E8521A]'
-                              : 'border-[#E8E3DC] text-[#78716c] hover:border-[#E8521A]/40'
+                              ? 'border-[#2563EB] bg-blue-50 text-[#2563EB]'
+                              : 'border-[#E8E3DC] text-[#78716c] hover:border-[#2563EB]/40'
                           }`}
                         >
                           {s.label}
@@ -318,7 +318,7 @@ export default function CampanasPage() {
                     type="submit"
                     disabled={saving}
                     className="px-6 py-2.5 rounded-xl text-white text-sm font-bold disabled:opacity-60"
-                    style={{ background: '#E8521A' }}
+                    style={{ background: '#2563EB' }}
                   >
                     {saving ? 'Guardando...' : editingId ? 'Guardar cambios' : 'Crear campana'}
                   </button>
@@ -365,8 +365,8 @@ export default function CampanasPage() {
           </div>
         ) : campaigns.length === 0 ? (
           <div className="bg-white border border-[#E8E3DC] rounded-2xl p-12 text-center">
-            <div className="w-16 h-16 rounded-2xl bg-orange-50 flex items-center justify-center mx-auto mb-4">
-              <svg className="w-8 h-8 text-[#E8521A]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="w-16 h-16 rounded-2xl bg-blue-50 flex items-center justify-center mx-auto mb-4">
+              <svg className="w-8 h-8 text-[#2563EB]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
               </svg>
             </div>
@@ -396,7 +396,7 @@ export default function CampanasPage() {
                         <p className="text-xs text-[#78716c] mt-0.5 leading-relaxed line-clamp-2">{campaign.description}</p>
                       )}
                       {campaign.restaurant_id && (
-                        <span className="inline-flex items-center gap-1 text-xs font-semibold text-[#E8521A] bg-orange-50 px-2 py-0.5 rounded-full mt-2">
+                        <span className="inline-flex items-center gap-1 text-xs font-semibold text-[#2563EB] bg-blue-50 px-2 py-0.5 rounded-full mt-2">
                           {restaurants.find(r => r.id === campaign.restaurant_id)?.name ?? 'Restaurante'}
                         </span>
                       )}

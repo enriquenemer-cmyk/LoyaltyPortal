@@ -1,7 +1,7 @@
-// Premia Tierra Service Worker
+// SuperTierra Service Worker
 // Caches cajero pages for offline use and queues delivery confirmations.
 
-const CACHE_NAME = 'premia-tierra-v2';
+const CACHE_NAME = 'supertierra-v2';
 const OFFLINE_QUEUE_KEY = 'offline_delivery_queue';
 
 const PRECACHE_URLS = [

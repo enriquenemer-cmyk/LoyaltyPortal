@@ -38,7 +38,7 @@ async function addLogoToQR(qrDataUrl: string): Promise<string> {
       ctx.save();
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillStyle = '#E8521A';
+      ctx.fillStyle = '#2563EB';
       ctx.font = `bold ${Math.round(overlaySize * 0.38)}px sans-serif`;
       ctx.fillText('PT', size / 2, size / 2);
       ctx.restore();
@@ -52,7 +52,7 @@ async function addLogoToQR(qrDataUrl: string): Promise<string> {
 type Restaurant = { id: string; name: string };
 type QRResult = { id: string; url: string; qrDataUrl: string; index: number };
 
-const inputClass = 'w-full bg-white border border-[#E8E3DC] rounded-xl px-4 py-3 text-sm text-[#1C1917] placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all hover:border-stone-300 shadow-sm';
+const inputClass = 'w-full bg-white border border-[#E8E3DC] rounded-xl px-4 py-3 text-sm text-[#1C1917] placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all hover:border-stone-300 shadow-sm';
 const labelClass = 'block text-sm font-semibold text-stone-700 mb-1.5';
 
 export default function MasivoPage() {
@@ -378,7 +378,7 @@ ${pagesHtml}
         {/* Header */}
         <div className="mb-8 flex items-start justify-between gap-4 flex-wrap">
           <div>
-            <div className="inline-flex items-center gap-2 bg-orange-50 text-[#E8521A] rounded-full px-3 py-1.5 text-xs font-bold uppercase tracking-widest mb-4 border border-orange-200">
+            <div className="inline-flex items-center gap-2 bg-blue-50 text-[#2563EB] rounded-full px-3 py-1.5 text-xs font-bold uppercase tracking-widest mb-4 border border-blue-200">
               <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h7" />
               </svg>
@@ -408,23 +408,23 @@ ${pagesHtml}
 
             <div className="p-5 space-y-4">
               {/* Quantity — prominente */}
-              <div className="bg-orange-50 border border-orange-200 rounded-xl p-4">
-                <label className="block text-sm font-bold text-orange-800 mb-2">
+              <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
+                <label className="block text-sm font-bold text-blue-800 mb-2">
                   ¿Cuántos QRs generar?
                 </label>
                 <div className="flex items-center gap-3">
                   <button type="button" onClick={() => setForm(p => ({ ...p, quantity: Math.max(1, Number(p.quantity) - 1) }))}
-                    className="w-10 h-10 rounded-xl bg-white border border-orange-200 text-orange-700 font-black text-lg flex items-center justify-center hover:bg-orange-100 transition-colors shadow-sm">−</button>
+                    className="w-10 h-10 rounded-xl bg-white border border-blue-200 text-blue-700 font-black text-lg flex items-center justify-center hover:bg-blue-100 transition-colors shadow-sm">−</button>
                   <input
                     name="quantity" type="number" min={1} max={100}
                     value={form.quantity}
                     onChange={handleChange}
-                    className="flex-1 text-center bg-white border border-orange-200 rounded-xl py-2.5 text-2xl font-black text-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-400/40"
+                    className="flex-1 text-center bg-white border border-blue-200 rounded-xl py-2.5 text-2xl font-black text-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-400/40"
                   />
                   <button type="button" onClick={() => setForm(p => ({ ...p, quantity: Math.min(100, Number(p.quantity) + 1) }))}
-                    className="w-10 h-10 rounded-xl bg-white border border-orange-200 text-orange-700 font-black text-lg flex items-center justify-center hover:bg-orange-100 transition-colors shadow-sm">+</button>
+                    className="w-10 h-10 rounded-xl bg-white border border-blue-200 text-blue-700 font-black text-lg flex items-center justify-center hover:bg-blue-100 transition-colors shadow-sm">+</button>
                 </div>
-                <p className="text-orange-600 text-xs mt-2 text-center font-medium">Máximo 100 QRs por lote</p>
+                <p className="text-blue-600 text-xs mt-2 text-center font-medium">Máximo 100 QRs por lote</p>
               </div>
 
               <div>
@@ -463,7 +463,7 @@ ${pagesHtml}
 
               <button type="submit" disabled={loading}
                 className="w-full disabled:opacity-60 text-white font-bold py-3.5 rounded-xl transition-all text-sm flex items-center justify-center gap-2"
-                style={{ background: 'linear-gradient(135deg,#E8521A,#C2410C)', boxShadow: '0 4px 16px rgba(232,82,26,0.30)' }}>
+                style={{ background: 'linear-gradient(135deg,#2563EB,#0891B2)', boxShadow: '0 4px 16px rgba(37,99,235,0.30)' }}>
                 {loading ? (
                   <>
                     <svg className="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
@@ -495,17 +495,17 @@ ${pagesHtml}
                       ? `Generando... ${progress} de ${qty}${estSecsRemaining !== null ? ` — aprox. ${estSecsRemaining}s restantes` : ''}`
                       : `✅ ${done} QRs generados`}
                   </span>
-                  <span className="text-sm font-bold text-[#E8521A]">{pct}%</span>
+                  <span className="text-sm font-bold text-[#2563EB]">{pct}%</span>
                 </div>
                 <div className="w-full bg-stone-100 rounded-full h-2.5 overflow-hidden">
-                  <div className="h-2.5 rounded-full transition-all duration-300" style={{ width: `${pct}%`, background: 'linear-gradient(90deg, #E8521A, #fb923c)' }} />
+                  <div className="h-2.5 rounded-full transition-all duration-300" style={{ width: `${pct}%`, background: 'linear-gradient(90deg, #2563EB, #0EA5E9)' }} />
                 </div>
 
                 {done > 0 && !loading && (
                   <div className="flex gap-3 mt-4 flex-wrap">
                     <button onClick={downloadAll}
                       className="flex-1 flex items-center justify-center gap-2 text-white font-bold py-2.5 rounded-xl text-sm transition-all shadow-sm min-w-[140px]"
-                      style={{ background: 'linear-gradient(135deg,#E8521A,#C2410C)' }}>
+                      style={{ background: 'linear-gradient(135deg,#2563EB,#0891B2)' }}>
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                       </svg>
@@ -527,9 +527,9 @@ ${pagesHtml}
             {results.length > 0 && (
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                 {results.map(r => (
-                  <div key={r.id} className="bg-white rounded-2xl border border-[#E8E3DC] shadow-sm overflow-hidden group hover:shadow-md hover:border-orange-200 transition-all">
+                  <div key={r.id} className="bg-white rounded-2xl border border-[#E8E3DC] shadow-sm overflow-hidden group hover:shadow-md hover:border-blue-200 transition-all">
                     <div className="py-2 px-3 flex items-center justify-between border-b border-[#E8E3DC] bg-[#FAFAF9]">
-                      <span className="text-[#E8521A] text-xs font-bold">#{r.index} de {qty}</span>
+                      <span className="text-[#2563EB] text-xs font-bold">#{r.index} de {qty}</span>
                     </div>
                     <div className="p-3 flex flex-col items-center">
                       <div className="p-2 bg-[#FAFAF9] rounded-xl border border-[#E8E3DC] mb-2">
@@ -537,7 +537,7 @@ ${pagesHtml}
                       </div>
                       <p className="text-stone-600 text-xs font-semibold truncate w-full text-center mb-2">{form.name}</p>
                       <button onClick={() => downloadOne(r)}
-                        className="w-full flex items-center justify-center gap-1.5 text-xs font-bold text-[#E8521A] bg-orange-50 hover:bg-orange-100 border border-orange-200 py-1.5 rounded-lg transition-colors">
+                        className="w-full flex items-center justify-center gap-1.5 text-xs font-bold text-[#2563EB] bg-blue-50 hover:bg-blue-100 border border-blue-200 py-1.5 rounded-lg transition-colors">
                         <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                         </svg>

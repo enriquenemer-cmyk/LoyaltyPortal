@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
-const brand = '#E8521A';
+const brand = '#2563EB';
 const cardShadow = '0 1px 2px rgba(28,25,23,0.04), 0 4px 16px rgba(28,25,23,0.06)';
 
 function BurritoIllustration() {
@@ -13,12 +13,12 @@ function BurritoIllustration() {
       {/* Plate */}
       <ellipse cx="80" cy="130" rx="60" ry="14" fill="#FDE8E0" />
       {/* Burrito body */}
-      <rect x="30" y="72" width="100" height="50" rx="25" fill="#E8521A" />
+      <rect x="30" y="72" width="100" height="50" rx="25" fill="#2563EB" />
       {/* Burrito wrap lines */}
       <path d="M50 72 Q80 60 110 72" stroke="#C94010" strokeWidth="2.5" strokeLinecap="round" fill="none" />
       <path d="M38 95 Q80 88 122 95" stroke="#C94010" strokeWidth="2" strokeLinecap="round" fill="none" />
       {/* Filling peek */}
-      <ellipse cx="80" cy="72" rx="30" ry="10" fill="#F97316" />
+      <ellipse cx="80" cy="72" rx="30" ry="10" fill="#0891B2" />
       <ellipse cx="80" cy="72" rx="20" ry="7" fill="#FDE68A" />
       <circle cx="70" cy="72" r="4" fill="#4ADE80" />
       <circle cx="80" cy="70" r="4" fill="#F87171" />
@@ -29,9 +29,9 @@ function BurritoIllustration() {
       <path d="M120 22 L123.5 33 L135 33 L125.5 40.5 L129 51.5 L120 44.5 L111 51.5 L114.5 40.5 L105 33 L116.5 33 Z" fill="#FFF" />
       {/* Sparkles */}
       <circle cx="40" cy="35" r="4" fill="#FB923C" opacity="0.6" />
-      <circle cx="28" cy="55" r="3" fill="#E8521A" opacity="0.4" />
+      <circle cx="28" cy="55" r="3" fill="#2563EB" opacity="0.4" />
       <circle cx="145" cy="68" r="3.5" fill="#F59E0B" opacity="0.5" />
-      <path d="M52 28 L54 24 L56 28 L60 30 L56 32 L54 36 L52 32 L48 30 Z" fill="#E8521A" opacity="0.5" />
+      <path d="M52 28 L54 24 L56 28 L60 30 L56 32 L54 36 L52 32 L48 30 Z" fill="#2563EB" opacity="0.5" />
     </svg>
   );
 }
@@ -59,7 +59,7 @@ function Step1({ onNext }: { onNext: () => void }) {
     <div className="flex flex-col items-center text-center gap-6">
       <BurritoIllustration />
       <div className="flex flex-col gap-3">
-        <h1 className="text-3xl font-black text-[#1C1917]">Bienvenido a Premia Tierra</h1>
+        <h1 className="text-3xl font-black text-[#1C1917]">Bienvenido a SuperTierra</h1>
         <p className="text-base text-[#78716c] max-w-sm mx-auto">
           La plataforma de premios y fidelidad para Tierra Burrito. Genera QRs de premio, gestiona restaurantes y haz seguimiento de cobros en tiempo real.
         </p>
@@ -119,7 +119,7 @@ function Step2({ onNext }: { onNext: () => void }) {
     }
   }
 
-  const inputCls = 'w-full rounded-xl border border-[#E8E3DC] bg-white px-4 py-2.5 text-sm text-[#1C1917] placeholder:text-[#a8a29e] outline-none focus:ring-2 focus:ring-[#E8521A] focus:border-[#E8521A] transition-all';
+  const inputCls = 'w-full rounded-xl border border-[#E8E3DC] bg-white px-4 py-2.5 text-sm text-[#1C1917] placeholder:text-[#a8a29e] outline-none focus:ring-2 focus:ring-[#2563EB] focus:border-[#2563EB] transition-all';
 
   return (
     <div className="flex flex-col gap-6">
@@ -221,7 +221,7 @@ function Step3({ onFinish }: { onFinish: () => void }) {
             'El sistema genera un QR descargable',
           ].map((item, i) => (
             <li key={i} className="flex items-start gap-2">
-              <span className="text-[#E8521A] font-bold shrink-0">{i + 1}.</span>
+              <span className="text-[#2563EB] font-bold shrink-0">{i + 1}.</span>
               {item}
             </li>
           ))}
@@ -271,7 +271,7 @@ export default function OnboardingPage() {
                 <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none" />
               </svg>
             </div>
-            <span className="text-sm font-bold text-[#1C1917]">Premia Tierra</span>
+            <span className="text-sm font-bold text-[#1C1917]">SuperTierra</span>
           </div>
           <StepIndicator current={step} total={3} />
         </div>

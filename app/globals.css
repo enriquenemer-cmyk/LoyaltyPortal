@@ -84,7 +84,7 @@ h3, .text-h3 { font-weight: 700; letter-spacing: -0.02em; }
 
 /* Gradient text utility */
 .gradient-text {
-  background: linear-gradient(135deg, #E8521A 0%, #fb923c 50%, #E8521A 100%);
+  background: linear-gradient(135deg, #2563EB 0%, #0EA5E9 50%, #2563EB 100%);
   background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -136,7 +136,7 @@ input[type="date"] {
   color: #64748b !important;
 }
 
-[data-theme="dark"] .bg-orange-50 {
+[data-theme="dark"] .bg-blue-50 {
   background-color: rgba(234, 88, 12, 0.15) !important;
 }
 
@@ -225,7 +225,7 @@ input[type="date"] {
   display: inline-block;
   width: 6px; height: 6px;
   border-radius: 50%;
-  background: #f59e0b;
+  background: #0284C7;
   margin-right: 6px;
 }
 .skeleton {
@@ -336,7 +336,7 @@ input[type="date"] {
   100% { background-position: 300% center; }
 }
 .shimmer-text {
-  background: linear-gradient(90deg, #E8521A 0%, #fbbf24 40%, #E8521A 100%);
+  background: linear-gradient(90deg, #2563EB 0%, #38BDF8 40%, #2563EB 100%);
   background-size: 300% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -355,8 +355,8 @@ input[type="date"] {
 
 /* ── Pulse glow (orange) ── */
 @keyframes pulse-glow {
-  0%,100% { box-shadow: 0 0 0 0 rgba(232,82,26,0.35); }
-  50%      { box-shadow: 0 0 0 10px rgba(232,82,26,0); }
+  0%,100% { box-shadow: 0 0 0 0 rgba(37,99,235,0.35); }
+  50%      { box-shadow: 0 0 0 10px rgba(37,99,235,0); }
 }
 .pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
 
@@ -388,7 +388,7 @@ input[type="date"] {
   left: 0;
   width: 0;
   height: 2px;
-  background: #E8521A;
+  background: #2563EB;
   transition: width 0.3s ease;
 }
 .underline-grow:hover::after { width: 100%; }
@@ -457,7 +457,7 @@ input[type="date"] {
   width: 36px;
   height: 36px;
   border: 3px solid #E8E3DC;
-  border-top-color: #E8521A;
+  border-top-color: #2563EB;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
@@ -468,8 +468,8 @@ input[type="date"] {
 
 /* ── Live counter badge pulse (orange) ── */
 @keyframes pulse-orange {
-  0%,100% { box-shadow: 0 0 0 0 rgba(232,82,26,0.45); }
-  50%      { box-shadow: 0 0 0 8px rgba(232,82,26,0); }
+  0%,100% { box-shadow: 0 0 0 0 rgba(37,99,235,0.45); }
+  50%      { box-shadow: 0 0 0 8px rgba(37,99,235,0); }
 }
 .pulse-orange { animation: pulse-orange 1.8s ease-in-out infinite; }
 
@@ -493,7 +493,7 @@ input[type="date"] {
   left: 0;
   width: 0;
   height: 1.5px;
-  background: #E8521A;
+  background: #2563EB;
   transition: width 0.2s ease;
 }
 .link-animate:hover::after { width: 100%; }

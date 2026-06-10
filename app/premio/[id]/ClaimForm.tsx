@@ -7,7 +7,7 @@ type Props = { prizeId: string; prizeName: string };
 const inp = [
   'w-full bg-white border border-[#E8E3DC] rounded-xl px-4 py-3.5',
   'text-sm text-[#1C1917] placeholder-[#a8a29e]',
-  'focus:outline-none focus:ring-2 focus:ring-[#E8521A]/20 focus:border-[#E8521A]',
+  'focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20 focus:border-[#2563EB]',
   'transition-all',
 ].join(' ');
 
@@ -83,7 +83,7 @@ export default function ClaimForm({ prizeId, prizeName }: Props) {
         {/* Título */}
         <div>
           <div className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-3"
-            style={{ background: 'linear-gradient(135deg,#E8521A,#C2410C)', boxShadow: '0 8px 24px rgba(232,82,26,0.35)' }}>
+            style={{ background: 'linear-gradient(135deg,#2563EB,#0891B2)', boxShadow: '0 8px 24px rgba(37,99,235,0.35)' }}>
             <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
             </svg>
@@ -101,7 +101,7 @@ export default function ClaimForm({ prizeId, prizeName }: Props) {
               ? <img src={qrDataUrl} alt="QR de cobro" style={{ display: 'block', width: 220, height: 220, borderRadius: 12 }} />
               : (
                 <div className="w-[220px] h-[220px] flex items-center justify-center">
-                  <svg className="animate-spin w-10 h-10 text-orange-400" fill="none" viewBox="0 0 24 24">
+                  <svg className="animate-spin w-10 h-10 text-blue-400" fill="none" viewBox="0 0 24 24">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
                   </svg>
@@ -222,13 +222,13 @@ export default function ClaimForm({ prizeId, prizeName }: Props) {
         <input
           id="privacy-cb" type="checkbox" required checked={privacyAccepted}
           onChange={e => setPrivacyAccepted(e.target.checked)}
-          className="mt-0.5 shrink-0 cursor-pointer accent-[#E8521A]"
+          className="mt-0.5 shrink-0 cursor-pointer accent-[#2563EB]"
           style={{ width: 16, height: 16 }}
         />
         <label htmlFor="privacy-cb" className="text-xs text-[#78716c] leading-snug cursor-pointer select-none">
           Acepto el{' '}
           <a href="/privacidad" target="_blank" rel="noopener noreferrer"
-            className="text-[#E8521A] hover:underline font-semibold">
+            className="text-[#2563EB] hover:underline font-semibold">
             Aviso de Privacidad
           </a>{' '}
           de Tierra Burrito Bar
@@ -243,8 +243,8 @@ export default function ClaimForm({ prizeId, prizeName }: Props) {
         style={{
           background: (loading || !privacyAccepted)
             ? '#FED7AA'
-            : 'linear-gradient(135deg,#E8521A,#C2410C)',
-          boxShadow: (loading || !privacyAccepted) ? 'none' : '0 8px 24px rgba(232,82,26,0.35)',
+            : 'linear-gradient(135deg,#2563EB,#0891B2)',
+          boxShadow: (loading || !privacyAccepted) ? 'none' : '0 8px 24px rgba(37,99,235,0.35)',
         }}
       >
         {loading

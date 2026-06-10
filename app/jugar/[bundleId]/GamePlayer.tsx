@@ -5,7 +5,7 @@ import type { GameBundle, GamePrize } from '@/lib/db';
 
 type GameState = 'ready' | 'playing' | 'result' | 'claiming' | 'done';
 
-const ORANGE_SHADES = ['#E8521A', '#F97316', '#EA580C', '#fb923c', '#c2410c', '#fdba74', '#9a3412', '#fed7aa'];
+const ORANGE_SHADES = ['#2563EB', '#0891B2', '#0369A1', '#0EA5E9', '#c2410c', '#7DD3FC', '#1E3A8A', '#BAE6FD'];
 
 function RouletteWheel({
   prizes,
@@ -64,7 +64,7 @@ function RouletteWheel({
       {/* pointer */}
       <div
         className="absolute z-10"
-        style={{ top: -6, left: '50%', transform: 'translateX(-50%)', width: 0, height: 0, borderLeft: '10px solid transparent', borderRight: '10px solid transparent', borderTop: '20px solid #E8521A' }}
+        style={{ top: -6, left: '50%', transform: 'translateX(-50%)', width: 0, height: 0, borderLeft: '10px solid transparent', borderRight: '10px solid transparent', borderTop: '20px solid #2563EB' }}
       />
       <svg
         width={size}
@@ -97,8 +97,8 @@ function RouletteWheel({
             </g>
           );
         })}
-        <circle cx={cx} cy={cy} r={18} fill="#1C1917" stroke="#E8521A" strokeWidth={3} />
-        <text x={cx} y={cy} textAnchor="middle" dominantBaseline="middle" fill="#E8521A" fontSize={10} fontWeight="bold">PT</text>
+        <circle cx={cx} cy={cy} r={18} fill="#1C1917" stroke="#2563EB" strokeWidth={3} />
+        <text x={cx} y={cy} textAnchor="middle" dominantBaseline="middle" fill="#2563EB" fontSize={10} fontWeight="bold">PT</text>
       </svg>
     </div>
   );
@@ -154,7 +154,7 @@ function SlotsGame({
         <div
           key={i}
           className="w-24 h-28 rounded-xl flex items-center justify-center text-center font-bold text-sm border-2"
-          style={{ background: '#FFF7F3', borderColor: '#E8521A', color: '#1C1917', padding: 8 }}
+          style={{ background: '#FFF7F3', borderColor: '#2563EB', color: '#1C1917', padding: 8 }}
         >
           <span style={{ lineHeight: 1.3 }}>
             {prizes[idx]?.name ?? '?'}
@@ -195,10 +195,10 @@ function PenaltyGame({
   return (
     <div className="flex flex-col items-center gap-4">
       {/* Goal */}
-      <div className="relative w-64 h-36 border-4 rounded-b-lg flex items-center justify-center" style={{ borderColor: '#E8521A', background: 'rgba(232,82,26,0.08)' }}>
+      <div className="relative w-64 h-36 border-4 rounded-b-lg flex items-center justify-center" style={{ borderColor: '#2563EB', background: 'rgba(37,99,235,0.08)' }}>
         <span className="text-[#a8a29e] text-sm font-bold tracking-widest uppercase">Portería</span>
         {revealed && chosen !== null && (
-          <div className="absolute inset-0 flex items-center justify-center rounded-b-lg" style={{ background: 'rgba(232,82,26,0.9)' }}>
+          <div className="absolute inset-0 flex items-center justify-center rounded-b-lg" style={{ background: 'rgba(37,99,235,0.9)' }}>
             <span className="text-white font-bold text-lg text-center px-2">¡Gol! {prizes[winnerIdx]?.name}</span>
           </div>
         )}
@@ -213,8 +213,8 @@ function PenaltyGame({
             onClick={() => { setChosen(i); }}
             className="h-16 rounded-lg text-xs font-bold text-center border-2 transition-all p-1"
             style={{
-              background: chosen === i ? (revealed ? '#E8521A' : '#FFF0E8') : '#FAFAF9',
-              borderColor: chosen === i ? '#E8521A' : '#E8E3DC',
+              background: chosen === i ? (revealed ? '#2563EB' : '#FFF0E8') : '#FAFAF9',
+              borderColor: chosen === i ? '#2563EB' : '#E8E3DC',
               color: chosen === i && revealed ? '#fff' : '#1C1917',
               opacity: chosen !== null && chosen !== i ? 0.4 : 1,
             }}
@@ -272,8 +272,8 @@ function ScratchGame({
               disabled={!spinning || scratched.size > 0}
               className="w-28 h-24 rounded-xl border-2 flex flex-col items-center justify-center text-center p-2 text-xs font-bold transition-all"
               style={{
-                background: isScratched ? (isWinner ? '#E8521A' : '#FAFAF9') : '#E8E3DC',
-                borderColor: isScratched && isWinner ? '#E8521A' : '#E8E3DC',
+                background: isScratched ? (isWinner ? '#2563EB' : '#FAFAF9') : '#E8E3DC',
+                borderColor: isScratched && isWinner ? '#2563EB' : '#E8E3DC',
                 color: isScratched && isWinner ? '#fff' : '#1C1917',
                 cursor: spinning && scratched.size === 0 ? 'pointer' : 'default',
               }}
@@ -296,7 +296,7 @@ function ScratchGame({
 }
 
 function Confetti() {
-  const colors = ['#E8521A', '#fb923c', '#fdba74', '#fde68a', '#fff'];
+  const colors = ['#2563EB', '#0EA5E9', '#7DD3FC', '#E0F2FE', '#fff'];
   return (
     <div className="fixed inset-0 pointer-events-none overflow-hidden z-50">
       {Array.from({ length: 40 }).map((_, i) => (
@@ -384,7 +384,7 @@ export default function GamePlayer({
   const inputCls = [
     'w-full bg-white border border-[#E8E3DC] rounded-xl px-4 py-3.5',
     'text-sm text-[#1C1917] placeholder-[#a8a29e]',
-    'focus:outline-none focus:ring-2 focus:ring-[#E8521A]/20 focus:border-[#E8521A] transition-all',
+    'focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20 focus:border-[#2563EB] transition-all',
   ].join(' ');
 
   const gameLabel = bundle.game_type === 'roulette' ? '🎡 Ruleta'
@@ -397,7 +397,7 @@ export default function GamePlayer({
     return (
       <div className="min-h-screen" style={{ background: '#FAFAF9' }}>
         {/* Header */}
-        <div style={{ background: 'linear-gradient(135deg,#E8521A,#C2410C)' }} className="px-5 pt-10 pb-8 text-center">
+        <div style={{ background: 'linear-gradient(135deg,#2563EB,#0891B2)' }} className="px-5 pt-10 pb-8 text-center">
           <p className="text-white/70 text-xs font-bold uppercase tracking-widest mb-2">{gameLabel}</p>
           <h1 className="text-2xl font-black text-white leading-tight">{bundle.name}</h1>
           <p className="text-white/60 text-sm mt-1">Tierra Burrito Bar</p>
@@ -435,7 +435,7 @@ export default function GamePlayer({
           <button
             onClick={startGame}
             className="w-full py-5 rounded-2xl text-white text-lg font-black transition-all active:scale-95 flex items-center justify-center gap-3"
-            style={{ background: 'linear-gradient(135deg,#E8521A,#C2410C)', boxShadow: '0 8px 32px rgba(232,82,26,0.40)' }}
+            style={{ background: 'linear-gradient(135deg,#2563EB,#0891B2)', boxShadow: '0 8px 32px rgba(37,99,235,0.40)' }}
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
@@ -483,11 +483,11 @@ export default function GamePlayer({
           <div className="w-full max-w-md text-center">
             <div
               className="w-28 h-28 rounded-full flex items-center justify-center mx-auto mb-5"
-              style={{ background: 'linear-gradient(135deg,#E8521A,#C2410C)', boxShadow: '0 12px 40px rgba(232,82,26,0.45)' }}
+              style={{ background: 'linear-gradient(135deg,#2563EB,#0891B2)', boxShadow: '0 12px 40px rgba(37,99,235,0.45)' }}
             >
               <span className="text-5xl">🎁</span>
             </div>
-            <p className="text-[10px] font-bold text-[#E8521A] uppercase tracking-widest mb-2">¡Felicidades!</p>
+            <p className="text-[10px] font-bold text-[#2563EB] uppercase tracking-widest mb-2">¡Felicidades!</p>
             <h1 className="text-3xl font-black text-[#1C1917] mb-2 leading-tight">{winnerPrize?.name}</h1>
             {winnerPrize?.description && (
               <p className="text-[#78716c] text-base">{winnerPrize.description}</p>
@@ -503,7 +503,7 @@ export default function GamePlayer({
     return (
       <div className="min-h-screen" style={{ background: '#FAFAF9' }}>
         {/* Prize banner */}
-        <div style={{ background: 'linear-gradient(135deg,#E8521A,#C2410C)' }} className="px-5 pt-8 pb-6 text-center">
+        <div style={{ background: 'linear-gradient(135deg,#2563EB,#0891B2)' }} className="px-5 pt-8 pb-6 text-center">
           <p className="text-white/70 text-xs font-bold uppercase tracking-widest mb-1">Tu premio</p>
           <h2 className="text-xl font-black text-white leading-tight">{winnerPrize?.name}</h2>
         </div>
@@ -551,7 +551,7 @@ export default function GamePlayer({
                 type="submit"
                 disabled={submitting}
                 className="w-full py-4 rounded-xl text-white font-black text-base transition-all disabled:opacity-60 flex items-center justify-center gap-2"
-                style={{ background: 'linear-gradient(135deg,#E8521A,#C2410C)', boxShadow: '0 6px 20px rgba(232,82,26,0.35)' }}
+                style={{ background: 'linear-gradient(135deg,#2563EB,#0891B2)', boxShadow: '0 6px 20px rgba(37,99,235,0.35)' }}
               >
                 {submitting ? (
                   <>
@@ -590,7 +590,7 @@ export default function GamePlayer({
           <div className="px-5 py-4 border-b border-[#E8E3DC]" style={{ background: '#FAFAF9' }}>
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-[10px] font-bold text-[#E8521A] uppercase tracking-widest">Premia Tierra</p>
+                <p className="text-[10px] font-bold text-[#2563EB] uppercase tracking-widest">SuperTierra</p>
                 <p className="text-[#1C1917] font-extrabold text-base mt-0.5">{bundle.name}</p>
               </div>
               <span className="text-3xl">🎁</span>
@@ -608,7 +608,7 @@ export default function GamePlayer({
                 <span className="text-[#a8a29e] text-sm">{label}</span>
                 <span
                   className="text-sm font-bold"
-                  style={{ color: accent ? '#E8521A' : '#1C1917' }}
+                  style={{ color: accent ? '#2563EB' : '#1C1917' }}
                 >
                   {value}
                 </span>
@@ -617,8 +617,8 @@ export default function GamePlayer({
           </div>
           {/* Dashed divider */}
           <div className="border-t border-dashed border-[#E8E3DC] mx-5" />
-          <div className="px-5 py-4 bg-orange-50">
-            <p className="text-[#E8521A] text-xs font-bold text-center">
+          <div className="px-5 py-4 bg-blue-50">
+            <p className="text-[#2563EB] text-xs font-bold text-center">
               Presenta este comprobante al cajero para recibir tu premio
             </p>
           </div>

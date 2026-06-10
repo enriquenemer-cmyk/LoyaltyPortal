@@ -223,7 +223,7 @@ export default function WhatsAppPage() {
     <div className="min-h-screen bg-[#FAFAF9] p-4 md:p-6 space-y-5">
       {/* Header */}
       <div>
-        <div className="inline-flex items-center gap-2 bg-orange-50 text-[#E8521A] rounded-full px-3 py-1.5 text-xs font-bold uppercase tracking-widest mb-3 border border-orange-200">
+        <div className="inline-flex items-center gap-2 bg-blue-50 text-[#2563EB] rounded-full px-3 py-1.5 text-xs font-bold uppercase tracking-widest mb-3 border border-blue-200">
           <WhatsAppIcon className="w-3.5 h-3.5" />
           WhatsApp
         </div>

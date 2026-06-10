@@ -69,7 +69,7 @@ function activityIcon(action: string) {
 
 function Avatar({ name }: { name: string }) {
   const initials = name.split(' ').slice(0, 2).map((n) => n[0]).join('').toUpperCase();
-  const colors = ['from-violet-500 to-purple-600', 'from-blue-500 to-indigo-600', 'from-orange-500 to-orange-700', 'from-rose-500 to-pink-600', 'from-amber-500 to-orange-600'];
+  const colors = ['from-violet-500 to-purple-600', 'from-blue-500 to-indigo-600', 'from-blue-500 to-blue-700', 'from-rose-500 to-pink-600', 'from-blue-500 to-blue-600'];
   const color = colors[name.charCodeAt(0) % colors.length];
   return (
     <div className={`w-9 h-9 rounded-full bg-gradient-to-br ${color} flex items-center justify-center text-white text-xs font-bold shrink-0 shadow-sm`}>
@@ -81,9 +81,9 @@ function Avatar({ name }: { name: string }) {
 function StatCard({ label, value, color, icon }: { label: string; value: number | string; color: 'gray' | 'orange' | 'blue' | 'amber'; icon: React.ReactNode }) {
   const colorMap = {
     gray:    { border: 'border-l-stone-400',   bg: 'bg-stone-50',   text: 'text-stone-600',   num: 'text-stone-700'   },
-    orange: { border: 'border-l-[#E8521A]', bg: 'bg-orange-50', text: 'text-[#E8521A]', num: 'text-[#E8521A]' },
+    orange: { border: 'border-l-[#2563EB]', bg: 'bg-blue-50', text: 'text-[#2563EB]', num: 'text-[#2563EB]' },
     blue:    { border: 'border-l-violet-500',    bg: 'bg-violet-50',    text: 'text-violet-700',    num: 'text-violet-600'   },
-    amber:   { border: 'border-l-amber-500',   bg: 'bg-amber-50',   text: 'text-amber-700',   num: 'text-amber-600'  },
+    amber:   { border: 'border-l-blue-500',   bg: 'bg-blue-50',   text: 'text-blue-700',   num: 'text-blue-600'  },
   };
   const c = colorMap[color];
   return (
@@ -99,7 +99,7 @@ function StatCard({ label, value, color, icon }: { label: string; value: number 
   );
 }
 
-const inputClass = 'w-full bg-white border border-[#E8E3DC] rounded-xl px-4 py-3 text-sm text-[#1C1917] placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all shadow-sm';
+const inputClass = 'w-full bg-white border border-[#E8E3DC] rounded-xl px-4 py-3 text-sm text-[#1C1917] placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all shadow-sm';
 const labelClass = 'block text-sm font-semibold text-stone-700 mb-1.5';
 
 export default function RestaurantProfilePage() {
@@ -197,7 +197,7 @@ export default function RestaurantProfilePage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-[#FAFAF9] flex items-center justify-center">
-        <svg className="animate-spin w-10 h-10 text-orange-500" fill="none" viewBox="0 0 24 24">
+        <svg className="animate-spin w-10 h-10 text-blue-500" fill="none" viewBox="0 0 24 24">
           <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
         </svg>
@@ -210,7 +210,7 @@ export default function RestaurantProfilePage() {
       <div className="min-h-screen bg-[#FAFAF9] flex items-center justify-center">
         <div className="bg-white rounded-2xl border border-red-200 p-10 text-center max-w-md">
           <p className="text-red-600 font-semibold">{error || 'Restaurante no encontrado.'}</p>
-          <Link href="/admin/restaurantes" className="mt-4 inline-block text-orange-600 hover:underline text-sm">Volver a Restaurantes</Link>
+          <Link href="/admin/restaurantes" className="mt-4 inline-block text-blue-600 hover:underline text-sm">Volver a Restaurantes</Link>
         </div>
       </div>
     );
@@ -224,7 +224,7 @@ export default function RestaurantProfilePage() {
         <div className="flex items-center gap-3 mb-6">
           <Link
             href="/admin/restaurantes"
-            className="inline-flex items-center gap-1.5 text-sm font-bold text-[#E8521A] bg-orange-50 border border-orange-200 hover:bg-orange-100 px-3 py-1.5 rounded-full transition-colors"
+            className="inline-flex items-center gap-1.5 text-sm font-bold text-[#2563EB] bg-blue-50 border border-blue-200 hover:bg-blue-100 px-3 py-1.5 rounded-full transition-colors"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -239,7 +239,7 @@ export default function RestaurantProfilePage() {
         <div className="bg-white rounded-2xl border border-[#E8E3DC] shadow-[0_1px_2px_rgba(28,25,23,0.04),_0_4px_16px_rgba(28,25,23,0.06)] overflow-hidden mb-6">
           <div className="p-6 flex items-center justify-between gap-5 flex-wrap" style={{ background: 'linear-gradient(135deg,#1C1917 0%,#292524 60%,#3c1a10 100%)' }}>
             <div className="flex items-center gap-5">
-              <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-white text-2xl font-extrabold shrink-0 overflow-hidden" style={{ background: 'linear-gradient(135deg,#E8521A,#C2410C)', boxShadow: '0 6px 20px rgba(232,82,26,0.40)' }}>
+              <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-white text-2xl font-extrabold shrink-0 overflow-hidden" style={{ background: 'linear-gradient(135deg,#2563EB,#0891B2)', boxShadow: '0 6px 20px rgba(37,99,235,0.40)' }}>
                 {restaurant.logo_url ? (
                   <img src={restaurant.logo_url} alt={restaurant.name} className="w-full h-full object-cover" />
                 ) : (
@@ -295,12 +295,12 @@ export default function RestaurantProfilePage() {
               </div>
               <div>
                 <label className={labelClass}>Logo (imagen)</label>
-                <input type="file" accept="image/*" onChange={(e) => setEditFile(e.target.files?.[0] || null)} className="w-full text-sm text-slate-600 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:bg-orange-50 file:text-orange-700 file:font-semibold" />
+                <input type="file" accept="image/*" onChange={(e) => setEditFile(e.target.files?.[0] || null)} className="w-full text-sm text-slate-600 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:bg-blue-50 file:text-blue-700 file:font-semibold" />
               </div>
               {editError && <div className="sm:col-span-2 text-red-600 text-sm bg-red-50 border border-red-200 rounded-xl px-4 py-2">{editError}</div>}
               <div className="sm:col-span-2 flex justify-end gap-3">
                 <button type="button" onClick={() => setShowEdit(false)} className="px-4 py-2 border border-slate-200 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-50">Cancelar</button>
-                <button type="submit" disabled={editLoading} className="px-5 py-2 bg-orange-600 hover:bg-orange-700 disabled:opacity-60 text-white font-bold rounded-xl text-sm">
+                <button type="submit" disabled={editLoading} className="px-5 py-2 bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white font-bold rounded-xl text-sm">
                   {editLoading ? 'Guardando...' : 'Guardar cambios'}
                 </button>
               </div>
@@ -333,7 +333,7 @@ export default function RestaurantProfilePage() {
             <h3 className="text-base font-extrabold text-[#1C1917] mb-1">Panel del Cajero</h3>
             <p className="text-sm text-stone-500">Comparte este enlace con el cajero para que pueda escanear y entregar premios.</p>
             <div className="mt-3 flex items-center gap-2 flex-wrap">
-              <code className="text-xs bg-orange-50 border border-orange-200 text-orange-800 rounded-lg px-3 py-1.5 font-mono break-all">
+              <code className="text-xs bg-blue-50 border border-blue-200 text-blue-800 rounded-lg px-3 py-1.5 font-mono break-all">
                 {typeof window !== 'undefined' ? `${window.location.origin}/cajero/${restaurant.id}` : `/cajero/${restaurant.id}`}
               </code>
               <button
@@ -341,7 +341,7 @@ export default function RestaurantProfilePage() {
                   const url = `${window.location.origin}/cajero/${restaurant.id}`;
                   navigator.clipboard.writeText(url);
                 }}
-                className="inline-flex items-center gap-1.5 text-xs font-bold text-[#E8521A] bg-orange-50 border border-orange-200 hover:bg-orange-100 px-3 py-1.5 rounded-lg transition-colors"
+                className="inline-flex items-center gap-1.5 text-xs font-bold text-[#2563EB] bg-blue-50 border border-blue-200 hover:bg-blue-100 px-3 py-1.5 rounded-lg transition-colors"
               >
                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
                 Copiar
@@ -349,15 +349,15 @@ export default function RestaurantProfilePage() {
               <Link
                 href={`/cajero/${restaurant.id}`}
                 target="_blank"
-                className="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-[#E8521A] hover:bg-orange-600 px-3 py-1.5 rounded-lg transition-colors"
+                className="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-[#2563EB] hover:bg-blue-600 px-3 py-1.5 rounded-lg transition-colors"
               >
                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
                 Abrir
               </Link>
             </div>
           </div>
-          <div className="shrink-0 w-10 h-10 rounded-xl bg-orange-50 border border-orange-200 flex items-center justify-center">
-            <svg className="w-5 h-5 text-[#E8521A]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4h.01M8 8h.01M16 8h.01M4 12h.01M20 12h.01M8 16h.01M16 16h.01M12 20h.01M4 4h4v4H4zm12 0h4v4h-4zM4 16h4v4H4zm12 0h4v4h-4z" /></svg>
+          <div className="shrink-0 w-10 h-10 rounded-xl bg-blue-50 border border-blue-200 flex items-center justify-center">
+            <svg className="w-5 h-5 text-[#2563EB]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4h.01M8 8h.01M16 8h.01M4 12h.01M20 12h.01M8 16h.01M16 16h.01M12 20h.01M4 4h4v4H4zm12 0h4v4h-4zM4 16h4v4H4zm12 0h4v4h-4z" /></svg>
           </div>
         </div>
 
@@ -373,7 +373,7 @@ export default function RestaurantProfilePage() {
               placeholder="Buscar..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-orange-500 transition-all shadow-sm"
+              className="w-full pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all shadow-sm"
             />
           </div>
         </div>
@@ -411,19 +411,19 @@ export default function RestaurantProfilePage() {
                       </td>
                       <td className="px-5 py-4">
                         {claim.status === 'delivered' ? (
-                          <span className="inline-flex items-center gap-1.5 bg-orange-50 text-orange-700 text-xs font-bold px-2.5 py-1 rounded-full border border-orange-200">
-                            <span className="w-1.5 h-1.5 rounded-full bg-orange-500 inline-block" />
+                          <span className="inline-flex items-center gap-1.5 bg-blue-50 text-blue-700 text-xs font-bold px-2.5 py-1 rounded-full border border-blue-200">
+                            <span className="w-1.5 h-1.5 rounded-full bg-blue-500 inline-block" />
                             Entregado
                           </span>
                         ) : (
-                          <span className="inline-flex items-center gap-1.5 bg-amber-50 text-amber-700 text-xs font-bold px-2.5 py-1 rounded-full border border-amber-200">
-                            <span className="w-1.5 h-1.5 rounded-full bg-amber-400 inline-block animate-pulse" />
+                          <span className="inline-flex items-center gap-1.5 bg-blue-50 text-blue-700 text-xs font-bold px-2.5 py-1 rounded-full border border-blue-200">
+                            <span className="w-1.5 h-1.5 rounded-full bg-blue-400 inline-block animate-pulse" />
                             Pendiente
                           </span>
                         )}
                       </td>
                       <td className="px-5 py-4">
-                        <span className="inline-flex bg-orange-50 text-[#E8521A] text-xs font-semibold px-2.5 py-1 rounded-full border border-orange-200">{claim.prize_name}</span>
+                        <span className="inline-flex bg-blue-50 text-[#2563EB] text-xs font-semibold px-2.5 py-1 rounded-full border border-blue-200">{claim.prize_name}</span>
                       </td>
                       <td className="px-5 py-4 text-gray-400 text-xs whitespace-nowrap">{formatDate(claim.claimed_at)}</td>
                     </tr>
@@ -446,7 +446,7 @@ export default function RestaurantProfilePage() {
               <h2 className="text-base font-bold text-[#1C1917]">Usuarios</h2>
               <p className="text-xs text-stone-400 mt-0.5">Crea una cuenta de manager para este restaurante</p>
             </div>
-            <button onClick={() => setShowManager((v) => !v)} className="text-xs font-semibold text-orange-700 border border-orange-200 bg-orange-50 hover:bg-orange-100 px-3 py-1.5 rounded-lg transition-colors">
+            <button onClick={() => setShowManager((v) => !v)} className="text-xs font-semibold text-blue-700 border border-blue-200 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-lg transition-colors">
               {showManager ? 'Cancelar' : '+ Nuevo usuario'}
             </button>
           </div>
@@ -461,9 +461,9 @@ export default function RestaurantProfilePage() {
                 <input type="password" value={managerForm.password} onChange={(e) => setManagerForm((p) => ({ ...p, password: e.target.value }))} required placeholder="Contraseña segura" className={inputClass} />
               </div>
               {managerError && <div className="sm:col-span-2 text-red-600 text-sm bg-red-50 border border-red-200 rounded-xl px-4 py-2">{managerError}</div>}
-              {managerMsg && <div className="sm:col-span-2 text-orange-700 text-sm bg-orange-50 border border-orange-200 rounded-xl px-4 py-2">{managerMsg}</div>}
+              {managerMsg && <div className="sm:col-span-2 text-blue-700 text-sm bg-blue-50 border border-blue-200 rounded-xl px-4 py-2">{managerMsg}</div>}
               <div className="sm:col-span-2 flex justify-end">
-                <button type="submit" disabled={managerLoading} className="px-5 py-2 bg-orange-600 hover:bg-orange-700 disabled:opacity-60 text-white font-bold rounded-xl text-sm">
+                <button type="submit" disabled={managerLoading} className="px-5 py-2 bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white font-bold rounded-xl text-sm">
                   {managerLoading ? 'Creando...' : 'Crear usuario'}
                 </button>
               </div>

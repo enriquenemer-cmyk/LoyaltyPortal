@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
     }
 
     let sessionUsername: string | null = null;
-    let sessionRole: 'admin' | 'manager' = 'admin';
+    let sessionRole: 'admin' | 'manager' | 'cajero' = 'admin';
     let sessionRestaurantId: string | undefined;
 
     // 1. Check env-level admin
@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
       const user = await getUserByUsername(username.trim());
       if (user && await bcrypt.compare(password, user.password_hash)) {
         sessionUsername = user.username;
-        sessionRole = user.role as 'admin' | 'manager';
+        sessionRole = user.role as 'admin' | 'manager' | 'cajero';
         sessionRestaurantId = user.restaurant_id ?? undefined;
       }
     }

@@ -64,8 +64,8 @@ function ResetPasswordForm() {
           <div
             className="w-14 h-14 rounded-2xl flex items-center justify-center"
             style={{
-              background: 'linear-gradient(135deg,#E8521A,#C2410C)',
-              boxShadow: '0 8px 24px rgba(232,82,26,0.35)',
+              background: 'linear-gradient(135deg,#2563EB,#0891B2)',
+              boxShadow: '0 8px 24px rgba(37,99,235,0.35)',
             }}
           >
             <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -110,7 +110,7 @@ function ResetPasswordForm() {
                     required
                     minLength={6}
                     placeholder="minimo 6 caracteres"
-                    className="w-full bg-[#FAFAF9] border border-[#E8E3DC] rounded-xl pl-10 pr-4 py-3.5 text-sm text-[#1C1917] placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-orange-500/25 focus:border-orange-500 focus:bg-white transition-all"
+                    className="w-full bg-[#FAFAF9] border border-[#E8E3DC] rounded-xl pl-10 pr-4 py-3.5 text-sm text-[#1C1917] placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-blue-500/25 focus:border-blue-500 focus:bg-white transition-all"
                   />
                 </div>
               </div>
@@ -131,7 +131,7 @@ function ResetPasswordForm() {
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     required
                     placeholder="repite la contrasena"
-                    className="w-full bg-[#FAFAF9] border border-[#E8E3DC] rounded-xl pl-10 pr-4 py-3.5 text-sm text-[#1C1917] placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-orange-500/25 focus:border-orange-500 focus:bg-white transition-all"
+                    className="w-full bg-[#FAFAF9] border border-[#E8E3DC] rounded-xl pl-10 pr-4 py-3.5 text-sm text-[#1C1917] placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-blue-500/25 focus:border-blue-500 focus:bg-white transition-all"
                   />
                 </div>
               </div>
@@ -152,8 +152,8 @@ function ResetPasswordForm() {
                 disabled={loading || !token}
                 className="w-full text-white font-bold py-4 rounded-xl transition-all text-base disabled:opacity-60"
                 style={{
-                  background: 'linear-gradient(135deg,#E8521A,#C2410C)',
-                  boxShadow: loading ? 'none' : '0 8px 24px rgba(232,82,26,0.40)',
+                  background: 'linear-gradient(135deg,#2563EB,#0891B2)',
+                  boxShadow: loading ? 'none' : '0 8px 24px rgba(37,99,235,0.40)',
                 }}
               >
                 {loading ? (
@@ -170,7 +170,7 @@ function ResetPasswordForm() {
               </button>
 
               <div className="text-center">
-                <Link href="/admin/login" className="text-sm text-[#78716c] hover:text-[#E8521A] transition-colors">
+                <Link href="/admin/login" className="text-sm text-[#78716c] hover:text-[#2563EB] transition-colors">
                   Volver al inicio de sesion
                 </Link>
               </div>
@@ -186,7 +186,7 @@ export default function ResetPasswordPage() {
   return (
     <Suspense fallback={
       <div className="min-h-screen bg-[#FAFAF9] flex items-center justify-center">
-        <svg className="animate-spin w-7 h-7 text-[#E8521A]" fill="none" viewBox="0 0 24 24">
+        <svg className="animate-spin w-7 h-7 text-[#2563EB]" fill="none" viewBox="0 0 24 24">
           <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
         </svg>

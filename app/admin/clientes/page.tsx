@@ -98,8 +98,8 @@ function SegmentButton({
       onClick={onClick}
       className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-bold border transition-all whitespace-nowrap ${
         active
-          ? 'bg-[#E8521A] text-white border-[#E8521A] shadow-md shadow-orange-200'
-          : 'bg-white text-slate-600 border-slate-200 hover:border-[#E8521A] hover:text-[#E8521A]'
+          ? 'bg-[#2563EB] text-white border-[#2563EB] shadow-md shadow-blue-200'
+          : 'bg-white text-slate-600 border-slate-200 hover:border-[#2563EB] hover:text-[#2563EB]'
       }`}
     >
       <span>{seg.icon}</span>
@@ -144,7 +144,7 @@ function DaysBadge({ days }: { days: number }) {
 function HistorialRow({ claim }: { claim: Claim }) {
   return (
     <div className="flex items-start gap-3 py-2 border-b border-slate-50 last:border-0">
-      <div className="w-1.5 h-1.5 rounded-full bg-[#E8521A]/40 mt-1.5 shrink-0" />
+      <div className="w-1.5 h-1.5 rounded-full bg-[#2563EB]/40 mt-1.5 shrink-0" />
       <div className="flex-1 min-w-0">
         <p className="text-xs font-semibold text-slate-700 truncate">{claim.prize_name}</p>
         <p className="text-[10px] text-slate-400">{claim.prize_location || claim.location || '—'}</p>
@@ -154,7 +154,7 @@ function HistorialRow({ claim }: { claim: Claim }) {
         {claim.status === 'delivered' ? (
           <span className="text-[10px] font-bold text-emerald-600">Entregado</span>
         ) : (
-          <span className="text-[10px] font-bold text-amber-500">Pendiente</span>
+          <span className="text-[10px] font-bold text-blue-500">Pendiente</span>
         )}
       </div>
     </div>
@@ -166,14 +166,14 @@ function CustomerRow({ customer }: { customer: CustomerProfile }) {
 
   return (
     <>
-      <tr className="hover:bg-orange-50/40 transition-colors group">
+      <tr className="hover:bg-blue-50/40 transition-colors group">
         {/* Cliente */}
         <td className="px-5 py-4">
           <div className="flex items-center gap-3">
             <Avatar name={customer.full_name} />
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-medium text-slate-900 group-hover:text-[#E8521A] transition-colors text-sm">
+                <span className="font-medium text-slate-900 group-hover:text-[#2563EB] transition-colors text-sm">
                   {customer.full_name}
                 </span>
                 {customer.isNew && (
@@ -182,7 +182,7 @@ function CustomerRow({ customer }: { customer: CustomerProfile }) {
                   </span>
                 )}
                 {customer.isFrequent && (
-                  <span className="text-[9px] font-extrabold bg-amber-100 text-amber-600 border border-amber-200 rounded-full px-1.5 py-0.5 uppercase tracking-wide">
+                  <span className="text-[9px] font-extrabold bg-blue-100 text-blue-600 border border-blue-200 rounded-full px-1.5 py-0.5 uppercase tracking-wide">
                     Frecuente
                   </span>
                 )}
@@ -196,7 +196,7 @@ function CustomerRow({ customer }: { customer: CustomerProfile }) {
         <td className="px-5 py-4">
           <a
             href={`mailto:${customer.email}`}
-            className="text-[#E8521A] hover:text-orange-700 hover:underline text-xs"
+            className="text-[#2563EB] hover:text-blue-700 hover:underline text-xs"
           >
             {customer.email}
           </a>
@@ -204,7 +204,7 @@ function CustomerRow({ customer }: { customer: CustomerProfile }) {
 
         {/* Total canjes */}
         <td className="px-5 py-4">
-          <span className="inline-flex items-center gap-1.5 bg-orange-50 text-[#E8521A] text-xs font-bold px-2.5 py-1 rounded-full border border-orange-200">
+          <span className="inline-flex items-center gap-1.5 bg-blue-50 text-[#2563EB] text-xs font-bold px-2.5 py-1 rounded-full border border-blue-200">
             <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
             </svg>
@@ -232,7 +232,7 @@ function CustomerRow({ customer }: { customer: CustomerProfile }) {
               Entregado
             </span>
           ) : (
-            <span className="inline-flex items-center gap-1.5 bg-amber-50 text-amber-700 text-xs font-bold px-2.5 py-1 rounded-full border border-amber-200">
+            <span className="inline-flex items-center gap-1.5 bg-blue-50 text-blue-700 text-xs font-bold px-2.5 py-1 rounded-full border border-blue-200">
               <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
@@ -247,8 +247,8 @@ function CustomerRow({ customer }: { customer: CustomerProfile }) {
             onClick={() => setExpanded((v) => !v)}
             className={`inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border transition-all ${
               expanded
-                ? 'bg-[#E8521A] text-white border-[#E8521A]'
-                : 'bg-white text-slate-500 border-slate-200 hover:border-[#E8521A] hover:text-[#E8521A]'
+                ? 'bg-[#2563EB] text-white border-[#2563EB]'
+                : 'bg-white text-slate-500 border-slate-200 hover:border-[#2563EB] hover:text-[#2563EB]'
             }`}
           >
             Ver historial
@@ -267,8 +267,8 @@ function CustomerRow({ customer }: { customer: CustomerProfile }) {
       {/* Expandable historial */}
       {expanded && (
         <tr>
-          <td colSpan={6} className="px-5 pb-4 pt-0 bg-orange-50/30">
-            <div className="ml-13 pl-3 border-l-2 border-[#E8521A]/20 ml-[52px]">
+          <td colSpan={6} className="px-5 pb-4 pt-0 bg-blue-50/30">
+            <div className="ml-13 pl-3 border-l-2 border-[#2563EB]/20 ml-[52px]">
               <p className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest mb-2 mt-1">
                 Historial de canjes — {customer.totalClaims} en total
               </p>
@@ -381,13 +381,13 @@ export default function ClientesPage() {
         {/* Header */}
         <div className="mb-8 flex items-start justify-between flex-wrap gap-4">
           <div>
-            <div className="inline-flex items-center gap-2 bg-orange-50 text-[#E8521A] rounded-full px-3 py-1.5 text-xs font-bold uppercase tracking-widest mb-4 border border-orange-200">
+            <div className="inline-flex items-center gap-2 bg-blue-50 text-[#2563EB] rounded-full px-3 py-1.5 text-xs font-bold uppercase tracking-widest mb-4 border border-blue-200">
               <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
               Base de Clientes
             </div>
-            <h1 className="text-3xl font-black text-[#1C1917] tracking-tight border-l-[3px] border-[#E8521A] pl-4">
+            <h1 className="text-3xl font-black text-[#1C1917] tracking-tight border-l-[3px] border-[#2563EB] pl-4">
               Base de <span className="gradient-text">Clientes</span>
             </h1>
             <p className="text-stone-500 mt-2 text-sm pl-4">
@@ -396,10 +396,10 @@ export default function ClientesPage() {
             {/* Decorative overlapping avatar circles */}
             <div className="flex items-center mt-3 pl-4">
               <div className="flex -space-x-2">
-                <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[#E8521A] to-orange-400 border-2 border-white shadow-sm flex items-center justify-center text-white text-[9px] font-black">A</div>
+                <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[#2563EB] to-blue-400 border-2 border-white shadow-sm flex items-center justify-center text-white text-[9px] font-black">A</div>
                 <div className="w-7 h-7 rounded-full bg-gradient-to-br from-violet-500 to-purple-400 border-2 border-white shadow-sm flex items-center justify-center text-white text-[9px] font-black">M</div>
                 <div className="w-7 h-7 rounded-full bg-gradient-to-br from-teal-500 to-emerald-400 border-2 border-white shadow-sm flex items-center justify-center text-white text-[9px] font-black">R</div>
-                <div className="w-7 h-7 rounded-full bg-gradient-to-br from-amber-500 to-yellow-400 border-2 border-white shadow-sm flex items-center justify-center text-white text-[9px] font-black">L</div>
+                <div className="w-7 h-7 rounded-full bg-gradient-to-br from-blue-500 to-yellow-400 border-2 border-white shadow-sm flex items-center justify-center text-white text-[9px] font-black">L</div>
                 {!loading && customers.length > 4 && (
                   <div className="w-7 h-7 rounded-full bg-stone-100 border-2 border-white shadow-sm flex items-center justify-center text-stone-500 text-[9px] font-black">+{customers.length - 4}</div>
                 )}
@@ -409,7 +409,7 @@ export default function ClientesPage() {
           </div>
           {!loading && customers.length > 0 && (
             <div className="flex items-center gap-2 text-xs text-stone-400 bg-white border border-[#E8E3DC] rounded-xl px-4 py-2.5 shadow-sm">
-              <div className="w-1.5 h-1.5 bg-[#E8521A] rounded-full animate-pulse" />
+              <div className="w-1.5 h-1.5 bg-[#2563EB] rounded-full animate-pulse" />
               <span className="font-semibold">{customers.length}</span> clientes únicos registrados
             </div>
           )}
@@ -418,9 +418,9 @@ export default function ClientesPage() {
         {/* Stats row */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
           {[
-            { label: 'Clientes únicos', value: loading ? '—' : customers.length, icon: '👥', borderColor: '#E8521A', bgColor: '#fde8e0', numColor: '#E8521A' },
-            { label: 'Frecuentes', value: loading ? '—' : segmentCounts.frecuentes, icon: '⭐', borderColor: '#f59e0b', bgColor: '#fef3c7', numColor: '#d97706' },
-            { label: 'Sin canjear', value: loading ? '—' : segmentCounts.sin_canjear, icon: '⏳', borderColor: '#f59e0b', bgColor: '#fef9c3', numColor: '#b45309' },
+            { label: 'Clientes únicos', value: loading ? '—' : customers.length, icon: '👥', borderColor: '#2563EB', bgColor: '#fde8e0', numColor: '#2563EB' },
+            { label: 'Frecuentes', value: loading ? '—' : segmentCounts.frecuentes, icon: '⭐', borderColor: '#0284C7', bgColor: '#fef3c7', numColor: '#0EA5E9' },
+            { label: 'Sin canjear', value: loading ? '—' : segmentCounts.sin_canjear, icon: '⏳', borderColor: '#0284C7', bgColor: '#fef9c3', numColor: '#1D4ED8' },
             { label: 'Nuevos (30d)', value: loading ? '—' : segmentCounts.nuevos, icon: '✨', borderColor: '#8b5cf6', bgColor: '#ede9fe', numColor: '#7c3aed' },
           ].map(({ label, value, icon, borderColor, bgColor, numColor }) => (
             <div
@@ -468,7 +468,7 @@ export default function ClientesPage() {
               placeholder="Buscar por nombre, correo o teléfono..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 bg-white border border-[#E8E3DC] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#E8521A]/20 focus:border-[#E8521A] transition-all shadow-sm"
+              className="w-full pl-10 pr-4 py-2.5 bg-white border border-[#E8E3DC] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20 focus:border-[#2563EB] transition-all shadow-sm"
             />
           </div>
           {search && (
@@ -494,7 +494,7 @@ export default function ClientesPage() {
         {/* Content */}
         {loading ? (
           <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-20 text-center">
-            <svg className="animate-spin w-8 h-8 text-[#E8521A] mx-auto mb-3" fill="none" viewBox="0 0 24 24">
+            <svg className="animate-spin w-8 h-8 text-[#2563EB] mx-auto mb-3" fill="none" viewBox="0 0 24 24">
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
             </svg>
@@ -506,16 +506,16 @@ export default function ClientesPage() {
               <>
                 <svg width="80" height="80" viewBox="0 0 80 80" fill="none" className="mx-auto mb-5" aria-hidden="true">
                   <circle cx="40" cy="40" r="38" fill="#fdf3ee" stroke="#E8E3DC" strokeWidth="1.5" />
-                  <circle cx="38" cy="38" r="14" fill="none" stroke="#E8521A" strokeWidth="2" opacity="0.4" />
-                  <path d="M48 48 L56 56" stroke="#E8521A" strokeWidth="2.5" strokeLinecap="round" opacity="0.6" />
-                  <path d="M34 34 L42 42 M42 34 L34 42" stroke="#E8521A" strokeWidth="2" strokeLinecap="round" opacity="0.5" />
+                  <circle cx="38" cy="38" r="14" fill="none" stroke="#2563EB" strokeWidth="2" opacity="0.4" />
+                  <path d="M48 48 L56 56" stroke="#2563EB" strokeWidth="2.5" strokeLinecap="round" opacity="0.6" />
+                  <path d="M34 34 L42 42 M42 34 L34 42" stroke="#2563EB" strokeWidth="2" strokeLinecap="round" opacity="0.5" />
                 </svg>
                 <p className="text-[#1C1917] font-semibold">Sin resultados para este filtro</p>
                 <p className="text-[#a8a29e] text-sm mt-1">Prueba con otro segmento o término de búsqueda</p>
                 {segment !== 'todos' && (
                   <button
                     onClick={() => setSegment('todos')}
-                    className="mt-3 text-xs text-[#E8521A] font-bold hover:underline"
+                    className="mt-3 text-xs text-[#2563EB] font-bold hover:underline"
                   >
                     Ver todos los clientes
                   </button>
@@ -525,9 +525,9 @@ export default function ClientesPage() {
               <>
                 <svg width="80" height="80" viewBox="0 0 80 80" fill="none" className="mx-auto mb-5" aria-hidden="true">
                   <circle cx="40" cy="40" r="38" fill="#fdf3ee" stroke="#E8E3DC" strokeWidth="1.5" />
-                  <circle cx="40" cy="30" r="10" fill="#E8521A" opacity="0.15" />
-                  <circle cx="40" cy="30" r="7" fill="#E8521A" opacity="0.4" />
-                  <path d="M24 58c0-8.837 7.163-14 16-14s16 5.163 16 14" stroke="#E8521A" strokeWidth="2" strokeLinecap="round" opacity="0.35" />
+                  <circle cx="40" cy="30" r="10" fill="#2563EB" opacity="0.15" />
+                  <circle cx="40" cy="30" r="7" fill="#2563EB" opacity="0.4" />
+                  <path d="M24 58c0-8.837 7.163-14 16-14s16 5.163 16 14" stroke="#2563EB" strokeWidth="2" strokeLinecap="round" opacity="0.35" />
                 </svg>
                 <p className="text-[#1C1917] font-bold text-base mb-2">Aún no hay clientes registrados</p>
                 <p className="text-[#78716c] text-sm max-w-sm mx-auto leading-relaxed mb-5">
@@ -536,7 +536,7 @@ export default function ClientesPage() {
                 <a
                   href="/admin/generate"
                   className="inline-flex items-center gap-2 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition-all"
-                  style={{ background: 'linear-gradient(135deg,#E8521A,#C2410C)', boxShadow: '0 4px 14px rgba(232,82,26,0.30)' }}
+                  style={{ background: 'linear-gradient(135deg,#2563EB,#0891B2)', boxShadow: '0 4px 14px rgba(37,99,235,0.30)' }}
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
@@ -585,7 +585,7 @@ export default function ClientesPage() {
                 <span className="font-medium text-slate-600">{filtered.length}</span> de{' '}
                 <span className="font-medium text-slate-600">{customers.length}</span> clientes
                 {segment !== 'todos' && (
-                  <span className="ml-2 text-[#E8521A] font-bold">
+                  <span className="ml-2 text-[#2563EB] font-bold">
                     · {SEGMENTS.find((s) => s.key === segment)?.label}
                   </span>
                 )}

@@ -66,11 +66,11 @@ export default function UsuariosPage() {
       if (!res.ok) {
         setError(data.error ?? 'Error al crear usuario.');
       } else {
-        setSuccess('Usuario creado exitosamente.');
         setForm({ username: '', password: '', restaurant_id: '', role: 'manager' });
         setShowForm(false);
         await loadUsers();
-        setTimeout(() => setSuccess(null), 3000);
+        setSuccess('Usuario creado exitosamente.');
+        setTimeout(() => setSuccess(null), 4000);
       }
     } finally {
       setSubmitting(false);
@@ -106,7 +106,7 @@ export default function UsuariosPage() {
           </div>
           <button
             onClick={() => { setShowForm((v) => !v); setError(null); }}
-            className="flex items-center gap-2 bg-[#E8521A] hover:bg-[#C2410C] text-white text-sm font-semibold px-4 py-2 rounded-xl transition-colors"
+            className="flex items-center gap-2 bg-[#2563EB] hover:bg-[#0891B2] text-white text-sm font-semibold px-4 py-2 rounded-xl transition-colors"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -142,7 +142,7 @@ export default function UsuariosPage() {
                   value={form.username}
                   onChange={(e) => setForm((f) => ({ ...f, username: e.target.value }))}
                   placeholder="ej. manager_sucursal1"
-                  className="w-full border border-[#E8E3DC] rounded-xl px-3 py-2.5 text-sm text-[#1C1917] placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-[#E8521A]/30 focus:border-[#E8521A] transition-colors"
+                  className="w-full border border-[#E8E3DC] rounded-xl px-3 py-2.5 text-sm text-[#1C1917] placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-[#2563EB]/30 focus:border-[#2563EB] transition-colors"
                 />
               </div>
               <div>
@@ -156,7 +156,7 @@ export default function UsuariosPage() {
                   value={form.password}
                   onChange={(e) => setForm((f) => ({ ...f, password: e.target.value }))}
                   placeholder="••••••••"
-                  className="w-full border border-[#E8E3DC] rounded-xl px-3 py-2.5 text-sm text-[#1C1917] placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-[#E8521A]/30 focus:border-[#E8521A] transition-colors"
+                  className="w-full border border-[#E8E3DC] rounded-xl px-3 py-2.5 text-sm text-[#1C1917] placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-[#2563EB]/30 focus:border-[#2563EB] transition-colors"
                 />
               </div>
               <div>
@@ -164,12 +164,11 @@ export default function UsuariosPage() {
                   Restaurante
                 </label>
                 <select
-                  required
                   value={form.restaurant_id}
                   onChange={(e) => setForm((f) => ({ ...f, restaurant_id: e.target.value }))}
-                  className="w-full border border-[#E8E3DC] rounded-xl px-3 py-2.5 text-sm text-[#1C1917] focus:outline-none focus:ring-2 focus:ring-[#E8521A]/30 focus:border-[#E8521A] transition-colors bg-white"
+                  className="w-full border border-[#E8E3DC] rounded-xl px-3 py-2.5 text-sm text-[#1C1917] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/30 focus:border-[#2563EB] transition-colors bg-white"
                 >
-                  <option value="">Selecciona un restaurante…</option>
+                  <option value="">Sin restaurante (Admin global)</option>
                   {restaurants.map((r) => (
                     <option key={r.id} value={r.id}>{r.name}</option>
                   ))}
@@ -182,7 +181,7 @@ export default function UsuariosPage() {
                 <select
                   value={form.role}
                   onChange={(e) => setForm((f) => ({ ...f, role: e.target.value as 'admin' | 'manager' | 'cajero' }))}
-                  className="w-full border border-[#E8E3DC] rounded-xl px-3 py-2.5 text-sm text-[#1C1917] focus:outline-none focus:ring-2 focus:ring-[#E8521A]/30 focus:border-[#E8521A] transition-colors bg-white"
+                  className="w-full border border-[#E8E3DC] rounded-xl px-3 py-2.5 text-sm text-[#1C1917] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/30 focus:border-[#2563EB] transition-colors bg-white"
                 >
                   <option value="manager">Manager</option>
                   <option value="cajero">Cajero</option>
@@ -193,7 +192,7 @@ export default function UsuariosPage() {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="bg-[#E8521A] hover:bg-[#C2410C] disabled:opacity-60 text-white text-sm font-semibold px-5 py-2.5 rounded-xl transition-colors"
+                  className="bg-[#2563EB] hover:bg-[#0891B2] disabled:opacity-60 text-white text-sm font-semibold px-5 py-2.5 rounded-xl transition-colors"
                 >
                   {submitting ? 'Creando…' : 'Crear usuario'}
                 </button>
@@ -237,12 +236,12 @@ export default function UsuariosPage() {
                   {users.map((user, i) => (
                     <tr
                       key={user.id}
-                      className={`border-b border-[#E8E3DC] last:border-0 ${i % 2 === 0 ? 'bg-white' : 'bg-[#FAFAF9]/50'} hover:bg-orange-50/30 transition-colors`}
+                      className={`border-b border-[#E8E3DC] last:border-0 ${i % 2 === 0 ? 'bg-white' : 'bg-[#FAFAF9]/50'} hover:bg-blue-50/30 transition-colors`}
                     >
                       <td className="px-5 py-3.5">
                         <div className="flex items-center gap-2.5">
-                          <div className="w-7 h-7 rounded-full bg-[#E8521A]/10 flex items-center justify-center shrink-0">
-                            <svg className="w-3.5 h-3.5 text-[#E8521A]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <div className="w-7 h-7 rounded-full bg-[#2563EB]/10 flex items-center justify-center shrink-0">
+                            <svg className="w-3.5 h-3.5 text-[#2563EB]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                             </svg>
                           </div>
@@ -253,7 +252,7 @@ export default function UsuariosPage() {
                         <span
                           className={`inline-flex items-center text-xs font-semibold rounded-full px-2.5 py-1 capitalize ${
                             user.role === 'admin'
-                              ? 'bg-orange-100 text-orange-700'
+                              ? 'bg-blue-100 text-blue-700'
                               : user.role === 'cajero'
                               ? 'bg-blue-50 text-blue-700'
                               : 'bg-stone-100 text-stone-600'

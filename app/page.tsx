@@ -56,11 +56,11 @@ export default function HomePage() {
     <main className="min-h-screen bg-background text-foreground">
       {/* Hero */}
       <section className="flex flex-col items-center justify-center px-6 py-24 text-center gap-6">
-        <div className="inline-flex items-center gap-2 bg-amber-50 border border-amber-200 rounded-full px-4 py-1.5 text-amber-700 text-sm font-medium">
+        <div className="inline-flex items-center gap-2 bg-blue-50 border border-blue-200 rounded-full px-4 py-1.5 text-blue-700 text-sm font-medium">
           <span>Plataforma de premios QR</span>
         </div>
         <h1 className="text-5xl md:text-6xl font-black tracking-tight text-stone-900 max-w-3xl leading-tight">
-          Fideliza a tus clientes con <span className="text-amber-600">Premia Tierra</span>
+          Fideliza a tus clientes con <span className="text-blue-600">SuperTierra</span>
         </h1>
         <p className="text-lg text-stone-500 max-w-xl">
           Genera códigos QR de premios, gestiona tus restaurantes y haz seguimiento de canjes en tiempo real.
@@ -68,7 +68,7 @@ export default function HomePage() {
         <div className="flex flex-col sm:flex-row gap-3 mt-2">
           <Link
             href="/admin/login"
-            className="inline-flex items-center justify-center px-6 py-3 bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded-xl transition-colors"
+            className="inline-flex items-center justify-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors"
           >
             Iniciar sesión
           </Link>
@@ -85,15 +85,15 @@ export default function HomePage() {
       {stats && (
         <section className="max-w-3xl mx-auto px-6 pb-20 grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
           <div className="bg-white border border-stone-100 rounded-2xl p-6 shadow-sm">
-            <p className="text-4xl font-black text-amber-600">{stats.restaurants}</p>
+            <p className="text-4xl font-black text-blue-600">{stats.restaurants}</p>
             <p className="text-stone-500 text-sm mt-1">Restaurantes activos</p>
           </div>
           <div className="bg-white border border-stone-100 rounded-2xl p-6 shadow-sm">
-            <p className="text-4xl font-black text-amber-600">{stats.prizes}</p>
+            <p className="text-4xl font-black text-blue-600">{stats.prizes}</p>
             <p className="text-stone-500 text-sm mt-1">Premios generados</p>
           </div>
           <div className="bg-white border border-stone-100 rounded-2xl p-6 shadow-sm">
-            <p className="text-4xl font-black text-amber-600">{stats.claims}</p>
+            <p className="text-4xl font-black text-blue-600">{stats.claims}</p>
             <p className="text-stone-500 text-sm mt-1">Canjes realizados</p>
           </div>
         </section>

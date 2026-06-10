@@ -24,8 +24,8 @@ function NoClaimsIllustration() {
       <rect x="34" y="46" width="40" height="4" rx="2" fill="#E8E3DC" />
       <rect x="34" y="56" width="44" height="4" rx="2" fill="#E8E3DC" />
       {/* Orange X mark */}
-      <circle cx="84" cy="68" r="14" fill="#FFF2ED" stroke="#E8521A" strokeWidth="1.5" />
-      <path d="M78 62 L90 74 M90 62 L78 74" stroke="#E8521A" strokeWidth="2.5" strokeLinecap="round" />
+      <circle cx="84" cy="68" r="14" fill="#FFF2ED" stroke="#2563EB" strokeWidth="1.5" />
+      <path d="M78 62 L90 74 M90 62 L78 74" stroke="#2563EB" strokeWidth="2.5" strokeLinecap="round" />
     </svg>
   );
 }
@@ -34,19 +34,19 @@ function NoPrizesIllustration() {
   return (
     <svg width="120" height="90" viewBox="0 0 120 90" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       {/* Gift box bottom */}
-      <rect x="20" y="48" width="80" height="38" rx="5" fill="#FFF2ED" stroke="#E8521A" strokeWidth="1.5" />
+      <rect x="20" y="48" width="80" height="38" rx="5" fill="#FFF2ED" stroke="#2563EB" strokeWidth="1.5" />
       {/* Gift box lid */}
-      <rect x="16" y="36" width="88" height="16" rx="5" fill="#FFF2ED" stroke="#E8521A" strokeWidth="1.5" />
+      <rect x="16" y="36" width="88" height="16" rx="5" fill="#FFF2ED" stroke="#2563EB" strokeWidth="1.5" />
       {/* Ribbon vertical */}
-      <rect x="54" y="36" width="12" height="50" rx="3" fill="#E8521A" opacity="0.25" />
+      <rect x="54" y="36" width="12" height="50" rx="3" fill="#2563EB" opacity="0.25" />
       {/* Ribbon horizontal */}
-      <rect x="16" y="40" width="88" height="10" rx="3" fill="#E8521A" opacity="0.25" />
+      <rect x="16" y="40" width="88" height="10" rx="3" fill="#2563EB" opacity="0.25" />
       {/* Bow left loop */}
-      <path d="M60 36 C52 28 38 28 40 36" stroke="#E8521A" strokeWidth="2" strokeLinecap="round" fill="none" />
+      <path d="M60 36 C52 28 38 28 40 36" stroke="#2563EB" strokeWidth="2" strokeLinecap="round" fill="none" />
       {/* Bow right loop */}
-      <path d="M60 36 C68 28 82 28 80 36" stroke="#E8521A" strokeWidth="2" strokeLinecap="round" fill="none" />
+      <path d="M60 36 C68 28 82 28 80 36" stroke="#2563EB" strokeWidth="2" strokeLinecap="round" fill="none" />
       {/* Question mark */}
-      <text x="60" y="73" textAnchor="middle" fontSize="20" fill="#E8521A" fontWeight="800" fontFamily="sans-serif" opacity="0.7">?</text>
+      <text x="60" y="73" textAnchor="middle" fontSize="20" fill="#2563EB" fontWeight="800" fontFamily="sans-serif" opacity="0.7">?</text>
     </svg>
   );
 }
@@ -72,8 +72,8 @@ function NoRestaurantsIllustration() {
       <line x1="81" y1="44" x2="81" y2="58" stroke="#E8E3DC" strokeWidth="1" />
       <line x1="72" y1="51" x2="90" y2="51" stroke="#E8E3DC" strokeWidth="1" />
       {/* Awning */}
-      <path d="M42 60 L78 60 L80 54 L40 54 Z" fill="#E8521A" opacity="0.2" />
-      <line x1="40" y1="54" x2="80" y2="54" stroke="#E8521A" strokeWidth="1.5" opacity="0.4" />
+      <path d="M42 60 L78 60 L80 54 L40 54 Z" fill="#2563EB" opacity="0.2" />
+      <line x1="40" y1="54" x2="80" y2="54" stroke="#2563EB" strokeWidth="1.5" opacity="0.4" />
     </svg>
   );
 }
@@ -110,7 +110,7 @@ function NoResultsIllustration() {
       <line x1="72" y1="66" x2="94" y2="86" stroke="#D6CFC6" strokeWidth="5" strokeLinecap="round" />
       <line x1="72" y1="66" x2="94" y2="86" stroke="#E8E3DC" strokeWidth="3" strokeLinecap="round" />
       {/* Nothing inside — faint X */}
-      <path d="M42 36 L58 52 M58 36 L42 52" stroke="#E8521A" strokeWidth="2.5" strokeLinecap="round" opacity="0.5" />
+      <path d="M42 36 L58 52 M58 36 L42 52" stroke="#2563EB" strokeWidth="2.5" strokeLinecap="round" opacity="0.5" />
     </svg>
   );
 }

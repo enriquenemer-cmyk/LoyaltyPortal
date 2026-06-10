@@ -306,7 +306,7 @@ export default function TicketScanner({
     ? Math.min(...tiers.map((t) => Number(t.min_amount)))
     : 0;
 
-  const primaryColor = config?.primary_color ?? '#E8521A';
+  const primaryColor = config?.primary_color ?? '#2563EB';
   const welcomeTitle = config?.welcome_title ?? `${restaurant.name} te premia`;
   const welcomeSubtitle = config?.welcome_subtitle ?? 'Sube la foto de tu ticket y gana premios';
 
@@ -329,12 +329,12 @@ export default function TicketScanner({
       >
         <style>{`
           @keyframes pulse {
-            0%,100%{box-shadow:0 0 0 0 rgba(232,82,26,0.5)}
-            50%{box-shadow:0 0 0 20px rgba(232,82,26,0)}
+            0%,100%{box-shadow:0 0 0 0 rgba(37,99,235,0.5)}
+            50%{box-shadow:0 0 0 20px rgba(37,99,235,0)}
           }
           @keyframes eventPulse {
-            0%,100%{box-shadow:0 0 0 0 rgba(251,191,36,0.5), 0 0 24px rgba(251,191,36,0.35)}
-            50%{box-shadow:0 0 0 8px rgba(251,191,36,0), 0 0 32px rgba(251,191,36,0.5)}
+            0%,100%{box-shadow:0 0 0 0 rgba(56,189,248,0.5), 0 0 24px rgba(56,189,248,0.35)}
+            50%{box-shadow:0 0 0 8px rgba(56,189,248,0), 0 0 32px rgba(56,189,248,0.5)}
           }
           @keyframes fadeIn {
             from{opacity:0;transform:translateY(16px)}
@@ -360,21 +360,21 @@ export default function TicketScanner({
           )}
 
           {retryMsg && (
-            <div style={{ background: 'rgba(251,191,36,0.12)', border: '1px solid rgba(251,191,36,0.3)', borderRadius: 10, padding: '10px 14px', marginBottom: 16 }}>
-              <p style={{ color: '#fbbf24', fontSize: 13 }}>{retryMsg}</p>
+            <div style={{ background: 'rgba(56,189,248,0.12)', border: '1px solid rgba(56,189,248,0.3)', borderRadius: 10, padding: '10px 14px', marginBottom: 16 }}>
+              <p style={{ color: '#38BDF8', fontSize: 13 }}>{retryMsg}</p>
             </div>
           )}
 
           {/* Active event banner */}
           {activeEvent && (
             <div style={{
-              background: 'linear-gradient(135deg, #92400e, #d97706)',
-              border: '2px solid #fbbf24',
+              background: 'linear-gradient(135deg, #1E40AF, #0EA5E9)',
+              border: '2px solid #38BDF8',
               borderRadius: 14,
               padding: '14px 18px',
               marginBottom: 20,
               textAlign: 'center',
-              boxShadow: '0 0 24px rgba(251,191,36,0.35)',
+              boxShadow: '0 0 24px rgba(56,189,248,0.35)',
               animation: 'eventPulse 2s infinite',
             }}>
               <p style={{ color: '#fef3c7', fontWeight: 900, fontSize: 16, margin: 0, lineHeight: 1.4 }}>
@@ -543,7 +543,7 @@ export default function TicketScanner({
                       Toma una foto clara de tu cuenta o recibo
                     </p>
                     <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 12, margin: 0, lineHeight: 1.5 }}>
-                      Asegúrate que el <strong style={{ color: '#fbbf24' }}>TOTAL</strong> sea visible
+                      Asegúrate que el <strong style={{ color: '#38BDF8' }}>TOTAL</strong> sea visible
                     </p>
                     {/* Receipt illustration */}
                     <div style={{ marginTop: 10 }}>
@@ -558,16 +558,16 @@ export default function TicketScanner({
                         <line x1="15" y1="36" x2="36" y2="36" stroke="#aaa" strokeWidth="1" />
                         <line x1="15" y1="42" x2="39" y2="42" stroke="#aaa" strokeWidth="1" />
                         {/* TOTAL highlight */}
-                        <rect x="12" y="54" width="32" height="10" rx="2" fill="rgba(232,82,26,0.25)" stroke="#E8521A" strokeWidth="1" />
-                        <text x="28" y="62" textAnchor="middle" fill="#E8521A" fontSize="5" fontWeight="bold">TOTAL</text>
+                        <rect x="12" y="54" width="32" height="10" rx="2" fill="rgba(37,99,235,0.25)" stroke="#2563EB" strokeWidth="1" />
+                        <text x="28" y="62" textAnchor="middle" fill="#2563EB" fontSize="5" fontWeight="bold">TOTAL</text>
                         {/* Arrow pointing to total */}
-                        <path d="M 68 59 L 50 59" stroke="#fbbf24" strokeWidth="2" markerEnd="url(#arrowhead)" />
+                        <path d="M 68 59 L 50 59" stroke="#38BDF8" strokeWidth="2" markerEnd="url(#arrowhead)" />
                         <defs>
                           <marker id="arrowhead" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
-                            <path d="M0,0 L6,3 L0,6 Z" fill="#fbbf24" />
+                            <path d="M0,0 L6,3 L0,6 Z" fill="#38BDF8" />
                           </marker>
                         </defs>
-                        <text x="100" y="63" textAnchor="middle" fill="#fbbf24" fontSize="9" fontWeight="bold">TOTAL</text>
+                        <text x="100" y="63" textAnchor="middle" fill="#38BDF8" fontSize="9" fontWeight="bold">TOTAL</text>
                         <text x="100" y="74" textAnchor="middle" fill="rgba(255,255,255,0.5)" fontSize="8">aquí ↑</text>
                       </svg>
                     </div>
@@ -658,7 +658,7 @@ export default function TicketScanner({
         `}</style>
 
         <div style={{ width: '100%', maxWidth: 380 }}>
-          <p style={{ color: '#E8521A', fontWeight: 700, textAlign: 'center', marginBottom: 16, fontSize: 14, letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+          <p style={{ color: '#2563EB', fontWeight: 700, textAlign: 'center', marginBottom: 16, fontSize: 14, letterSpacing: '0.1em', textTransform: 'uppercase' }}>
             {state === 'scanning' ? 'Cargando imagen...' : 'Leyendo monto...'}
           </p>
 
@@ -697,8 +697,8 @@ export default function TicketScanner({
                       width: 48,
                       height: 48,
                       borderRadius: '50%',
-                      border: '3px solid rgba(232,82,26,0.3)',
-                      borderTop: '3px solid #E8521A',
+                      border: '3px solid rgba(37,99,235,0.3)',
+                      borderTop: '3px solid #2563EB',
                       animation: 'spinnerRot 0.8s linear infinite',
                       margin: '0 auto 12px',
                     }} />
@@ -709,7 +709,7 @@ export default function TicketScanner({
                           width: 8,
                           height: 8,
                           borderRadius: '50%',
-                          background: '#E8521A',
+                          background: '#2563EB',
                           animation: `dotBounce 1.2s ${i * 0.2}s ease-in-out infinite`,
                         }} />
                       ))}
@@ -747,11 +747,11 @@ export default function TicketScanner({
           </p>
 
           <div style={{
-            background: '#E8521A',
+            background: '#2563EB',
             borderRadius: 20,
             padding: '28px 20px',
             marginBottom: 32,
-            boxShadow: '0 0 40px rgba(232,82,26,0.4)',
+            boxShadow: '0 0 40px rgba(37,99,235,0.4)',
           }}>
             <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: 14, marginBottom: 4 }}>Total detectado</p>
             <p style={{ color: 'white', fontSize: 52, fontWeight: 900, letterSpacing: '-0.02em' }}>
@@ -793,13 +793,13 @@ export default function TicketScanner({
                 minHeight: btnHeight,
                 padding: '16px',
                 borderRadius: 14,
-                background: '#E8521A',
+                background: '#2563EB',
                 color: 'white',
                 fontWeight: 800,
                 fontSize: btnFontSize,
                 border: 'none',
                 cursor: 'pointer',
-                boxShadow: '0 4px 20px rgba(232,82,26,0.4)',
+                boxShadow: '0 4px 20px rgba(37,99,235,0.4)',
               }}
             >
               ✓ Sí, continuar
@@ -913,13 +913,13 @@ export default function TicketScanner({
               {/* VIP Banner */}
               {vip && (
                 <div style={{
-                  background: 'linear-gradient(135deg, #92400e, #d97706)',
-                  border: '2px solid #fbbf24',
+                  background: 'linear-gradient(135deg, #1E40AF, #0EA5E9)',
+                  border: '2px solid #38BDF8',
                   borderRadius: 14,
                   padding: '14px 20px',
                   marginBottom: 20,
                   textAlign: 'center',
-                  boxShadow: '0 0 24px rgba(251,191,36,0.3)',
+                  boxShadow: '0 0 24px rgba(56,189,248,0.3)',
                 }}>
                   <p style={{ color: '#fef3c7', fontWeight: 900, fontSize: 16, margin: 0 }}>
                     ⭐ ¡Cliente VIP! Tu consumo te da el mejor premio
@@ -948,22 +948,22 @@ export default function TicketScanner({
                 <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 14, marginBottom: 4 }}>
                   Monto detectado: ${scanResult.amount?.toFixed(2)}
                 </p>
-                <h2 style={{ color: '#E8521A', fontSize: 26, fontWeight: 900, margin: '0 0 8px' }}>
+                <h2 style={{ color: '#2563EB', fontSize: 26, fontWeight: 900, margin: '0 0 8px' }}>
                   {scanResult.tier!.prize_name}
                 </h2>
                 <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 15, marginBottom: 16 }}>
                   {scanResult.tier!.prize_description}
                 </p>
                 {scanResult.tier!.game_type && (
-                  <p style={{ color: '#fbbf24', fontWeight: 700, fontSize: 14, marginBottom: 8 }}>
+                  <p style={{ color: '#38BDF8', fontWeight: 700, fontSize: 14, marginBottom: 8 }}>
                     ¡Vas a jugar un juego para ganar!
                   </p>
                 )}
               </div>
 
               {scanResult.demo && (
-                <div style={{ background: 'rgba(251,191,36,0.1)', border: '1px solid rgba(251,191,36,0.3)', borderRadius: 10, padding: '10px 14px', marginBottom: 20 }}>
-                  <p style={{ color: '#fbbf24', fontSize: 12 }}>{scanResult.demo_note}</p>
+                <div style={{ background: 'rgba(56,189,248,0.1)', border: '1px solid rgba(56,189,248,0.3)', borderRadius: 10, padding: '10px 14px', marginBottom: 20 }}>
+                  <p style={{ color: '#38BDF8', fontSize: 12 }}>{scanResult.demo_note}</p>
                 </div>
               )}
 
@@ -1024,8 +1024,8 @@ export default function TicketScanner({
 
           {/* Warm consolation reveal */}
           <div style={{
-            background: 'rgba(245,158,11,0.1)',
-            border: '1px solid rgba(245,158,11,0.3)',
+            background: 'rgba(37,99,235,0.1)',
+            border: '1px solid rgba(37,99,235,0.3)',
             borderRadius: 20,
             padding: '24px 20px',
             marginBottom: 28,
@@ -1038,7 +1038,7 @@ export default function TicketScanner({
               display: 'inline-block',
               animation: 'giftBounce 1.8s ease-in-out infinite',
             }}>🎁</div>
-            <p style={{ color: '#f59e0b', fontWeight: 900, fontSize: 18, marginBottom: 12 }}>
+            <p style={{ color: '#0284C7', fontWeight: 900, fontSize: 18, marginBottom: 12 }}>
               ¡Pero tenemos algo para ti!
             </p>
             <p style={{ color: 'white', fontSize: 22, fontWeight: 800, marginBottom: 8, lineHeight: 1.3 }}>
@@ -1050,14 +1050,14 @@ export default function TicketScanner({
 
             {/* Consolation code — ticket-stub style */}
             <div style={{
-              background: '#f59e0b',
+              background: '#0284C7',
               borderRadius: 12,
               padding: '14px 20px',
-              border: '2px dashed #92400e',
+              border: '2px dashed #1E40AF',
               display: 'inline-block',
               marginBottom: 10,
             }}>
-              <p style={{ color: '#92400e', fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 4 }}>
+              <p style={{ color: '#1E40AF', fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 4 }}>
                 Tu código
               </p>
               <p style={{ color: '#1C1917', fontSize: 28, fontWeight: 900, fontFamily: 'monospace', letterSpacing: '0.12em', margin: 0 }}>
@@ -1095,7 +1095,7 @@ export default function TicketScanner({
                   onBlur={(e) => checkDailyLimit(e.target.value)}
                 />
                 {limitWarning && (
-                  <p style={{ color: '#fbbf24', fontSize: 12, marginTop: 6, background: 'rgba(251,191,36,0.1)', borderRadius: 8, padding: '6px 10px' }}>
+                  <p style={{ color: '#38BDF8', fontSize: 12, marginTop: 6, background: 'rgba(56,189,248,0.1)', borderRadius: 8, padding: '6px 10px' }}>
                     ⚠️ {limitWarning}
                   </p>
                 )}
@@ -1117,7 +1117,7 @@ export default function TicketScanner({
                 type="checkbox"
                 checked={privacyAccepted}
                 onChange={(e) => setPrivacyAccepted(e.target.checked)}
-                style={{ marginTop: 2, width: 16, height: 16, accentColor: '#f59e0b', cursor: 'pointer', flexShrink: 0 }}
+                style={{ marginTop: 2, width: 16, height: 16, accentColor: '#0284C7', cursor: 'pointer', flexShrink: 0 }}
               />
               <label htmlFor="privacy-consolation" style={{ color: 'rgba(255,255,255,0.55)', fontSize: 12, lineHeight: 1.5, cursor: 'pointer' }}>
                 He leído y acepto el{' '}
@@ -1125,7 +1125,7 @@ export default function TicketScanner({
                   href="/privacidad"
                   target="_blank"
                   rel="noopener noreferrer"
-                  style={{ color: '#E8521A', textDecoration: 'underline' }}
+                  style={{ color: '#2563EB', textDecoration: 'underline' }}
                 >
                   Aviso de Privacidad
                 </a>{' '}
@@ -1140,13 +1140,13 @@ export default function TicketScanner({
                 width: '100%',
                 padding: '16px',
                 borderRadius: 14,
-                background: '#f59e0b',
+                background: '#0284C7',
                 color: '#1C1917',
                 fontWeight: 800,
                 fontSize: btnFontSize,
                 border: 'none',
                 cursor: submitting ? 'wait' : (limitExceeded || !privacyAccepted) ? 'not-allowed' : 'pointer',
-                boxShadow: '0 4px 20px rgba(245,158,11,0.35)',
+                boxShadow: '0 4px 20px rgba(37,99,235,0.35)',
                 marginTop: 16,
                 opacity: (submitting || !formData.full_name || !formData.phone || limitExceeded || !privacyAccepted) ? 0.6 : 1,
                 minHeight: btnHeight,
@@ -1207,7 +1207,7 @@ export default function TicketScanner({
             <h2 style={{ color: 'white', fontSize: 22, fontWeight: 800, marginBottom: 4 }}>
               ¡Casi listo!
             </h2>
-            <p style={{ color: '#E8521A', fontWeight: 700, fontSize: 16 }}>
+            <p style={{ color: '#2563EB', fontWeight: 700, fontSize: 16 }}>
               {scanResult?.tier?.prize_name}
             </p>
             <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 14, marginTop: 4 }}>
@@ -1236,7 +1236,7 @@ export default function TicketScanner({
                 onBlur={(e) => checkDailyLimit(e.target.value)}
               />
               {limitWarning && (
-                <p style={{ color: '#fbbf24', fontSize: 12, marginTop: 6, background: 'rgba(251,191,36,0.1)', borderRadius: 8, padding: '6px 10px' }}>
+                <p style={{ color: '#38BDF8', fontSize: 12, marginTop: 6, background: 'rgba(56,189,248,0.1)', borderRadius: 8, padding: '6px 10px' }}>
                   ⚠️ {limitWarning}
                 </p>
               )}
@@ -1258,7 +1258,7 @@ export default function TicketScanner({
               type="checkbox"
               checked={privacyAccepted}
               onChange={(e) => setPrivacyAccepted(e.target.checked)}
-              style={{ marginTop: 2, width: 16, height: 16, accentColor: '#E8521A', cursor: 'pointer', flexShrink: 0 }}
+              style={{ marginTop: 2, width: 16, height: 16, accentColor: '#2563EB', cursor: 'pointer', flexShrink: 0 }}
             />
             <label htmlFor="privacy-ticket" style={{ color: 'rgba(255,255,255,0.55)', fontSize: 12, lineHeight: 1.5, cursor: 'pointer' }}>
               He leído y acepto el{' '}
@@ -1266,7 +1266,7 @@ export default function TicketScanner({
                 href="/privacidad"
                 target="_blank"
                 rel="noopener noreferrer"
-                style={{ color: '#E8521A', textDecoration: 'underline' }}
+                style={{ color: '#2563EB', textDecoration: 'underline' }}
               >
                 Aviso de Privacidad
               </a>{' '}
@@ -1337,7 +1337,7 @@ export default function TicketScanner({
           width: '100%',
           maxWidth: 380,
           background: 'rgba(255,255,255,0.04)',
-          border: '1px solid rgba(245,158,11,0.3)',
+          border: '1px solid rgba(37,99,235,0.3)',
           borderRadius: 20,
           padding: 32,
           textAlign: 'center',
@@ -1353,13 +1353,13 @@ export default function TicketScanner({
 
           {/* Code pill */}
           <div style={{
-            background: '#f59e0b',
+            background: '#0284C7',
             borderRadius: 14,
             padding: '18px 20px',
-            border: '2px dashed #92400e',
+            border: '2px dashed #1E40AF',
             marginBottom: 20,
           }}>
-            <p style={{ color: '#92400e', fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 4 }}>
+            <p style={{ color: '#1E40AF', fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 4 }}>
               Tu código de consolación
             </p>
             <p style={{ color: '#1C1917', fontSize: 32, fontWeight: 900, fontFamily: 'monospace', letterSpacing: '0.1em', margin: 0 }}>
@@ -1367,7 +1367,7 @@ export default function TicketScanner({
             </p>
           </div>
 
-          <p style={{ color: '#f59e0b', fontWeight: 700, fontSize: 15, marginBottom: 4 }}>
+          <p style={{ color: '#0284C7', fontWeight: 700, fontSize: 15, marginBottom: 4 }}>
             {scanResult?.consolation?.name}
           </p>
           <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 13, marginBottom: 20 }}>
@@ -1468,12 +1468,12 @@ export default function TicketScanner({
           {/* VIP banner */}
           {vip && (
             <div style={{
-              background: 'linear-gradient(135deg, #92400e, #d97706)',
-              border: '2px solid #fbbf24',
+              background: 'linear-gradient(135deg, #1E40AF, #0EA5E9)',
+              border: '2px solid #38BDF8',
               borderRadius: 12,
               padding: '12px 16px',
               marginBottom: 20,
-              boxShadow: '0 0 20px rgba(251,191,36,0.3)',
+              boxShadow: '0 0 20px rgba(56,189,248,0.3)',
             }}>
               <p style={{ color: '#fef3c7', fontWeight: 900, fontSize: 15, margin: 0 }}>
                 ⭐ ¡Cliente VIP! Tu consumo te da el mejor premio
@@ -1490,7 +1490,7 @@ export default function TicketScanner({
           </p>
 
           <div style={{
-            background: '#E8521A',
+            background: '#2563EB',
             borderRadius: 14,
             padding: '20px',
             marginBottom: 24,
@@ -1499,7 +1499,7 @@ export default function TicketScanner({
             <p style={{ color: 'white', fontSize: 36, fontWeight: 900, letterSpacing: '0.1em' }}>{folio}</p>
           </div>
 
-          <p style={{ color: '#fbbf24', fontWeight: 700, fontSize: 16, marginBottom: 4 }}>
+          <p style={{ color: '#38BDF8', fontWeight: 700, fontSize: 16, marginBottom: 4 }}>
             {scanResult?.tier?.prize_name}
           </p>
           <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 13 }}>
@@ -1714,13 +1714,13 @@ const orangeBtn: React.CSSProperties = {
   width: '100%',
   padding: '16px',
   borderRadius: 14,
-  background: '#E8521A',
+  background: '#2563EB',
   color: 'white',
   fontWeight: 800,
   fontSize: 17,
   border: 'none',
   cursor: 'pointer',
-  boxShadow: '0 4px 20px rgba(232,82,26,0.35)',
+  boxShadow: '0 4px 20px rgba(37,99,235,0.35)',
 };
 
 const labelStyle: React.CSSProperties = {

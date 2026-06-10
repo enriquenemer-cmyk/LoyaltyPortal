@@ -86,7 +86,7 @@ export default function MisMensajesPage() {
       <div
         className="w-full"
         style={{
-          background: 'linear-gradient(135deg, #E8521A, #C2410C)',
+          background: 'linear-gradient(135deg, #2563EB, #0891B2)',
           paddingTop: 'env(safe-area-inset-top)',
         }}
       >
@@ -117,7 +117,7 @@ export default function MisMensajesPage() {
             </Link>
             <span
               className="px-5 py-2 rounded-full text-sm font-bold"
-              style={{ background: 'rgba(255,255,255,0.95)', color: '#E8521A' }}
+              style={{ background: 'rgba(255,255,255,0.95)', color: '#2563EB' }}
             >
               Mensajes
             </span>
@@ -141,8 +141,8 @@ export default function MisMensajesPage() {
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="Ej: 5512345678"
-                className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3.5 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:border-orange-500 transition-all"
-                style={{ '--tw-ring-color': 'rgba(232,82,26,0.2)' } as React.CSSProperties}
+                className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3.5 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:border-blue-500 transition-all"
+                style={{ '--tw-ring-color': 'rgba(37,99,235,0.2)' } as React.CSSProperties}
                 required
                 autoComplete="tel"
               />
@@ -164,8 +164,8 @@ export default function MisMensajesPage() {
               disabled={loading || !phone.trim()}
               className="w-full font-extrabold py-3.5 rounded-xl text-white text-sm flex items-center justify-center gap-2 transition-all disabled:opacity-60"
               style={{
-                background: loading ? '#fed7aa' : 'linear-gradient(135deg,#E8521A,#C2410C)',
-                boxShadow: loading ? 'none' : '0 6px 20px rgba(232,82,26,0.30)',
+                background: loading ? '#BAE6FD' : 'linear-gradient(135deg,#2563EB,#0891B2)',
+                boxShadow: loading ? 'none' : '0 6px 20px rgba(37,99,235,0.30)',
               }}
             >
               {loading ? (
@@ -195,9 +195,9 @@ export default function MisMensajesPage() {
               <div className="bg-white rounded-2xl p-8 text-center" style={{ boxShadow: '0 2px 16px rgba(0,0,0,0.07)' }}>
                 <div
                   className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
-                  style={{ background: '#fff7ed' }}
+                  style={{ background: '#EFF6FF' }}
                 >
-                  <svg className="w-8 h-8" style={{ color: '#fed7aa' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-8 h-8" style={{ color: '#BAE6FD' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -220,7 +220,7 @@ export default function MisMensajesPage() {
                   {unreadCount > 0 && (
                     <span
                       className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold"
-                      style={{ background: '#fff7ed', color: '#ea580c' }}
+                      style={{ background: '#EFF6FF', color: '#0369A1' }}
                     >
                       {unreadCount} sin leer
                     </span>
@@ -235,9 +235,9 @@ export default function MisMensajesPage() {
                       className="bg-white rounded-2xl overflow-hidden cursor-pointer transition-all hover:shadow-md"
                       style={{
                         boxShadow: isUnread
-                          ? '0 2px 16px rgba(232,82,26,0.12)'
+                          ? '0 2px 16px rgba(37,99,235,0.12)'
                           : '0 2px 16px rgba(0,0,0,0.06)',
-                        border: isUnread ? '1px solid rgba(232,82,26,0.25)' : '1px solid transparent',
+                        border: isUnread ? '1px solid rgba(37,99,235,0.25)' : '1px solid transparent',
                       }}
                       onClick={() => isUnread && handleMarkRead(msg.id)}
                     >
@@ -245,7 +245,7 @@ export default function MisMensajesPage() {
                         className="h-1 w-full"
                         style={{
                           background: isUnread
-                            ? 'linear-gradient(90deg, #E8521A, #C2410C)'
+                            ? 'linear-gradient(90deg, #2563EB, #0891B2)'
                             : '#e5e7eb',
                         }}
                       />
@@ -256,7 +256,7 @@ export default function MisMensajesPage() {
                               {isUnread && (
                                 <span
                                   className="w-2 h-2 rounded-full shrink-0"
-                                  style={{ background: '#E8521A' }}
+                                  style={{ background: '#2563EB' }}
                                 />
                               )}
                               <p
@@ -273,7 +273,7 @@ export default function MisMensajesPage() {
                           {isUnread ? (
                             <span
                               className="shrink-0 inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold"
-                              style={{ background: '#fff7ed', color: '#ea580c' }}
+                              style={{ background: '#EFF6FF', color: '#0369A1' }}
                             >
                               Nuevo
                             </span>
@@ -294,11 +294,11 @@ export default function MisMensajesPage() {
                         {msg.prize_name && (
                           <div
                             className="flex items-center gap-2 rounded-xl px-3 py-2 mt-1"
-                            style={{ background: '#fff7ed' }}
+                            style={{ background: '#EFF6FF' }}
                           >
                             <svg
                               className="w-4 h-4 shrink-0"
-                              style={{ color: '#E8521A' }}
+                              style={{ color: '#2563EB' }}
                               fill="none"
                               stroke="currentColor"
                               viewBox="0 0 24 24"
@@ -310,7 +310,7 @@ export default function MisMensajesPage() {
                                 d="M20 12v10H4V12M22 7H2v5h20V7zM12 22V7M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"
                               />
                             </svg>
-                            <p className="text-sm font-semibold" style={{ color: '#C2410C' }}>
+                            <p className="text-sm font-semibold" style={{ color: '#0891B2' }}>
                               Premio: {msg.prize_name}
                             </p>
                           </div>
@@ -349,7 +349,7 @@ export default function MisMensajesPage() {
 
         {/* Footer */}
         <p className="text-center text-gray-400 text-xs pb-6">
-          Tierra Burrito Bar · premia-tierra.vercel.app
+          Tierra Burrito Bar · supertierra.vercel.app
         </p>
       </div>
     </div>

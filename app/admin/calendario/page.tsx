@@ -111,7 +111,7 @@ export default function CalendarioPage() {
 
   const statusDotClass: Record<string, string> = {
     active: 'bg-green-500',
-    expiring: 'bg-[#E8521A]',
+    expiring: 'bg-[#2563EB]',
     expired: 'bg-stone-400',
   };
 
@@ -127,7 +127,7 @@ export default function CalendarioPage() {
 
         {/* Header */}
         <div className="mb-6">
-          <div className="inline-flex items-center gap-2 bg-orange-50 text-[#E8521A] rounded-full px-3 py-1.5 text-xs font-bold uppercase tracking-widest mb-3 border border-orange-200">
+          <div className="inline-flex items-center gap-2 bg-blue-50 text-[#2563EB] rounded-full px-3 py-1.5 text-xs font-bold uppercase tracking-widest mb-3 border border-blue-200">
             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
             </svg>
@@ -149,7 +149,7 @@ export default function CalendarioPage() {
             <div className="flex items-center justify-between mb-6">
               <button
                 onClick={goToPrevMonth}
-                className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#78716c] border border-[#E8E3DC] bg-white rounded-full px-4 py-2 hover:border-orange-200 hover:text-[#E8521A] transition-all"
+                className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#78716c] border border-[#E8E3DC] bg-white rounded-full px-4 py-2 hover:border-blue-200 hover:text-[#2563EB] transition-all"
                 aria-label="Mes anterior"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -162,7 +162,7 @@ export default function CalendarioPage() {
               </h2>
               <button
                 onClick={goToNextMonth}
-                className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#78716c] border border-[#E8E3DC] bg-white rounded-full px-4 py-2 hover:border-orange-200 hover:text-[#E8521A] transition-all"
+                className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#78716c] border border-[#E8E3DC] bg-white rounded-full px-4 py-2 hover:border-blue-200 hover:text-[#2563EB] transition-all"
                 aria-label="Mes siguiente"
               >
                 Siguiente
@@ -184,7 +184,7 @@ export default function CalendarioPage() {
             {/* Day cells */}
             {loading ? (
               <div className="h-56 flex items-center justify-center">
-                <svg className="animate-spin w-8 h-8 text-[#E8521A]" fill="none" viewBox="0 0 24 24">
+                <svg className="animate-spin w-8 h-8 text-[#2563EB]" fill="none" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
                 </svg>
@@ -205,14 +205,14 @@ export default function CalendarioPage() {
                       className={`
                         relative min-h-[56px] rounded-xl p-1.5 text-left transition-all border
                         ${todayCell
-                          ? 'bg-[#E8521A] border-[#E8521A] shadow-md shadow-orange-200'
+                          ? 'bg-[#2563EB] border-[#2563EB] shadow-md shadow-blue-200'
                           : isSelected
-                            ? 'ring-2 ring-[#E8521A] bg-orange-50 border-orange-200'
-                            : 'border-transparent hover:bg-orange-50 hover:border-orange-100'
+                            ? 'ring-2 ring-[#2563EB] bg-blue-50 border-blue-200'
+                            : 'border-transparent hover:bg-blue-50 hover:border-blue-100'
                         }
                       `}
                     >
-                      <span className={`text-xs font-bold ${todayCell ? 'text-white' : isSelected ? 'text-[#E8521A]' : 'text-[#1C1917]'}`}>
+                      <span className={`text-xs font-bold ${todayCell ? 'text-white' : isSelected ? 'text-[#2563EB]' : 'text-[#1C1917]'}`}>
                         {day}
                       </span>
                       {dayPrizes.length > 0 && (
@@ -222,7 +222,7 @@ export default function CalendarioPage() {
                               key={prize.id}
                               className={`w-2 h-2 rounded-full ${status === 'active' ? 'bg-green-500' + (todayCell ? '' : ' ') : statusDotClass[status]} ${status === 'active' && !todayCell ? 'animate-pulse' : ''}`}
                               title={prize.name}
-                              style={{ width: 8, height: 8, borderRadius: 4, display: 'inline-block', backgroundColor: status === 'active' ? '#22c55e' : status === 'expiring' ? '#E8521A' : '#a8a29e' }}
+                              style={{ width: 8, height: 8, borderRadius: 4, display: 'inline-block', backgroundColor: status === 'active' ? '#22c55e' : status === 'expiring' ? '#2563EB' : '#a8a29e' }}
                             />
                           ))}
                           {dayPrizes.length > 4 && (
@@ -245,8 +245,8 @@ export default function CalendarioPage() {
                 <span className="w-2 h-2 rounded-full bg-green-500 inline-block animate-pulse" />
                 Activo
               </span>
-              <span className="inline-flex items-center gap-1.5 bg-orange-50 border border-orange-200 rounded-full px-2.5 py-1 text-xs font-semibold text-[#E8521A]">
-                <span className="w-2 h-2 rounded-full bg-[#E8521A] inline-block" />
+              <span className="inline-flex items-center gap-1.5 bg-blue-50 border border-blue-200 rounded-full px-2.5 py-1 text-xs font-semibold text-[#2563EB]">
+                <span className="w-2 h-2 rounded-full bg-[#2563EB] inline-block" />
                 Por vencer (3 días)
               </span>
               <span className="inline-flex items-center gap-1.5 bg-stone-50 border border-stone-200 rounded-full px-2.5 py-1 text-xs font-semibold text-stone-500">
@@ -302,7 +302,7 @@ export default function CalendarioPage() {
                           className="w-full flex items-center gap-2.5 p-3 text-left hover:bg-[#FAFAF9] transition-colors"
                         >
                           <span
-                            className={`w-2 h-2 rounded-full flex-shrink-0 ${status === 'active' ? 'bg-green-500 animate-pulse' : status === 'expiring' ? 'bg-[#E8521A]' : 'bg-stone-400'}`}
+                            className={`w-2 h-2 rounded-full flex-shrink-0 ${status === 'active' ? 'bg-green-500 animate-pulse' : status === 'expiring' ? 'bg-[#2563EB]' : 'bg-stone-400'}`}
                           />
                           <p className="text-sm font-semibold text-[#1C1917] truncate flex-1">{prize.name}</p>
                           <svg
@@ -317,7 +317,7 @@ export default function CalendarioPage() {
                             <div className="pt-2 space-y-1.5">
                               <div className="flex items-center gap-1.5">
                                 <span className="text-[10px] font-bold text-[#a8a29e] uppercase tracking-widest">Estado</span>
-                                <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${status === 'active' ? 'bg-green-100 text-green-700' : status === 'expiring' ? 'bg-orange-100 text-[#E8521A]' : 'bg-stone-100 text-stone-500'}`}>
+                                <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${status === 'active' ? 'bg-green-100 text-green-700' : status === 'expiring' ? 'bg-blue-100 text-[#2563EB]' : 'bg-stone-100 text-stone-500'}`}>
                                   {statusLabel[status]}
                                 </span>
                               </div>

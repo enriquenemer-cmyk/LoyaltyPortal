@@ -332,7 +332,7 @@ function GlobalSearch() {
     claim: 'Cobro', prize: 'Premio', restaurant: 'Restaurante', user: 'Usuario',
   };
   const typeColor: Record<SearchResult['type'], string> = {
-    claim: 'bg-blue-50 text-blue-600', prize: 'bg-orange-50 text-orange-600',
+    claim: 'bg-blue-50 text-blue-600', prize: 'bg-blue-50 text-blue-600',
     restaurant: 'bg-emerald-50 text-emerald-600', user: 'bg-purple-50 text-purple-600',
   };
 
@@ -343,7 +343,7 @@ function GlobalSearch() {
       <div className="relative">
         <div className="relative flex items-center">
           {loading ? (
-            <svg className="absolute left-2.5 w-3.5 h-3.5 text-orange-500 animate-spin shrink-0" fill="none" viewBox="0 0 24 24">
+            <svg className="absolute left-2.5 w-3.5 h-3.5 text-blue-500 animate-spin shrink-0" fill="none" viewBox="0 0 24 24">
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
             </svg>
@@ -360,7 +360,7 @@ function GlobalSearch() {
             onBlur={() => setTimeout(() => setFocused(false), 150)}
             onKeyDown={handleKeyDown}
             placeholder="Buscar datos..."
-            className="w-full pl-8 pr-3 py-1.5 text-xs bg-[#FAFAF9] border border-[#E8E3DC] rounded-lg text-[#1C1917] placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-orange-400/30 focus:border-orange-400 transition-all"
+            className="w-full pl-8 pr-3 py-1.5 text-xs bg-[#FAFAF9] border border-[#E8E3DC] rounded-lg text-[#1C1917] placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-blue-400/30 focus:border-blue-400 transition-all"
           />
         </div>
         {showDropdown && (
@@ -386,7 +386,7 @@ function GlobalSearch() {
                 <p className="px-3 pt-2.5 pb-1 text-[9px] font-bold tracking-widest text-stone-400 uppercase">Resultados</p>
                 {results.map((item, idx) => (
                   <button key={item.id + item.type} onMouseDown={() => selectResult(item)}
-                    className={`w-full flex items-start gap-2.5 px-3 py-2 text-left transition-colors ${idx === activeIdx ? 'bg-orange-50' : 'hover:bg-[#FAFAF9]'}`}>
+                    className={`w-full flex items-start gap-2.5 px-3 py-2 text-left transition-colors ${idx === activeIdx ? 'bg-blue-50' : 'hover:bg-[#FAFAF9]'}`}>
                     <span className={`mt-0.5 text-[9px] font-bold px-1.5 py-0.5 rounded shrink-0 ${typeColor[item.type]}`}>
                       {typeLabel[item.type]}
                     </span>
@@ -418,7 +418,7 @@ function NavLink({ href, label, icon, exact }: NavItem) {
       href={href}
       className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm transition-all border-l-2 ${
         isActive
-          ? 'text-[#E8521A] font-semibold border-[#E8521A] pl-[10px] bg-orange-50/50'
+          ? 'text-[#2563EB] font-semibold border-[#2563EB] pl-[10px] bg-blue-50/50'
           : 'text-[#78716C] hover:text-[#1C1917] hover:bg-[#F5F3F0] border-transparent pl-[10px]'
       }`}
     >
@@ -448,7 +448,7 @@ function NavSection({ section }: { section: SectionDef }) {
 const LOGO = (
   <div
     className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0"
-    style={{ background: 'linear-gradient(135deg,#E8521A,#C2410C)', boxShadow: '0 3px 10px rgba(232,82,26,0.30)' }}
+    style={{ background: 'linear-gradient(135deg,#2563EB,#0891B2)', boxShadow: '0 3px 10px rgba(37,99,235,0.30)' }}
   >
     <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
@@ -538,7 +538,7 @@ function SidebarContent({ onLinkClick }: { onLinkClick?: () => void }) {
       <div className="px-3 py-3 border-b border-[#E8E3DC] flex items-center justify-between">
         <Link href="/admin" className="flex items-center gap-2" onClick={onLinkClick}>
           {LOGO}
-          <span className="text-xs font-extrabold text-[#1C1917] tracking-tight leading-none">Premia Tierra</span>
+          <span className="text-xs font-extrabold text-[#1C1917] tracking-tight leading-none">SuperTierra</span>
         </Link>
         <div className="flex items-center gap-1">
           <NotificationBell />
@@ -546,7 +546,7 @@ function SidebarContent({ onLinkClick }: { onLinkClick?: () => void }) {
             href="/admin/registros?status=pending"
             onClick={onLinkClick}
             aria-label="Cobros pendientes"
-            className="relative p-1.5 rounded-lg text-stone-400 hover:text-orange-500 hover:bg-orange-50 transition-colors"
+            className="relative p-1.5 rounded-lg text-stone-400 hover:text-blue-500 hover:bg-blue-50 transition-colors"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
@@ -645,7 +645,7 @@ export default function Sidebar() {
       <div className="md:hidden fixed top-0 left-0 right-0 h-12 bg-white border-b border-[#E8E3DC] flex items-center justify-between px-4 z-40">
         <Link href="/admin" className="flex items-center gap-2.5">
           {LOGO}
-          <span className="text-sm font-extrabold text-[#1C1917] tracking-tight leading-none">Premia Tierra</span>
+          <span className="text-sm font-extrabold text-[#1C1917] tracking-tight leading-none">SuperTierra</span>
         </Link>
         <button
           onClick={() => setMobileOpen((v) => !v)}

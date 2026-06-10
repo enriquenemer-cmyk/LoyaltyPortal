@@ -83,7 +83,7 @@ export default function OfflineIndicator() {
         gap: 8,
         fontSize: 14,
         fontWeight: 600,
-        color: '#92400e',
+        color: '#1E40AF',
       }}
     >
       <span>📡 Sin conexión — Los datos mostrados pueden no estar actualizados</span>

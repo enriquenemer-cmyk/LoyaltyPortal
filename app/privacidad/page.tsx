@@ -19,13 +19,13 @@ export default function PrivacidadPage() {
         </p>
 
         <section style={{ marginBottom: 36 }}>
-          <h2 style={{ fontSize: 18, fontWeight: 800, color: '#E8521A', marginBottom: 12 }}>
+          <h2 style={{ fontSize: 18, fontWeight: 800, color: '#2563EB', marginBottom: 12 }}>
             1. Identidad y domicilio del Responsable
           </h2>
           <p style={{ fontSize: 15, lineHeight: 1.7, color: '#1C1917' }}>
             <strong>Tierra Burrito Bar</strong> (en adelante "el Responsable"), con domicilio en la
             República Mexicana, es responsable del tratamiento de los datos personales que usted
-            nos proporciona a través de la plataforma de fidelización Premia Tierra, en cumplimiento
+            nos proporciona a través de la plataforma de fidelización SuperTierra, en cumplimiento
             con lo establecido en la{' '}
             <em>Ley Federal de Protección de Datos Personales en Posesión de los Particulares</em>{' '}
             (LFPDPPP) y su Reglamento.
@@ -33,7 +33,7 @@ export default function PrivacidadPage() {
         </section>
 
         <section style={{ marginBottom: 36 }}>
-          <h2 style={{ fontSize: 18, fontWeight: 800, color: '#E8521A', marginBottom: 12 }}>
+          <h2 style={{ fontSize: 18, fontWeight: 800, color: '#2563EB', marginBottom: 12 }}>
             2. Datos personales que se recaban
           </h2>
           <p style={{ fontSize: 15, lineHeight: 1.7, color: '#1C1917', marginBottom: 12 }}>
@@ -53,7 +53,7 @@ export default function PrivacidadPage() {
         </section>
 
         <section style={{ marginBottom: 36 }}>
-          <h2 style={{ fontSize: 18, fontWeight: 800, color: '#E8521A', marginBottom: 12 }}>
+          <h2 style={{ fontSize: 18, fontWeight: 800, color: '#2563EB', marginBottom: 12 }}>
             3. Finalidades del tratamiento
           </h2>
           <p style={{ fontSize: 15, lineHeight: 1.7, color: '#1C1917', marginBottom: 12 }}>
@@ -81,7 +81,7 @@ export default function PrivacidadPage() {
         </section>
 
         <section style={{ marginBottom: 36 }}>
-          <h2 style={{ fontSize: 18, fontWeight: 800, color: '#E8521A', marginBottom: 12 }}>
+          <h2 style={{ fontSize: 18, fontWeight: 800, color: '#2563EB', marginBottom: 12 }}>
             4. Transferencias de datos personales
           </h2>
           <p style={{ fontSize: 15, lineHeight: 1.7, color: '#1C1917' }}>
@@ -93,7 +93,7 @@ export default function PrivacidadPage() {
         </section>
 
         <section style={{ marginBottom: 36 }}>
-          <h2 style={{ fontSize: 18, fontWeight: 800, color: '#E8521A', marginBottom: 12 }}>
+          <h2 style={{ fontSize: 18, fontWeight: 800, color: '#2563EB', marginBottom: 12 }}>
             5. Derechos ARCO
           </h2>
           <p style={{ fontSize: 15, lineHeight: 1.7, color: '#1C1917', marginBottom: 12 }}>
@@ -116,11 +116,11 @@ export default function PrivacidadPage() {
         </section>
 
         <section style={{ marginBottom: 36 }}>
-          <h2 style={{ fontSize: 18, fontWeight: 800, color: '#E8521A', marginBottom: 12 }}>
+          <h2 style={{ fontSize: 18, fontWeight: 800, color: '#2563EB', marginBottom: 12 }}>
             6. Uso de cookies y tecnologías de rastreo
           </h2>
           <p style={{ fontSize: 15, lineHeight: 1.7, color: '#1C1917' }}>
-            La plataforma Premia Tierra utiliza <strong>cookies de sesión</strong> con la finalidad
+            La plataforma SuperTierra utiliza <strong>cookies de sesión</strong> con la finalidad
             exclusiva de mantener su sesión activa y garantizar la seguridad de la navegación. No se
             utilizan cookies de rastreo publicitario ni se comparte información de navegación con
             terceros con fines de mercadotecnia. Puede configurar su navegador para bloquear o
@@ -130,7 +130,7 @@ export default function PrivacidadPage() {
         </section>
 
         <section style={{ marginBottom: 36 }}>
-          <h2 style={{ fontSize: 18, fontWeight: 800, color: '#E8521A', marginBottom: 12 }}>
+          <h2 style={{ fontSize: 18, fontWeight: 800, color: '#2563EB', marginBottom: 12 }}>
             7. Vigencia de los datos
           </h2>
           <p style={{ fontSize: 15, lineHeight: 1.7, color: '#1C1917' }}>
@@ -142,7 +142,7 @@ export default function PrivacidadPage() {
         </section>
 
         <section style={{ marginBottom: 36 }}>
-          <h2 style={{ fontSize: 18, fontWeight: 800, color: '#E8521A', marginBottom: 12 }}>
+          <h2 style={{ fontSize: 18, fontWeight: 800, color: '#2563EB', marginBottom: 12 }}>
             8. Cambios al aviso de privacidad
           </h2>
           <p style={{ fontSize: 15, lineHeight: 1.7, color: '#1C1917' }}>
@@ -150,7 +150,7 @@ export default function PrivacidadPage() {
             presente aviso en cualquier momento, para atender cambios legislativos, políticas
             internas o nuevas funciones de la plataforma. Las actualizaciones estarán disponibles en
             esta misma página en la dirección:{' '}
-            <strong>premia-tierra.vercel.app/privacidad</strong>
+            <strong>supertierra.vercel.app/privacidad</strong>
           </p>
         </section>
 

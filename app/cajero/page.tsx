@@ -11,7 +11,7 @@ type Restaurant = {
   accent_color: string;
 };
 
-const SWATCHES = ['#E8521A', '#7c3aed', '#0ea5e9', '#be185d', '#059669', '#d97706'];
+const SWATCHES = ['#2563EB', '#7c3aed', '#0ea5e9', '#be185d', '#059669', '#0EA5E9'];
 
 function initials(name: string) {
   return name.split(' ').slice(0, 2).map((n) => n[0]).join('').toUpperCase();
@@ -55,14 +55,14 @@ export default function CajeroPage() {
         <div className="max-w-5xl mx-auto px-5 py-4 flex items-center gap-3">
           <div
             className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
-            style={{ background: 'linear-gradient(135deg,#E8521A,#C2410C)', boxShadow: '0 4px 12px rgba(232,82,26,0.35)' }}
+            style={{ background: 'linear-gradient(135deg,#2563EB,#0891B2)', boxShadow: '0 4px 12px rgba(37,99,235,0.35)' }}
           >
             <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
             </svg>
           </div>
           <div>
-            <h1 className="text-stone-900 text-lg font-extrabold leading-tight">Premia Tierra</h1>
+            <h1 className="text-stone-900 text-lg font-extrabold leading-tight">SuperTierra</h1>
             <p className="text-stone-400 text-xs font-medium">Selecciona tu sucursal para escanear</p>
           </div>
         </div>
@@ -83,8 +83,8 @@ export default function CajeroPage() {
           </div>
         ) : restaurants.length === 0 ? (
           <div className="bg-white rounded-2xl border border-[#E8E3DC] p-16 text-center shadow-sm">
-            <div className="w-20 h-20 bg-orange-50 rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg className="w-10 h-10 text-orange-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg className="w-10 h-10 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
               </svg>
             </div>
@@ -177,7 +177,7 @@ export default function CajeroPage() {
         )}
 
         <p className="text-center text-stone-300 text-xs mt-10">
-          Tierra Burrito Bar · Panel de Cajeros · Premia Tierra
+          Tierra Burrito Bar · Panel de Cajeros · SuperTierra
         </p>
       </div>
     </div>

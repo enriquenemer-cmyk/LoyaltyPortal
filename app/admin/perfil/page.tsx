@@ -41,7 +41,7 @@ export default function PerfilPage() {
     }
   }
 
-  const inputClass = 'w-full bg-white border border-[#E8E3DC] rounded-xl px-4 py-3 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all shadow-sm';
+  const inputClass = 'w-full bg-white border border-[#E8E3DC] rounded-xl px-4 py-3 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all shadow-sm';
 
   return (
     <div className="min-h-screen bg-[#FAFAF9]">
@@ -54,13 +54,13 @@ export default function PerfilPage() {
             </svg>
             Mi Perfil
           </div>
-          <h1 className="text-3xl font-extrabold text-[#1C1917] tracking-tight border-l-4 border-[#E8521A] pl-4">
+          <h1 className="text-3xl font-extrabold text-[#1C1917] tracking-tight border-l-4 border-[#2563EB] pl-4">
             Cambiar <span className="gradient-text">Contraseña</span>
           </h1>
           <p className="text-stone-500 mt-2 text-sm pl-4">Actualiza la contraseña de tu cuenta.</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="bg-white rounded-2xl border border-[#E8E3DC] shadow-[0_1px_2px_rgba(28,25,23,0.04),_0_4px_16px_rgba(28,25,23,0.06)] overflow-hidden" style={{ borderTop: '3px solid #E8521A' }}>
+        <form onSubmit={handleSubmit} className="bg-white rounded-2xl border border-[#E8E3DC] shadow-[0_1px_2px_rgba(28,25,23,0.04),_0_4px_16px_rgba(28,25,23,0.06)] overflow-hidden" style={{ borderTop: '3px solid #2563EB' }}>
           <div className="p-6 border-b border-[#E8E3DC]">
             <h2 className="text-base font-bold text-[#1C1917]">Seguridad de la cuenta</h2>
             <p className="text-xs text-stone-400 mt-0.5">Mínimo 8 caracteres para la nueva contraseña.</p>
@@ -106,7 +106,7 @@ export default function PerfilPage() {
             {message && (
               <div className={`rounded-xl px-4 py-3 text-sm flex items-start gap-2 ${
                 message.type === 'success' ? 'bg-emerald-50 border border-emerald-200 text-emerald-700' :
-                message.type === 'info' ? 'bg-amber-50 border border-amber-200 text-amber-800' :
+                message.type === 'info' ? 'bg-blue-50 border border-blue-200 text-blue-800' :
                 'bg-red-50 border border-red-200 text-red-700'
               }`}>
                 <svg className="w-4 h-4 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -122,7 +122,7 @@ export default function PerfilPage() {
               type="submit"
               disabled={loading}
               className="w-full text-white font-black py-3.5 rounded-2xl transition-all text-sm disabled:opacity-60"
-              style={{ background: 'linear-gradient(135deg,#E8521A,#C2410C)', boxShadow: loading ? 'none' : '0 8px 24px rgba(232,82,26,0.35)' }}
+              style={{ background: 'linear-gradient(135deg,#2563EB,#0891B2)', boxShadow: loading ? 'none' : '0 8px 24px rgba(37,99,235,0.35)' }}
             >
               {loading ? 'Actualizando...' : 'Cambiar Contraseña'}
             </button>

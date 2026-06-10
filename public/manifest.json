@@ -1,11 +1,11 @@
 {
-  "name": "Premia Tierra",
+  "name": "SuperTierra",
   "short_name": "Premia",
   "description": "Plataforma de Premios QR",
   "start_url": "/admin",
   "display": "standalone",
   "background_color": "#FAFAF9",
-  "theme_color": "#E8521A",
+  "theme_color": "#2563EB",
   "orientation": "portrait",
   "categories": ["business", "food"],
   "prefer_related_applications": false,

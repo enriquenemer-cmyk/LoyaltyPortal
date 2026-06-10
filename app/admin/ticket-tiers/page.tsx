@@ -65,7 +65,7 @@ export default function TicketTiersPage() {
   const [consolationSaved, setConsolationSaved] = useState(false);
   const [welcomeTitle, setWelcomeTitle] = useState('');
   const [welcomeSubtitle, setWelcomeSubtitle] = useState('');
-  const [primaryColor, setPrimaryColor] = useState('#E8521A');
+  const [primaryColor, setPrimaryColor] = useState('#2563EB');
   const [avgRating, setAvgRating] = useState<{ avg_rating: number; total: number } | null>(null);
 
   useEffect(() => {
@@ -120,7 +120,7 @@ export default function TicketTiersPage() {
           setConsolationDesc(d.config.consolation_prize_description ?? '¡Gracias por visitarnos! Vuelve pronto.');
           setWelcomeTitle(d.config.welcome_title ?? '');
           setWelcomeSubtitle(d.config.welcome_subtitle ?? '');
-          setPrimaryColor(d.config.primary_color ?? '#E8521A');
+          setPrimaryColor(d.config.primary_color ?? '#2563EB');
         }
       })
       .catch(() => {});
@@ -181,7 +181,7 @@ export default function TicketTiersPage() {
           min_amount_for_game: minTierAmount,
           welcome_title: welcomeTitle || null,
           welcome_subtitle: welcomeSubtitle || null,
-          primary_color: primaryColor || '#E8521A',
+          primary_color: primaryColor || '#2563EB',
         }),
       });
       setConsolationSaved(true);
@@ -354,7 +354,7 @@ export default function TicketTiersPage() {
               <p style={{ color: '#78716C', fontSize: 13, marginBottom: 16 }}>
                 Se entrega automáticamente cuando el monto del cliente no alcanza ningún nivel de premio.
                 {tiers.length > 0 && (
-                  <span style={{ color: '#E8521A', fontWeight: 600 }}>
+                  <span style={{ color: '#2563EB', fontWeight: 600 }}>
                     {' '}Si el cliente gasta menos de ${Math.min(...tiers.map((t) => parseFloat(t.min_amount) || 0)).toFixed(0)}, verá este premio.
                   </span>
                 )}
@@ -387,18 +387,18 @@ export default function TicketTiersPage() {
               {/* Preview */}
               {consolationName && (
                 <div style={{
-                  background: 'rgba(245,158,11,0.08)',
-                  border: '1px dashed rgba(245,158,11,0.4)',
+                  background: 'rgba(37,99,235,0.08)',
+                  border: '1px dashed rgba(37,99,235,0.4)',
                   borderRadius: 10,
                   padding: '12px 16px',
                   marginTop: 14,
                 }}>
-                  <p style={{ fontSize: 11, color: '#92400e', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 4 }}>
+                  <p style={{ fontSize: 11, color: '#1E40AF', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 4 }}>
                     Vista previa del cliente
                   </p>
                   <p style={{ fontSize: 14, fontWeight: 700, color: '#1C1917', marginBottom: 2 }}>🎁 {consolationName}</p>
                   <p style={{ fontSize: 12, color: '#78716C', margin: 0 }}>{consolationDesc}</p>
-                  <p style={{ fontSize: 11, color: '#f59e0b', fontWeight: 700, marginTop: 6, fontFamily: 'monospace' }}>Código: CONS-XXXXXX</p>
+                  <p style={{ fontSize: 11, color: '#0284C7', fontWeight: 700, marginTop: 6, fontFamily: 'monospace' }}>Código: CONS-XXXXXX</p>
                 </div>
               )}
 
@@ -435,7 +435,7 @@ export default function TicketTiersPage() {
                       Color principal
                     </label>
                     <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
-                      {['#E8521A', '#7C3AED', '#0EA5E9', '#16A34A', '#DC2626', '#D97706'].map((c) => (
+                      {['#2563EB', '#7C3AED', '#0EA5E9', '#16A34A', '#DC2626', '#D97706'].map((c) => (
                         <button
                           key={c}
                           onClick={() => setPrimaryColor(c)}
@@ -486,7 +486,7 @@ export default function TicketTiersPage() {
                 </p>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
                   <div style={{ textAlign: 'center' }}>
-                    <p style={{ fontSize: 42, fontWeight: 900, color: '#E8521A', margin: 0, lineHeight: 1 }}>
+                    <p style={{ fontSize: 42, fontWeight: 900, color: '#2563EB', margin: 0, lineHeight: 1 }}>
                       {avgRating.avg_rating > 0 ? avgRating.avg_rating.toFixed(1) : '—'}
                     </p>
                     <p style={{ fontSize: 12, color: '#78716C', marginTop: 4 }}>de 5 estrellas</p>
@@ -540,7 +540,7 @@ export default function TicketTiersPage() {
                     href={ticketUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    style={{ fontSize: 13, color: '#E8521A', wordBreak: 'break-all', textDecoration: 'none', fontWeight: 600 }}
+                    style={{ fontSize: 13, color: '#2563EB', wordBreak: 'break-all', textDecoration: 'none', fontWeight: 600 }}
                   >
                     {ticketUrl}
                   </a>
@@ -650,7 +650,7 @@ const selectStyle: React.CSSProperties = {
 const primaryBtn: React.CSSProperties = {
   padding: '10px 20px',
   borderRadius: 10,
-  background: '#E8521A',
+  background: '#2563EB',
   color: 'white',
   fontWeight: 700,
   fontSize: 14,

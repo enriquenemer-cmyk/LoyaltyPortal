@@ -126,7 +126,7 @@ function BarChart({ data }: { data: DayBar[] }) {
   const barW = 28;
   const gap = 12;
   const totalW = data.length * (barW + gap) - gap;
-  const brand = '#E8521A';
+  const brand = '#2563EB';
   const gridLines = [0.25, 0.5, 0.75, 1];
 
   return (
@@ -231,7 +231,7 @@ function PeriodComparisonChart({ claims }: { claims: Claim[] }) {
         </div>
         <div className="flex flex-col items-end gap-1">
           <span className="text-base font-black text-[#1C1917]">
-            Este mes: <span style={{ color: '#E8521A' }}>{totalCurrent} cobros</span>
+            Este mes: <span style={{ color: '#2563EB' }}>{totalCurrent} cobros</span>
           </span>
           <span className="text-xs font-semibold flex items-center gap-1" style={{ color: changeUp ? '#059669' : '#dc2626' }}>
             <svg width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
@@ -245,7 +245,7 @@ function PeriodComparisonChart({ claims }: { claims: Claim[] }) {
       {/* Legend */}
       <div className="flex items-center gap-4 mb-4">
         <div className="flex items-center gap-1.5">
-          <div className="w-3 h-3 rounded-sm" style={{ background: '#E8521A' }} />
+          <div className="w-3 h-3 rounded-sm" style={{ background: '#2563EB' }} />
           <span className="text-[11px] font-semibold text-[#78716c] capitalize">{currentMonthName}</span>
         </div>
         <div className="flex items-center gap-1.5">
@@ -294,7 +294,7 @@ function PeriodComparisonChart({ claims }: { claims: Claim[] }) {
                 {currH > 0 && (
                   <rect
                     x={x + barW + pairGap} y={chartH - currH} width={barW} height={currH} rx={2}
-                    fill="#E8521A"
+                    fill="#2563EB"
                   >
                     <title>Día {day} · {currentMonthName}: {curr} cobro{curr !== 1 ? 's' : ''}</title>
                   </rect>
@@ -323,16 +323,16 @@ const WEEKDAY_LABELS = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
 function sucursalHeatmapColor(count: number, max: number): string {
   if (count === 0) return '#fafaf9';
   const intensity = count / max;
-  if (intensity < 0.2) return '#fff7ed';
-  if (intensity < 0.4) return '#ffedd5';
-  if (intensity < 0.6) return '#fed7aa';
-  if (intensity < 0.8) return '#fb923c';
-  return '#ea580c';
+  if (intensity < 0.2) return '#EFF6FF';
+  if (intensity < 0.4) return '#EFF6FF';
+  if (intensity < 0.6) return '#BAE6FD';
+  if (intensity < 0.8) return '#0EA5E9';
+  return '#0369A1';
 }
 
 function sucursalTextColor(count: number, max: number): string {
   const intensity = max > 0 ? count / max : 0;
-  return intensity >= 0.6 ? '#fff7ed' : '#78716c';
+  return intensity >= 0.6 ? '#EFF6FF' : '#78716c';
 }
 
 function SucursalHeatmap({ claims }: { claims: Claim[] }) {
@@ -426,7 +426,7 @@ function SucursalHeatmap({ claims }: { claims: Claim[] }) {
                     );
                   })}
                   <td className="pl-3">
-                    <span className="text-xs font-bold" style={{ color: '#E8521A' }}>{rowTotal}</span>
+                    <span className="text-xs font-bold" style={{ color: '#2563EB' }}>{rowTotal}</span>
                   </td>
                 </tr>
               );
@@ -438,7 +438,7 @@ function SucursalHeatmap({ claims }: { claims: Claim[] }) {
       {/* Legend */}
       <div className="flex items-center gap-2 mt-4">
         <span className="text-[10px] text-[#a8a29e] font-semibold">Menos</span>
-        {['#fafaf9', '#ffedd5', '#fed7aa', '#fb923c', '#ea580c'].map((c) => (
+        {['#fafaf9', '#EFF6FF', '#BAE6FD', '#0EA5E9', '#0369A1'].map((c) => (
           <div key={c} className="w-5 h-5 rounded" style={{ backgroundColor: c, border: c === '#fafaf9' ? '1px solid #e7e5e4' : undefined }} />
         ))}
         <span className="text-[10px] text-[#a8a29e] font-semibold">Más</span>
@@ -502,25 +502,25 @@ function CustomerLifecycleFunnel({ claims }: { claims: Claim[] }) {
       label: 'Nuevos este mes',
       sublabel: 'Primera visita en el mes actual',
       count: firstTimers,
-      color: '#fed7aa',
-      textColor: '#9a3412',
-      accentColor: '#fb923c',
+      color: '#BAE6FD',
+      textColor: '#1E3A8A',
+      accentColor: '#0EA5E9',
     },
     {
       label: 'Recurrentes',
       sublabel: '2+ cobros en total',
       count: returned,
-      color: '#fdba74',
+      color: '#7DD3FC',
       textColor: '#7c2d12',
-      accentColor: '#f97316',
+      accentColor: '#0891B2',
     },
     {
       label: 'Leales',
       sublabel: '3+ cobros en total',
       count: loyal,
-      color: '#f97316',
-      textColor: '#fff7ed',
-      accentColor: '#ea580c',
+      color: '#0891B2',
+      textColor: '#EFF6FF',
+      accentColor: '#0369A1',
     },
     {
       label: 'Dormidos',
@@ -637,9 +637,9 @@ function dayIndex(jsDay: number): number {
 
 function heatmapColor(count: number): string {
   if (count === 0) return '#f5f5f4';   // stone-100
-  if (count <= 2) return '#ffedd5';   // orange-100
-  if (count <= 5) return '#fed7aa';   // orange-200
-  return '#fb923c';                   // orange-400
+  if (count <= 2) return '#EFF6FF';   // blue-100
+  if (count <= 5) return '#BAE6FD';   // blue-200
+  return '#0EA5E9';                   // blue-400
 }
 
 function ActivityHeatmap({ claims }: { claims: Claim[] }) {
@@ -694,7 +694,7 @@ function ActivityHeatmap({ claims }: { claims: Claim[] }) {
                           height: 32,
                           backgroundColor: bg,
                           opacity,
-                          color: count >= 3 ? '#9a3412' : '#a8a29e',
+                          color: count >= 3 ? '#1E3A8A' : '#a8a29e',
                         }}
                       >
                         {count > 0 ? count : ''}
@@ -711,7 +711,7 @@ function ActivityHeatmap({ claims }: { claims: Claim[] }) {
       {/* Legend */}
       <div className="flex items-center gap-3 mt-4">
         <span className="text-[10px] text-[#a8a29e] font-semibold">Menos</span>
-        {['#f5f5f4', '#ffedd5', '#fed7aa', '#fb923c'].map((c) => (
+        {['#f5f5f4', '#EFF6FF', '#BAE6FD', '#0EA5E9'].map((c) => (
           <div key={c} className="w-5 h-5 rounded" style={{ backgroundColor: c }} />
         ))}
         <span className="text-[10px] text-[#a8a29e] font-semibold">Más</span>
@@ -727,13 +727,13 @@ function ExpiringAlert({ prizes }: { prizes: ExpiringPrize[] }) {
 
   return (
     <div
-      className="rounded-2xl border border-amber-300 bg-amber-50 p-5 flex flex-col gap-3"
+      className="rounded-2xl border border-blue-300 bg-blue-50 p-5 flex flex-col gap-3"
       style={{ boxShadow: '0 1px 2px rgba(180,130,0,0.06), 0 4px 12px rgba(180,130,0,0.08)' }}
     >
       <div className="flex items-center justify-between flex-wrap gap-2">
         <div className="flex items-center gap-2">
           <span className="text-lg leading-none">⚠️</span>
-          <span className="font-bold text-amber-800 text-sm">
+          <span className="font-bold text-blue-800 text-sm">
             {prizes.length === 1
               ? '1 premio vence en los próximos 3 días'
               : `${prizes.length} premios vencen en los próximos 3 días`}
@@ -741,7 +741,7 @@ function ExpiringAlert({ prizes }: { prizes: ExpiringPrize[] }) {
         </div>
         <Link
           href="/admin/premios"
-          className="text-xs font-bold text-amber-700 hover:text-amber-900 transition-colors"
+          className="text-xs font-bold text-blue-700 hover:text-blue-900 transition-colors"
         >
           Ver todos →
         </Link>
@@ -754,9 +754,9 @@ function ExpiringAlert({ prizes }: { prizes: ExpiringPrize[] }) {
             month: 'short',
           });
           return (
-            <li key={p.id} className="flex items-center justify-between text-xs text-amber-900">
+            <li key={p.id} className="flex items-center justify-between text-xs text-blue-900">
               <span className="font-semibold truncate max-w-[260px]">{p.name}</span>
-              <span className="text-amber-600 shrink-0 ml-2">Vence {date}</span>
+              <span className="text-blue-600 shrink-0 ml-2">Vence {date}</span>
             </li>
           );
         })}
@@ -881,24 +881,24 @@ function SmartAlerts({
       {alerts.map((alert) => (
         <div
           key={alert.id}
-          className="flex items-center justify-between gap-3 rounded-2xl border border-orange-200 bg-orange-50 px-4 py-3"
-          style={{ boxShadow: '0 1px 2px rgba(232,82,26,0.04), 0 4px 12px rgba(232,82,26,0.07)' }}
+          className="flex items-center justify-between gap-3 rounded-2xl border border-blue-200 bg-blue-50 px-4 py-3"
+          style={{ boxShadow: '0 1px 2px rgba(37,99,235,0.04), 0 4px 12px rgba(37,99,235,0.07)' }}
         >
           <div className="flex items-center gap-2.5 min-w-0">
             <span className="text-base leading-none shrink-0">{alert.icon}</span>
-            <span className="text-sm font-semibold text-orange-900 leading-snug">{alert.message}</span>
+            <span className="text-sm font-semibold text-blue-900 leading-snug">{alert.message}</span>
           </div>
           <div className="flex items-center gap-2 shrink-0">
             <Link
               href={alert.ctaHref}
               className="text-xs font-bold text-white px-3 py-1.5 rounded-lg transition-opacity hover:opacity-90"
-              style={{ background: '#E8521A' }}
+              style={{ background: '#2563EB' }}
             >
               {alert.ctaLabel}
             </Link>
             <button
               onClick={() => dismiss(alert.id)}
-              className="text-orange-400 hover:text-orange-600 transition-colors text-sm font-bold leading-none"
+              className="text-blue-400 hover:text-blue-600 transition-colors text-sm font-bold leading-none"
               aria-label="Descartar alerta"
             >
               ✕
@@ -933,20 +933,20 @@ function ROIEstimateCard({ claims }: { claims: Claim[] }) {
 
   return (
     <div
-      className="rounded-2xl border border-orange-200 bg-orange-50 p-5 flex items-center gap-4"
+      className="rounded-2xl border border-blue-200 bg-blue-50 p-5 flex items-center gap-4"
       style={{ boxShadow: '0 1px 2px rgba(5,150,105,0.04), 0 4px 12px rgba(5,150,105,0.08)' }}
     >
       <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0" style={{ background: '#d1fae5' }}>
-        <svg className="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
       </div>
       <div className="min-w-0">
-        <p className="text-xs font-bold text-orange-700 uppercase tracking-widest mb-0.5">Impacto estimado este mes</p>
-        <p className="text-base font-black text-orange-900 leading-snug">
+        <p className="text-xs font-bold text-blue-700 uppercase tracking-widest mb-0.5">Impacto estimado este mes</p>
+        <p className="text-base font-black text-blue-900 leading-snug">
           Este mes generaste aprox. <span style={{ color: '#059669' }}>{formatted}</span> adicionales gracias a los premios
         </p>
-        <p className="text-[11px] text-orange-600 mt-0.5">
+        <p className="text-[11px] text-blue-600 mt-0.5">
           Aproximación: {thisMonthDelivered} premios entregados este mes × $180 MXN ticket promedio
         </p>
       </div>
@@ -957,7 +957,7 @@ function ROIEstimateCard({ claims }: { claims: Claim[] }) {
 // ---- Avatar helpers ---------------------------------------------------------
 
 const AVATAR_COLORS = [
-  '#E8521A', '#7c3aed', '#0891b2', '#be185d', '#059669', '#d97706',
+  '#2563EB', '#7c3aed', '#0891b2', '#be185d', '#059669', '#0EA5E9',
 ];
 
 function avatarColor(name: string) {
@@ -1051,19 +1051,19 @@ function SetupChecklist({
   if (allDone) {
     return (
       <div
-        className="rounded-2xl border border-orange-200 bg-orange-50 p-6 flex items-center justify-between gap-4"
+        className="rounded-2xl border border-blue-200 bg-blue-50 p-6 flex items-center justify-between gap-4"
         style={{ boxShadow: cardShadow }}
       >
         <div className="flex items-center gap-4">
           <span className="text-3xl shrink-0">🎉</span>
           <div>
-            <p className="font-bold text-orange-900 text-base">¡Configuracion completa!</p>
-            <p className="text-sm text-orange-700 mt-0.5">Tu plataforma Premia Tierra esta lista para usarse.</p>
+            <p className="font-bold text-blue-900 text-base">¡Configuracion completa!</p>
+            <p className="text-sm text-blue-700 mt-0.5">Tu plataforma SuperTierra esta lista para usarse.</p>
           </div>
         </div>
         <button
           onClick={dismiss}
-          className="text-orange-400 hover:text-orange-600 transition-colors text-lg font-bold leading-none shrink-0"
+          className="text-blue-400 hover:text-blue-600 transition-colors text-lg font-bold leading-none shrink-0"
           aria-label="Cerrar"
         >
           ✕
@@ -1098,12 +1098,12 @@ function SetupChecklist({
           <span className="text-xs font-semibold text-[#78716c]">
             {completedCount} de {steps.length} pasos completados
           </span>
-          <span className="text-xs font-bold" style={{ color: '#E8521A' }}>{progressPct}%</span>
+          <span className="text-xs font-bold" style={{ color: '#2563EB' }}>{progressPct}%</span>
         </div>
         <div className="h-2 bg-[#F5F0EB] rounded-full overflow-hidden">
           <div
             className="h-2 rounded-full transition-all duration-500"
-            style={{ width: `${progressPct}%`, background: 'linear-gradient(90deg,#E8521A,#fb923c)' }}
+            style={{ width: `${progressPct}%`, background: 'linear-gradient(90deg,#2563EB,#0EA5E9)' }}
           />
         </div>
       </div>
@@ -1115,7 +1115,7 @@ function SetupChecklist({
             key={step.number}
             className={`flex items-start gap-4 p-4 rounded-xl border transition-all ${
               step.done
-                ? 'border-orange-100 bg-orange-50/50'
+                ? 'border-blue-100 bg-blue-50/50'
                 : 'border-[#E8E3DC] bg-[#FAFAF9]'
             }`}
           >
@@ -1125,7 +1125,7 @@ function SetupChecklist({
               style={
                 step.done
                   ? { background: '#059669', color: '#fff' }
-                  : { background: '#E8521A', color: '#fff' }
+                  : { background: '#2563EB', color: '#fff' }
               }
             >
               {step.done ? (
@@ -1139,7 +1139,7 @@ function SetupChecklist({
 
             {/* Content */}
             <div className="flex-1 min-w-0">
-              <p className={`text-sm font-bold mb-0.5 ${step.done ? 'text-orange-800 line-through opacity-70' : 'text-[#1C1917]'}`}>
+              <p className={`text-sm font-bold mb-0.5 ${step.done ? 'text-blue-800 line-through opacity-70' : 'text-[#1C1917]'}`}>
                 {step.title}
               </p>
               <p className="text-xs text-[#a8a29e]">{step.description}</p>
@@ -1150,7 +1150,7 @@ function SetupChecklist({
               <Link
                 href={step.ctaHref}
                 className="text-xs font-bold text-white px-3 py-1.5 rounded-lg shrink-0 transition-opacity hover:opacity-90"
-                style={{ background: '#E8521A' }}
+                style={{ background: '#2563EB' }}
               >
                 {step.ctaLabel}
               </Link>
@@ -1306,27 +1306,27 @@ export default function AdminDashboard() {
     .sort((a, b) => new Date(b.claimed_at).getTime() - new Date(a.claimed_at).getTime())
     .slice(0, 5);
 
-  const brand = '#E8521A';
+  const brand = '#2563EB';
 
   if (dashboardError) {
     return (
       <div className="min-h-screen bg-[#FAFAF9] flex flex-col items-center justify-center gap-6 px-4 text-center p-10">
-        <div className="w-16 h-16 rounded-full bg-orange-50 flex items-center justify-center">
-          <svg className="w-7 h-7 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center">
+          <svg className="w-7 h-7 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
           </svg>
         </div>
         <div>
           <h2 className="text-xl font-bold text-stone-800 mb-2">No se pudo cargar el dashboard</h2>
           <p className="text-sm text-stone-500 max-w-sm">{dashboardError}</p>
-          <p className="text-xs font-bold mt-3 px-3 py-1.5 rounded-full inline-block" style={{ color: '#E8521A', background: '#fff7f5', border: '1px solid #fde8e0' }}>
+          <p className="text-xs font-bold mt-3 px-3 py-1.5 rounded-full inline-block" style={{ color: '#2563EB', background: '#fff7f5', border: '1px solid #fde8e0' }}>
             Estamos trabajando en ello
           </p>
         </div>
         <button
           onClick={() => loadDashboard.current()}
           className="flex items-center gap-2 px-6 py-2.5 rounded-xl text-white text-sm font-bold transition-all shadow-sm hover:opacity-90"
-          style={{ background: 'linear-gradient(135deg,#E8521A,#C2410C)', boxShadow: '0 4px 16px rgba(232,82,26,0.3)' }}
+          style={{ background: 'linear-gradient(135deg,#2563EB,#0891B2)', boxShadow: '0 4px 16px rgba(37,99,235,0.3)' }}
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -1353,7 +1353,7 @@ export default function AdminDashboard() {
             <h1 className="h1 font-black text-3xl">
               Panel Principal
             </h1>
-            <p className="text-sm text-[#78716c] mt-0.5">Plataforma Tierra Burrito — Premia Tierra</p>
+            <p className="text-sm text-[#78716c] mt-0.5">Plataforma Tierra Burrito — SuperTierra</p>
           </div>
           <div className="flex flex-col items-end gap-2">
             <div className="flex gap-3">
@@ -1366,7 +1366,7 @@ export default function AdminDashboard() {
               </Link>
               <Link
                 href="/admin/registros"
-                className="px-4 py-2 rounded-xl text-sm font-semibold border border-[#E8E3DC] text-[#1C1917] bg-white shadow-sm hover:bg-orange-50 transition-colors"
+                className="px-4 py-2 rounded-xl text-sm font-semibold border border-[#E8E3DC] text-[#1C1917] bg-white shadow-sm hover:bg-blue-50 transition-colors"
               >
                 Ver Registros
               </Link>
@@ -1380,7 +1380,7 @@ export default function AdminDashboard() {
               <button
                 onClick={() => loadDashboard.current()}
                 disabled={loading}
-                className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border border-[#E8E3DC] bg-white text-[#78716c] hover:bg-orange-50 hover:text-[#E8521A] transition-colors disabled:opacity-50"
+                className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border border-[#E8E3DC] bg-white text-[#78716c] hover:bg-blue-50 hover:text-[#2563EB] transition-colors disabled:opacity-50"
               >
                 <svg width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24" className={loading ? 'animate-spin' : ''}>
                   <path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" strokeLinecap="round" strokeLinejoin="round" />
@@ -1404,14 +1404,14 @@ export default function AdminDashboard() {
         {/* Onboarding banner — shown when no restaurants and onboarding not complete */}
         {!loading && showOnboardingBanner && (
           <div
-            className="rounded-2xl border border-orange-200 p-5 flex items-center justify-between flex-wrap gap-4"
-            style={{ background: 'linear-gradient(135deg, #FDE8E0 0%, #FEF3C7 100%)', boxShadow: '0 1px 2px rgba(232,82,26,0.06), 0 4px 12px rgba(232,82,26,0.1)' }}
+            className="rounded-2xl border border-blue-200 p-5 flex items-center justify-between flex-wrap gap-4"
+            style={{ background: 'linear-gradient(135deg, #FDE8E0 0%, #FEF3C7 100%)', boxShadow: '0 1px 2px rgba(37,99,235,0.06), 0 4px 12px rgba(37,99,235,0.1)' }}
           >
             <div className="flex items-center gap-4">
               <span className="text-3xl shrink-0">👋</span>
               <div>
                 <p className="font-bold text-[#1C1917] text-base">¡Bienvenido! Comienza configurando tu primer restaurante.</p>
-                <p className="text-sm text-[#78716c] mt-0.5">Sigue el asistente de configuración para poner en marcha Premia Tierra.</p>
+                <p className="text-sm text-[#78716c] mt-0.5">Sigue el asistente de configuración para poner en marcha SuperTierra.</p>
               </div>
             </div>
             <div className="flex items-center gap-3 shrink-0">
@@ -1456,7 +1456,7 @@ export default function AdminDashboard() {
             <select
               value={selectedRestaurant}
               onChange={(e) => setSelectedRestaurant(e.target.value)}
-              className="bg-white rounded-xl border border-[#E8E3DC] text-stone-600 text-sm font-medium px-3 py-2 outline-none focus:ring-2 focus:ring-[#E8521A] focus:border-[#E8521A] transition-all cursor-pointer"
+              className="bg-white rounded-xl border border-[#E8E3DC] text-stone-600 text-sm font-medium px-3 py-2 outline-none focus:ring-2 focus:ring-[#2563EB] focus:border-[#2563EB] transition-all cursor-pointer"
               style={{ boxShadow: cardShadow }}
             >
               <option value="all">Todas las sucursales</option>
@@ -1487,9 +1487,9 @@ export default function AdminDashboard() {
                 <StatCard
                   label="Pendientes"
                   value={pendientes}
-                  borderColor="#f59e0b"
+                  borderColor="#0284C7"
                   bgColor="#fef3c7"
-                  textColor="#d97706"
+                  textColor="#0EA5E9"
                   icon={
                     <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                       <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" strokeLinecap="round" strokeLinejoin="round" />
@@ -1546,7 +1546,7 @@ export default function AdminDashboard() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <Link
               href="/admin/generate"
-              className="group flex items-center gap-4 p-5 rounded-2xl border border-[#E8E3DC] bg-white hover:border-orange-300 hover:bg-orange-50 transition-all stagger-item card-hover"
+              className="group flex items-center gap-4 p-5 rounded-2xl border border-[#E8E3DC] bg-white hover:border-blue-300 hover:bg-blue-50 transition-all stagger-item card-hover"
               style={{ boxShadow: cardShadow }}
             >
               <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0" style={{ backgroundColor: '#fde8e0' }}>
@@ -1555,7 +1555,7 @@ export default function AdminDashboard() {
                 </svg>
               </div>
               <div>
-                <p className="font-bold text-[#1C1917] group-hover:text-[#E8521A] transition-colors">Generar Premio</p>
+                <p className="font-bold text-[#1C1917] group-hover:text-[#2563EB] transition-colors">Generar Premio</p>
                 <p className="text-xs text-[#a8a29e] mt-0.5">Crea un nuevo QR de premio</p>
               </div>
             </Link>
@@ -1612,9 +1612,9 @@ export default function AdminDashboard() {
             <div className="flex flex-col gap-2">
               {(() => {
                 const steps = [
-                  { label: 'QRs Generados', count: totalPremios, color: '#E8521A', widthPct: 100 },
+                  { label: 'QRs Generados', count: totalPremios, color: '#2563EB', widthPct: 100 },
                   {
-                    label: 'Registrados', count: totalCobros, color: '#fb923c',
+                    label: 'Registrados', count: totalCobros, color: '#0EA5E9',
                     widthPct: totalPremios > 0 ? Math.round((totalCobros / totalPremios) * 100) : 0,
                   },
                   {
@@ -1648,7 +1648,7 @@ export default function AdminDashboard() {
                             <svg width="14" height="14" fill="none" stroke="#a8a29e" strokeWidth="2" viewBox="0 0 24 24">
                               <path d="M19 9l-7 7-7-7" strokeLinecap="round" strokeLinejoin="round" />
                             </svg>
-                            <span className="text-[11px] font-semibold" style={{ color: convReg > 0 ? '#fb923c' : '#a8a29e' }}>
+                            <span className="text-[11px] font-semibold" style={{ color: convReg > 0 ? '#0EA5E9' : '#a8a29e' }}>
                               {convReg}% de conversión (generados → registrados)
                             </span>
                           </div>
@@ -1681,7 +1681,7 @@ export default function AdminDashboard() {
             <p className="text-xs text-[#a8a29e] mb-4">
               Cobros registrados por día
               {selectedRestaurant !== 'all' && (
-                <span className="ml-1 font-semibold text-[#E8521A]">· {selectedRestaurant}</span>
+                <span className="ml-1 font-semibold text-[#2563EB]">· {selectedRestaurant}</span>
               )}
             </p>
             {loading ? (
@@ -1748,7 +1748,7 @@ export default function AdminDashboard() {
                       </div>
                       <span
                         className={`text-xs font-semibold px-2 py-0.5 rounded-full shrink-0 ${
-                          isPending ? 'bg-amber-100 text-amber-700' : 'bg-orange-100 text-orange-700'
+                          isPending ? 'bg-blue-100 text-blue-700' : 'bg-blue-100 text-blue-700'
                         }`}
                       >
                         {isPending ? 'Pendiente' : 'Entregado'}
@@ -1831,7 +1831,7 @@ export default function AdminDashboard() {
               {/* Most popular prize */}
               <div className="bg-white rounded-2xl border border-[#E8E3DC] p-5 flex items-center gap-4" style={{ boxShadow: cardShadow }}>
                 <div className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0" style={{ background: '#fef3c7' }}>
-                  <svg className="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
                   </svg>
                 </div>
@@ -1873,7 +1873,7 @@ export default function AdminDashboard() {
                     <div className="relative w-20 h-20 shrink-0">
                       <svg viewBox="0 0 36 36" className="w-20 h-20 -rotate-90">
                         <circle cx="18" cy="18" r="15.9" fill="none" stroke="#f5f5f4" strokeWidth="3" />
-                        <circle cx="18" cy="18" r="15.9" fill="none" stroke="#E8521A" strokeWidth="3"
+                        <circle cx="18" cy="18" r="15.9" fill="none" stroke="#2563EB" strokeWidth="3"
                           strokeDasharray={`${pct} ${100 - pct}`} strokeLinecap="round" />
                       </svg>
                       <div className="absolute inset-0 flex items-center justify-center">
@@ -1909,10 +1909,10 @@ export default function AdminDashboard() {
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center justify-between mb-1">
                             <span className="text-xs font-semibold text-[#1C1917] truncate max-w-[140px]">{name}</span>
-                            <span className="text-xs font-bold text-[#E8521A] shrink-0 ml-2">{count}</span>
+                            <span className="text-xs font-bold text-[#2563EB] shrink-0 ml-2">{count}</span>
                           </div>
                           <div className="h-2 bg-[#f5f5f4] rounded-full overflow-hidden">
-                            <div className="h-2 rounded-full transition-all" style={{ width: `${(count / maxVal) * 100}%`, background: i === 0 ? '#E8521A' : i === 1 ? '#fb923c' : '#fed7aa' }} />
+                            <div className="h-2 rounded-full transition-all" style={{ width: `${(count / maxVal) * 100}%`, background: i === 0 ? '#2563EB' : i === 1 ? '#0EA5E9' : '#BAE6FD' }} />
                           </div>
                         </div>
                       </div>
@@ -1940,7 +1940,7 @@ export default function AdminDashboard() {
                       const isTop = i === maxDay;
                       return (
                         <div key={day} className={`flex flex-col items-center gap-1 px-3 py-2 rounded-xl text-xs font-bold transition-all ${isTop ? 'text-white' : 'text-[#78716c] bg-[#FAFAF9]'}`}
-                          style={isTop ? { background: '#E8521A' } : {}}>
+                          style={isTop ? { background: '#2563EB' } : {}}>
                           <span>{day}</span>
                           <span className={isTop ? 'text-white/80 font-normal' : 'text-[#a8a29e] font-normal'}>{counts[i]}</span>
                         </div>
@@ -1974,7 +1974,7 @@ export default function AdminDashboard() {
                 return (
                   <div className="flex items-center gap-4">
                     <div className="w-14 h-14 rounded-2xl flex items-center justify-center" style={{ background: '#fde8e0' }}>
-                      <svg className="w-6 h-6" style={{ color: '#E8521A' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-6 h-6" style={{ color: '#2563EB' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
                     </div>

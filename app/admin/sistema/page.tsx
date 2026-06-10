@@ -48,14 +48,14 @@ function fmtDate(iso: string): string {
 function latencyColor(ms: number): string {
   if (ms < 0) return 'text-red-600';
   if (ms < 100) return 'text-emerald-600';
-  if (ms < 500) return 'text-amber-500';
+  if (ms < 500) return 'text-blue-500';
   return 'text-red-600';
 }
 
 function latencyBg(ms: number): string {
   if (ms < 0) return 'bg-red-50 border-red-200';
   if (ms < 100) return 'bg-emerald-50 border-emerald-200';
-  if (ms < 500) return 'bg-amber-50 border-amber-200';
+  if (ms < 500) return 'bg-blue-50 border-blue-200';
   return 'bg-red-50 border-red-200';
 }
 
@@ -109,7 +109,7 @@ function CleanupButton({ action, label }: { action: string; label: string }) {
             ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
             : status === 'error'
             ? 'bg-red-50 text-red-700 border-red-200'
-            : 'bg-white text-stone-600 border-stone-200 hover:border-orange-300 hover:text-orange-600 hover:bg-orange-50'
+            : 'bg-white text-stone-600 border-stone-200 hover:border-blue-300 hover:text-blue-600 hover:bg-blue-50'
         }`}
       >
         {status === 'loading' ? 'Ejecutando...' : status === 'done' ? 'Listo' : status === 'error' ? 'Error' : 'Ejecutar'}
@@ -172,7 +172,7 @@ export default function SistemaPage() {
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
-          <div className="inline-flex items-center gap-2 bg-orange-50 text-[#E8521A] rounded-full px-3 py-1.5 text-xs font-bold uppercase tracking-widest mb-3 border border-orange-200">
+          <div className="inline-flex items-center gap-2 bg-blue-50 text-[#2563EB] rounded-full px-3 py-1.5 text-xs font-bold uppercase tracking-widest mb-3 border border-blue-200">
             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18" /></svg>
             Sistema
           </div>
@@ -211,7 +211,7 @@ export default function SistemaPage() {
           className={`flex items-center gap-3 px-5 py-4 rounded-2xl border font-semibold text-sm ${
             isHealthy
               ? 'bg-emerald-50 border-emerald-200 text-emerald-800'
-              : 'bg-amber-50 border-amber-200 text-amber-800'
+              : 'bg-blue-50 border-blue-200 text-blue-800'
           }`}
         >
           <span className="text-xl">{isHealthy ? '✅' : '⚠️'}</span>

@@ -40,7 +40,7 @@ const TRIGGER_DESCRIPTIONS: Record<string, (v: number) => string> = {
 };
 
 const inputClass =
-  'w-full bg-white border border-[#E8E3DC] rounded-lg px-3 py-2.5 text-sm text-[#1C1917] placeholder-[#a8a29e] focus:outline-none focus:ring-1 focus:ring-[#E8521A]/30 focus:border-[#E8521A] transition-colors';
+  'w-full bg-white border border-[#E8E3DC] rounded-lg px-3 py-2.5 text-sm text-[#1C1917] placeholder-[#a8a29e] focus:outline-none focus:ring-1 focus:ring-[#2563EB]/30 focus:border-[#2563EB] transition-colors';
 
 const labelClass = 'block text-[10px] font-semibold text-[#78716c] uppercase tracking-widest mb-1.5';
 
@@ -150,7 +150,7 @@ export default function ReglasPrizePage() {
           </div>
           <button
             onClick={() => { setShowForm(v => !v); setError(''); setSuccess(''); }}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#E8521A] text-white text-sm font-semibold hover:bg-[#C2410C] transition-colors shadow-sm"
+            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#2563EB] text-white text-sm font-semibold hover:bg-[#0891B2] transition-colors shadow-sm"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={showForm ? 'M6 18L18 6M6 6l12 12' : 'M12 4v16m8-8H4'} />
@@ -176,7 +176,7 @@ export default function ReglasPrizePage() {
         {/* Create form */}
         {showForm && (
           <div className="bg-white border border-[#E8E3DC] rounded-2xl p-6 shadow-sm"
-            style={{ borderTop: '3px solid #E8521A' }}>
+            style={{ borderTop: '3px solid #2563EB' }}>
             <h2 className="text-base font-bold text-[#1C1917] mb-5">Nueva regla automatica</h2>
             <form onSubmit={handleSubmit} className="space-y-5">
               {/* Name */}
@@ -224,7 +224,7 @@ export default function ReglasPrizePage() {
 
               {/* Preview sentence */}
               {form.trigger_type in TRIGGER_DESCRIPTIONS && (
-                <div className="bg-orange-50 border border-orange-200 rounded-xl px-4 py-3 text-sm text-[#92400E]">
+                <div className="bg-blue-50 border border-blue-200 rounded-xl px-4 py-3 text-sm text-[#92400E]">
                   <span className="font-semibold">Cuando activar: </span>
                   {TRIGGER_DESCRIPTIONS[form.trigger_type]?.(form.trigger_value)}, generar automaticamente:{' '}
                   <span className="font-semibold">{form.prize_template}</span>
@@ -300,7 +300,7 @@ export default function ReglasPrizePage() {
                 <button
                   type="submit"
                   disabled={saving}
-                  className="px-6 py-2.5 bg-[#E8521A] text-white text-sm font-semibold rounded-xl hover:bg-[#C2410C] transition-colors disabled:opacity-60"
+                  className="px-6 py-2.5 bg-[#2563EB] text-white text-sm font-semibold rounded-xl hover:bg-[#0891B2] transition-colors disabled:opacity-60"
                 >
                   {saving ? 'Guardando...' : 'Crear regla'}
                 </button>
@@ -312,7 +312,7 @@ export default function ReglasPrizePage() {
         {/* Rules list */}
         {loading ? (
           <div className="flex items-center justify-center py-16">
-            <svg className="w-6 h-6 text-orange-400 animate-spin" fill="none" viewBox="0 0 24 24">
+            <svg className="w-6 h-6 text-blue-400 animate-spin" fill="none" viewBox="0 0 24 24">
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
             </svg>
@@ -332,8 +332,8 @@ export default function ReglasPrizePage() {
               return (
                 <div
                   key={rule.id}
-                  className={`bg-white border rounded-2xl p-5 shadow-sm transition-all ${rule.active ? 'border-orange-200' : 'border-[#E8E3DC] opacity-60'}`}
-                  style={rule.active ? { borderLeft: '4px solid #E8521A' } : { borderLeft: '4px solid #D6D3D1' }}
+                  className={`bg-white border rounded-2xl p-5 shadow-sm transition-all ${rule.active ? 'border-blue-200' : 'border-[#E8E3DC] opacity-60'}`}
+                  style={rule.active ? { borderLeft: '4px solid #2563EB' } : { borderLeft: '4px solid #D6D3D1' }}
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex-1 min-w-0">
@@ -342,7 +342,7 @@ export default function ReglasPrizePage() {
                         <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${rule.active ? 'bg-emerald-50 text-emerald-700' : 'bg-stone-100 text-stone-500'}`}>
                           {rule.active ? 'Activa' : 'Inactiva'}
                         </span>
-                        <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-orange-50 text-orange-700">
+                        <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-blue-50 text-blue-700">
                           {TRIGGER_LABELS[rule.trigger_type]}
                         </span>
                       </div>
@@ -364,7 +364,7 @@ export default function ReglasPrizePage() {
                     {/* Toggle */}
                     <button
                       onClick={() => handleToggle(rule)}
-                      className={`relative shrink-0 w-11 h-6 rounded-full transition-colors ${rule.active ? 'bg-[#E8521A]' : 'bg-stone-200'}`}
+                      className={`relative shrink-0 w-11 h-6 rounded-full transition-colors ${rule.active ? 'bg-[#2563EB]' : 'bg-stone-200'}`}
                       aria-label={rule.active ? 'Desactivar regla' : 'Activar regla'}
                     >
                       <span

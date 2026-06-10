@@ -85,14 +85,14 @@ export default function WebhooksPage() {
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg,#E8521A,#C2410C)' }}>
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg,#2563EB,#0891B2)' }}>
               <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
               </svg>
             </div>
             <div>
               <h1 className="text-2xl font-extrabold text-[#1C1917]">Integración con Zapier / Make / n8n</h1>
-              <p className="text-stone-500 text-sm">Conecta Premia Tierra con tus flujos de automatización</p>
+              <p className="text-stone-500 text-sm">Conecta SuperTierra con tus flujos de automatización</p>
             </div>
           </div>
         </div>
@@ -104,13 +104,13 @@ export default function WebhooksPage() {
             Configura esta URL como destino en Zapier, Make o n8n para recibir eventos en tiempo real.
           </p>
           <div className="flex items-center gap-2">
-            <div className="flex-1 bg-orange-50 border border-orange-200 rounded-xl px-4 py-3 font-mono text-sm text-orange-900 break-all">
+            <div className="flex-1 bg-blue-50 border border-blue-200 rounded-xl px-4 py-3 font-mono text-sm text-blue-900 break-all">
               {webhookEndpoint}
             </div>
             <button
               onClick={copyUrl}
               className="shrink-0 px-4 py-3 rounded-xl font-bold text-sm text-white transition-all"
-              style={{ background: copied ? '#22c55e' : 'linear-gradient(135deg,#E8521A,#C2410C)' }}
+              style={{ background: copied ? '#22c55e' : 'linear-gradient(135deg,#2563EB,#0891B2)' }}
             >
               {copied ? 'Copiado' : 'Copiar'}
             </button>
@@ -118,18 +118,18 @@ export default function WebhooksPage() {
         </div>
 
         {/* Env var setup */}
-        <div className="bg-amber-50 border border-amber-200 rounded-2xl p-5 mb-5">
+        <div className="bg-blue-50 border border-blue-200 rounded-2xl p-5 mb-5">
           <div className="flex gap-3">
             <span className="text-xl shrink-0">⚙️</span>
             <div>
-              <p className="font-bold text-amber-800 text-sm mb-1">Configura la variable de entorno</p>
-              <p className="text-amber-700 text-sm mb-2">
-                Para que Premia Tierra envíe eventos a tu plataforma, agrega esta variable en Vercel (Settings → Environment Variables):
+              <p className="font-bold text-blue-800 text-sm mb-1">Configura la variable de entorno</p>
+              <p className="text-blue-700 text-sm mb-2">
+                Para que SuperTierra envíe eventos a tu plataforma, agrega esta variable en Vercel (Settings → Environment Variables):
               </p>
-              <code className="block bg-amber-100 border border-amber-300 rounded-lg px-3 py-2 text-xs font-mono text-amber-900">
+              <code className="block bg-blue-100 border border-blue-300 rounded-lg px-3 py-2 text-xs font-mono text-blue-900">
                 WEBHOOK_URL=https://hooks.zapier.com/hooks/catch/...
               </code>
-              <p className="text-amber-600 text-xs mt-2">Reemplaza el valor con la URL que te da Zapier, Make o n8n al crear el trigger.</p>
+              <p className="text-blue-600 text-xs mt-2">Reemplaza el valor con la URL que te da Zapier, Make o n8n al crear el trigger.</p>
             </div>
           </div>
         </div>
@@ -140,7 +140,7 @@ export default function WebhooksPage() {
           <div className="space-y-3">
             {EVENTS.map(e => (
               <div key={e.event} className="flex items-center gap-3 p-3 rounded-xl bg-[#FAFAF9] border border-[#E8E3DC]">
-                <div className="w-2 h-2 rounded-full bg-orange-500 shrink-0" />
+                <div className="w-2 h-2 rounded-full bg-blue-500 shrink-0" />
                 <div>
                   <p className="font-bold text-[#1C1917] text-sm font-mono">{e.event}</p>
                   <p className="text-stone-500 text-xs">{e.description}</p>
@@ -164,7 +164,7 @@ export default function WebhooksPage() {
             onClick={sendTest}
             disabled={testing}
             className="w-full font-bold py-3.5 rounded-xl text-white flex items-center justify-center gap-2 disabled:opacity-60"
-            style={{ background: 'linear-gradient(135deg,#E8521A,#C2410C)', boxShadow: '0 4px 16px rgba(232,82,26,0.30)' }}
+            style={{ background: 'linear-gradient(135deg,#2563EB,#0891B2)', boxShadow: '0 4px 16px rgba(37,99,235,0.30)' }}
           >
             {testing
               ? <><svg className="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/></svg>Enviando...</>
@@ -192,11 +192,11 @@ export default function WebhooksPage() {
             <div className="space-y-2">
               {recentEvents.map(ev => (
                 <div key={ev.id} className="flex items-start gap-3 p-3 rounded-xl bg-[#FAFAF9] border border-[#E8E3DC]">
-                  <div className="w-2 h-2 rounded-full bg-orange-400 shrink-0 mt-1.5" />
+                  <div className="w-2 h-2 rounded-full bg-blue-400 shrink-0 mt-1.5" />
                   <div className="flex-1 min-w-0">
                     <p className="text-[#1C1917] text-sm font-semibold truncate">{ev.description}</p>
                     <div className="flex items-center gap-2 mt-0.5">
-                      <span className="text-orange-600 text-xs font-mono">{ev.action}</span>
+                      <span className="text-blue-600 text-xs font-mono">{ev.action}</span>
                       <span className="text-gray-300 text-xs">·</span>
                       <span className="text-stone-400 text-xs">
                         {new Date(ev.created_at).toLocaleString('es-MX', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}

@@ -55,10 +55,10 @@ export default function SeguridadPage() {
 
   const actionColor: Record<string, string> = {
     admin_login: 'bg-blue-50 text-blue-700',
-    prize_created: 'bg-orange-50 text-orange-700',
+    prize_created: 'bg-blue-50 text-blue-700',
     claim_registered: 'bg-emerald-50 text-emerald-700',
     claim_delivered: 'bg-green-50 text-green-700',
-    password_reset_requested: 'bg-amber-50 text-amber-700',
+    password_reset_requested: 'bg-blue-50 text-blue-700',
     password_reset_completed: 'bg-purple-50 text-purple-700',
   };
 
@@ -76,7 +76,7 @@ export default function SeguridadPage() {
       <div className="max-w-4xl mx-auto">
         <div className="flex items-center justify-between mb-8 flex-wrap gap-4">
           <div>
-            <p className="text-xs font-bold text-[#E8521A] uppercase tracking-widest mb-1">Admin</p>
+            <p className="text-xs font-bold text-[#2563EB] uppercase tracking-widest mb-1">Admin</p>
             <h1 className="text-2xl font-bold text-[#1C1917]">Seguridad</h1>
             <p className="text-sm text-[#78716c] mt-1">Registro de actividad y exportación de datos</p>
           </div>
@@ -84,7 +84,7 @@ export default function SeguridadPage() {
             onClick={handleExport}
             disabled={exporting}
             className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-white text-sm font-bold disabled:opacity-60 transition-opacity hover:opacity-90"
-            style={{ background: '#E8521A' }}
+            style={{ background: '#2563EB' }}
           >
             {exporting ? (
               <svg className="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
@@ -107,7 +107,7 @@ export default function SeguridadPage() {
 
           {loading ? (
             <div className="flex justify-center py-12">
-              <svg className="animate-spin w-7 h-7 text-[#E8521A]" fill="none" viewBox="0 0 24 24">
+              <svg className="animate-spin w-7 h-7 text-[#2563EB]" fill="none" viewBox="0 0 24 24">
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
               </svg>
@@ -134,7 +134,7 @@ export default function SeguridadPage() {
                         className="mt-2 flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border transition-all"
                         style={copiedId === log.id
                           ? { background: '#f0fdf4', borderColor: '#86efac', color: '#16a34a' }
-                          : { background: '#fff7ed', borderColor: '#fed7aa', color: '#c2410c' }
+                          : { background: '#EFF6FF', borderColor: '#BAE6FD', color: '#c2410c' }
                         }
                       >
                         {copiedId === log.id ? (

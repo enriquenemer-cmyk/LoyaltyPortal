@@ -106,7 +106,7 @@ export default function CumpleanosPage() {
           <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 8 }}>
             <div style={{
               width: 48, height: 48, borderRadius: '50%',
-              background: 'linear-gradient(135deg,#F97316,#C2410C)',
+              background: 'linear-gradient(135deg,#0891B2,#0891B2)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               fontSize: 24, boxShadow: '0 0 0 6px rgba(249,115,22,0.15)',
             }}>
@@ -129,7 +129,7 @@ export default function CumpleanosPage() {
           backdropFilter: 'blur(12px)',
         }}>
           <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: 13, marginBottom: 24, lineHeight: 1.6 }}>
-            Ingresa el correo y nombre del cliente. Si tiene registros previos, se generará automáticamente un <strong style={{ color: '#F97316' }}>postre gratis</strong> válido por 30 días.
+            Ingresa el correo y nombre del cliente. Si tiene registros previos, se generará automáticamente un <strong style={{ color: '#0891B2' }}>postre gratis</strong> válido por 30 días.
           </p>
 
           <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
@@ -187,7 +187,7 @@ export default function CumpleanosPage() {
               type="submit"
               disabled={loading}
               style={{
-                background: loading ? 'rgba(249,115,22,0.25)' : 'linear-gradient(135deg,#F97316,#C2410C)',
+                background: loading ? 'rgba(249,115,22,0.25)' : 'linear-gradient(135deg,#0891B2,#0891B2)',
                 color: 'white',
                 fontWeight: 800,
                 fontSize: 15,
@@ -246,7 +246,7 @@ export default function CumpleanosPage() {
                       rel="noopener noreferrer"
                       style={{
                         background: 'rgba(249,115,22,0.20)',
-                        color: '#fb923c',
+                        color: '#0EA5E9',
                         fontSize: 11,
                         fontWeight: 700,
                         padding: '4px 10px',

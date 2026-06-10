@@ -40,8 +40,8 @@ export default function StampCard({ card }: Props) {
         className="px-5 py-4"
         style={{
           background: isComplete
-            ? 'linear-gradient(135deg, #b45309, #ca8a04)'
-            : 'linear-gradient(135deg, #E8521A, #C2410C)',
+            ? 'linear-gradient(135deg, #1D4ED8, #ca8a04)'
+            : 'linear-gradient(135deg, #2563EB, #0891B2)',
         }}
       >
         <div className="flex items-center justify-between">
@@ -78,10 +78,10 @@ export default function StampCard({ card }: Props) {
                 width: 44,
                 height: 44,
                 background: earned
-                  ? 'linear-gradient(135deg, #E8521A, #C2410C)'
+                  ? 'linear-gradient(135deg, #2563EB, #0891B2)'
                   : '#f3f4f6',
                 border: earned ? 'none' : '2px dashed #d1d5db',
-                boxShadow: earned ? '0 4px 12px rgba(232,82,26,0.35)' : 'none',
+                boxShadow: earned ? '0 4px 12px rgba(37,99,235,0.35)' : 'none',
               }}
             >
               {earned ? (
@@ -112,14 +112,14 @@ export default function StampCard({ card }: Props) {
         <div className="text-center">
           <p
             className="font-bold text-sm"
-            style={{ color: isComplete ? '#92400e' : '#374151' }}
+            style={{ color: isComplete ? '#1E40AF' : '#374151' }}
           >
             {stamps_count} de {stamps_required} sellos
           </p>
           {isComplete ? (
             <p
               className="text-sm font-extrabold mt-1"
-              style={{ color: '#b45309' }}
+              style={{ color: '#1D4ED8' }}
             >
               ¡Tarjeta completa! Tu premio te espera
             </p>

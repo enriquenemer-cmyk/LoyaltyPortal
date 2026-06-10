@@ -37,7 +37,7 @@ export default function LoginPage() {
       {/* LEFT COLUMN — orange brand side, hidden on mobile */}
       <div
         className="hidden md:flex md:w-[40%] flex-col justify-between p-12 relative overflow-hidden"
-        style={{ background: 'linear-gradient(160deg,#E8521A 0%,#C2410C 60%,#7C2D12 100%)' }}
+        style={{ background: 'linear-gradient(160deg,#2563EB 0%,#0891B2 60%,#1E3A8A 100%)' }}
       >
         {/* Dot pattern overlay */}
         <svg
@@ -89,7 +89,7 @@ export default function LoginPage() {
           </div>
 
           <div>
-            <p className="text-white font-black text-3xl leading-tight">Premia Tierra</p>
+            <p className="text-white font-black text-3xl leading-tight">SuperTierra</p>
             <p className="text-white/60 text-base mt-1">Plataforma de Premios QR</p>
           </div>
 
@@ -130,7 +130,7 @@ export default function LoginPage() {
 
         {/* Bottom copyright */}
         <p className="relative z-10 text-white/30 text-xs text-center">
-          {new Date().getFullYear()} · Premia Tierra
+          {new Date().getFullYear()} · SuperTierra
         </p>
       </div>
 
@@ -146,8 +146,8 @@ export default function LoginPage() {
             <div
               className="inline-flex w-12 h-12 rounded-2xl items-center justify-center"
               style={{
-                background: 'linear-gradient(135deg,#E8521A,#C2410C)',
-                boxShadow: '0 8px 24px rgba(232,82,26,0.35)',
+                background: 'linear-gradient(135deg,#2563EB,#0891B2)',
+                boxShadow: '0 8px 24px rgba(37,99,235,0.35)',
               }}
             >
               <svg
@@ -199,7 +199,7 @@ export default function LoginPage() {
                   onChange={(e) => setForm((p) => ({ ...p, username: e.target.value }))}
                   required
                   placeholder="admin"
-                  className="w-full bg-[#FAFAF9] border border-[#E8E3DC] rounded-xl pl-10 pr-4 py-3.5 text-sm text-[#1C1917] placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-orange-500/25 focus:border-orange-500 focus:bg-white transition-all"
+                  className="w-full bg-[#FAFAF9] border border-[#E8E3DC] rounded-xl pl-10 pr-4 py-3.5 text-sm text-[#1C1917] placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-blue-500/25 focus:border-blue-500 focus:bg-white transition-all"
                 />
               </div>
             </div>
@@ -226,7 +226,7 @@ export default function LoginPage() {
                   onChange={(e) => setForm((p) => ({ ...p, password: e.target.value }))}
                   required
                   placeholder="••••••••"
-                  className="w-full bg-[#FAFAF9] border border-[#E8E3DC] rounded-xl pl-10 pr-4 py-3.5 text-sm text-[#1C1917] placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-orange-500/25 focus:border-orange-500 focus:bg-white transition-all"
+                  className="w-full bg-[#FAFAF9] border border-[#E8E3DC] rounded-xl pl-10 pr-4 py-3.5 text-sm text-[#1C1917] placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-blue-500/25 focus:border-blue-500 focus:bg-white transition-all"
                 />
               </div>
             </div>
@@ -237,7 +237,7 @@ export default function LoginPage() {
                 id="rememberMe"
                 checked={rememberMe}
                 onChange={(e) => setRememberMe(e.target.checked)}
-                className="w-4 h-4 accent-[#E8521A] cursor-pointer"
+                className="w-4 h-4 accent-[#2563EB] cursor-pointer"
               />
               <label htmlFor="rememberMe" className="text-sm text-[#1C1917] cursor-pointer select-none">
                 Recordarme por 30 días
@@ -262,8 +262,8 @@ export default function LoginPage() {
               disabled={loading}
               className="w-full text-white font-bold py-4 rounded-xl transition-all text-base disabled:opacity-60 mt-2"
               style={{
-                background: 'linear-gradient(135deg,#E8521A,#C2410C)',
-                boxShadow: loading ? 'none' : '0 8px 24px rgba(232,82,26,0.40)',
+                background: 'linear-gradient(135deg,#2563EB,#0891B2)',
+                boxShadow: loading ? 'none' : '0 8px 24px rgba(37,99,235,0.40)',
               }}
             >
               {loading ? (
@@ -282,7 +282,7 @@ export default function LoginPage() {
             <div className="text-center">
               <Link
                 href="/admin/forgot-password"
-                className="text-sm text-[#78716c] hover:text-[#E8521A] transition-colors"
+                className="text-sm text-[#78716c] hover:text-[#2563EB] transition-colors"
               >
                 ¿Olvidaste tu contraseña?
               </Link>
@@ -292,7 +292,7 @@ export default function LoginPage() {
 
         {/* Bottom copyright */}
         <p className="text-stone-300 text-xs mt-8">
-          © {new Date().getFullYear()} Premia Tierra
+          © {new Date().getFullYear()} SuperTierra
         </p>
       </div>
     </div>

@@ -47,9 +47,9 @@ function StatCard({
 }) {
   const colorMap = {
     gray:   { border: 'border-l-stone-400',  bg: 'bg-stone-100',  icon: 'text-stone-600',  num: 'text-stone-900'  },
-    orange: { border: 'border-l-orange-500', bg: 'bg-orange-50', icon: 'text-orange-600', num: 'text-orange-600' },
+    orange: { border: 'border-l-blue-500', bg: 'bg-blue-50', icon: 'text-blue-600', num: 'text-blue-600' },
     blue:   { border: 'border-l-blue-500',   bg: 'bg-blue-50',   icon: 'text-blue-600',   num: 'text-blue-600'   },
-    amber:  { border: 'border-l-amber-500',  bg: 'bg-amber-50',  icon: 'text-amber-600',  num: 'text-amber-600'  },
+    amber:  { border: 'border-l-blue-500',  bg: 'bg-blue-50',  icon: 'text-blue-600',  num: 'text-blue-600'  },
   };
   const c = colorMap[color];
   return (
@@ -67,7 +67,7 @@ function StatCard({
 
 function SortArrow({ direction }: { direction: SortDir }) {
   return (
-    <svg className="w-3 h-3 inline-block ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ color: '#E8521A' }}>
+    <svg className="w-3 h-3 inline-block ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ color: '#2563EB' }}>
       {direction === 'asc' ? (
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 15l7-7 7 7" />
       ) : (
@@ -149,7 +149,7 @@ function NoCobrosEmptyState() {
       </p>
       <button
         onClick={() => setHowOpen((v) => !v)}
-        className="inline-flex items-center gap-2 text-sm font-bold text-[#E8521A] bg-orange-50 border border-orange-200 px-4 py-2 rounded-xl hover:bg-orange-100 transition-colors mb-4"
+        className="inline-flex items-center gap-2 text-sm font-bold text-[#2563EB] bg-blue-50 border border-blue-200 px-4 py-2 rounded-xl hover:bg-blue-100 transition-colors mb-4"
       >
         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -169,8 +169,8 @@ function NoCobrosEmptyState() {
             { step: '2', title: 'El cliente escanea y se registra', desc: 'El cliente escanea el QR con su celular, llena sus datos y obtiene su pase de cobro.' },
             { step: '3', title: 'El cajero confirma la entrega', desc: 'El cajero escanea el pase del cliente, verifica y presiona "Entregar". El cobro queda registrado aquí.' },
           ].map(({ step, title, desc }) => (
-            <div key={step} className="flex gap-3 bg-orange-50 border border-orange-100 rounded-xl p-3">
-              <div className="w-7 h-7 rounded-full bg-[#E8521A] text-white font-black text-xs flex items-center justify-center shrink-0 mt-0.5">
+            <div key={step} className="flex gap-3 bg-blue-50 border border-blue-100 rounded-xl p-3">
+              <div className="w-7 h-7 rounded-full bg-[#2563EB] text-white font-black text-xs flex items-center justify-center shrink-0 mt-0.5">
                 {step}
               </div>
               <div>
@@ -387,15 +387,15 @@ export default function RegistrosPage() {
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Reporte de Cobros — Premia Tierra</title>
+  <title>Reporte de Cobros — SuperTierra</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 11px; color: #1e293b; background: #fff; }
-    .report-header { padding: 24px 32px 16px; border-bottom: 3px solid #E8521A; display: flex; justify-content: space-between; align-items: flex-end; }
+    .report-header { padding: 24px 32px 16px; border-bottom: 3px solid #2563EB; display: flex; justify-content: space-between; align-items: flex-end; }
     .report-header .brand { display: flex; align-items: center; gap: 10px; }
-    .report-header .brand-dot { width: 28px; height: 28px; border-radius: 50%; background: #E8521A; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 900; font-size: 14px; }
+    .report-header .brand-dot { width: 28px; height: 28px; border-radius: 50%; background: #2563EB; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 900; font-size: 14px; }
     .report-header .brand-name { font-size: 18px; font-weight: 900; color: #1e293b; letter-spacing: -0.5px; }
-    .report-header .brand-sub { font-size: 11px; color: #E8521A; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-top: 2px; }
+    .report-header .brand-sub { font-size: 11px; color: #2563EB; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-top: 2px; }
     .report-header .meta { text-align: right; font-size: 10px; color: #64748b; line-height: 1.6; }
     .report-header .meta strong { color: #1e293b; }
     .summary { padding: 12px 32px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; display: flex; gap: 32px; }
@@ -403,7 +403,7 @@ export default function RegistrosPage() {
     .summary-item .label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #94a3b8; }
     .summary-item .value { font-size: 20px; font-weight: 900; color: #1e293b; }
     .summary-item.delivered .value { color: #059669; }
-    .summary-item.pending .value { color: #d97706; }
+    .summary-item.pending .value { color: #0EA5E9; }
     .table-wrap { padding: 20px 32px 0; }
     table { width: 100%; border-collapse: collapse; }
     thead tr { background: #1e293b; }
@@ -413,9 +413,9 @@ export default function RegistrosPage() {
     tbody td { padding: 7px 10px; font-size: 10px; color: #334155; vertical-align: middle; }
     tbody td:first-child { font-weight: 700; color: #0f172a; }
     .status-delivered { color: #059669; font-weight: 700; }
-    .status-pending { color: #d97706; font-weight: 700; }
+    .status-pending { color: #0EA5E9; font-weight: 700; }
     .report-footer { margin: 20px 32px 0; padding: 14px 0; border-top: 2px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; }
-    .report-footer .footer-brand { font-size: 11px; font-weight: 900; color: #E8521A; text-transform: uppercase; letter-spacing: 1px; }
+    .report-footer .footer-brand { font-size: 11px; font-weight: 900; color: #2563EB; text-transform: uppercase; letter-spacing: 1px; }
     .report-footer .footer-note { font-size: 9px; color: #94a3b8; }
     @page { size: A4 landscape; margin: 0; }
   </style>
@@ -425,7 +425,7 @@ export default function RegistrosPage() {
     <div class="brand">
       <div class="brand-dot">P</div>
       <div>
-        <div class="brand-name">Premia Tierra</div>
+        <div class="brand-name">SuperTierra</div>
         <div class="brand-sub">Reporte de Cobros</div>
       </div>
     </div>
@@ -458,7 +458,7 @@ export default function RegistrosPage() {
   </div>
   <div class="report-footer">
     <span class="footer-brand">Tierra Burrito Bar</span>
-    <span class="footer-note">Documento generado por el sistema Premia Tierra &copy; ${new Date().getFullYear()}</span>
+    <span class="footer-note">Documento generado por el sistema SuperTierra &copy; ${new Date().getFullYear()}</span>
   </div>
 </body>
 </html>`;
@@ -509,7 +509,7 @@ export default function RegistrosPage() {
     return (
       <th
         className={`text-left px-5 py-3.5 font-bold text-xs uppercase tracking-wider cursor-pointer select-none transition-colors ${
-          isActive ? 'text-[#E8521A]' : 'text-stone-500 hover:text-stone-700'
+          isActive ? 'text-[#2563EB]' : 'text-stone-500 hover:text-stone-700'
         } ${className}`}
         onClick={() => handleSort(colKey)}
       >
@@ -527,20 +527,20 @@ export default function RegistrosPage() {
   return (
     <div className="min-h-screen admin-bg">
       {/* Thin orange gradient accent line at the very top */}
-      <div style={{ height: '2px', width: '100%', background: 'linear-gradient(90deg, #E8521A, #f97316, #fbbf24, #f97316, #E8521A)' }} />
+      <div style={{ height: '2px', width: '100%', background: 'linear-gradient(90deg, #2563EB, #0891B2, #38BDF8, #0891B2, #2563EB)' }} />
       <div className="max-w-7xl mx-auto px-4 py-10">
 
         {/* Header */}
         <div className="mb-8 flex items-start justify-between flex-wrap gap-4">
           <div>
-            <div className="inline-flex items-center gap-2 bg-orange-50 text-[#E8521A] rounded-full px-3 py-1.5 text-xs font-bold uppercase tracking-widest mb-4 border border-orange-200 pulse-orange">
+            <div className="inline-flex items-center gap-2 bg-blue-50 text-[#2563EB] rounded-full px-3 py-1.5 text-xs font-bold uppercase tracking-widest mb-4 border border-blue-200 pulse-orange">
               <span className="relative flex h-2 w-2 shrink-0">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#E8521A] opacity-60" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#E8521A]" />
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#2563EB] opacity-60" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#2563EB]" />
               </span>
               {loading ? 'Registros de Cobro' : `${claims.length} ${claims.length === 1 ? 'Registro' : 'Registros'}`}
             </div>
-            <h1 className="text-3xl font-extrabold text-stone-900 tracking-tight border-l-4 border-[#E8521A] pl-4">
+            <h1 className="text-3xl font-extrabold text-stone-900 tracking-tight border-l-4 border-[#2563EB] pl-4">
               Registros de <span className="gradient-text">Cobro</span>
             </h1>
             <p className="text-stone-500 mt-2 text-sm pl-4">Historial de todas las personas que han reclamado premios.</p>
@@ -604,7 +604,7 @@ export default function RegistrosPage() {
                   placeholder="Buscar por nombre, correo, premio o lugar..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2.5 bg-white border border-[#E8E3DC] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all shadow-sm"
+                  className="w-full pl-10 pr-4 py-2.5 bg-white border border-[#E8E3DC] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all shadow-sm"
                 />
               </div>
               {search && (
@@ -695,7 +695,7 @@ export default function RegistrosPage() {
             {/* Filter bar */}
             <div
               className="mb-5 flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-3 bg-white border rounded-xl px-4 py-3 shadow-sm"
-              style={{ borderColor: hasActiveFilters ? '#E8521A' : '#E8E3DC' }}
+              style={{ borderColor: hasActiveFilters ? '#2563EB' : '#E8E3DC' }}
             >
               {/* Date range: stacked on mobile */}
               <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
@@ -705,8 +705,8 @@ export default function RegistrosPage() {
                     type="date"
                     value={dateFrom}
                     onChange={(e) => setDateFrom(e.target.value)}
-                    className="flex-1 sm:flex-none text-sm border border-[#E8E3DC] rounded-lg px-2.5 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all"
-                    style={dateFrom ? { borderColor: '#E8521A', boxShadow: '0 0 0 2px #E8521A22' } : {}}
+                    className="flex-1 sm:flex-none text-sm border border-[#E8E3DC] rounded-lg px-2.5 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                    style={dateFrom ? { borderColor: '#2563EB', boxShadow: '0 0 0 2px #2563EB22' } : {}}
                   />
                 </div>
                 <div className="hidden sm:block text-stone-300 text-sm">—</div>
@@ -716,8 +716,8 @@ export default function RegistrosPage() {
                     type="date"
                     value={dateTo}
                     onChange={(e) => setDateTo(e.target.value)}
-                    className="flex-1 sm:flex-none text-sm border border-[#E8E3DC] rounded-lg px-2.5 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all"
-                    style={dateTo ? { borderColor: '#E8521A', boxShadow: '0 0 0 2px #E8521A22' } : {}}
+                    className="flex-1 sm:flex-none text-sm border border-[#E8E3DC] rounded-lg px-2.5 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                    style={dateTo ? { borderColor: '#2563EB', boxShadow: '0 0 0 2px #2563EB22' } : {}}
                   />
                 </div>
               </div>
@@ -729,8 +729,8 @@ export default function RegistrosPage() {
                 <select
                   value={statusFilter}
                   onChange={(e) => setStatusFilter(e.target.value as 'all' | 'pending' | 'delivered')}
-                  className="flex-1 sm:flex-none text-sm border border-[#E8E3DC] rounded-lg px-2.5 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all"
-                  style={statusFilter !== 'all' ? { borderColor: '#E8521A', boxShadow: '0 0 0 2px #E8521A22', color: '#E8521A', fontWeight: 700 } : {}}
+                  className="flex-1 sm:flex-none text-sm border border-[#E8E3DC] rounded-lg px-2.5 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                  style={statusFilter !== 'all' ? { borderColor: '#2563EB', boxShadow: '0 0 0 2px #2563EB22', color: '#2563EB', fontWeight: 700 } : {}}
                 >
                   <option value="all">Todos</option>
                   <option value="pending">Pendientes</option>
@@ -746,8 +746,8 @@ export default function RegistrosPage() {
                     <select
                       value={restaurantFilter}
                       onChange={(e) => setRestaurantFilter(e.target.value)}
-                      className="flex-1 sm:flex-none text-sm border border-[#E8E3DC] rounded-lg px-2.5 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all"
-                      style={restaurantFilter !== 'all' ? { borderColor: '#E8521A', boxShadow: '0 0 0 2px #E8521A22', color: '#E8521A', fontWeight: 700 } : {}}
+                      className="flex-1 sm:flex-none text-sm border border-[#E8E3DC] rounded-lg px-2.5 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                      style={restaurantFilter !== 'all' ? { borderColor: '#2563EB', boxShadow: '0 0 0 2px #2563EB22', color: '#2563EB', fontWeight: 700 } : {}}
                     >
                       <option value="all">Todas las sucursales</option>
                       {restaurants.map((r) => (
@@ -762,7 +762,7 @@ export default function RegistrosPage() {
                 <button
                   onClick={clearFilters}
                   className="sm:ml-auto inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-lg border transition-colors"
-                  style={{ color: '#E8521A', borderColor: '#E8521A', background: '#fff7f5' }}
+                  style={{ color: '#2563EB', borderColor: '#2563EB', background: '#fff7f5' }}
                 >
                   <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
@@ -790,7 +790,7 @@ export default function RegistrosPage() {
                 action={
                     <button
                       onClick={() => { setSearch(''); clearFilters(); }}
-                      className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold text-orange-600 bg-orange-50 border border-orange-200 hover:bg-orange-100 transition-colors"
+                      className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold text-blue-600 bg-blue-50 border border-blue-200 hover:bg-blue-100 transition-colors"
                     >
                       <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
@@ -809,28 +809,28 @@ export default function RegistrosPage() {
                   {filtered.map((claim) => (
                     <div key={claim.id} className="flex gap-0 hover:bg-[#faf7f5] transition-colors stagger-item min-h-[64px]">
                       {/* Orange left accent bar */}
-                      <div className={`w-1.5 shrink-0 rounded-none ${claim.status === 'delivered' ? 'bg-orange-400' : 'bg-amber-400'}`} />
+                      <div className={`w-1.5 shrink-0 rounded-none ${claim.status === 'delivered' ? 'bg-blue-400' : 'bg-blue-400'}`} />
                       <div className="flex-1 p-4 flex flex-col gap-2.5 min-w-0">
                         {/* Top row: avatar + name + status */}
                         <div className="flex items-start gap-3">
                           <Avatar name={claim.full_name} />
                           <div className="flex-1 min-w-0">
-                            <a href={`/admin/cliente/${encodeURIComponent(claim.phone)}`} className="font-bold text-stone-900 text-sm leading-tight truncate block hover:text-[#E8521A] transition-colors">{claim.full_name}</a>
+                            <a href={`/admin/cliente/${encodeURIComponent(claim.phone)}`} className="font-bold text-stone-900 text-sm leading-tight truncate block hover:text-[#2563EB] transition-colors">{claim.full_name}</a>
                             <a href={`tel:${claim.phone}`} className="text-xs text-stone-400 font-mono mt-0.5 block">{claim.phone}</a>
                           </div>
                           {claim.status === 'delivered' ? (
-                            <span className="inline-flex items-center text-xs font-bold text-orange-700 bg-orange-50 border border-orange-200 px-2 py-0.5 rounded-full shrink-0">
+                            <span className="inline-flex items-center text-xs font-bold text-blue-700 bg-blue-50 border border-blue-200 px-2 py-0.5 rounded-full shrink-0">
                               <span className="status-dot-active" />Entregado
                             </span>
                           ) : (
-                            <span className="inline-flex items-center text-xs font-bold text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-full shrink-0">
+                            <span className="inline-flex items-center text-xs font-bold text-blue-700 bg-blue-50 border border-blue-200 px-2 py-0.5 rounded-full shrink-0">
                               <span className="status-dot-pending" />Pendiente
                             </span>
                           )}
                         </div>
                         {/* Prize badge */}
                         <div className="flex items-center gap-2 flex-wrap">
-                          <span className="inline-flex items-center bg-orange-50 text-orange-700 text-xs font-semibold px-2.5 py-1 rounded-full border border-orange-200">
+                          <span className="inline-flex items-center bg-blue-50 text-blue-700 text-xs font-semibold px-2.5 py-1 rounded-full border border-blue-200">
                             {claim.prize_name}
                           </span>
                         </div>
@@ -876,14 +876,14 @@ export default function RegistrosPage() {
                                 <td className={`${compact ? 'py-2' : 'py-4'} pl-0 pr-5`}>
                                   <div className="flex items-center">
                                     {/* Orange left border on hover */}
-                                    <div className="w-[3px] self-stretch min-h-[44px] rounded-r bg-[#E8521A] opacity-0 group-hover:opacity-100 transition-opacity mr-4" />
+                                    <div className="w-[3px] self-stretch min-h-[44px] rounded-r bg-[#2563EB] opacity-0 group-hover:opacity-100 transition-opacity mr-4" />
                                     <div className="flex items-center gap-3">
                                       <Avatar name={claim.full_name} size={compact ? 28 : 36} />
                                       <div>
                                         <a
                                           href={`/admin/cliente/${encodeURIComponent(claim.phone)}`}
                                           onClick={(e) => e.stopPropagation()}
-                                          className="font-semibold text-sm text-[#1C1917] group-hover:text-[#E8521A] transition-colors leading-tight hover:underline"
+                                          className="font-semibold text-sm text-[#1C1917] group-hover:text-[#2563EB] transition-colors leading-tight hover:underline"
                                         >{claim.full_name}</a>
                                         <p className="text-xs text-stone-400 mt-0.5 font-mono">{claim.phone}</p>
                                       </div>
@@ -901,7 +901,7 @@ export default function RegistrosPage() {
                                       <span className="status-dot-active" />Entregado
                                     </span>
                                   ) : (
-                                    <span className="inline-flex items-center text-xs font-bold text-[#b45309]">
+                                    <span className="inline-flex items-center text-xs font-bold text-[#1D4ED8]">
                                       <span className="status-dot-pending" />Pendiente
                                     </span>
                                   )}
@@ -914,7 +914,7 @@ export default function RegistrosPage() {
                                     {/* Ver detalles toggle */}
                                     <button
                                       onClick={() => toggleExpand(claim.id)}
-                                      className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#E8521A] border border-orange-200 bg-orange-50 hover:bg-orange-100 px-2.5 py-1.5 rounded-lg transition-colors"
+                                      className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#2563EB] border border-blue-200 bg-blue-50 hover:bg-blue-100 px-2.5 py-1.5 rounded-lg transition-colors"
                                     >
                                       Ver detalles
                                       <svg
@@ -957,7 +957,7 @@ export default function RegistrosPage() {
                               {/* Expandable detail row */}
                               {isExpanded && (
                                 <tr key={`${claim.id}-detail`}>
-                                  <td colSpan={5} className="px-6 py-4 bg-orange-50/30">
+                                  <td colSpan={5} className="px-6 py-4 bg-blue-50/30">
                                     <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                                       <InfoChip
                                         icon={
@@ -1027,7 +1027,7 @@ export default function RegistrosPage() {
                     {hasActiveFilters && (
                       <span
                         className="inline-flex items-center gap-1 text-xs font-bold px-2 py-0.5 rounded-full border ml-2"
-                        style={{ color: '#E8521A', borderColor: '#E8521A', background: '#fff7f5' }}
+                        style={{ color: '#2563EB', borderColor: '#2563EB', background: '#fff7f5' }}
                       >
                         <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L13 13.414V19a1 1 0 01-.553.894l-4 2A1 1 0 017 21v-7.586L3.293 6.707A1 1 0 013 6V4z" />
@@ -1046,7 +1046,7 @@ export default function RegistrosPage() {
             {/* Loading more spinner */}
             {loadingMore && (
               <div className="flex items-center justify-center py-6 gap-3 text-stone-400">
-                <div className="w-5 h-5 border-2 border-orange-400 border-t-transparent rounded-full animate-spin" />
+                <div className="w-5 h-5 border-2 border-blue-400 border-t-transparent rounded-full animate-spin" />
                 <span className="text-sm">Cargando mas registros…</span>
               </div>
             )}

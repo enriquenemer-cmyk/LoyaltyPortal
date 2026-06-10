@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
     if (!name || !address) {
       return NextResponse.json({ error: 'Nombre y dirección son obligatorios.' }, { status: 400 });
     }
-    const restaurant = await insertRestaurant({ id: randomUUID(), name, address, phone: phone || null, logo_url: null, accent_color: accent_color || '#E8521A', google_maps_url: google_maps_url || null });
+    const restaurant = await insertRestaurant({ id: randomUUID(), name, address, phone: phone || null, logo_url: null, accent_color: accent_color || '#2563EB', google_maps_url: google_maps_url || null });
     return NextResponse.json({ restaurant }, { status: 201 });
   } catch (error) {
     console.error('Error creating restaurant:', error);

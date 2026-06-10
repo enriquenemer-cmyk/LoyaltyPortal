@@ -53,7 +53,7 @@ async function ensureSchema(): Promise<void> {
       ALTER TABLE prizes ADD COLUMN IF NOT EXISTS restaurant_id TEXT REFERENCES restaurants(id);
       ALTER TABLE prizes ADD COLUMN IF NOT EXISTS cancelled BOOLEAN NOT NULL DEFAULT FALSE;
       ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS logo_url TEXT;
-      ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS accent_color TEXT DEFAULT '#E8521A';
+      ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS accent_color TEXT DEFAULT '#2563EB';
       ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS google_maps_url TEXT;
       ALTER TABLE claims ADD COLUMN IF NOT EXISTS referral_code TEXT;
       ALTER TABLE claims ADD COLUMN IF NOT EXISTS referred_by TEXT;
@@ -172,7 +172,7 @@ async function ensureSchema(): Promise<void> {
     await client.query(`
       ALTER TABLE restaurant_ticket_config ADD COLUMN IF NOT EXISTS welcome_title TEXT;
       ALTER TABLE restaurant_ticket_config ADD COLUMN IF NOT EXISTS welcome_subtitle TEXT;
-      ALTER TABLE restaurant_ticket_config ADD COLUMN IF NOT EXISTS primary_color TEXT DEFAULT '#E8521A';
+      ALTER TABLE restaurant_ticket_config ADD COLUMN IF NOT EXISTS primary_color TEXT DEFAULT '#2563EB';
     `);
     await client.query(`
       CREATE TABLE IF NOT EXISTS restaurant_events (
@@ -324,7 +324,7 @@ export async function insertRestaurant(r: Omit<Restaurant, 'created_at'>): Promi
   await ensureSchema();
   const { rows } = await getPool().query<Restaurant>(
     `INSERT INTO restaurants (id, name, address, phone, accent_color, google_maps_url) VALUES ($1,$2,$3,$4,$5,$6) RETURNING *`,
-    [r.id, r.name, r.address, r.phone ?? null, r.accent_color ?? '#E8521A', r.google_maps_url ?? null]
+    [r.id, r.name, r.address, r.phone ?? null, r.accent_color ?? '#2563EB', r.google_maps_url ?? null]
   );
   return rows[0];
 }
@@ -1188,7 +1188,7 @@ export async function upsertRestaurantTicketConfig(
        updated_at = NOW()
      RETURNING *`,
     [restaurantId, config.consolation_prize_name, config.consolation_prize_description, config.min_amount_for_game,
-     config.welcome_title ?? null, config.welcome_subtitle ?? null, config.primary_color ?? '#E8521A']
+     config.welcome_title ?? null, config.welcome_subtitle ?? null, config.primary_color ?? '#2563EB']
   );
   return rows[0];
 }

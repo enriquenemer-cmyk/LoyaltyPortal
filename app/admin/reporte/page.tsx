@@ -73,7 +73,7 @@ function WhatsAppAlertsSection() {
   function handleTest() {
     const n = number.replace(/\D/g, '');
     if (!n) { alert('Ingresa un número primero'); return; }
-    const msg = encodeURIComponent('🧪 Prueba de alerta Premia Tierra — configuración correcta ✅');
+    const msg = encodeURIComponent('🧪 Prueba de alerta SuperTierra — configuración correcta ✅');
     window.open(`https://wa.me/${n}?text=${msg}`, '_blank');
   }
 
@@ -96,7 +96,7 @@ function WhatsAppAlertsSection() {
             value={number}
             onChange={e => setNumber(e.target.value)}
             placeholder="5215512345678"
-            className="w-full bg-[#FAFAF9] border border-[#E8E3DC] rounded-xl px-4 py-3 text-sm text-[#1C1917] focus:outline-none focus:border-[#E8521A] transition-colors"
+            className="w-full bg-[#FAFAF9] border border-[#E8E3DC] rounded-xl px-4 py-3 text-sm text-[#1C1917] focus:outline-none focus:border-[#2563EB] transition-colors"
           />
           <p className="text-xs text-[#a8a29e] mt-1">Formato internacional: 52 + 10 dígitos (ej: 5215512345678)</p>
         </div>
@@ -107,7 +107,7 @@ function WhatsAppAlertsSection() {
             aria-checked={enabled}
             onClick={() => setEnabled(v => !v)}
             className="relative w-11 h-6 rounded-full transition-colors"
-            style={{ background: enabled ? '#E8521A' : '#d6d3d1' }}
+            style={{ background: enabled ? '#2563EB' : '#d6d3d1' }}
           >
             <span
               className="absolute top-1 left-1 w-4 h-4 rounded-full bg-white shadow transition-transform"
@@ -120,7 +120,7 @@ function WhatsAppAlertsSection() {
           <button
             onClick={handleSave}
             className="flex-1 py-2.5 rounded-xl text-white text-sm font-bold"
-            style={{ background: '#E8521A' }}
+            style={{ background: '#2563EB' }}
           >
             {saved ? '✓ Guardado' : 'Guardar configuración'}
           </button>
@@ -233,7 +233,7 @@ export default function ReportePage() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `reporte-premia-tierra-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.download = `reporte-supertierra-${new Date().toISOString().slice(0, 10)}.csv`;
     a.click();
     URL.revokeObjectURL(url);
   }
@@ -553,14 +553,14 @@ export default function ReportePage() {
         doc.setFontSize(8);
         doc.setTextColor(...GRAY);
         doc.text(
-          `Premia Tierra · ${generatedDate} · Pagina ${p} de ${pageCount}`,
+          `SuperTierra · ${generatedDate} · Pagina ${p} de ${pageCount}`,
           pageW / 2,
           290,
           { align: 'center' }
         );
       }
 
-      doc.save(`reporte-premia-tierra-${new Date().toISOString().slice(0, 10)}.pdf`);
+      doc.save(`reporte-supertierra-${new Date().toISOString().slice(0, 10)}.pdf`);
     } finally {
       setGeneratingPdf(false);
     }
@@ -583,7 +583,7 @@ export default function ReportePage() {
         #print-report tbody tr:nth-child(even) { background: #f8fafc; }
         #print-report tbody td { padding: 6px 10px; border-bottom: 1px solid #e2e8f0; }
         .s-delivered { color: #059669; font-weight: 700; }
-        .s-pending { color: #d97706; font-weight: 700; }
+        .s-pending { color: #0EA5E9; font-weight: 700; }
       `;
       document.head.appendChild(style);
       printStyleRef.current = style;
@@ -608,7 +608,7 @@ export default function ReportePage() {
       </tr>`).join('');
 
     container.innerHTML = `
-      <h2>Premia Tierra — Reporte de Cobros</h2>
+      <h2>SuperTierra — Reporte de Cobros</h2>
       <p class="sub">Generado: ${new Date().toLocaleString('es-MX', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })} · Total: ${allClaims.length} registros</p>
       <table>
         <thead><tr><th>Fecha</th><th>Cliente</th><th>Premio</th><th>Restaurante</th><th>Estado</th><th>Cajero</th></tr></thead>
@@ -621,8 +621,8 @@ export default function ReportePage() {
   const statCards = stats
     ? [
         { label: 'Premios generados esta semana', value: stats.generados, icon: '✅', color: 'text-emerald-700', bg: 'bg-emerald-50', border: 'border-emerald-200' },
-        { label: 'Cobros realizados esta semana', value: stats.cobrados, icon: '🎁', color: 'text-orange-700', bg: 'bg-orange-50', border: 'border-orange-200' },
-        { label: 'Premios pendientes de cobro', value: stats.pendientes, icon: '⏳', color: 'text-amber-700', bg: 'bg-amber-50', border: 'border-amber-200' },
+        { label: 'Cobros realizados esta semana', value: stats.cobrados, icon: '🎁', color: 'text-blue-700', bg: 'bg-blue-50', border: 'border-blue-200' },
+        { label: 'Premios pendientes de cobro', value: stats.pendientes, icon: '⏳', color: 'text-blue-700', bg: 'bg-blue-50', border: 'border-blue-200' },
         { label: 'Por vencer (próximos 7 días)', value: stats.porVencer, icon: '⚠️', color: 'text-red-700', bg: 'bg-red-50', border: 'border-red-200' },
       ]
     : [];
@@ -648,8 +648,8 @@ export default function ReportePage() {
             <button
               onClick={handleDownloadPdf}
               disabled={generatingPdf}
-              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-bold text-white border border-[#C2410C] transition-colors disabled:opacity-60"
-              style={{ background: generatingPdf ? '#C2410C99' : '#E8521A' }}
+              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-bold text-white border border-[#0891B2] transition-colors disabled:opacity-60"
+              style={{ background: generatingPdf ? '#0891B299' : '#2563EB' }}
               title="Descargar PDF completo"
             >
               {generatingPdf ? (
@@ -677,7 +677,7 @@ export default function ReportePage() {
 
       {loading ? (
         <div className="flex items-center justify-center h-48">
-          <svg className="animate-spin w-8 h-8 text-orange-400" fill="none" viewBox="0 0 24 24">
+          <svg className="animate-spin w-8 h-8 text-blue-400" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
           </svg>
@@ -686,7 +686,7 @@ export default function ReportePage() {
         <>
           <div className="rounded-2xl border border-[#E8E3DC] bg-white overflow-hidden mb-5"
             style={{ boxShadow: '0 2px 16px rgba(0,0,0,0.06)' }}>
-            <div className="p-4 text-center" style={{ background: 'linear-gradient(135deg, #E8521A, #C2410C)' }}>
+            <div className="p-4 text-center" style={{ background: 'linear-gradient(135deg, #2563EB, #0891B2)' }}>
               <p className="text-white/70 text-xs font-bold uppercase tracking-widest mb-0.5">Tierra Burrito Bar</p>
               <p className="text-white font-extrabold text-lg">📊 Reporte Semanal</p>
             </div>

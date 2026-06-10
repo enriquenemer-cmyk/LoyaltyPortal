@@ -51,19 +51,19 @@ export default function ActivationCountdown({ activateAt, children }: Props) {
         </h2>
         <p style={{ color: '#555', fontSize: 14, lineHeight: 1.6, marginBottom: 20 }}>
           Este premio se activará el{' '}
-          <strong style={{ color: '#E8521A' }}>{formatActivationDate(activateAt)}</strong>.
+          <strong style={{ color: '#2563EB' }}>{formatActivationDate(activateAt)}</strong>.
         </p>
         <div style={{
           display: 'inline-block',
-          background: '#fff7ed',
-          border: '1px solid #fed7aa',
+          background: '#EFF6FF',
+          border: '1px solid #BAE6FD',
           borderRadius: 16,
           padding: '12px 24px',
         }}>
           <div style={{ fontSize: 11, fontWeight: 700, color: '#c2410c', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 6 }}>
             Tiempo restante
           </div>
-          <div style={{ fontSize: 28, fontWeight: 900, color: '#E8521A', fontVariantNumeric: 'tabular-nums' }}>
+          <div style={{ fontSize: 28, fontWeight: 900, color: '#2563EB', fontVariantNumeric: 'tabular-nums' }}>
             {formatRemaining(remaining)}
           </div>
         </div>

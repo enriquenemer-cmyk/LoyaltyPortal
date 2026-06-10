@@ -23,7 +23,7 @@ let nextId = 0;
 const COLORS: Record<ToastType, { bg: string; border: string; icon: string }> = {
   success: { bg: "#f0fdf4", border: "#16a34a", icon: "#16a34a" },
   error:   { bg: "#fef2f2", border: "#dc2626", icon: "#dc2626" },
-  info:    { bg: "#fff7f4", border: "#E8521A", icon: "#E8521A" },
+  info:    { bg: "#fff7f4", border: "#2563EB", icon: "#2563EB" },
 };
 
 const ICONS: Record<ToastType, string> = {

@@ -53,7 +53,7 @@ export async function POST(req: NextRequest) {
       max_uses: 1,
     });
 
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://premia-tierra.vercel.app';
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://supertierra.vercel.app';
     const prizeUrl = `${baseUrl}/premio/${prize.id}`;
 
     return NextResponse.json({ prize, prizeUrl });

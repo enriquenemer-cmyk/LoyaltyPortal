@@ -25,7 +25,7 @@ function timeAgo(dateStr: string) {
 
 function Avatar({ name }: { name: string }) {
   const initials = name.split(' ').slice(0, 2).map(n => n[0]).join('').toUpperCase();
-  const colors = ['from-violet-500 to-purple-600', 'from-blue-500 to-indigo-600', 'from-emerald-500 to-teal-600', 'from-rose-500 to-pink-600', 'from-amber-500 to-orange-600'];
+  const colors = ['from-violet-500 to-purple-600', 'from-blue-500 to-indigo-600', 'from-emerald-500 to-teal-600', 'from-rose-500 to-pink-600', 'from-blue-500 to-blue-600'];
   const color = colors[name.charCodeAt(0) % colors.length];
   return (
     <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${color} flex items-center justify-center text-white text-xs font-bold shrink-0`}>
@@ -120,7 +120,7 @@ export default function CashierScanner() {
             </svg>
           </div>
           <div>
-            <p className="text-white font-bold text-base leading-tight">Premia Tierra · Cajero</p>
+            <p className="text-white font-bold text-base leading-tight">SuperTierra · Cajero</p>
             <p className="text-white/40 text-xs">{history.length} premios entregados hoy</p>
           </div>
         </div>
@@ -261,7 +261,7 @@ export default function CashierScanner() {
                     <p className="text-emerald-400 text-xs font-semibold mt-0.5 truncate">{claim.prize_name}</p>
                     <div className="flex items-center gap-3 mt-1.5">
                       <span className="flex items-center gap-1 text-white/30 text-xs">
-                        <svg className="w-3 h-3 text-amber-500/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-3 h-3 text-blue-500/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                         </svg>
                         {claim.prize_location}

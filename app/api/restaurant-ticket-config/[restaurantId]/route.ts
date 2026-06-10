@@ -32,7 +32,7 @@ export async function PUT(
       min_amount_for_game: parseFloat(min_amount_for_game ?? 0) || 0,
       welcome_title: welcome_title ?? null,
       welcome_subtitle: welcome_subtitle ?? null,
-      primary_color: primary_color ?? '#E8521A',
+      primary_color: primary_color ?? '#2563EB',
     });
     return NextResponse.json({ config });
   } catch (err) {

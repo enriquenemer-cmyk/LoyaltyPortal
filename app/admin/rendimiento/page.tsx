@@ -41,16 +41,16 @@ function DeliveryTimeBadge({ hours }: { hours: number | null }) {
   }
   if (hours < 2) {
     return (
-      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-orange-50 text-orange-700 border border-orange-200">
-        <span className="w-1.5 h-1.5 rounded-full bg-orange-500 inline-block" />
+      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200">
+        <span className="w-1.5 h-1.5 rounded-full bg-blue-500 inline-block" />
         {formatTime(hours)}
       </span>
     );
   }
   if (hours <= 24) {
     return (
-      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200">
-        <span className="w-1.5 h-1.5 rounded-full bg-amber-500 inline-block" />
+      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200">
+        <span className="w-1.5 h-1.5 rounded-full bg-blue-500 inline-block" />
         {formatTime(hours)}
       </span>
     );
@@ -106,14 +106,14 @@ export default function RendimientoPage() {
         <div className="mb-8">
           <div
             className="inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-bold uppercase tracking-widest mb-4"
-            style={{ background: 'rgba(232,82,26,0.10)', border: '1px solid rgba(232,82,26,0.25)', color: '#E8521A' }}
+            style={{ background: 'rgba(37,99,235,0.10)', border: '1px solid rgba(37,99,235,0.25)', color: '#2563EB' }}
           >
             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
             </svg>
             Equipo
           </div>
-          <h1 className="text-3xl font-black text-gray-900 tracking-tight border-l-4 border-[#E8521A] pl-4">
+          <h1 className="text-3xl font-black text-gray-900 tracking-tight border-l-4 border-[#2563EB] pl-4">
             Rendimiento del{' '}
             <span className="gradient-text">Equipo</span>
           </h1>
@@ -132,7 +132,7 @@ export default function RendimientoPage() {
             <select
               value={restaurantId}
               onChange={(e) => setRestaurantId(e.target.value)}
-              className="w-full bg-[#FAFAF9] border border-[#E8E3DC] rounded-xl px-3 py-2.5 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all"
+              className="w-full bg-[#FAFAF9] border border-[#E8E3DC] rounded-xl px-3 py-2.5 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
             >
               {restaurants.map((r) => (
                 <option key={r.id} value={r.id}>{r.name}</option>
@@ -152,7 +152,7 @@ export default function RendimientoPage() {
                   onClick={() => setRange(r)}
                   className={`px-3 py-1.5 rounded-lg text-sm font-semibold transition-all ${
                     range === r
-                      ? 'bg-white text-[#E8521A] shadow-sm border border-[#E8E3DC]'
+                      ? 'bg-white text-[#2563EB] shadow-sm border border-[#E8E3DC]'
                       : 'text-stone-500 hover:text-gray-900'
                   }`}
                 >
@@ -166,11 +166,11 @@ export default function RendimientoPage() {
         {/* Legend */}
         <div className="flex flex-wrap gap-3 mb-4 text-xs">
           <div className="flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-orange-500 inline-block" />
+            <span className="w-2 h-2 rounded-full bg-blue-500 inline-block" />
             <span className="text-stone-500">Rapido (&lt; 2 hrs)</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-amber-500 inline-block" />
+            <span className="w-2 h-2 rounded-full bg-blue-500 inline-block" />
             <span className="text-stone-500">Medio (2–24 hrs)</span>
           </div>
           <div className="flex items-center gap-1.5">
@@ -196,9 +196,9 @@ export default function RendimientoPage() {
             <div className="text-center py-20">
               <div
                 className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4"
-                style={{ background: 'rgba(232,82,26,0.10)' }}
+                style={{ background: 'rgba(37,99,235,0.10)' }}
               >
-                <svg className="w-8 h-8 text-[#E8521A]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-8 h-8 text-[#2563EB]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
               </div>
@@ -231,7 +231,7 @@ export default function RendimientoPage() {
                         <div className="flex items-center gap-3">
                           <div
                             className="w-9 h-9 rounded-xl flex items-center justify-center text-white text-sm font-black shrink-0"
-                            style={{ background: 'linear-gradient(135deg,#E8521A,#C2410C)' }}
+                            style={{ background: 'linear-gradient(135deg,#2563EB,#0891B2)' }}
                           >
                             {row.delivered_by.slice(0, 2).toUpperCase()}
                           </div>
@@ -242,7 +242,7 @@ export default function RendimientoPage() {
                         <div className="flex items-center gap-2">
                           <span
                             className="text-2xl font-black"
-                            style={{ color: '#E8521A' }}
+                            style={{ color: '#2563EB' }}
                           >
                             {row.count}
                           </span>
@@ -270,7 +270,7 @@ export default function RendimientoPage() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
             <div className="bg-white rounded-2xl border border-[#E8E3DC] shadow-sm p-5">
               <p className="text-stone-400 text-xs font-bold uppercase tracking-widest mb-1">Total entregados</p>
-              <p className="text-3xl font-black text-[#E8521A]">
+              <p className="text-3xl font-black text-[#2563EB]">
                 {performance.reduce((s, r) => s + r.count, 0)}
               </p>
             </div>

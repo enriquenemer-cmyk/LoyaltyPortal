@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title: '🎁 ' + prize.name,
       description: 'Gané un premio en Tierra Burrito Bar: ' + prize.description,
-      siteName: 'Tierra Burrito Bar · Premia Tierra',
+      siteName: 'Tierra Burrito Bar · SuperTierra',
       type: 'website',
     },
     twitter: {

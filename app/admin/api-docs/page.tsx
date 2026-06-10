@@ -60,7 +60,7 @@ export default function ApiDocsPage() {
     <div className="min-h-screen bg-[#FAFAF9] p-6 md:p-10">
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
-          <p className="text-xs font-bold text-[#E8521A] uppercase tracking-widest mb-1">Desarrolladores</p>
+          <p className="text-xs font-bold text-[#2563EB] uppercase tracking-widest mb-1">Desarrolladores</p>
           <h1 className="text-2xl font-bold text-[#1C1917]">Documentación de API</h1>
           <p className="text-sm text-[#78716c] mt-1">
             Base URL: <code className="bg-[#F5F5F4] px-2 py-0.5 rounded text-[#1C1917] font-mono text-xs">{typeof window !== 'undefined' ? window.location.origin : 'https://tu-dominio.vercel.app'}</code>
@@ -75,7 +75,7 @@ export default function ApiDocsPage() {
                 {section.items.map((ep, i) => (
                   <div key={i} className="bg-white border border-[#E8E3DC] rounded-xl overflow-hidden" style={{ boxShadow: '0 1px 4px rgba(28,25,23,0.05)' }}>
                     <div className="flex items-center gap-3 px-4 py-3 border-b border-[#E8E3DC]">
-                      <span className={`text-xs font-bold px-2.5 py-1 rounded-full shrink-0 ${ep.method === 'GET' ? 'bg-emerald-100 text-emerald-700' : 'bg-orange-100 text-orange-700'}`}>
+                      <span className={`text-xs font-bold px-2.5 py-1 rounded-full shrink-0 ${ep.method === 'GET' ? 'bg-emerald-100 text-emerald-700' : 'bg-blue-100 text-blue-700'}`}>
                         {ep.method}
                       </span>
                       <code className="text-sm font-mono text-[#1C1917] font-semibold">{ep.path}</code>

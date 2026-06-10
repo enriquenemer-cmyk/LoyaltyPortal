@@ -33,7 +33,7 @@ function initials(name: string) {
 }
 
 function darken(hex: string): string {
-  if (!/^#[0-9a-fA-F]{6}$/.test(hex)) return '#C2410C';
+  if (!/^#[0-9a-fA-F]{6}$/.test(hex)) return '#0891B2';
   const r = parseInt(hex.slice(1, 3), 16);
   const g = parseInt(hex.slice(3, 5), 16);
   const b = parseInt(hex.slice(5, 7), 16);
@@ -44,7 +44,7 @@ export default function ScannerClient() {
   const router = useRouter();
   const params = useSearchParams();
   const restaurantName = params.get('r') ?? 'Cajero';
-  const accentColor = params.get('color') ?? '#E8521A';
+  const accentColor = params.get('color') ?? '#2563EB';
   const accentDark = darken(accentColor);
 
   const codeReaderRef = useRef<import('@zxing/browser').IScannerControls | null>(null);
@@ -400,7 +400,7 @@ export default function ScannerClient() {
                         value={manualId}
                         onChange={(e) => setManualId(e.target.value)}
                         placeholder="ID del cobro o URL completa"
-                        className="flex-1 bg-white border border-[#E8E3DC] rounded-xl px-3 py-2.5 text-[#1C1917] placeholder-stone-400 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-orange-500 transition-all"
+                        className="flex-1 bg-white border border-[#E8E3DC] rounded-xl px-3 py-2.5 text-[#1C1917] placeholder-stone-400 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all"
                       />
                       <button type="submit" className="text-white font-bold px-4 py-2.5 rounded-xl text-sm shrink-0 transition-colors" style={{ background: accentColor }}>
                         Ir &rarr;
@@ -430,9 +430,9 @@ export default function ScannerClient() {
               <div className="flex items-center gap-2">
                 <h3 className="text-[#1C1917] font-extrabold text-base">Registro de este turno</h3>
               </div>
-              <div className="flex items-center gap-1.5 bg-orange-50 border border-orange-200 rounded-full px-3 py-1">
-                <div className="w-1.5 h-1.5 rounded-full bg-[#E8521A] animate-pulse" />
-                <span className="text-[#E8521A] text-xs font-bold">En vivo</span>
+              <div className="flex items-center gap-1.5 bg-blue-50 border border-blue-200 rounded-full px-3 py-1">
+                <div className="w-1.5 h-1.5 rounded-full bg-[#2563EB] animate-pulse" />
+                <span className="text-[#2563EB] text-xs font-bold">En vivo</span>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-3">
@@ -448,14 +448,14 @@ export default function ScannerClient() {
                 </div>
               </div>
               <div className="bg-[#FAFAF9] border border-[#E8E3DC] rounded-2xl px-4 py-3 flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-amber-50 flex items-center justify-center shrink-0">
-                  <svg className="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-9 h-9 rounded-xl bg-blue-50 flex items-center justify-center shrink-0">
+                  <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 </div>
                 <div>
                   <p className="text-stone-400 text-[10px] font-bold uppercase tracking-widest">Pendientes</p>
-                  <p className="text-amber-700 font-black text-2xl leading-none">{pending.length}</p>
+                  <p className="text-blue-700 font-black text-2xl leading-none">{pending.length}</p>
                 </div>
               </div>
             </div>
@@ -517,8 +517,8 @@ export default function ScannerClient() {
                       </p>
                     )}
                     {claim.status === 'pending' && (
-                      <p className="mt-1 flex items-center gap-1.5 text-amber-600 text-[10px] font-bold">
-                        <span className="w-2 h-2 rounded-full bg-amber-400 inline-block animate-pulse shrink-0" />
+                      <p className="mt-1 flex items-center gap-1.5 text-blue-600 text-[10px] font-bold">
+                        <span className="w-2 h-2 rounded-full bg-blue-400 inline-block animate-pulse shrink-0" />
                         Pendiente de entrega
                       </p>
                     )}
@@ -530,8 +530,8 @@ export default function ScannerClient() {
                         Entregado
                       </span>
                     ) : (
-                      <span className="inline-flex items-center gap-1 bg-amber-50 text-amber-700 text-xs font-bold px-2.5 py-1 rounded-full border border-amber-200">
-                        <span className="w-1.5 h-1.5 rounded-full bg-amber-400 inline-block animate-pulse" />
+                      <span className="inline-flex items-center gap-1 bg-blue-50 text-blue-700 text-xs font-bold px-2.5 py-1 rounded-full border border-blue-200">
+                        <span className="w-1.5 h-1.5 rounded-full bg-blue-400 inline-block animate-pulse" />
                         Pendiente
                       </span>
                     )}
@@ -544,7 +544,7 @@ export default function ScannerClient() {
           <div className="px-5 py-3 bg-[#FAFAF9] border-t border-[#E8E3DC] flex items-center justify-between">
             <p className="text-xs text-stone-400">{history.length} registros totales</p>
             <div className="flex items-center gap-1.5 text-xs text-stone-400">
-              <div className="w-1.5 h-1.5 rounded-full bg-orange-400 animate-pulse" />
+              <div className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
               Se actualiza cada 20 seg.
             </div>
           </div>

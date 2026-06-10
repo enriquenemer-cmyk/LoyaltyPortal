@@ -250,18 +250,18 @@ export default function ImportarPage() {
         <div className="mb-8">
           <Link
             href="/admin/generate"
-            className="inline-flex items-center gap-1.5 text-xs text-stone-500 hover:text-[#E8521A] font-semibold mb-4 transition-colors"
+            className="inline-flex items-center gap-1.5 text-xs text-stone-500 hover:text-[#2563EB] font-semibold mb-4 transition-colors"
           >
             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
             Volver a Generar
           </Link>
-          <div className="inline-flex items-center gap-2 bg-orange-50 text-orange-700 rounded-full px-3 py-1.5 text-xs font-bold uppercase tracking-widest mb-4 border border-orange-200">
-            <span className="w-2 h-2 rounded-full bg-[#E8521A] shrink-0" />
+          <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-700 rounded-full px-3 py-1.5 text-xs font-bold uppercase tracking-widest mb-4 border border-blue-200">
+            <span className="w-2 h-2 rounded-full bg-[#2563EB] shrink-0" />
             Importacion masiva
           </div>
-          <h1 className="text-3xl font-black text-[#1C1917] tracking-tight border-l-4 border-[#E8521A] pl-4">
+          <h1 className="text-3xl font-black text-[#1C1917] tracking-tight border-l-4 border-[#2563EB] pl-4">
             Importar desde CSV / Excel
           </h1>
           <p className="text-stone-500 mt-2 text-sm pl-4">
@@ -279,7 +279,7 @@ export default function ImportarPage() {
             </div>
             <button
               onClick={() => downloadCSV(TEMPLATE_CSV, 'plantilla-premios.csv')}
-              className="flex items-center gap-2 text-sm font-bold text-[#E8521A] bg-orange-50 border border-orange-200 hover:bg-orange-100 transition-colors px-4 py-2 rounded-xl"
+              className="flex items-center gap-2 text-sm font-bold text-[#2563EB] bg-blue-50 border border-blue-200 hover:bg-blue-100 transition-colors px-4 py-2 rounded-xl"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -296,8 +296,8 @@ export default function ImportarPage() {
             onClick={() => fileInputRef.current?.click()}
             className={`rounded-2xl border-2 border-dashed cursor-pointer transition-all flex flex-col items-center justify-center py-12 px-6 text-center ${
               dragOver
-                ? 'border-[#E8521A] bg-orange-50'
-                : 'border-[#E8E3DC] bg-white hover:border-orange-300 hover:bg-orange-50/40'
+                ? 'border-[#2563EB] bg-blue-50'
+                : 'border-[#E8E3DC] bg-white hover:border-blue-300 hover:bg-blue-50/40'
             }`}
           >
             <input
@@ -308,8 +308,8 @@ export default function ImportarPage() {
               className="hidden"
             />
             <div className="w-12 h-12 rounded-2xl flex items-center justify-center mb-4"
-              style={{ background: dragOver ? '#E8521A' : '#FFF0E8' }}>
-              <svg className={`w-6 h-6 ${dragOver ? 'text-white' : 'text-[#E8521A]'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              style={{ background: dragOver ? '#2563EB' : '#FFF0E8' }}>
+              <svg className={`w-6 h-6 ${dragOver ? 'text-white' : 'text-[#2563EB]'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
               </svg>
             </div>
@@ -334,7 +334,7 @@ export default function ImportarPage() {
 
           {/* Preview table */}
           {rows.length > 0 && (
-            <div className="bg-white rounded-2xl border border-[#E8E3DC] shadow-sm overflow-hidden" style={{ borderTop: '3px solid #E8521A' }}>
+            <div className="bg-white rounded-2xl border border-[#E8E3DC] shadow-sm overflow-hidden" style={{ borderTop: '3px solid #2563EB' }}>
               <div className="px-5 py-4 border-b border-[#E8E3DC] flex items-center justify-between flex-wrap gap-2">
                 <div>
                   <h2 className="text-sm font-bold text-[#1C1917]">
@@ -426,16 +426,16 @@ export default function ImportarPage() {
                     <span className="text-sm font-bold text-stone-700">
                       Importando {importProgress} de {importTotal}...
                     </span>
-                    <span className="text-sm font-bold text-[#E8521A]">
+                    <span className="text-sm font-bold text-[#2563EB]">
                       {importTotal > 0 ? Math.round((importProgress / importTotal) * 100) : 0}%
                     </span>
                   </div>
-                  <div className="w-full bg-orange-100 rounded-full h-2 overflow-hidden border border-orange-200">
+                  <div className="w-full bg-blue-100 rounded-full h-2 overflow-hidden border border-blue-200">
                     <div
                       className="h-2 rounded-full transition-all duration-300"
                       style={{
                         width: `${importTotal > 0 ? (importProgress / importTotal) * 100 : 0}%`,
-                        background: 'linear-gradient(90deg,#E8521A,#C2410C)',
+                        background: 'linear-gradient(90deg,#2563EB,#0891B2)',
                       }}
                     />
                   </div>
@@ -446,7 +446,7 @@ export default function ImportarPage() {
                 onClick={handleImport}
                 disabled={importing}
                 className="w-full disabled:opacity-60 text-white font-black py-4 rounded-2xl transition-all text-base flex items-center justify-center gap-2.5"
-                style={{ background: 'linear-gradient(135deg,#E8521A,#C2410C)', boxShadow: importing ? 'none' : '0 8px 24px rgba(232,82,26,0.38)' }}
+                style={{ background: 'linear-gradient(135deg,#2563EB,#0891B2)', boxShadow: importing ? 'none' : '0 8px 24px rgba(37,99,235,0.38)' }}
               >
                 {importing ? (
                   <>
@@ -471,7 +471,7 @@ export default function ImportarPage() {
 
           {/* Results */}
           {showResults && (
-            <div className="bg-white rounded-2xl border border-[#E8E3DC] shadow-sm overflow-hidden" style={{ borderTop: `3px solid ${failCount === 0 ? '#059669' : '#E8521A'}` }}>
+            <div className="bg-white rounded-2xl border border-[#E8E3DC] shadow-sm overflow-hidden" style={{ borderTop: `3px solid ${failCount === 0 ? '#059669' : '#2563EB'}` }}>
               <div className="px-5 py-4 border-b border-[#E8E3DC] flex items-center justify-between flex-wrap gap-3">
                 <div>
                   <h2 className="text-sm font-bold text-[#1C1917]">Resultado de la importacion</h2>
@@ -484,7 +484,7 @@ export default function ImportarPage() {
                 </div>
                 <button
                   onClick={downloadResults}
-                  className="flex items-center gap-2 text-xs font-bold text-[#E8521A] bg-orange-50 border border-orange-200 hover:bg-orange-100 transition-colors px-3 py-1.5 rounded-xl"
+                  className="flex items-center gap-2 text-xs font-bold text-[#2563EB] bg-blue-50 border border-blue-200 hover:bg-blue-100 transition-colors px-3 py-1.5 rounded-xl"
                 >
                   <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -524,7 +524,7 @@ export default function ImportarPage() {
                     setResults([]);
                     setImportProgress(0);
                   }}
-                  className="text-sm font-bold text-stone-600 hover:text-[#E8521A] transition-colors"
+                  className="text-sm font-bold text-stone-600 hover:text-[#2563EB] transition-colors"
                 >
                   + Importar otro archivo
                 </button>

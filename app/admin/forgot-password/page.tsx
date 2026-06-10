@@ -33,8 +33,8 @@ export default function ForgotPasswordPage() {
           <div
             className="w-14 h-14 rounded-2xl flex items-center justify-center"
             style={{
-              background: 'linear-gradient(135deg,#E8521A,#C2410C)',
-              boxShadow: '0 8px 24px rgba(232,82,26,0.35)',
+              background: 'linear-gradient(135deg,#2563EB,#0891B2)',
+              boxShadow: '0 8px 24px rgba(37,99,235,0.35)',
             }}
           >
             <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -65,7 +65,7 @@ export default function ForgotPasswordPage() {
               </p>
               <Link
                 href="/admin/login"
-                className="mt-6 inline-block text-sm font-semibold text-[#E8521A] hover:underline"
+                className="mt-6 inline-block text-sm font-semibold text-[#2563EB] hover:underline"
               >
                 Volver al inicio de sesion
               </Link>
@@ -88,7 +88,7 @@ export default function ForgotPasswordPage() {
                     onChange={(e) => setUsername(e.target.value)}
                     required
                     placeholder="admin"
-                    className="w-full bg-[#FAFAF9] border border-[#E8E3DC] rounded-xl pl-10 pr-4 py-3.5 text-sm text-[#1C1917] placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-orange-500/25 focus:border-orange-500 focus:bg-white transition-all"
+                    className="w-full bg-[#FAFAF9] border border-[#E8E3DC] rounded-xl pl-10 pr-4 py-3.5 text-sm text-[#1C1917] placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-blue-500/25 focus:border-blue-500 focus:bg-white transition-all"
                   />
                 </div>
               </div>
@@ -98,8 +98,8 @@ export default function ForgotPasswordPage() {
                 disabled={loading}
                 className="w-full text-white font-bold py-4 rounded-xl transition-all text-base disabled:opacity-60"
                 style={{
-                  background: 'linear-gradient(135deg,#E8521A,#C2410C)',
-                  boxShadow: loading ? 'none' : '0 8px 24px rgba(232,82,26,0.40)',
+                  background: 'linear-gradient(135deg,#2563EB,#0891B2)',
+                  boxShadow: loading ? 'none' : '0 8px 24px rgba(37,99,235,0.40)',
                 }}
               >
                 {loading ? (
@@ -116,7 +116,7 @@ export default function ForgotPasswordPage() {
               </button>
 
               <div className="text-center">
-                <Link href="/admin/login" className="text-sm text-[#78716c] hover:text-[#E8521A] transition-colors">
+                <Link href="/admin/login" className="text-sm text-[#78716c] hover:text-[#2563EB] transition-colors">
                   Volver al inicio de sesion
                 </Link>
               </div>

@@ -32,7 +32,7 @@ export default function DarkModeToggle() {
       aria-checked={dark}
       aria-label={dark ? 'Activar modo claro' : 'Activar modo oscuro'}
       title={dark ? 'Modo claro' : 'Modo oscuro'}
-      className="relative inline-flex items-center w-12 h-6 rounded-full transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2"
+      className="relative inline-flex items-center w-12 h-6 rounded-full transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
       style={{
         backgroundColor: dark ? '#3b4d6b' : '#d1d5db',
       }}

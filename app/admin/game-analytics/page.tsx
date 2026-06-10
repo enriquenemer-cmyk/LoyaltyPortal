@@ -55,7 +55,7 @@ function GameTypeCard({ data }: { data: ByType }) {
         </div>
         <div className="flex justify-between text-xs">
           <span className="text-stone-500">Tasa de completado</span>
-          <span className="font-bold text-orange-600">{data.completion_rate}%</span>
+          <span className="font-bold text-blue-600">{data.completion_rate}%</span>
         </div>
         <div className="flex justify-between text-xs">
           <span className="text-stone-500">Tiempo promedio</span>
@@ -64,7 +64,7 @@ function GameTypeCard({ data }: { data: ByType }) {
         {/* Completion rate bar */}
         <div className="mt-2 h-1.5 rounded-full bg-stone-100 overflow-hidden">
           <div
-            className="h-full rounded-full bg-orange-500 transition-all"
+            className="h-full rounded-full bg-blue-500 transition-all"
             style={{ width: `${Math.min(data.completion_rate, 100)}%` }}
           />
         </div>
@@ -131,7 +131,7 @@ function PrizeDistribution({ data }: { data: PrizeEntry[] }) {
                 </div>
                 <div className="h-1.5 rounded-full bg-stone-100 overflow-hidden">
                   <div
-                    className="h-full rounded-full bg-[#E8521A] transition-all"
+                    className="h-full rounded-full bg-[#2563EB] transition-all"
                     style={{ width: `${pct}%` }}
                   />
                 </div>

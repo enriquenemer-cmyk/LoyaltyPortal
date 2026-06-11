@@ -68,11 +68,11 @@ export default function LoginPage() {
         {/* Centered content */}
         <div className="relative z-10 flex flex-col items-center text-center gap-6">
           {/* Logo ST */}
-          <div className="relative flex items-center justify-center" style={{ filter: 'drop-shadow(0 0 32px rgba(0,180,255,0.5)) drop-shadow(0 0 16px rgba(255,100,0,0.4))' }}>
+          <div className="relative flex items-center justify-center" style={{ filter: 'drop-shadow(0 0 40px rgba(0,180,255,0.6)) drop-shadow(0 0 24px rgba(255,100,0,0.5))' }}>
             <img
               src="/logo-st.png"
               alt="Logo"
-              style={{ width: 160, height: 160, objectFit: 'contain', animation: 'float 4s ease-in-out infinite' }}
+              style={{ width: 220, height: 220, objectFit: 'contain', animation: 'float 4s ease-in-out infinite' }}
             />
           </div>
 
@@ -129,28 +129,11 @@ export default function LoginPage() {
 
         {/* Form content */}
         <div className="w-full max-w-sm mx-auto">
-          {/* Small logo icon */}
-          <div className="mb-8 flex flex-col items-center gap-4">
-            <div
-              className="inline-flex w-12 h-12 rounded-2xl items-center justify-center"
-              style={{
-                background: 'linear-gradient(135deg,#2563EB,#0891B2)',
-                boxShadow: '0 8px 24px rgba(37,99,235,0.35)',
-              }}
-            >
-              <svg
-                className="w-6 h-6 text-white"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={1.8}
-                  d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"
-                />
-              </svg>
+          {/* Logo + heading */}
+          <div className="mb-8 flex flex-col items-center gap-3">
+            {/* Show logo on mobile (left panel is hidden) */}
+            <div className="md:hidden" style={{ filter: 'drop-shadow(0 0 20px rgba(0,160,255,0.5)) drop-shadow(0 0 10px rgba(255,100,0,0.3))' }}>
+              <img src="/logo-st.png" alt="Logo" style={{ width: 100, height: 100, objectFit: 'contain' }} />
             </div>
 
             <div className="text-center">

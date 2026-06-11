@@ -33,7 +33,12 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     );
   }
 
-  // Default: premio, verificar, login, home, etc.
+  // Login page — full screen, no navbar
+  if (isAdminLogin) {
+    return <>{children}</>;
+  }
+
+  // Default: premio, verificar, home, etc.
   return (
     <div className="flex flex-col min-h-full">
       <Navbar />

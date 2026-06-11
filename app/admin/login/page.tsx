@@ -67,25 +67,13 @@ export default function LoginPage() {
 
         {/* Centered content */}
         <div className="relative z-10 flex flex-col items-center text-center gap-6">
-          {/* Large gift/prize icon with glow ring */}
-          <div className="relative flex items-center justify-center">
-            <div
-              className="absolute rounded-full"
-              style={{ width: 112, height: 112, background: 'rgba(255,255,255,0.12)', filter: 'blur(4px)' }}
+          {/* Logo ST */}
+          <div className="relative flex items-center justify-center" style={{ filter: 'drop-shadow(0 0 32px rgba(0,180,255,0.5)) drop-shadow(0 0 16px rgba(255,100,0,0.4))' }}>
+            <img
+              src="/logo-st.png"
+              alt="Logo"
+              style={{ width: 160, height: 160, objectFit: 'contain', animation: 'float 4s ease-in-out infinite' }}
             />
-            <svg
-              className="relative w-24 h-24 text-white"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={1.5}
-                d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"
-              />
-            </svg>
           </div>
 
           <div>

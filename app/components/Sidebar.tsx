@@ -452,13 +452,8 @@ function NavSection({ section }: { section: SectionDef }) {
 
 // ── Logo ─────────────────────────────────────────────────────────────────────
 const LOGO = (
-  <div
-    className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0"
-    style={{ background: 'linear-gradient(135deg,#2563EB,#0891B2)', boxShadow: '0 3px 10px rgba(37,99,235,0.30)' }}
-  >
-    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
-    </svg>
+  <div className="w-8 h-8 shrink-0 flex items-center justify-center" style={{ filter: 'drop-shadow(0 0 6px rgba(0,160,255,0.5))' }}>
+    <img src="/logo-st.png" alt="Logo" className="w-8 h-8 object-contain" />
   </div>
 );
 

@@ -65,7 +65,7 @@ function useAnimatedCounter(target: number, duration = 1000) {
 const cardShadow = '0 1px 2px rgba(28,25,23,0.04), 0 4px 16px rgba(28,25,23,0.06)';
 
 function StatCard({
-  label, value, borderColor, bgColor, textColor, icon, trend, trendLabel, suffix,
+  label, value, borderColor, bgColor, textColor, icon, trend, trendLabel, suffix, gradient,
 }: {
   label: string;
   value: number;
@@ -76,30 +76,35 @@ function StatCard({
   trend?: 'up' | 'down';
   trendLabel?: string;
   suffix?: string;
+  gradient?: string;
 }) {
   const animated = useAnimatedCounter(value);
   return (
     <div
-      className="bg-white rounded-2xl border border-[#E8E3DC] p-6 flex flex-col gap-3 card-hover stagger-item"
-      style={{ borderLeftColor: borderColor, borderLeftWidth: 4, boxShadow: cardShadow }}
+      className="relative overflow-hidden rounded-2xl p-5 flex flex-col gap-3 stagger-item group cursor-default"
+      style={{
+        background: gradient ?? 'white',
+        boxShadow: `0 4px 24px ${borderColor}22, 0 1px 4px rgba(0,0,0,0.04)`,
+        transition: 'transform 0.25s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.25s ease',
+      }}
+      onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.transform = 'translateY(-4px) scale(1.02)'; (e.currentTarget as HTMLDivElement).style.boxShadow = `0 12px 40px ${borderColor}44, 0 4px 12px rgba(0,0,0,0.06)`; }}
+      onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.transform = ''; (e.currentTarget as HTMLDivElement).style.boxShadow = `0 4px 24px ${borderColor}22, 0 1px 4px rgba(0,0,0,0.04)`; }}
     >
-      <div className="flex items-center justify-between">
-        <span className="text-xs font-semibold text-[#78716c] uppercase tracking-wider">{label}</span>
-        <span className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ backgroundColor: bgColor, color: textColor }}>
+      {/* Glow blob */}
+      <div className="absolute -top-6 -right-6 w-20 h-20 rounded-full opacity-30 blur-xl pointer-events-none" style={{ background: borderColor }} />
+      <div className="flex items-center justify-between relative z-10">
+        <span className="text-xs font-bold uppercase tracking-wider" style={{ color: gradient ? 'rgba(255,255,255,0.75)' : '#78716c' }}>{label}</span>
+        <span className="w-10 h-10 rounded-2xl flex items-center justify-center shadow-sm" style={{ backgroundColor: bgColor, color: textColor }}>
           {icon}
         </span>
       </div>
-      <span className="text-4xl font-bold text-[#1C1917]">{animated}{suffix}</span>
+      <span className="text-4xl font-black tabular-nums relative z-10" style={{ color: gradient ? 'white' : '#1C1917' }}>{animated}{suffix}</span>
       {trend && trendLabel && (
-        <div className="flex items-center gap-1" style={{ color: trend === 'up' ? '#059669' : '#dc2626' }}>
+        <div className="flex items-center gap-1 relative z-10" style={{ color: gradient ? 'rgba(255,255,255,0.85)' : (trend === 'up' ? '#059669' : '#dc2626') }}>
           {trend === 'up' ? (
-            <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-              <path d="M5 15l7-7 7 7" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+            <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><path d="M5 15l7-7 7 7" strokeLinecap="round" strokeLinejoin="round" /></svg>
           ) : (
-            <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-              <path d="M19 9l-7 7-7-7" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+            <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7" strokeLinecap="round" strokeLinejoin="round" /></svg>
           )}
           <span className="text-xs font-semibold">{trendLabel}</span>
         </div>
@@ -1509,67 +1514,52 @@ export default function AdminDashboard() {
                 <StatCard
                   label="Entregados"
                   value={entregados}
-                  borderColor={brand}
-                  bgColor="#fde8e0"
-                  textColor={brand}
+                  borderColor="#2563EB"
+                  bgColor="rgba(255,255,255,0.25)"
+                  textColor="white"
+                  gradient="linear-gradient(135deg,#2563EB 0%,#0EA5E9 100%)"
                   trend={claimsTrend}
                   trendLabel={claimsTrendLabel}
-                  icon={
-                    <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                      <path d="M5 13l4 4L19 7" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  }
+                  icon={<svg width="20" height="20" fill="none" stroke="white" strokeWidth="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" strokeLinecap="round" strokeLinejoin="round" /></svg>}
                 />
                 <StatCard
                   label="Pendientes"
                   value={pendientes}
-                  borderColor="#0284C7"
-                  bgColor="#fef3c7"
-                  textColor="#0EA5E9"
-                  icon={
-                    <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                      <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  }
+                  borderColor="#F59E0B"
+                  bgColor="rgba(255,255,255,0.25)"
+                  textColor="white"
+                  gradient="linear-gradient(135deg,#F59E0B 0%,#EF4444 100%)"
+                  icon={<svg width="20" height="20" fill="none" stroke="white" strokeWidth="2.5" viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" strokeLinecap="round" strokeLinejoin="round" /></svg>}
                 />
                 <StatCard
                   label="Total Premios"
                   value={totalPremios}
-                  borderColor="#8b5cf6"
-                  bgColor="#ede9fe"
-                  textColor="#7c3aed"
-                  icon={
-                    <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                      <path d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  }
+                  borderColor="#8B5CF6"
+                  bgColor="rgba(255,255,255,0.25)"
+                  textColor="white"
+                  gradient="linear-gradient(135deg,#7C3AED 0%,#A78BFA 100%)"
+                  icon={<svg width="20" height="20" fill="none" stroke="white" strokeWidth="2.5" viewBox="0 0 24 24"><path d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" strokeLinecap="round" strokeLinejoin="round" /></svg>}
                 />
                 <StatCard
                   label="Total Cobros"
                   value={totalCobros}
-                  borderColor="#78716c"
-                  bgColor="#f5f5f4"
-                  textColor="#57534e"
+                  borderColor="#059669"
+                  bgColor="rgba(255,255,255,0.25)"
+                  textColor="white"
+                  gradient="linear-gradient(135deg,#059669 0%,#10B981 100%)"
                   trend={claimsTrend}
                   trendLabel={claimsTrendLabel}
-                  icon={
-                    <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                      <path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  }
+                  icon={<svg width="20" height="20" fill="none" stroke="white" strokeWidth="2.5" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" strokeLinecap="round" strokeLinejoin="round" /></svg>}
                 />
                 <StatCard
-                  label="Tasa de Conversión"
+                  label="Conversión"
                   value={totalCobros > 0 ? Math.round((entregados / totalCobros) * 100) : 0}
                   suffix="%"
-                  borderColor="#059669"
-                  bgColor="#d1fae5"
-                  textColor="#059669"
-                  icon={
-                    <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                      <path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  }
+                  borderColor="#EC4899"
+                  bgColor="rgba(255,255,255,0.25)"
+                  textColor="white"
+                  gradient="linear-gradient(135deg,#EC4899 0%,#F97316 100%)"
+                  icon={<svg width="20" height="20" fill="none" stroke="white" strokeWidth="2.5" viewBox="0 0 24 24"><path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" strokeLinecap="round" strokeLinejoin="round" /></svg>}
                 />
               </>
             )}

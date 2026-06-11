@@ -452,10 +452,28 @@ function NavSection({ section }: { section: SectionDef }) {
 
 // ── Logo ─────────────────────────────────────────────────────────────────────
 const LOGO = (
-  <div className="w-8 h-8 shrink-0 flex items-center justify-center" style={{ filter: 'drop-shadow(0 0 6px rgba(0,160,255,0.5))' }}>
-    <img src="/logo-st.png" alt="Logo" className="w-8 h-8 object-contain" />
+  <div className="shrink-0 flex items-center justify-center" style={{ filter: 'drop-shadow(0 0 12px rgba(0,180,255,0.7)) drop-shadow(0 0 6px rgba(255,100,0,0.4))' }}>
+    <img src="/logo-st.png" alt="Logo" style={{ width: 48, height: 48, objectFit: 'contain' }} />
   </div>
 );
+
+// ── Dark mode hook ────────────────────────────────────────────────────────────
+function useDarkMode() {
+  const [dark, setDark] = useState(false);
+  useEffect(() => {
+    const stored = localStorage.getItem('st-theme');
+    const enabled = stored === 'dark';
+    setDark(enabled);
+    document.documentElement.setAttribute('data-theme', enabled ? 'dark' : 'light');
+  }, []);
+  const toggle = () => {
+    const next = !dark;
+    setDark(next);
+    localStorage.setItem('st-theme', next ? 'dark' : 'light');
+    document.documentElement.setAttribute('data-theme', next ? 'dark' : 'light');
+  };
+  return { dark, toggle };
+}
 
 // ── SidebarContent ───────────────────────────────────────────────────────────
 function SidebarContent({ onLinkClick }: { onLinkClick?: () => void }) {
@@ -466,6 +484,7 @@ function SidebarContent({ onLinkClick }: { onLinkClick?: () => void }) {
   const [role, setRole] = useState<Role>('admin');
   const [loggingOut, setLoggingOut] = useState(false);
   const [pendingCount, setPendingCount] = useState(0);
+  const { dark, toggle: toggleDark } = useDarkMode();
 
   // Fetch current user + role
   useEffect(() => {
@@ -612,16 +631,33 @@ function SidebarContent({ onLinkClick }: { onLinkClick?: () => void }) {
             <span className="text-xs font-semibold text-stone-500 truncate">{username}</span>
             <span className="ml-auto text-[9px] font-bold tracking-wide text-stone-300 uppercase">{role}</span>
           </div>
-          <button
-            onClick={handleLogout}
-            disabled={loggingOut}
-            className="w-full flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium text-stone-500 hover:text-red-600 hover:bg-red-50 border border-transparent hover:border-red-200 transition-all"
-          >
-            <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-            </svg>
-            {loggingOut ? 'Saliendo...' : 'Cerrar sesion'}
-          </button>
+          <div className="flex gap-1.5">
+            <button
+              onClick={handleLogout}
+              disabled={loggingOut}
+              className="flex-1 flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium text-stone-500 hover:text-red-600 hover:bg-red-50 border border-transparent hover:border-red-200 transition-all"
+            >
+              <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+              </svg>
+              {loggingOut ? 'Saliendo...' : 'Cerrar sesion'}
+            </button>
+            <button
+              onClick={toggleDark}
+              title={dark ? 'Modo claro' : 'Modo oscuro'}
+              className="p-1.5 rounded-lg text-stone-400 hover:text-stone-700 hover:bg-stone-100 border border-transparent transition-all"
+            >
+              {dark ? (
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707M17.657 17.657l-.707-.707M6.343 6.343l-.707-.707M12 7a5 5 0 100 10A5 5 0 0012 7z" />
+                </svg>
+              ) : (
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                </svg>
+              )}
+            </button>
+          </div>
         </div>
       )}
     </div>

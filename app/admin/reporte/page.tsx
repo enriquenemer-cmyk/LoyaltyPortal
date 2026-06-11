@@ -73,7 +73,7 @@ function WhatsAppAlertsSection() {
   function handleTest() {
     const n = number.replace(/\D/g, '');
     if (!n) { alert('Ingresa un número primero'); return; }
-    const msg = encodeURIComponent('🧪 Prueba de alerta Premia — configuración correcta ✅');
+    const msg = encodeURIComponent('🧪 Prueba de alerta Super Tierra — configuración correcta ✅');
     window.open(`https://wa.me/${n}?text=${msg}`, '_blank');
   }
 
@@ -666,7 +666,7 @@ export default function ReportePage() {
         doc.setFontSize(8);
         doc.setTextColor(...GRAY);
         doc.text(
-          `Premia · ${generatedDate} · Pagina ${p} de ${pageCount}`,
+          `Super Tierra · ${generatedDate} · Pagina ${p} de ${pageCount}`,
           pageW / 2,
           290,
           { align: 'center' }
@@ -721,7 +721,7 @@ export default function ReportePage() {
       </tr>`).join('');
 
     container.innerHTML = `
-      <h2>Premia — Reporte de Cobros</h2>
+      <h2>Super Tierra — Reporte de Cobros</h2>
       <p class="sub">Generado: ${new Date().toLocaleString('es-MX', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })} · Total: ${claimsToPrint.length} registros</p>
       <table>
         <thead><tr><th>Fecha</th><th>Cliente</th><th>Premio</th><th>Restaurante</th><th>Estado</th><th>Cajero</th></tr></thead>

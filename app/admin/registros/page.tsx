@@ -387,7 +387,7 @@ export default function RegistrosPage() {
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Reporte de Cobros — Premia</title>
+  <title>Reporte de Cobros — Super Tierra</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 11px; color: #1e293b; background: #fff; }
@@ -425,7 +425,7 @@ export default function RegistrosPage() {
     <div class="brand">
       <div class="brand-dot">P</div>
       <div>
-        <div class="brand-name">Premia</div>
+        <div class="brand-name">Super Tierra</div>
         <div class="brand-sub">Reporte de Cobros</div>
       </div>
     </div>
@@ -458,7 +458,7 @@ export default function RegistrosPage() {
   </div>
   <div class="report-footer">
     <span class="footer-brand">Burrito Bar</span>
-    <span class="footer-note">Documento generado por el sistema Premia &copy; ${new Date().getFullYear()}</span>
+    <span class="footer-note">Documento generado por el sistema Super Tierra &copy; ${new Date().getFullYear()}</span>
   </div>
 </body>
 </html>`;

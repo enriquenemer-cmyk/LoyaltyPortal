@@ -25,7 +25,7 @@ export default function PrivacidadPage() {
           <p style={{ fontSize: 15, lineHeight: 1.7, color: '#1C1917' }}>
             <strong>Burrito Bar</strong> (en adelante "el Responsable"), con domicilio en la
             República Mexicana, es responsable del tratamiento de los datos personales que usted
-            nos proporciona a través de la plataforma de fidelización Premia, en cumplimiento
+            nos proporciona a través de la plataforma de fidelización Super Tierra, en cumplimiento
             con lo establecido en la{' '}
             <em>Ley Federal de Protección de Datos Personales en Posesión de los Particulares</em>{' '}
             (LFPDPPP) y su Reglamento.
@@ -120,7 +120,7 @@ export default function PrivacidadPage() {
             6. Uso de cookies y tecnologías de rastreo
           </h2>
           <p style={{ fontSize: 15, lineHeight: 1.7, color: '#1C1917' }}>
-            La plataforma Premia utiliza <strong>cookies de sesión</strong> con la finalidad
+            La plataforma Super Tierra utiliza <strong>cookies de sesión</strong> con la finalidad
             exclusiva de mantener su sesión activa y garantizar la seguridad de la navegación. No se
             utilizan cookies de rastreo publicitario ni se comparte información de navegación con
             terceros con fines de mercadotecnia. Puede configurar su navegador para bloquear o

@@ -77,7 +77,7 @@ export default function LoginPage() {
           </div>
 
           <div>
-            <p className="text-white font-black text-3xl leading-tight">Premia</p>
+            <p className="text-white font-black text-3xl leading-tight">Super Tierra</p>
             <p className="text-white/60 text-base mt-1">Plataforma de Premios QR</p>
           </div>
 
@@ -118,7 +118,7 @@ export default function LoginPage() {
 
         {/* Bottom copyright */}
         <p className="relative z-10 text-white/30 text-xs text-center">
-          {new Date().getFullYear()} · Premia
+          {new Date().getFullYear()} · Super Tierra
         </p>
       </div>
 
@@ -263,7 +263,7 @@ export default function LoginPage() {
 
         {/* Bottom copyright */}
         <p className="text-stone-300 text-xs mt-8">
-          © {new Date().getFullYear()} Premia
+          © {new Date().getFullYear()} Super Tierra
         </p>
       </div>
     </div>

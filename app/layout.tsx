@@ -22,7 +22,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Premia - Plataforma de Premios QR",
+  title: "Super Tierra - Plataforma de Premios QR",
   description: "Genera y gestiona premios con códigos QR para Burrito Bar",
   manifest: "/manifest.json",
   icons: {
@@ -35,17 +35,17 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "Premia",
+    title: "Super Tierra",
   },
   openGraph: {
-    siteName: "Burrito Bar · Premia",
+    siteName: "Burrito Bar · Super Tierra",
     type: "website",
-    title: "Premia",
+    title: "Super Tierra",
     description: "Plataforma de premios QR de Burrito Bar",
   },
   twitter: {
     card: "summary",
-    title: "Premia",
+    title: "Super Tierra",
     description: "Plataforma de premios QR de Burrito Bar",
   },
   other: {

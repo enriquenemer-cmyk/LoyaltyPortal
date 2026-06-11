@@ -539,7 +539,7 @@ function SidebarContent({ onLinkClick }: { onLinkClick?: () => void }) {
       <div className="px-3 py-3 border-b border-[#E8E3DC] flex items-center justify-between">
         <Link href="/admin" className="flex items-center gap-2" onClick={onLinkClick}>
           {LOGO}
-          <span className="text-xs font-extrabold text-[#1C1917] tracking-tight leading-none">Premia</span>
+          <span className="text-xs font-extrabold text-[#1C1917] tracking-tight leading-none">Super Tierra</span>
         </Link>
         <div className="flex items-center gap-1">
           <NotificationBell />
@@ -646,7 +646,7 @@ export default function Sidebar() {
       <div className="md:hidden fixed top-0 left-0 right-0 h-12 bg-white border-b border-[#E8E3DC] flex items-center justify-between px-4 z-40">
         <Link href="/admin" className="flex items-center gap-2.5">
           {LOGO}
-          <span className="text-sm font-extrabold text-[#1C1917] tracking-tight leading-none">Premia</span>
+          <span className="text-sm font-extrabold text-[#1C1917] tracking-tight leading-none">Super Tierra</span>
         </Link>
         <button
           onClick={() => setMobileOpen((v) => !v)}

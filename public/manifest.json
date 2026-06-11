@@ -1,6 +1,6 @@
 {
-  "name": "Premia",
-  "short_name": "Premia",
+  "name": "Super Tierra",
+  "short_name": "Super Tierra",
   "description": "Plataforma de Premios QR",
   "start_url": "/admin",
   "display": "standalone",

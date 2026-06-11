@@ -92,7 +92,7 @@ export default function WebhooksPage() {
             </div>
             <div>
               <h1 className="text-2xl font-extrabold text-[#1C1917]">Integración con Zapier / Make / n8n</h1>
-              <p className="text-stone-500 text-sm">Conecta Premia con tus flujos de automatización</p>
+              <p className="text-stone-500 text-sm">Conecta Super Tierra con tus flujos de automatización</p>
             </div>
           </div>
         </div>
@@ -124,7 +124,7 @@ export default function WebhooksPage() {
             <div>
               <p className="font-bold text-blue-800 text-sm mb-1">Configura la variable de entorno</p>
               <p className="text-blue-700 text-sm mb-2">
-                Para que Premia envíe eventos a tu plataforma, agrega esta variable en Vercel (Settings → Environment Variables):
+                Para que Super Tierra envíe eventos a tu plataforma, agrega esta variable en Vercel (Settings → Environment Variables):
               </p>
               <code className="block bg-blue-100 border border-blue-300 rounded-lg px-3 py-2 text-xs font-mono text-blue-900">
                 WEBHOOK_URL=https://hooks.zapier.com/hooks/catch/...

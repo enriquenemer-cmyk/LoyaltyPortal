@@ -590,7 +590,7 @@ export default function GamePlayer({
           <div className="px-5 py-4 border-b border-[#E8E3DC]" style={{ background: '#FAFAF9' }}>
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-[10px] font-bold text-[#2563EB] uppercase tracking-widest">Premia</p>
+                <p className="text-[10px] font-bold text-[#2563EB] uppercase tracking-widest">Super Tierra</p>
                 <p className="text-[#1C1917] font-extrabold text-base mt-0.5">{bundle.name}</p>
               </div>
               <span className="text-3xl">🎁</span>

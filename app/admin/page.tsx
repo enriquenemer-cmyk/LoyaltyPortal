@@ -122,49 +122,85 @@ function SkeletonCard() {
 
 function BarChart({ data }: { data: DayBar[] }) {
   const max = Math.max(...data.map((d) => d.count), 1);
-  const chartH = 120;
-  const barW = 28;
-  const gap = 12;
+  const chartH = 130;
+  const barW = 32;
+  const gap = 14;
   const totalW = data.length * (barW + gap) - gap;
-  const brand = '#2563EB';
   const gridLines = [0.25, 0.5, 0.75, 1];
+  const today = new Date().toLocaleDateString('es-ES', { weekday: 'short' }).charAt(0).toUpperCase() + new Date().toLocaleDateString('es-ES', { weekday: 'short' }).slice(1, 2);
 
   return (
     <svg
-      viewBox={`0 0 ${totalW + 4} ${chartH + 24}`}
+      viewBox={`0 0 ${totalW + 4} ${chartH + 28}`}
       width="100%"
-      style={{ maxWidth: totalW + 4 }}
+      style={{ maxWidth: totalW + 4, overflow: 'visible' }}
       aria-label="Actividad de los últimos 7 días"
     >
+      <defs>
+        <linearGradient id="barGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#2563EB" />
+          <stop offset="100%" stopColor="#0EA5E9" />
+        </linearGradient>
+        <linearGradient id="barGradToday" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#7C3AED" />
+          <stop offset="100%" stopColor="#2563EB" />
+        </linearGradient>
+        <filter id="barGlow">
+          <feGaussianBlur stdDeviation="2" result="blur" />
+          <feComposite in="SourceGraphic" in2="blur" operator="over" />
+        </filter>
+      </defs>
+
       {gridLines.map((frac) => {
         const y = chartH - Math.round(frac * chartH);
         return (
-          <line
-            key={frac}
-            x1={0} y1={y} x2={totalW + 4} y2={y}
-            stroke="#E8E3DC" strokeWidth="1" strokeDasharray="3 3"
-          />
+          <line key={frac} x1={0} y1={y} x2={totalW + 4} y2={y}
+            stroke="#E8E3DC" strokeWidth="1" strokeDasharray="4 4" opacity="0.7" />
         );
       })}
 
       {data.map((d, i) => {
-        const barH = max === 0 ? 0 : Math.round((d.count / max) * chartH);
+        const barH = max === 0 ? 4 : Math.max(Math.round((d.count / max) * chartH), d.count > 0 ? 6 : 0);
         const x = i * (barW + gap);
         const y = chartH - barH;
+        const isToday = d.label === today;
+        const grad = isToday ? 'url(#barGradToday)' : 'url(#barGrad)';
         return (
           <g key={d.label}>
-            <rect x={x} y={0} width={barW} height={chartH} rx={6} fill="#f5ede8" />
+            {/* Track */}
+            <rect x={x} y={0} width={barW} height={chartH} rx={8} fill={isToday ? '#EDE9FE' : '#EFF6FF'} />
+            {/* Bar with grow animation */}
             {barH > 0 && (
-              <rect x={x} y={y} width={barW} height={barH} rx={5} fill={brand} className="fill-grow" style={{ transformOrigin: `${x + barW / 2}px ${chartH}px`, animationDelay: `${i * 0.07}s` }} />
+              <>
+                <rect
+                  x={x} y={y} width={barW} height={barH} rx={7}
+                  fill={grad}
+                  style={{
+                    transformOrigin: `${x + barW / 2}px ${chartH}px`,
+                    animation: `bar-grow 0.7s cubic-bezier(0.34,1.56,0.64,1) ${i * 0.08}s both`,
+                  }}
+                />
+                {/* Shine overlay */}
+                <rect x={x + 4} y={y + 3} width={barW / 3} height={Math.min(barH - 6, 20)} rx={3}
+                  fill="white" opacity="0.2"
+                  style={{ transformOrigin: `${x + barW / 2}px ${chartH}px`, animation: `bar-grow 0.7s cubic-bezier(0.34,1.56,0.64,1) ${i * 0.08}s both` }}
+                />
+              </>
             )}
+            {/* Count label */}
             {d.count > 0 && (
-              <text x={x + barW / 2} y={y - 4} textAnchor="middle" fontSize="10" fill={brand} fontWeight="700">
+              <text x={x + barW / 2} y={y - 6} textAnchor="middle" fontSize="11" fill={isToday ? '#7C3AED' : '#2563EB'} fontWeight="800"
+                style={{ animation: `fade-in-up 0.4s ease-out ${i * 0.08 + 0.3}s both` }}>
                 {d.count}
               </text>
             )}
-            <text x={x + barW / 2} y={chartH + 16} textAnchor="middle" fontSize="10" fill="#a8a29e">
+            {/* Day label */}
+            <text x={x + barW / 2} y={chartH + 18} textAnchor="middle" fontSize="11"
+              fill={isToday ? '#7C3AED' : '#94a3b8'} fontWeight={isToday ? '800' : '500'}>
               {d.label}
             </text>
+            {/* Today dot */}
+            {isToday && <circle cx={x + barW / 2} cy={chartH + 24} r="2.5" fill="#7C3AED" />}
           </g>
         );
       })}

@@ -114,11 +114,11 @@ export default function LoginPage() {
         <div className="relative z-10 flex flex-col items-center text-center gap-6">
           {/* Logo ST */}
           <div className="relative flex items-center justify-center" style={{ animation: 'float 4s ease-in-out infinite' }}>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="200" height="200">
-              <line x1="28" y1="36" x2="132" y2="36" stroke="white" strokeWidth="0.8" opacity="0.35"/>
-              <text x="80" y="112" textAnchor="middle" fontFamily="Georgia, 'Times New Roman', serif" fontWeight="400" fontSize="90" fill="white" letterSpacing="10">ST</text>
-              <line x1="28" y1="120" x2="132" y2="120" stroke="white" strokeWidth="0.8" opacity="0.35"/>
-              <text x="80" y="140" textAnchor="middle" fontFamily="Arial, Helvetica, sans-serif" fontWeight="400" fontSize="9" fill="white" opacity="0.45" letterSpacing="5">SUPER TIERRA</text>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 180" width="220" height="198">
+              <line x1="30" y1="28" x2="170" y2="28" stroke="white" strokeWidth="0.8" opacity="0.35"/>
+              <text x="100" y="120" textAnchor="middle" fontFamily="Georgia, 'Times New Roman', serif" fontWeight="400" fontSize="100" fill="white" letterSpacing="14">ST</text>
+              <line x1="30" y1="132" x2="170" y2="132" stroke="white" strokeWidth="0.8" opacity="0.35"/>
+              <text x="100" y="155" textAnchor="middle" fontFamily="Arial, Helvetica, sans-serif" fontWeight="400" fontSize="10" fill="white" opacity="0.45" letterSpacing="6">SUPER TIERRA</text>
             </svg>
           </div>
 

@@ -453,10 +453,10 @@ function NavSection({ section }: { section: SectionDef }) {
 // ── Logo ─────────────────────────────────────────────────────────────────────
 const LOGO = (
   <div className="shrink-0 flex items-center justify-center">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="44" height="44">
-      <line x1="28" y1="36" x2="132" y2="36" stroke="currentColor" strokeWidth="1" opacity="0.25"/>
-      <text x="80" y="112" textAnchor="middle" fontFamily="Georgia, 'Times New Roman', serif" fontWeight="400" fontSize="90" fill="currentColor" letterSpacing="10">ST</text>
-      <line x1="28" y1="120" x2="132" y2="120" stroke="currentColor" strokeWidth="1" opacity="0.25"/>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 180" width="52" height="47">
+      <line x1="30" y1="28" x2="170" y2="28" stroke="currentColor" strokeWidth="1.5" opacity="0.25"/>
+      <text x="100" y="120" textAnchor="middle" fontFamily="Georgia, 'Times New Roman', serif" fontWeight="400" fontSize="100" fill="currentColor" letterSpacing="14">ST</text>
+      <line x1="30" y1="132" x2="170" y2="132" stroke="currentColor" strokeWidth="1.5" opacity="0.25"/>
     </svg>
   </div>
 );

@@ -113,12 +113,13 @@ export default function LoginPage() {
         {/* Centered content */}
         <div className="relative z-10 flex flex-col items-center text-center gap-6">
           {/* Logo ST */}
-          <div className="relative flex items-center justify-center" style={{ filter: 'drop-shadow(0 0 40px rgba(0,180,255,0.6)) drop-shadow(0 0 24px rgba(255,100,0,0.5))' }}>
-            <img
-              src="/logo-st.png"
-              alt="Logo"
-              style={{ width: 220, height: 220, objectFit: 'contain', animation: 'float 4s ease-in-out infinite' }}
-            />
+          <div className="relative flex items-center justify-center" style={{ animation: 'float 4s ease-in-out infinite' }}>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="200" height="200">
+              <line x1="28" y1="36" x2="132" y2="36" stroke="white" strokeWidth="0.8" opacity="0.35"/>
+              <text x="80" y="112" textAnchor="middle" fontFamily="Georgia, 'Times New Roman', serif" fontWeight="400" fontSize="90" fill="white" letterSpacing="10">ST</text>
+              <line x1="28" y1="120" x2="132" y2="120" stroke="white" strokeWidth="0.8" opacity="0.35"/>
+              <text x="80" y="140" textAnchor="middle" fontFamily="Arial, Helvetica, sans-serif" fontWeight="400" fontSize="9" fill="white" opacity="0.45" letterSpacing="5">SUPER TIERRA</text>
+            </svg>
           </div>
 
           <div>
@@ -177,8 +178,12 @@ export default function LoginPage() {
           {/* Logo + heading */}
           <div className="mb-8 flex flex-col items-center gap-3">
             {/* Show logo on mobile (left panel is hidden) */}
-            <div className="md:hidden" style={{ filter: 'drop-shadow(0 0 20px rgba(0,160,255,0.5)) drop-shadow(0 0 10px rgba(255,100,0,0.3))' }}>
-              <img src="/logo-st.png" alt="Logo" style={{ width: 100, height: 100, objectFit: 'contain' }} />
+            <div className="md:hidden">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="90" height="90">
+                <line x1="28" y1="36" x2="132" y2="36" stroke="#1C1917" strokeWidth="0.8" opacity="0.2"/>
+                <text x="80" y="112" textAnchor="middle" fontFamily="Georgia, 'Times New Roman', serif" fontWeight="400" fontSize="90" fill="#1C1917" letterSpacing="10">ST</text>
+                <line x1="28" y1="120" x2="132" y2="120" stroke="#1C1917" strokeWidth="0.8" opacity="0.2"/>
+              </svg>
             </div>
 
             <div className="text-center">

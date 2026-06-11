@@ -452,8 +452,12 @@ function NavSection({ section }: { section: SectionDef }) {
 
 // ── Logo ─────────────────────────────────────────────────────────────────────
 const LOGO = (
-  <div className="shrink-0 flex items-center justify-center" style={{ filter: 'drop-shadow(0 0 12px rgba(0,180,255,0.7)) drop-shadow(0 0 6px rgba(255,100,0,0.4))' }}>
-    <img src="/logo-st.png" alt="Logo" style={{ width: 48, height: 48, objectFit: 'contain' }} />
+  <div className="shrink-0 flex items-center justify-center">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="44" height="44">
+      <line x1="28" y1="36" x2="132" y2="36" stroke="currentColor" strokeWidth="1" opacity="0.25"/>
+      <text x="80" y="112" textAnchor="middle" fontFamily="Georgia, 'Times New Roman', serif" fontWeight="400" fontSize="90" fill="currentColor" letterSpacing="10">ST</text>
+      <line x1="28" y1="120" x2="132" y2="120" stroke="currentColor" strokeWidth="1" opacity="0.25"/>
+    </svg>
   </div>
 );
 

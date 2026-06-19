@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useMemo, useRef, useCallback } from 'react';
+import { Fragment, useEffect, useState, useMemo, useRef, useCallback } from 'react';
 import { Avatar } from '@/app/components/Avatar';
 import { EmptyState } from '@/app/components/EmptyState';
 import Tooltip from '@/app/components/Tooltip';
@@ -867,9 +867,8 @@ export default function RegistrosPage() {
                         {filtered.map((claim) => {
                           const isExpanded = expandedId === claim.id;
                           return (
-                            <>
+                            <Fragment key={claim.id}>
                               <tr
-                                key={claim.id}
                                 className="hover:bg-[#faf7f5] transition-colors group stagger-item cursor-pointer"
                                 onClick={() => toggleExpand(claim.id)}
                               >
@@ -956,7 +955,7 @@ export default function RegistrosPage() {
 
                               {/* Expandable detail row */}
                               {isExpanded && (
-                                <tr key={`${claim.id}-detail`}>
+                                <tr>
                                   <td colSpan={5} className="px-6 py-4 bg-blue-50/30">
                                     <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                                       <InfoChip
@@ -1012,7 +1011,7 @@ export default function RegistrosPage() {
                                   </td>
                                 </tr>
                               )}
-                            </>
+                            </Fragment>
                           );
                         })}
                       </tbody>

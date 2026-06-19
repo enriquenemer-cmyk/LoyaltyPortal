@@ -18,6 +18,14 @@ type Claim = {
   delivered_by: string | null;
 };
 
+type CustomerTier = 'bronze' | 'silver' | 'gold';
+
+type CustomerPoints = {
+  phone: string;
+  total_points: number;
+  tier: CustomerTier;
+};
+
 type CustomerProfile = {
   email: string;
   full_name: string;
@@ -29,7 +37,25 @@ type CustomerProfile = {
   hasPending: boolean;
   isNew: boolean;
   isFrequent: boolean;
+  tier: CustomerTier;
+  totalPoints: number;
 };
+
+const TIER_LABELS: Record<CustomerTier, string> = { bronze: 'Bronce', silver: 'Plata', gold: 'Oro' };
+
+const TIER_BADGE_CLASS: Record<CustomerTier, string> = {
+  bronze: 'bg-blue-50 text-blue-700 border-blue-200',
+  silver: 'bg-slate-100 text-slate-700 border-slate-300',
+  gold: 'bg-yellow-50 text-yellow-700 border-yellow-300',
+};
+
+function TierBadge({ tier }: { tier: CustomerTier }) {
+  return (
+    <span className={`inline-flex items-center text-[10px] font-extrabold px-2 py-0.5 rounded-full border uppercase tracking-wide ${TIER_BADGE_CLASS[tier]}`}>
+      {TIER_LABELS[tier]}
+    </span>
+  );
+}
 
 type Segment = 'todos' | 'frecuentes' | 'cumpleanos' | 'sin_canjear' | 'nuevos';
 
@@ -203,6 +229,14 @@ function CustomerRow({ customer }: { customer: CustomerProfile }) {
           </a>
         </td>
 
+        {/* Nivel */}
+        <td className="px-5 py-4">
+          <div className="flex flex-col gap-0.5">
+            <TierBadge tier={customer.tier} />
+            <span className="text-[10px] text-slate-400 font-mono">{customer.totalPoints.toLocaleString('es-MX')} pts</span>
+          </div>
+        </td>
+
         {/* Total canjes */}
         <td className="px-5 py-4">
           <span className="inline-flex items-center gap-1.5 bg-blue-50 text-[#2563EB] text-xs font-bold px-2.5 py-1 rounded-full border border-blue-200">
@@ -268,7 +302,7 @@ function CustomerRow({ customer }: { customer: CustomerProfile }) {
       {/* Expandable historial */}
       {expanded && (
         <tr>
-          <td colSpan={6} className="px-5 pb-4 pt-0 bg-blue-50/30">
+          <td colSpan={7} className="px-5 pb-4 pt-0 bg-blue-50/30">
             <div className="ml-13 pl-3 border-l-2 border-[#2563EB]/20 ml-[52px]">
               <p className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest mb-2 mt-1">
                 Historial de canjes — {customer.totalClaims} en total
@@ -288,6 +322,7 @@ function CustomerRow({ customer }: { customer: CustomerProfile }) {
 
 export default function ClientesPage() {
   const [claims, setClaims] = useState<Claim[]>([]);
+  const [pointsByPhone, setPointsByPhone] = useState<Map<string, CustomerPoints>>(new Map());
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [search, setSearch] = useState('');
@@ -306,7 +341,22 @@ export default function ClientesPage() {
         setLoading(false);
       }
     }
+    async function fetchPoints() {
+      try {
+        const res = await fetch('/api/customer-points');
+        const data = await res.json();
+        if (!res.ok) return;
+        const map = new Map<string, CustomerPoints>();
+        for (const p of (data.points ?? []) as CustomerPoints[]) {
+          map.set(p.phone, p);
+        }
+        setPointsByPhone(map);
+      } catch {
+        // tier info is non-critical, ignore errors
+      }
+    }
     fetchClaims();
+    fetchPoints();
   }, []);
 
   const customers = useMemo<CustomerProfile[]>(() => {
@@ -327,6 +377,7 @@ export default function ClientesPage() {
       const days = daysSince(sorted[0].claimed_at);
       const hasPending = sorted.some((c) => c.status === 'pending');
       const isNew = new Date(firstEver.claimed_at) >= thirtyDaysAgo;
+      const points = pointsByPhone.get(sorted[0].phone);
       return {
         email: sorted[0].email,
         full_name: sorted[0].full_name,
@@ -338,9 +389,11 @@ export default function ClientesPage() {
         hasPending,
         isNew,
         isFrequent: claimList.length >= 2,
+        tier: points?.tier ?? 'bronze',
+        totalPoints: points?.total_points ?? 0,
       };
     });
-  }, [claims]);
+  }, [claims, pointsByPhone]);
 
   const segmentCounts = useMemo(() => {
     return {
@@ -558,6 +611,9 @@ export default function ClientesPage() {
                     </th>
                     <th className="text-left px-5 py-3.5 font-bold text-slate-500 text-xs uppercase tracking-wider">
                       Correo
+                    </th>
+                    <th className="text-left px-5 py-3.5 font-bold text-slate-500 text-xs uppercase tracking-wider">
+                      Nivel
                     </th>
                     <th className="text-left px-5 py-3.5 font-bold text-slate-500 text-xs uppercase tracking-wider">
                       Canjes

@@ -1,8 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { insertTicketClaim, getTicketClaimsByRestaurant, calcProportionalPoints, upsertCustomerPoints, getOrCreateStampCard, addStamp, completeStampCard, insertPrize, insertClaim as insertRegularClaim } from '@/lib/db';
+import { insertTicketClaim, getTicketClaimsByRestaurant, calcProportionalPoints, upsertCustomerPoints, getOrCreateStampCard, addStamp, completeStampCard, insertPrize, insertClaim as insertRegularClaim, logActivity } from '@/lib/db';
+import { checkRateLimit, getClientIp } from '@/lib/rateLimit';
+import { randomUUID } from 'crypto';
 
 export async function POST(req: NextRequest) {
   try {
+    const ip = getClientIp(req);
+    if (!await checkRateLimit(`ticket_claims_${ip}`, 20, 60 * 1000)) {
+      logActivity({
+        id: randomUUID(),
+        restaurant_id: null,
+        action: 'rate_limit_exceeded',
+        description: `Rate limit excedido en /api/ticket-claims (IP: ${ip})`,
+        user_name: 'API',
+        metadata: { ip, endpoint: '/api/ticket-claims' },
+      }).catch(() => {});
+      return NextResponse.json({ error: 'Demasiadas solicitudes. Intenta de nuevo en un minuto.' }, { status: 429 });
+    }
+
     const body = await req.json();
     const { restaurant_id, amount, prize_name, prize_description, full_name, phone, email, location, image_hash } = body;
 

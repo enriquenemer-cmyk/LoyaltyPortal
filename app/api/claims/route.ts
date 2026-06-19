@@ -1,37 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { insertClaim, getAllClaims, getPrizeById, getPrizeClaimCount, logActivity, getRecentClaimsByContact, getAllPrizeRules, insertPrize, countClaimsByContact, createNotification } from '@/lib/db';
+import { insertClaim, getAllClaims, getPrizeById, getPrizeClaimCount, logActivity, getRecentClaimsByContact, getAllPrizeRules, insertPrize, countClaimsByContact, createNotification, upsertCustomerPoints, getPool } from '@/lib/db';
+import { checkRateLimit, getClientIp } from '@/lib/rateLimit';
 import { randomUUID } from 'crypto';
 
-// ── In-memory rate limiter: max 10 claims per hour per IP ──
-const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
-
-function checkRateLimit(ip: string): boolean {
-  const now = Date.now();
-  const entry = rateLimitMap.get(ip);
-  if (!entry || now > entry.resetAt) {
-    rateLimitMap.set(ip, { count: 1, resetAt: now + 60 * 60 * 1000 });
-    return true;
-  }
-  if (entry.count >= 10) return false;
-  entry.count++;
-  return true;
-}
-
-function getClientIp(request: NextRequest): string {
-  return (
-    request.headers.get('x-forwarded-for')?.split(',')[0].trim() ??
-    request.headers.get('x-real-ip') ??
-    'unknown'
-  );
-}
-
 export async function POST(request: NextRequest) {
+  // Rate limiting: max 10 claims per hour per IP
+  const ip = getClientIp(request);
+  if (!await checkRateLimit(`claims_${ip}`, 10, 60 * 60 * 1000)) {
+    return NextResponse.json({ error: 'Demasiados intentos. Intenta de nuevo en una hora.' }, { status: 429 });
+  }
+
   try {
-    // Rate limiting
-    const ip = getClientIp(request);
-    if (!checkRateLimit(ip)) {
-      return NextResponse.json({ error: 'Demasiados intentos. Intenta de nuevo en una hora.' }, { status: 429 });
-    }
 
     const body = await request.json();
     const { prize_id, full_name, phone, email, location, referral_code, referred_by } = body;
@@ -173,6 +152,35 @@ export async function POST(request: NextRequest) {
         console.error('Prize rules engine error:', err);
       }
     })();
+
+    // Referral reward: award 50 points to the referrer on first claim of referred customer
+    if (referred_by) {
+      (async () => {
+        try {
+          // Only reward on first-ever claim by this phone/email
+          const totalByPhone = await countClaimsByContact(phone);
+          const totalByEmail = await countClaimsByContact(email);
+          if (totalByPhone <= 1 && totalByEmail <= 1) {
+            // Find referrer's phone from their referral_code
+            const { rows } = await getPool().query<{ phone: string; email: string }>(
+              `SELECT DISTINCT phone, email FROM claims WHERE referral_code = $1 LIMIT 1`,
+              [referred_by]
+            );
+            if (rows[0]) {
+              await upsertCustomerPoints(rows[0].phone, rows[0].email, 50);
+              logActivity({
+                id: randomUUID(),
+                restaurant_id: prize.restaurant_id ?? null,
+                action: 'referral_reward',
+                description: `+50 puntos a ${rows[0].phone} por referido exitoso (${full_name})`,
+                user_name: 'Sistema',
+                metadata: { referral_code: referred_by, referred_phone: phone, points: 50 },
+              }).catch(() => {});
+            }
+          }
+        } catch { /* ignore */ }
+      })();
+    }
 
     // Non-blocking webhook trigger
     if (process.env.WEBHOOK_URL) {

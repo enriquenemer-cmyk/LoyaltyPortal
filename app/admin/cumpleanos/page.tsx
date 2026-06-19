@@ -97,6 +97,25 @@ export default function CumpleanosPage() {
     }
   }
 
+  const [cronRunning, setCronRunning] = useState(false);
+  const [cronResult, setCronResult] = useState<string | null>(null);
+
+  async function runBirthdayCron() {
+    setCronRunning(true);
+    setCronResult(null);
+    try {
+      const res = await fetch('/api/cron/birthday');
+      const d = await res.json();
+      setCronResult(d.processed === 0
+        ? 'No hay cumpleaños hoy registrados.'
+        : `✓ ${d.processed} premios de cumpleaños generados.`);
+    } catch {
+      setCronResult('Error al ejecutar el cron.');
+    } finally {
+      setCronRunning(false);
+    }
+  }
+
   return (
     <div style={{ minHeight: '100vh', background: 'linear-gradient(135deg,#150800 0%,#2a0d00 50%,#3D1200 100%)', padding: '40px 20px' }}>
       <div style={{ maxWidth: 700, margin: '0 auto' }}>
@@ -114,9 +133,50 @@ export default function CumpleanosPage() {
             </div>
             <div>
               <h1 style={{ color: 'white', fontSize: 26, fontWeight: 900, margin: 0 }}>Premios de Cumpleaños</h1>
-              <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: 13, margin: 0 }}>Genera un premio especial para clientes frecuentes</p>
+              <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: 13, margin: 0 }}>Genera premios especiales — manual o automático</p>
             </div>
           </div>
+        </div>
+
+        {/* Auto section */}
+        <div style={{
+          background: 'rgba(8,145,178,0.08)',
+          border: '1px solid rgba(8,145,178,0.25)',
+          borderRadius: 16,
+          padding: '18px 22px',
+          marginBottom: 24,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: 16,
+          flexWrap: 'wrap',
+        }}>
+          <div>
+            <p style={{ color: '#7dd3fc', fontSize: 13, fontWeight: 700, margin: '0 0 4px' }}>Cumpleaños automáticos</p>
+            <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: 12, margin: 0 }}>
+              El cron corre diariamente. Clientes con campo <code style={{ background: 'rgba(255,255,255,0.08)', padding: '1px 4px', borderRadius: 4 }}>birthday</code> reciben un premio automático.
+            </p>
+            {cronResult && (
+              <p style={{ color: '#86efac', fontSize: 12, marginTop: 8, fontWeight: 600 }}>{cronResult}</p>
+            )}
+          </div>
+          <button
+            onClick={runBirthdayCron}
+            disabled={cronRunning}
+            style={{
+              background: cronRunning ? 'rgba(8,145,178,0.15)' : 'rgba(8,145,178,0.25)',
+              border: '1px solid rgba(8,145,178,0.4)',
+              color: '#7dd3fc',
+              fontWeight: 700,
+              fontSize: 12,
+              padding: '9px 16px',
+              borderRadius: 10,
+              cursor: cronRunning ? 'not-allowed' : 'pointer',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            {cronRunning ? 'Ejecutando...' : '▶ Correr cron ahora'}
+          </button>
         </div>
 
         {/* Form card */}

@@ -62,6 +62,8 @@ export default function SegmentacionPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [activeSegment, setActiveSegment] = useState<Segment | null>(null);
+  const [winbackSending, setWinbackSending] = useState(false);
+  const [winbackResult, setWinbackResult] = useState<string | null>(null);
 
   const fetchSegments = useCallback(async () => {
     setLoading(true);
@@ -88,6 +90,31 @@ export default function SegmentacionPage() {
 
   function handleCampaign(seg: Segment) {
     router.push(`/admin/campanas?segmento=${seg.id}`);
+  }
+
+  async function handleWinback(seg: Segment) {
+    if (!['en_riesgo', 'dormidos'].includes(seg.id)) return;
+    if (!confirm(`¿Generar un premio de reactivación para los ${seg.count} clientes "${seg.label}"?`)) return;
+    setWinbackSending(true);
+    setWinbackResult(null);
+    try {
+      const res = await fetch('/api/analytics/winback-prizes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          segment: seg.id,
+          prize_name: 'Premio de reactivación',
+          prize_description: '¡Te extrañamos! Vuelve a visitarnos y canjea este premio.',
+          validity_days: 14,
+        }),
+      });
+      const d = await res.json();
+      setWinbackResult(`✓ ${d.generated} premios generados para el segmento "${seg.label}"`);
+    } catch {
+      setWinbackResult('Error al generar premios');
+    } finally {
+      setWinbackSending(false);
+    }
   }
 
   const segmentBorderColor: Record<string, string> = {
@@ -198,7 +225,7 @@ export default function SegmentacionPage() {
                       {SEGMENT_DESCRIPTIONS[activeSegment.id]}
                     </p>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 flex-wrap">
                     <button
                       onClick={() => exportCSV(activeSegment.customers, activeSegment.label)}
                       className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#E2E8F0] text-xs font-medium text-stone-600 hover:bg-stone-50 transition-colors"
@@ -208,6 +235,26 @@ export default function SegmentacionPage() {
                       </svg>
                       Exportar CSV
                     </button>
+                    {['en_riesgo', 'dormidos'].includes(activeSegment.id) && (
+                      <button
+                        onClick={() => handleWinback(activeSegment)}
+                        disabled={winbackSending}
+                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-white transition-colors disabled:opacity-60"
+                        style={{ background: 'linear-gradient(135deg, #dc2626, #ea580c)' }}
+                      >
+                        {winbackSending ? (
+                          <svg className="animate-spin w-3.5 h-3.5" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
+                          </svg>
+                        ) : (
+                          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                        )}
+                        {winbackSending ? 'Generando...' : 'Generar premio win-back'}
+                      </button>
+                    )}
                     <button
                       onClick={() => handleCampaign(activeSegment)}
                       className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-white transition-colors"
@@ -216,9 +263,12 @@ export default function SegmentacionPage() {
                       <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
                       </svg>
-                      Enviar campaña a este segmento
+                      Enviar campaña
                     </button>
                   </div>
+                  {winbackResult && (
+                    <div className="mt-2 px-6 pb-2 text-xs text-emerald-700 font-semibold">{winbackResult}</div>
+                  )}
                 </div>
 
                 {activeSegment.customers.length === 0 ? (

@@ -1,10 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getCustomerPoints, getPool } from '@/lib/db';
+import { getAllCustomerPoints, getCustomerPoints, getPool } from '@/lib/db';
+import { cookies } from 'next/headers';
+import { getIronSession } from 'iron-session';
+import { SessionData, sessionOptions } from '@/lib/session';
 
 export async function GET(req: NextRequest) {
+  const cookieStore = await cookies();
+  const session = await getIronSession<SessionData>(cookieStore, sessionOptions);
+  if (!session.username) {
+    return NextResponse.json({ error: 'No autorizado.' }, { status: 401 });
+  }
+
   const contact = req.nextUrl.searchParams.get('contact')?.trim();
   if (!contact) {
-    return NextResponse.json({ error: 'contact param required' }, { status: 400 });
+    const points = await getAllCustomerPoints();
+    return NextResponse.json({ points });
   }
 
   try {

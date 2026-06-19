@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createHash } from 'crypto';
-import { getTicketTiersByRestaurant, findTicketClaimByImageHash, getRestaurantTicketConfig, insertTicketClaim, calcProportionalPoints, getActiveEvents, incrementParticipants } from '@/lib/db';
+import { createHash, randomUUID } from 'crypto';
+import { getTicketTiersByRestaurant, findTicketClaimByImageHash, getRestaurantTicketConfig, insertTicketClaim, calcProportionalPoints, getActiveEvents, incrementParticipants, logActivity } from '@/lib/db';
+import { checkRateLimit, getClientIp } from '@/lib/rateLimit';
 
 function findMatchingTier(tiers: Awaited<ReturnType<typeof getTicketTiersByRestaurant>>, amount: number) {
   for (const tier of tiers) {
@@ -12,6 +13,20 @@ function findMatchingTier(tiers: Awaited<ReturnType<typeof getTicketTiersByResta
 }
 
 export async function POST(req: NextRequest) {
+  // Rate limit check outside try so errors here don't produce a 500
+  const ip = getClientIp(req);
+  if (!await checkRateLimit(`scan_ticket_${ip}`, 20, 60 * 1000)) {
+    logActivity({
+      id: randomUUID(),
+      restaurant_id: null,
+      action: 'rate_limit_exceeded',
+      description: `Rate limit excedido en /api/scan-ticket (IP: ${ip})`,
+      user_name: 'API',
+      metadata: { ip, endpoint: '/api/scan-ticket' },
+    }).catch(() => {});
+    return NextResponse.json({ error: 'Demasiadas solicitudes. Intenta de nuevo en un minuto.' }, { status: 429 });
+  }
+
   try {
     const formData = await req.formData();
     const file = formData.get('image') as File | null;

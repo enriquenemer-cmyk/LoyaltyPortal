@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 type LogEntry = {
   id: string;
@@ -12,18 +12,68 @@ type LogEntry = {
   metadata?: Record<string, unknown> | null;
 };
 
+const actionColor: Record<string, string> = {
+  admin_login: 'bg-blue-50 text-blue-700',
+  prize_created: 'bg-blue-50 text-blue-700',
+  claim_registered: 'bg-emerald-50 text-emerald-700',
+  claim_delivered: 'bg-green-50 text-green-700',
+  password_reset_requested: 'bg-blue-50 text-blue-700',
+  password_reset_completed: 'bg-purple-50 text-purple-700',
+  rate_limit_exceeded: 'bg-red-50 text-red-700',
+};
+
+const actionLabel: Record<string, string> = {
+  admin_login: 'Login',
+  prize_created: 'Premio creado',
+  claim_registered: 'Registro',
+  claim_delivered: 'Entregado',
+  password_reset_requested: 'Reset solicitado',
+  password_reset_completed: 'Reset completado',
+  rate_limit_exceeded: 'Rate limit excedido',
+};
+
 export default function SeguridadPage() {
   const [logs, setLogs] = useState<LogEntry[]>([]);
+  const [allActions, setAllActions] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [exporting, setExporting] = useState(false);
+  const [actionFilter, setActionFilter] = useState('');
+  const [search, setSearch] = useState('');
 
   useEffect(() => {
-    fetch('/api/activity-log')
+    // Load all entries once to populate the action-type dropdown — never filtered
+    fetch('/api/activity-log?limit=500')
+      .then(r => r.json())
+      .then(d => {
+        const actions = [...new Set<string>((d.entries ?? []).map((e: LogEntry) => e.action))].sort();
+        setAllActions(actions);
+      })
+      .catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    setLoading(true);
+    const params = new URLSearchParams();
+    if (actionFilter) params.set('action', actionFilter);
+    fetch(`/api/activity-log?${params}`)
       .then(r => r.json())
       .then(d => setLogs(d.entries ?? []))
       .catch(() => {})
       .finally(() => setLoading(false));
-  }, []);
+  }, [actionFilter]);
+
+  const filteredLogs = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    if (!q) return logs;
+    return logs.filter((l) =>
+      l.description.toLowerCase().includes(q) || (l.user_name ?? '').toLowerCase().includes(q)
+    );
+  }, [logs, search]);
+
+  const rateLimitHits = useMemo(
+    () => logs.filter((l) => l.action === 'rate_limit_exceeded').length,
+    [logs]
+  );
 
   async function handleExport() {
     setExporting(true);
@@ -52,24 +102,6 @@ export default function SeguridadPage() {
       setTimeout(() => setCopiedId(null), 2000);
     });
   }
-
-  const actionColor: Record<string, string> = {
-    admin_login: 'bg-blue-50 text-blue-700',
-    prize_created: 'bg-blue-50 text-blue-700',
-    claim_registered: 'bg-emerald-50 text-emerald-700',
-    claim_delivered: 'bg-green-50 text-green-700',
-    password_reset_requested: 'bg-blue-50 text-blue-700',
-    password_reset_completed: 'bg-purple-50 text-purple-700',
-  };
-
-  const actionLabel: Record<string, string> = {
-    admin_login: 'Login',
-    prize_created: 'Premio creado',
-    claim_registered: 'Registro',
-    claim_delivered: 'Entregado',
-    password_reset_requested: 'Reset solicitado',
-    password_reset_completed: 'Reset completado',
-  };
 
   return (
     <div className="min-h-screen bg-[#FAFAF9] p-6 md:p-10">
@@ -100,6 +132,43 @@ export default function SeguridadPage() {
           </button>
         </div>
 
+        {/* Summary cards */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-6">
+          <div className="rounded-2xl border border-[#E8E3DC] bg-white p-4">
+            <p className="text-2xl font-extrabold text-[#1C1917] tabular-nums">{logs.length}</p>
+            <p className="text-xs text-stone-500 mt-1">Eventos mostrados</p>
+          </div>
+          <div className={`rounded-2xl border p-4 ${rateLimitHits > 0 ? 'border-red-200 bg-red-50' : 'border-[#E8E3DC] bg-white'}`}>
+            <p className={`text-2xl font-extrabold tabular-nums ${rateLimitHits > 0 ? 'text-red-700' : 'text-[#1C1917]'}`}>{rateLimitHits}</p>
+            <p className="text-xs text-stone-500 mt-1">Rate limits excedidos</p>
+          </div>
+          <div className="rounded-2xl border border-[#E8E3DC] bg-white p-4">
+            <p className="text-2xl font-extrabold text-[#1C1917] tabular-nums">{allActions.length}</p>
+            <p className="text-xs text-stone-500 mt-1">Tipos de evento</p>
+          </div>
+        </div>
+
+        {/* Filters */}
+        <div className="flex flex-wrap gap-3 mb-4">
+          <select
+            value={actionFilter}
+            onChange={(e) => setActionFilter(e.target.value)}
+            className="border border-[#E8E3DC] rounded-xl px-3 py-2 text-sm bg-white text-[#1C1917] focus:outline-none focus:border-[#2563EB]"
+          >
+            <option value="">Todos los eventos</option>
+            {allActions.map((a) => (
+              <option key={a} value={a}>{actionLabel[a] ?? a}</option>
+            ))}
+          </select>
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Buscar por descripción o usuario..."
+            className="flex-1 min-w-[200px] border border-[#E8E3DC] rounded-xl px-3 py-2 text-sm bg-white text-[#1C1917] focus:outline-none focus:border-[#2563EB]"
+          />
+        </div>
+
         <div className="bg-white rounded-2xl border border-[#E8E3DC] overflow-hidden" style={{ boxShadow: '0 1px 4px rgba(28,25,23,0.06)' }}>
           <div className="px-6 py-4 border-b border-[#E8E3DC]">
             <h2 className="text-sm font-bold text-[#1C1917]">Registro de actividad reciente</h2>
@@ -112,13 +181,13 @@ export default function SeguridadPage() {
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
               </svg>
             </div>
-          ) : logs.length === 0 ? (
+          ) : filteredLogs.length === 0 ? (
             <div className="text-center py-12 text-[#a8a29e] text-sm">
               Sin actividad registrada
             </div>
           ) : (
             <div className="divide-y divide-[#F3EFE9]">
-              {logs.map(log => (
+              {filteredLogs.map(log => (
                 <div key={log.id} className="flex items-start gap-4 px-6 py-4 flex-wrap">
                   <span className={`shrink-0 text-xs font-bold px-2.5 py-1 rounded-full mt-0.5 ${actionColor[log.action] ?? 'bg-stone-50 text-stone-600'}`}>
                     {actionLabel[log.action] ?? log.action}

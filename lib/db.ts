@@ -203,6 +203,36 @@ async function ensureSchema(): Promise<void> {
         created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
       );
     `);
+    await client.query(`
+      ALTER TABLE campaigns ADD COLUMN IF NOT EXISTS prize_cost NUMERIC;
+      ALTER TABLE customer_points ADD COLUMN IF NOT EXISTS birthday DATE;
+      ALTER TABLE customer_points ADD COLUMN IF NOT EXISTS full_name TEXT;
+    `);
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS weekly_missions (
+        id TEXT PRIMARY KEY,
+        title TEXT NOT NULL,
+        description TEXT NOT NULL,
+        goal_type TEXT NOT NULL DEFAULT 'visits',
+        goal_value INTEGER NOT NULL DEFAULT 3,
+        reward_points INTEGER NOT NULL DEFAULT 50,
+        restaurant_id TEXT REFERENCES restaurants(id),
+        active BOOLEAN NOT NULL DEFAULT TRUE,
+        week_start DATE NOT NULL,
+        week_end DATE NOT NULL,
+        created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      );
+      CREATE TABLE IF NOT EXISTS mission_progress (
+        id TEXT PRIMARY KEY,
+        mission_id TEXT NOT NULL REFERENCES weekly_missions(id) ON DELETE CASCADE,
+        phone TEXT NOT NULL,
+        progress INTEGER NOT NULL DEFAULT 0,
+        completed BOOLEAN NOT NULL DEFAULT FALSE,
+        completed_at TIMESTAMPTZ,
+        reward_granted BOOLEAN NOT NULL DEFAULT FALSE,
+        UNIQUE(mission_id, phone)
+      );
+    `);
     schemaInitialized = true;
   } finally {
     client.release();
@@ -238,6 +268,7 @@ export type Campaign = {
   qr_dot_style: string;
   qr_corner_style: string;
   qr_gradient_end: string | null;
+  prize_cost: number | null;
 };
 
 export type Prize = {
@@ -319,6 +350,64 @@ export type CustomerPoints = {
   tier: 'bronze' | 'silver' | 'gold';
   updated_at: string;
 };
+
+export type CustomerTier = 'bronze' | 'silver' | 'gold';
+
+export const TIER_THRESHOLDS: Record<'silver' | 'gold', number> = {
+  silver: 100,
+  gold: 300,
+};
+
+export const TIER_BENEFITS: Record<CustomerTier, string[]> = {
+  bronze: [
+    'Acumula puntos en cada visita',
+    'Acceso a promociones generales',
+  ],
+  silver: [
+    'Acceso anticipado a promociones y campañas',
+    'Regalo de cumpleaños mejorado',
+    'Soporte prioritario',
+  ],
+  gold: [
+    'Premios y eventos exclusivos VIP',
+    'Atención prioritaria en sucursal',
+    'Regalo de cumpleaños premium',
+    'Invitaciones a eventos especiales',
+  ],
+};
+
+export const TIER_LABELS: Record<CustomerTier, string> = {
+  bronze: 'Bronce',
+  silver: 'Plata',
+  gold: 'Oro',
+};
+
+export function getTierForPoints(totalPoints: number): CustomerTier {
+  if (totalPoints >= TIER_THRESHOLDS.gold) return 'gold';
+  if (totalPoints >= TIER_THRESHOLDS.silver) return 'silver';
+  return 'bronze';
+}
+
+export type TierInfo = {
+  tier: CustomerTier;
+  next: CustomerTier | null;
+  nextThreshold: number | null;
+  pointsToNext: number;
+  progressPct: number;
+  benefits: string[];
+};
+
+export function getTierInfo(totalPoints: number): TierInfo {
+  const tier = getTierForPoints(totalPoints);
+  const next: CustomerTier | null = tier === 'gold' ? null : tier === 'silver' ? 'gold' : 'silver';
+  const nextThreshold = next ? TIER_THRESHOLDS[next] : null;
+  const prevThreshold = tier === 'gold' ? TIER_THRESHOLDS.gold : tier === 'silver' ? TIER_THRESHOLDS.silver : 0;
+  const pointsToNext = nextThreshold ? Math.max(0, nextThreshold - totalPoints) : 0;
+  const progressPct = nextThreshold
+    ? Math.min(100, Math.max(0, Math.round(((totalPoints - prevThreshold) / (nextThreshold - prevThreshold)) * 100)))
+    : 100;
+  return { tier, next, nextThreshold, pointsToNext, progressPct, benefits: TIER_BENEFITS[tier] };
+}
 
 export async function insertRestaurant(r: Omit<Restaurant, 'created_at'>): Promise<Restaurant> {
   await ensureSchema();
@@ -462,6 +551,154 @@ export async function getAllCustomerPoints(): Promise<CustomerPoints[]> {
     `SELECT * FROM customer_points ORDER BY lifetime_points DESC`
   );
   return rows;
+}
+
+export type AnalyticsOverview = {
+  ltv: {
+    avgLifetimeValue: number;
+    totalRevenue: number;
+    payingCustomers: number;
+    topCustomers: Array<{ phone: string; full_name: string; total_spent: number; visits: number; last_visit: string }>;
+  };
+  retention: {
+    totalCustomers: number;
+    returningCustomers: number;
+    retentionRate: number;
+    newCustomers30d: number;
+    activeCustomers30d: number;
+  };
+  campaigns: Array<{
+    id: string;
+    name: string;
+    prizesGenerated: number;
+    claims: number;
+    delivered: number;
+    conversionRate: number;
+    uniqueCustomers: number;
+    prizeCost: number | null;
+    totalCost: number | null;
+    costPerClaim: number | null;
+  }>;
+  winback: {
+    at_risk: number;
+    dormant: number;
+  };
+};
+
+export async function getAnalyticsOverview(): Promise<AnalyticsOverview> {
+  await ensureSchema();
+  const pool = getPool();
+
+  // All queries run in parallel — avoids 5× sequential round-trips
+  const [ltvResult, topCustomerResult, retentionResult, campaignResult, winbackResult] = await Promise.all([
+    pool.query<{ total_revenue: string; paying_customers: string }>(`
+      SELECT COALESCE(SUM(amount), 0)::text AS total_revenue, COUNT(DISTINCT phone)::text AS paying_customers
+      FROM ticket_claims
+    `),
+    pool.query<{ phone: string; full_name: string; total_spent: string; visits: string; last_visit: string }>(`
+      SELECT phone, full_name, SUM(amount)::text AS total_spent, COUNT(*)::text AS visits, MAX(claimed_at)::text AS last_visit
+      FROM ticket_claims
+      GROUP BY phone, full_name
+      ORDER BY SUM(amount) DESC
+      LIMIT 10
+    `),
+    // Single query computes all retention metrics in SQL — no full table transfer to Node
+    pool.query<{ total: string; returning: string; new_30d: string; active_30d: string }>(`
+      SELECT
+        COUNT(*)::text AS total,
+        COUNT(*) FILTER (WHERE visits >= 2)::text AS returning,
+        COUNT(*) FILTER (WHERE first_visit >= NOW() - INTERVAL '30 days')::text AS new_30d,
+        COUNT(*) FILTER (WHERE last_visit >= NOW() - INTERVAL '30 days')::text AS active_30d
+      FROM (
+        SELECT phone, COUNT(*) AS visits, MIN(claimed_at) AS first_visit, MAX(claimed_at) AS last_visit
+        FROM (
+          SELECT phone, claimed_at FROM claims
+          UNION ALL
+          SELECT phone, claimed_at FROM ticket_claims
+        ) all_activity
+        GROUP BY phone
+      ) g
+    `),
+    pool.query<{ id: string; name: string; prizes_generated: string; claims: string; delivered: string; unique_customers: string; prize_cost: string | null }>(`
+      SELECT
+        camp.id,
+        camp.name,
+        camp.prize_cost::text AS prize_cost,
+        COUNT(DISTINCT p.id)::text AS prizes_generated,
+        COUNT(c.id)::text AS claims,
+        COUNT(c.id) FILTER (WHERE c.status = 'delivered')::text AS delivered,
+        COUNT(DISTINCT c.phone)::text AS unique_customers
+      FROM campaigns camp
+      LEFT JOIN prizes p ON p.campaign_id = camp.id
+      LEFT JOIN claims c ON c.prize_id = p.id
+      GROUP BY camp.id, camp.name, camp.prize_cost
+      ORDER BY COUNT(c.id) DESC
+    `),
+    pool.query<{ at_risk: string; dormant: string }>(`
+      SELECT
+        COUNT(*) FILTER (WHERE last_visit < NOW() - INTERVAL '30 days')::text AS at_risk,
+        COUNT(*) FILTER (WHERE last_visit >= NOW() - INTERVAL '30 days' AND last_visit < NOW() - INTERVAL '15 days')::text AS dormant
+      FROM (
+        SELECT phone, MAX(claimed_at) AS last_visit
+        FROM (
+          SELECT phone, claimed_at FROM claims
+          UNION ALL
+          SELECT phone, claimed_at FROM ticket_claims
+        ) a
+        GROUP BY phone
+      ) g
+    `),
+  ]);
+
+  const totalRevenue = parseFloat(ltvResult.rows[0]?.total_revenue ?? '0');
+  const payingCustomers = parseInt(ltvResult.rows[0]?.paying_customers ?? '0', 10);
+  const ret = retentionResult.rows[0];
+  const totalCustomers = parseInt(ret?.total ?? '0', 10);
+  const returningCustomers = parseInt(ret?.returning ?? '0', 10);
+
+  return {
+    ltv: {
+      avgLifetimeValue: payingCustomers > 0 ? totalRevenue / payingCustomers : 0,
+      totalRevenue,
+      payingCustomers,
+      topCustomers: topCustomerResult.rows.map((r) => ({
+        phone: r.phone,
+        full_name: r.full_name,
+        total_spent: parseFloat(r.total_spent),
+        visits: parseInt(r.visits, 10),
+        last_visit: r.last_visit,
+      })),
+    },
+    retention: {
+      totalCustomers,
+      returningCustomers,
+      retentionRate: totalCustomers > 0 ? (returningCustomers / totalCustomers) * 100 : 0,
+      newCustomers30d: parseInt(ret?.new_30d ?? '0', 10),
+      activeCustomers30d: parseInt(ret?.active_30d ?? '0', 10),
+    },
+    campaigns: campaignResult.rows.map((r) => {
+      const claims = parseInt(r.claims, 10);
+      const prizesGenerated = parseInt(r.prizes_generated, 10);
+      const prizeCost = r.prize_cost != null ? parseFloat(r.prize_cost) : null;
+      const totalCost = prizeCost != null ? prizeCost * claims : null;
+      return {
+        id: r.id,
+        name: r.name,
+        prizesGenerated,
+        claims,
+        delivered: parseInt(r.delivered, 10),
+        conversionRate: prizesGenerated > 0 ? (claims / prizesGenerated) * 100 : 0,
+        uniqueCustomers: parseInt(r.unique_customers, 10),
+        prizeCost,
+        totalCost,
+        costPerClaim: claims > 0 && totalCost != null ? totalCost / claims : null,
+      };
+    }),
+    winback: {
+      at_risk: parseInt(winbackResult.rows[0]?.at_risk ?? '0', 10),
+      dormant: parseInt(winbackResult.rows[0]?.dormant ?? '0', 10),
+    },
+  };
 }
 
 export async function getReferralStats(): Promise<{
@@ -706,11 +943,12 @@ export async function getUserByUsername(username: string): Promise<DbUser | unde
 export async function insertCampaign(c: Omit<Campaign, 'created_at'>): Promise<Campaign> {
   await ensureSchema();
   const { rows } = await getPool().query<Campaign>(
-    `INSERT INTO campaigns (id, name, description, restaurant_id, qr_dot_color, qr_background, qr_dot_style, qr_corner_style, qr_gradient_end)
-     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING *`,
+    `INSERT INTO campaigns (id, name, description, restaurant_id, qr_dot_color, qr_background, qr_dot_style, qr_corner_style, qr_gradient_end, prize_cost)
+     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING *`,
     [c.id, c.name, c.description ?? null, c.restaurant_id ?? null,
      c.qr_dot_color ?? '#0f172a', c.qr_background ?? '#ffffff',
-     c.qr_dot_style ?? 'square', c.qr_corner_style ?? 'square', c.qr_gradient_end ?? null]
+     c.qr_dot_style ?? 'square', c.qr_corner_style ?? 'square', c.qr_gradient_end ?? null,
+     c.prize_cost ?? null]
   );
   return rows[0];
 }
@@ -1570,7 +1808,7 @@ export async function updateUserPassword(username: string, passwordHash: string)
 
 // ── Notifications ─────────────────────────────────────────────────────────────
 
-export type NotificationType = 'new_claim' | 'prize_expiring' | 'vip_customer' | 'new_delivery' | 'low_prizes' | 'daily_summary';
+export type NotificationType = 'new_claim' | 'prize_expiring' | 'vip_customer' | 'new_delivery' | 'low_prizes' | 'daily_summary' | 'platform_update';
 
 export type Notification = {
   id: string;

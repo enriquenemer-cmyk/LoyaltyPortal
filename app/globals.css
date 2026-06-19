@@ -69,11 +69,9 @@ h3, .text-h3 { font-weight: 700; letter-spacing: -0.02em; }
 @keyframes page-enter {
   from {
     opacity: 0;
-    transform: translateY(12px) scale(0.99);
   }
   to {
     opacity: 1;
-    transform: translateY(0) scale(1);
   }
 }
 

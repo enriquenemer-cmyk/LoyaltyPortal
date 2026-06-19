@@ -70,6 +70,8 @@ function Section({ title, icon, children }: { title: string; icon: React.ReactNo
 }
 
 // ── Main page ─────────────────────────────────────────────────────────────────
+const TIER_LABELS: Record<string, string> = { bronze: 'Bronce', silver: 'Plata', gold: 'Oro' };
+
 export default function WhatsAppPage() {
   // Section 1
   const [prizes, setPrizes] = useState<Prize[]>([]);
@@ -77,8 +79,9 @@ export default function WhatsAppPage() {
   const [selectedPrizeId, setSelectedPrizeId] = useState('');
   const [template, setTemplate] = useState(DEFAULT_TEMPLATE);
 
-  // Section 2
+  // Section 2 — recipients
   const [useAllClients, setUseAllClients] = useState(false);
+  const [tierFilter, setTierFilter] = useState<'' | 'bronze' | 'silver' | 'gold'>('');
   const [loadingClients, setLoadingClients] = useState(false);
   const [recipients, setRecipients] = useState<Recipient[]>([]);
   const [csvError, setCsvError] = useState('');
@@ -124,24 +127,37 @@ export default function WhatsAppPage() {
     setCampaigns(loadCampaigns());
   }, []);
 
-  // ── Load all clients ──
+  // ── Load clients (all or by tier) ──
   useEffect(() => {
-    if (!useAllClients) { setRecipients([]); return; }
+    if (!useAllClients && !tierFilter) { setRecipients([]); return; }
     setLoadingClients(true);
-    fetch('/api/claims')
-      .then((r) => r.json())
-      .then((data) => {
-        const seen = new Map<string, string>();
-        for (const c of data.claims ?? []) {
-          if (c.phone && !seen.has(c.phone)) {
-            seen.set(c.phone, c.full_name ?? '');
+
+    if (tierFilter) {
+      // Load by tier from customer_points
+      fetch(`/api/customer-points`)
+        .then((r) => r.json())
+        .then((data) => {
+          const filtered = (data.points ?? []).filter((p: { tier: string; phone: string; full_name?: string }) => p.tier === tierFilter);
+          setRecipients(filtered.map((p: { phone: string; full_name?: string }) => ({ phone: p.phone, name: p.full_name })));
+        })
+        .catch(() => setRecipients([]))
+        .finally(() => setLoadingClients(false));
+    } else {
+      fetch('/api/claims')
+        .then((r) => r.json())
+        .then((data) => {
+          const seen = new Map<string, string>();
+          for (const c of data.claims ?? []) {
+            if (c.phone && !seen.has(c.phone)) {
+              seen.set(c.phone, c.full_name ?? '');
+            }
           }
-        }
-        setRecipients(Array.from(seen.entries()).map(([phone, name]) => ({ phone, name })));
-      })
-      .catch(() => setRecipients([]))
-      .finally(() => setLoadingClients(false));
-  }, [useAllClients]);
+          setRecipients(Array.from(seen.entries()).map(([phone, name]) => ({ phone, name })));
+        })
+        .catch(() => setRecipients([]))
+        .finally(() => setLoadingClients(false));
+    }
+  }, [useAllClients, tierFilter]);
 
   // ── CSV upload ──
   function handleCsvUpload(e: React.ChangeEvent<HTMLInputElement>) {
@@ -305,6 +321,26 @@ export default function WhatsAppPage() {
         }
       >
         <div className="space-y-4">
+          {/* Tier filter */}
+          <div>
+            <p className="text-xs font-semibold text-stone-600 mb-2">Filtrar por nivel de cliente</p>
+            <div className="flex gap-2 flex-wrap">
+              {(['', 'bronze', 'silver', 'gold'] as const).map((t) => (
+                <button
+                  key={t}
+                  onClick={() => { setTierFilter(t); setUseAllClients(false); }}
+                  className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition-all ${
+                    tierFilter === t && !useAllClients
+                      ? 'border-[#25D366] bg-[#E9FBE9] text-[#15803d]'
+                      : 'border-[#E8E3DC] bg-white text-stone-600 hover:border-[#25D366]'
+                  }`}
+                >
+                  {t === '' ? 'Sin filtro' : t === 'bronze' ? '🥉 Bronce' : t === 'silver' ? '🥈 Plata' : '🥇 Oro'}
+                </button>
+              ))}
+            </div>
+          </div>
+
           {/* Toggle all clients */}
           <label className="flex items-center gap-3 cursor-pointer group">
             <div className="relative">
@@ -313,6 +349,7 @@ export default function WhatsAppPage() {
                 checked={useAllClients}
                 onChange={(e) => {
                   setUseAllClients(e.target.checked);
+                  setTierFilter('');
                   if (!e.target.checked) setRecipients([]);
                 }}
                 className="sr-only"

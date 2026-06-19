@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getAllClaims } from '@/lib/db';
+import { getAllClaims, logActivity } from '@/lib/db';
+import { checkRateLimit, getClientIp } from '@/lib/rateLimit';
+import { randomUUID } from 'crypto';
 
 function validateApiKey(request: NextRequest): boolean {
   const { searchParams } = new URL(request.url);
@@ -12,6 +14,19 @@ function validateApiKey(request: NextRequest): boolean {
 export async function GET(request: NextRequest) {
   if (!validateApiKey(request)) {
     return NextResponse.json({ error: 'API key inválida o ausente.' }, { status: 401 });
+  }
+
+  const ip = getClientIp(request);
+  if (!await checkRateLimit(`v1_claims_${ip}`, 60, 60 * 1000)) {
+    logActivity({
+      id: randomUUID(),
+      restaurant_id: null,
+      action: 'rate_limit_exceeded',
+      description: `Rate limit excedido en /api/v1/claims (IP: ${ip})`,
+      user_name: 'API',
+      metadata: { ip, endpoint: '/api/v1/claims' },
+    }).catch(() => {});
+    return NextResponse.json({ error: 'Demasiadas solicitudes. Intenta de nuevo en un minuto.' }, { status: 429 });
   }
 
   try {

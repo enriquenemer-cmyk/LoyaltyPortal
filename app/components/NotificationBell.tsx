@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 
-type NotificationType = 'new_claim' | 'prize_expiring' | 'vip_customer' | 'new_delivery' | 'low_prizes' | 'daily_summary';
+type NotificationType = 'new_claim' | 'prize_expiring' | 'vip_customer' | 'new_delivery' | 'low_prizes' | 'daily_summary' | 'platform_update';
 
 type Notification = {
   id: string;
@@ -24,6 +24,7 @@ function typeIcon(type: NotificationType): string {
     case 'new_delivery': return '🚚';
     case 'low_prizes': return '⚠️';
     case 'daily_summary': return '📊';
+    case 'platform_update': return '🆕';
     default: return '🔔';
   }
 }
@@ -36,6 +37,34 @@ function timeAgo(dateStr: string): string {
   const hrs = Math.floor(mins / 60);
   if (hrs < 24) return `hace ${hrs}h`;
   return `hace ${Math.floor(hrs / 24)}d`;
+}
+
+async function registerPush() {
+  if (!('serviceWorker' in navigator) || !('PushManager' in window)) return;
+  try {
+    const reg = await navigator.serviceWorker.ready;
+    const existingSub = await reg.pushManager.getSubscription();
+    if (existingSub) return; // already subscribed
+
+    const vapidRes = await fetch('/api/push/vapid-public-key');
+    if (!vapidRes.ok) return;
+    const { publicKey } = await vapidRes.json() as { publicKey: string };
+    if (!publicKey) return;
+
+    const sub = await reg.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: publicKey,
+    });
+
+    const json = sub.toJSON();
+    await fetch('/api/push/subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ endpoint: json.endpoint, keys: json.keys }),
+    });
+  } catch {
+    // Push not available or denied — silently ignore
+  }
 }
 
 export default function NotificationBell() {
@@ -58,8 +87,40 @@ export default function NotificationBell() {
 
   useEffect(() => {
     fetchNotifications();
-    const interval = setInterval(fetchNotifications, 20_000);
-    return () => clearInterval(interval);
+    registerPush();
+
+    let es: EventSource | null = null;
+    let reconnectTimer: ReturnType<typeof setTimeout> | null = null;
+    let cancelled = false;
+
+    const connect = () => {
+      if (cancelled) return;
+      es = new EventSource('/api/notifications/stream');
+
+      es.addEventListener('notifications', (e) => {
+        try {
+          const data = JSON.parse((e as MessageEvent).data);
+          setNotifications(data.notifications ?? []);
+        } catch {
+          // ignore malformed payload
+        }
+      });
+
+      es.onerror = () => {
+        es?.close();
+        if (!cancelled) {
+          reconnectTimer = setTimeout(connect, 2000);
+        }
+      };
+    };
+
+    connect();
+
+    return () => {
+      cancelled = true;
+      es?.close();
+      if (reconnectTimer) clearTimeout(reconnectTimer);
+    };
   }, []);
 
   // Close on outside click
@@ -115,7 +176,7 @@ export default function NotificationBell() {
       {open && (
         <div
           ref={panelRef}
-          className="absolute right-0 top-full mt-2 w-80 bg-white border border-[#E8E3DC] rounded-xl shadow-xl z-50 overflow-hidden"
+          className="absolute left-0 top-full mt-2 w-72 bg-white border border-[#E8E3DC] rounded-xl shadow-xl z-50 overflow-hidden"
           style={{ boxShadow: '0 8px 32px rgba(28,25,23,0.14)' }}
         >
           {/* Header */}

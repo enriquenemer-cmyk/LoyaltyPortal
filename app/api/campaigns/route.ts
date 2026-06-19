@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { name, description, restaurant_id, qr_dot_color, qr_background, qr_dot_style, qr_corner_style, qr_gradient_end } = body;
+    const { name, description, restaurant_id, qr_dot_color, qr_background, qr_dot_style, qr_corner_style, qr_gradient_end, prize_cost } = body;
     if (!name?.trim()) {
       return NextResponse.json({ error: 'Nombre requerido.' }, { status: 400 });
     }
@@ -31,6 +31,7 @@ export async function POST(request: NextRequest) {
       qr_dot_style: qr_dot_style || 'square',
       qr_corner_style: qr_corner_style || 'square',
       qr_gradient_end: qr_gradient_end || null,
+      prize_cost: prize_cost != null ? parseFloat(prize_cost) : null,
     });
     return NextResponse.json({ campaign }, { status: 201 });
   } catch (err) {

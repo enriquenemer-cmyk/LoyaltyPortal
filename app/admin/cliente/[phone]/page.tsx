@@ -6,6 +6,8 @@ import {
   getCustomerPoints,
   getStampCardsByPhone,
   getPool,
+  getTierInfo,
+  TIER_LABELS,
   type ClaimWithPrize,
   type CustomerPoints,
   type StampCard,
@@ -256,6 +258,7 @@ export default async function CustomerProfilePage({
 
   const tier = customerPoints?.tier ?? 'bronze';
   const totalPoints = customerPoints?.total_points ?? 0;
+  const tierInfo = getTierInfo(totalPoints);
 
   if (!claims.length && !ticketClaims.length && !customerPoints) {
     notFound();
@@ -361,6 +364,38 @@ export default async function CustomerProfilePage({
               </div>
             </div>
           )}
+
+          {/* Tier progress + benefits */}
+          <div className="mt-5 pt-5 border-t border-[#E8E3DC]">
+            <div className="flex items-center justify-between mb-2">
+              <p className="text-xs font-bold text-stone-500 uppercase tracking-wider">Nivel {tierLabel(tier)}</p>
+              {tierInfo.next ? (
+                <p className="text-xs text-stone-500">
+                  {tierInfo.pointsToNext.toLocaleString('es-MX')} pts para nivel {TIER_LABELS[tierInfo.next]}
+                </p>
+              ) : (
+                <p className="text-xs text-stone-500">Nivel máximo alcanzado</p>
+              )}
+            </div>
+            <div className="h-2 rounded-full bg-stone-100 overflow-hidden">
+              <div
+                className={`h-full rounded-full ${
+                  tier === 'gold' ? 'bg-yellow-400' : tier === 'silver' ? 'bg-slate-400' : 'bg-[#2563EB]'
+                }`}
+                style={{ width: `${tierInfo.progressPct}%` }}
+              />
+            </div>
+            <div className="flex flex-wrap gap-2 mt-3">
+              {tierInfo.benefits.map((b) => (
+                <span
+                  key={b}
+                  className="inline-flex items-center gap-1.5 bg-stone-50 text-stone-600 text-xs font-medium px-2.5 py-1 rounded-full border border-stone-200"
+                >
+                  ✓ {b}
+                </span>
+              ))}
+            </div>
+          </div>
         </div>
 
         {/* ── Stats grid ── */}

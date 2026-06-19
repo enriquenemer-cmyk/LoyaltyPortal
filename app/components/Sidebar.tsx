@@ -3,7 +3,6 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import ClaimNotifier from './ClaimNotifier';
 import NotificationBell from './NotificationBell';
 
 // ── Types ────────────────────────────────────────────────────────────────────
@@ -137,6 +136,11 @@ const Icons = {
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 6a9 9 0 0118 0M3 6v12a2 2 0 002 2h14a2 2 0 002-2V6M3 6h18M9 10h.01M15 10h.01M9 14h6" />
     </svg>
   ),
+  analitica: (
+    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2zM5 13l3-3 3 3 5-5" />
+    </svg>
+  ),
   seguridad: (
     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
@@ -160,6 +164,26 @@ const Icons = {
   sistema: (
     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18" />
+    </svg>
+  ),
+  misiones: (
+    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+    </svg>
+  ),
+  feedback: (
+    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+    </svg>
+  ),
+  giftcards: (
+    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
+    </svg>
+  ),
+  suscripcion: (
+    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
     </svg>
   ),
 };
@@ -194,6 +218,8 @@ const ALL_SECTIONS: SectionDef[] = [
       { href: '/admin/clientes', label: 'Base de Clientes', icon: Icons.clientes },
       { href: '/admin/cumpleanos', label: 'Puntos y Sellos', icon: Icons.puntos },
       { href: '/admin/automatizacion', label: 'Automatizacion', icon: Icons.automatizacion },
+      { href: '/admin/misiones', label: 'Misiones Semanales', icon: Icons.misiones },
+      { href: '/admin/feedback', label: 'Feedback / NPS', icon: Icons.feedback },
     ],
   },
   {
@@ -223,8 +249,11 @@ const ALL_SECTIONS: SectionDef[] = [
     roles: ['admin'],
     links: [
       { href: '/admin/corporativo', label: 'Vista Corporativa', icon: Icons.corporativo },
+      { href: '/admin/analitica', label: 'Analitica Avanzada', icon: Icons.analitica },
       { href: '/admin/reporte', label: 'Reportes', icon: Icons.reportes },
       { href: '/admin/seguridad', label: 'Seguridad y Accesos', icon: Icons.seguridad },
+      { href: '/admin/suscripciones', label: 'Suscripcion VIP', icon: Icons.suscripcion },
+      { href: '/admin/gift-cards', label: 'Gift Cards', icon: Icons.giftcards },
     ],
   },
   {
@@ -573,7 +602,7 @@ function SidebarContent({ onLinkClick }: { onLinkClick?: () => void }) {
             className="relative p-1.5 rounded-lg text-stone-400 hover:text-blue-500 hover:bg-blue-50 transition-colors"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             {pendingCount > 0 && (
               <span className="absolute -top-0.5 -right-0.5 min-w-[16px] h-4 px-0.5 rounded-full bg-red-500 text-white text-[9px] font-bold flex items-center justify-center leading-none">
@@ -623,9 +652,6 @@ function SidebarContent({ onLinkClick }: { onLinkClick?: () => void }) {
           return <NavSection key={section.key} section={section} />;
         })}
       </nav>
-
-      {/* Real-time claim notifications */}
-      <ClaimNotifier />
 
       {/* User footer */}
       {username && (

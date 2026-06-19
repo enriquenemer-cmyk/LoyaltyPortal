@@ -462,9 +462,29 @@ export default function ClientesPage() {
             </div>
           </div>
           {!loading && customers.length > 0 && (
-            <div className="flex items-center gap-2 text-xs text-stone-400 bg-white border border-[#E8E3DC] rounded-xl px-4 py-2.5 shadow-sm">
-              <div className="w-1.5 h-1.5 bg-[#2563EB] rounded-full animate-pulse" />
-              <span className="font-semibold">{customers.length}</span> clientes únicos registrados
+            <div className="flex items-center gap-3 flex-wrap">
+              <div className="flex items-center gap-2 text-xs text-stone-400 bg-white border border-[#E8E3DC] rounded-xl px-4 py-2.5 shadow-sm">
+                <div className="w-1.5 h-1.5 bg-[#2563EB] rounded-full animate-pulse" />
+                <span className="font-semibold">{customers.length}</span> clientes únicos registrados
+              </div>
+              <button
+                onClick={() => {
+                  const rows = [['Nombre', 'Teléfono', 'Email', 'Tier', 'Puntos', 'Canjes', 'Última visita']];
+                  for (const c of customers) {
+                    rows.push([c.full_name, c.phone, c.email, c.tier, String(c.totalPoints), String(c.totalClaims), c.lastClaim.claimed_at.slice(0, 10)]);
+                  }
+                  const csv = rows.map(r => r.map(v => `"${v}"`).join(',')).join('\n');
+                  const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv' }));
+                  const a = document.createElement('a'); a.href = url; a.download = 'clientes.csv'; a.click();
+                  URL.revokeObjectURL(url);
+                }}
+                className="flex items-center gap-2 text-xs font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-xl px-4 py-2.5 hover:bg-emerald-100 transition-colors"
+              >
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                Exportar CSV
+              </button>
             </div>
           )}
         </div>

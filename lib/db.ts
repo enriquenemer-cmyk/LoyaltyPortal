@@ -233,6 +233,47 @@ async function ensureSchema(): Promise<void> {
         UNIQUE(mission_id, phone)
       );
     `);
+    await client.query(`
+      ALTER TABLE customer_points ADD COLUMN IF NOT EXISTS streak_days INTEGER NOT NULL DEFAULT 0;
+      ALTER TABLE customer_points ADD COLUMN IF NOT EXISTS streak_last_visit DATE;
+      ALTER TABLE customer_points ADD COLUMN IF NOT EXISTS public_token TEXT;
+      ALTER TABLE customer_points ADD COLUMN IF NOT EXISTS point_multiplier NUMERIC NOT NULL DEFAULT 1;
+      ALTER TABLE customer_points ADD COLUMN IF NOT EXISTS boost_expires_at TIMESTAMPTZ;
+      ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS billing_plan TEXT DEFAULT 'free';
+      ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS billing_status TEXT DEFAULT 'active';
+      ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS stripe_customer_id TEXT;
+      ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS billing_expires_at TIMESTAMPTZ;
+      CREATE TABLE IF NOT EXISTS merch_items (
+        id TEXT PRIMARY KEY,
+        name TEXT NOT NULL,
+        description TEXT,
+        photo_url TEXT,
+        points_cost INTEGER NOT NULL,
+        stock INTEGER,
+        active BOOLEAN NOT NULL DEFAULT TRUE,
+        restaurant_id TEXT REFERENCES restaurants(id),
+        created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      );
+      CREATE TABLE IF NOT EXISTS merch_redemptions (
+        id TEXT PRIMARY KEY,
+        merch_item_id TEXT NOT NULL REFERENCES merch_items(id),
+        phone TEXT NOT NULL,
+        points_spent INTEGER NOT NULL,
+        status TEXT NOT NULL DEFAULT 'pending',
+        redeemed_at TIMESTAMPTZ,
+        created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      );
+      CREATE TABLE IF NOT EXISTS outgoing_webhooks (
+        id TEXT PRIMARY KEY,
+        name TEXT NOT NULL,
+        url TEXT NOT NULL,
+        events TEXT[] NOT NULL DEFAULT '{}',
+        secret TEXT,
+        active BOOLEAN NOT NULL DEFAULT TRUE,
+        last_triggered_at TIMESTAMPTZ,
+        created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      );
+    `);
     schemaInitialized = true;
   } finally {
     client.release();
@@ -510,18 +551,35 @@ export async function insertClaim(
 
 export async function upsertCustomerPoints(phone: string, email: string, pointsDelta: number): Promise<CustomerPoints> {
   await ensureSchema();
-  
+
   const id = crypto.randomUUID();
+  const token = crypto.randomUUID().replace(/-/g, '');
+  const today = new Date().toISOString().slice(0, 10);
+
+  // Insert or update, tracking streaks and generating public_token if missing
   await getPool().query(
-    `INSERT INTO customer_points (id, phone, email, total_points, lifetime_points, tier, updated_at)
-     VALUES ($1, $2, $3, $4, $4, 'bronze', NOW())
+    `INSERT INTO customer_points (id, phone, email, total_points, lifetime_points, tier, public_token,
+        streak_days, streak_last_visit, updated_at)
+     VALUES ($1, $2, $3, $4, $4, 'bronze', $5, 1, $6::date, NOW())
      ON CONFLICT (phone) DO UPDATE SET
        email = EXCLUDED.email,
        total_points = customer_points.total_points + $4,
        lifetime_points = customer_points.lifetime_points + $4,
+       public_token = COALESCE(customer_points.public_token, $5),
+       streak_days = CASE
+         WHEN customer_points.streak_last_visit = $6::date - INTERVAL '1 day' THEN customer_points.streak_days + 1
+         WHEN customer_points.streak_last_visit = $6::date THEN customer_points.streak_days
+         ELSE 1
+       END,
+       streak_last_visit = $6::date,
        updated_at = NOW()`,
-    [id, phone, email, pointsDelta]
+    [id, phone, email, pointsDelta, token, today]
   );
+  const { rows: before } = await getPool().query<{ tier: string }>(
+    'SELECT tier FROM customer_points WHERE phone = $1', [phone]
+  );
+  const prevTier = before[0]?.tier ?? 'bronze';
+
   const { rows } = await getPool().query<CustomerPoints>(
     `UPDATE customer_points
      SET tier = CASE
@@ -533,7 +591,17 @@ export async function upsertCustomerPoints(phone: string, email: string, pointsD
      RETURNING *`,
     [phone]
   );
-  return rows[0];
+  const cp = rows[0];
+
+  // Fire webhook if tier changed (non-blocking)
+  if (cp && cp.tier !== prevTier) {
+    import('@/lib/dispatchWebhook').then(({ dispatchWebhook }) => {
+      const event = cp.tier > prevTier ? 'tier_upgrade' : 'tier_downgrade';
+      dispatchWebhook(event, { phone, prev_tier: prevTier, new_tier: cp.tier, total_points: cp.total_points });
+    }).catch(() => {});
+  }
+
+  return cp;
 }
 
 export async function getCustomerPoints(phone: string): Promise<CustomerPoints | undefined> {

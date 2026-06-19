@@ -26,11 +26,25 @@ export async function POST(req: NextRequest) {
   }
 
   if (event.type === 'checkout.session.completed') {
-    const session = event.data.object as { metadata?: { phone?: string; email?: string } };
+    const session = event.data.object as { metadata?: { phone?: string; email?: string; type?: string; days?: string; multiplier?: string } };
     const phone = session.metadata?.phone;
     const email = session.metadata?.email;
+    const sessionType = session.metadata?.type;
 
-    if (phone && email) {
+    if (phone && sessionType === 'boost') {
+      const days = parseInt(session.metadata?.days ?? '7');
+      const multiplier = parseFloat(session.metadata?.multiplier ?? '2');
+      const expiresAt = new Date(Date.now() + days * 24 * 60 * 60 * 1000).toISOString();
+      await getPool().query(
+        `UPDATE customer_points SET point_multiplier = $1, boost_expires_at = $2, updated_at = NOW() WHERE phone = $3`,
+        [multiplier, expiresAt, phone]
+      );
+      logActivity({ id: randomUUID(), restaurant_id: null, action: 'boost_activated',
+        description: `Boost ${multiplier}× activado para ${phone} (${days} días)`,
+        user_name: 'Stripe', metadata: { phone, multiplier, days } }).catch(() => {});
+    }
+
+    if (phone && email && sessionType !== 'boost') {
       // Mark customer as VIP in customer_points
       await getPool().query(
         `INSERT INTO customer_points (id, phone, email, total_points, lifetime_points, tier, updated_at)

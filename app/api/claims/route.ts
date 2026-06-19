@@ -91,6 +91,11 @@ export async function POST(request: NextRequest) {
       referred_by: referred_by || null,
     });
 
+    // Dispatch claim_created webhook (non-blocking)
+    import('@/lib/dispatchWebhook').then(({ dispatchWebhook }) => {
+      dispatchWebhook('claim_created', { id, phone, email, full_name, prize_id, prize_name: prize.name });
+    }).catch(() => {});
+
     // Non-blocking prize rules engine
     (async () => {
       try {

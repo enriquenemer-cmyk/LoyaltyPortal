@@ -254,6 +254,9 @@ const ALL_SECTIONS: SectionDef[] = [
       { href: '/admin/seguridad', label: 'Seguridad y Accesos', icon: Icons.seguridad },
       { href: '/admin/suscripciones', label: 'Suscripcion VIP', icon: Icons.suscripcion },
       { href: '/admin/gift-cards', label: 'Gift Cards', icon: Icons.giftcards },
+      { href: '/admin/merch', label: 'Merch Canjeable', icon: Icons.premios },
+      { href: '/admin/billing', label: 'Billing SaaS', icon: Icons.reportes },
+      { href: '/admin/webhooks-salientes', label: 'Webhooks Zapier', icon: Icons.webhooks },
     ],
   },
   {
@@ -273,6 +276,8 @@ const ALL_SECTIONS: SectionDef[] = [
 const CAJERO_LINKS: NavItem[] = [
   { href: '/admin', label: 'Dashboard', exact: true, icon: Icons.dashboard },
   { href: '/admin/registros', label: 'Registros de Cobro', icon: Icons.registros },
+  { href: '/cajero/kiosco', label: 'Kiosco Self-Service', icon: Icons.scan },
+  { href: '/cajero/ruleta', label: 'Ruleta de Premios', icon: Icons.juegos },
 ];
 
 // Manager hidden links in CONFIGURACION

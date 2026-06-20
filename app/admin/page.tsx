@@ -1379,58 +1379,89 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-[#FAFAF9] p-6 md:p-10">
-      <div className="max-w-6xl mx-auto flex flex-col gap-8">
-
-        {/* Header */}
-        <div className="flex items-start justify-between flex-wrap gap-4">
-          <div>
-            {greeting && (
-              <p className="text-2xl font-black mb-0.5 shimmer-text">{greeting} 👋</p>
-            )}
-            {todayLabel && (
-              <p className="text-sm text-[#a8a29e] mb-1 capitalize">{todayLabel}</p>
-            )}
-            <h1 className="h1 font-black text-3xl">
-              Panel Principal
-            </h1>
-            <p className="text-sm text-[#78716c] mt-0.5">Plataforma Burrito — Super Tierra</p>
-          </div>
-          <div className="flex flex-col items-end gap-2">
-            <div className="flex gap-3">
-              <Link
-                href="/admin/generate"
-                className="px-4 py-2 rounded-xl text-white text-sm font-semibold shadow-sm transition-opacity hover:opacity-90"
-                style={{ backgroundColor: brand }}
-              >
-                Generar Premio
-              </Link>
-              <Link
-                href="/admin/registros"
-                className="px-4 py-2 rounded-xl text-sm font-semibold border border-[#E8E3DC] text-[#1C1917] bg-white shadow-sm hover:bg-blue-50 transition-colors"
-              >
-                Ver Registros
-              </Link>
-            </div>
-            <div className="flex items-center gap-2">
-              {dataCachedAt && (
-                <span className="text-xs text-[#a8a29e]">
-                  Actualizado hace {Math.round((Date.now() - dataCachedAt) / 60000)} min
-                </span>
+    <div className="min-h-screen">
+      {/* ── Hero Banner ── */}
+      <div className="hero-gradient px-6 md:px-10 pt-8 pb-10">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex items-start justify-between flex-wrap gap-6">
+            <div>
+              {greeting && (
+                <p className="text-sm font-semibold text-blue-200/80 mb-1 uppercase tracking-widest">{greeting}</p>
               )}
-              <button
-                onClick={() => loadDashboard.current()}
-                disabled={loading}
-                className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border border-[#E8E3DC] bg-white text-[#78716c] hover:bg-blue-50 hover:text-[#2563EB] transition-colors disabled:opacity-50"
-              >
-                <svg width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24" className={loading ? 'animate-spin' : ''}>
-                  <path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-                Actualizar
-              </button>
+              <h1 className="text-3xl md:text-4xl font-black text-white leading-tight tracking-tight">
+                Panel Principal
+              </h1>
+              {todayLabel && (
+                <p className="text-sm text-blue-200/70 mt-1.5 capitalize">{todayLabel}</p>
+              )}
+            </div>
+            <div className="flex flex-col items-end gap-3">
+              <div className="flex gap-2.5">
+                <Link
+                  href="/admin/generate"
+                  className="px-5 py-2.5 rounded-xl text-sm font-bold transition-all"
+                  style={{ background: 'rgba(255,255,255,0.15)', color: 'white', border: '1px solid rgba(255,255,255,0.2)', backdropFilter: 'blur(8px)' }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = 'rgba(255,255,255,0.25)'; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = 'rgba(255,255,255,0.15)'; }}
+                >
+                  + Generar Premio
+                </Link>
+                <Link
+                  href="/admin/registros"
+                  className="px-5 py-2.5 rounded-xl text-sm font-bold transition-all"
+                  style={{ background: 'white', color: '#1d4ed8' }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = '#eff6ff'; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = 'white'; }}
+                >
+                  Ver Registros
+                </Link>
+              </div>
+              <div className="flex items-center gap-2">
+                {dataCachedAt && (
+                  <span className="text-xs text-blue-200/60">
+                    Actualizado hace {Math.round((Date.now() - dataCachedAt) / 60000)} min
+                  </span>
+                )}
+                <button
+                  onClick={() => loadDashboard.current()}
+                  disabled={loading}
+                  className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg transition-all disabled:opacity-50"
+                  style={{ background: 'rgba(255,255,255,0.1)', color: 'rgba(219,234,254,0.9)', border: '1px solid rgba(255,255,255,0.15)' }}
+                >
+                  <svg width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24" className={loading ? 'animate-spin' : ''}>
+                    <path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                  Actualizar
+                </button>
+              </div>
             </div>
           </div>
+
+          {/* Hero KPI pills */}
+          {!loading && (
+            <div className="flex flex-wrap gap-3 mt-6">
+              <div className="flex items-center gap-2 px-4 py-2 rounded-full" style={{ background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.18)', backdropFilter: 'blur(8px)' }}>
+                <span className="w-2 h-2 rounded-full bg-emerald-400" style={{ boxShadow: '0 0 8px rgba(52,211,153,0.8)' }} />
+                <span className="text-sm font-bold text-white">{totalCobros.toLocaleString()} cobros totales</span>
+              </div>
+              <div className="flex items-center gap-2 px-4 py-2 rounded-full" style={{ background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.18)', backdropFilter: 'blur(8px)' }}>
+                <span className="text-sm font-bold text-white">{pendientes} pendientes</span>
+              </div>
+              <div className="flex items-center gap-2 px-4 py-2 rounded-full" style={{ background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.18)', backdropFilter: 'blur(8px)' }}>
+                <span className="text-sm font-bold text-white">{totalPremios} premios activos</span>
+              </div>
+              {claimsTrend === 'up' && claimsTrendLabel && (
+                <div className="flex items-center gap-2 px-4 py-2 rounded-full" style={{ background: 'rgba(52,211,153,0.2)', border: '1px solid rgba(52,211,153,0.3)' }}>
+                  <span className="text-sm font-bold text-emerald-300">↑ {claimsTrendLabel}</span>
+                </div>
+              )}
+            </div>
+          )}
         </div>
+      </div>
+
+      <div className="px-6 md:px-10 py-8">
+      <div className="max-w-6xl mx-auto flex flex-col gap-8">
 
         {/* Setup checklist — shown until dismissed or all steps complete */}
         {!loading && (
@@ -2019,6 +2050,7 @@ export default function AdminDashboard() {
 
       {/* Guided onboarding tooltip tour */}
       <OnboardingTour />
+      </div>{/* px-6 py-8 */}
     </div>
   );
 }

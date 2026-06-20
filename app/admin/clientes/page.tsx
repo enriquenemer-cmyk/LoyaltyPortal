@@ -429,44 +429,30 @@ export default function ClientesPage() {
   }, [customers, segment, search]);
 
   return (
-    <div className="min-h-screen admin-bg">
-      <div className="max-w-7xl mx-auto px-4 py-10">
-
-        {/* Header */}
-        <div className="mb-8 flex items-start justify-between flex-wrap gap-4">
+    <div className="min-h-screen">
+      {/* Hero */}
+      <div className="hero-gradient px-4 md:px-10 pt-6 pb-8">
+        <div className="max-w-7xl mx-auto flex items-start justify-between flex-wrap gap-4">
           <div>
-            <div className="inline-flex items-center gap-2 bg-blue-50 text-[#2563EB] rounded-full px-3 py-1.5 text-xs font-bold uppercase tracking-widest mb-4 border border-blue-200">
-              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
-              </svg>
-              Base de Clientes
+            <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-widest mb-3" style={{ background: 'rgba(255,255,255,0.15)', color: 'rgba(219,234,254,0.9)', border: '1px solid rgba(255,255,255,0.2)' }}>
+              👥 Base de Clientes
             </div>
-            <h1 className="text-3xl font-black text-[#1C1917] tracking-tight border-l-[3px] border-[#2563EB] pl-4">
-              Base de <span className="gradient-text">Clientes</span>
-            </h1>
-            <p className="text-stone-500 mt-2 text-sm pl-4">
-              Perfiles agrupados de todos los clientes que han canjeado premios.
-            </p>
-            {/* Decorative overlapping avatar circles */}
-            <div className="flex items-center mt-3 pl-4">
-              <div className="flex -space-x-2">
-                <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[#2563EB] to-blue-400 border-2 border-white shadow-sm flex items-center justify-center text-white text-[9px] font-black">A</div>
-                <div className="w-7 h-7 rounded-full bg-gradient-to-br from-violet-500 to-purple-400 border-2 border-white shadow-sm flex items-center justify-center text-white text-[9px] font-black">M</div>
-                <div className="w-7 h-7 rounded-full bg-gradient-to-br from-teal-500 to-emerald-400 border-2 border-white shadow-sm flex items-center justify-center text-white text-[9px] font-black">R</div>
-                <div className="w-7 h-7 rounded-full bg-gradient-to-br from-blue-500 to-yellow-400 border-2 border-white shadow-sm flex items-center justify-center text-white text-[9px] font-black">L</div>
-                {!loading && customers.length > 4 && (
-                  <div className="w-7 h-7 rounded-full bg-stone-100 border-2 border-white shadow-sm flex items-center justify-center text-stone-500 text-[9px] font-black">+{customers.length - 4}</div>
-                )}
+            <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Mis Clientes</h1>
+            <p className="text-blue-200/70 mt-1.5 text-sm">Perfiles de todos los clientes que han canjeado premios</p>
+            {!loading && customers.length > 0 && (
+              <div className="flex items-center mt-3 gap-2">
+                <div className="flex -space-x-2">
+                  {['A','M','R','L'].map((l,i) => (
+                    <div key={i} className="w-7 h-7 rounded-full border-2 flex items-center justify-center text-white text-[9px] font-black" style={{ borderColor: 'rgba(255,255,255,0.4)', background: ['#2563eb','#7c3aed','#0d9488','#d97706'][i] }}>{l}</div>
+                  ))}
+                  {customers.length > 4 && <div className="w-7 h-7 rounded-full border-2 flex items-center justify-center text-[9px] font-black" style={{ borderColor: 'rgba(255,255,255,0.4)', background: 'rgba(255,255,255,0.2)', color: 'white' }}>+{customers.length - 4}</div>}
+                </div>
+                <span className="text-blue-200/70 text-xs font-semibold">{customers.length} clientes activos</span>
               </div>
-              <span className="ml-2 text-[10px] text-stone-400 font-semibold">clientes activos</span>
-            </div>
+            )}
           </div>
           {!loading && customers.length > 0 && (
             <div className="flex items-center gap-3 flex-wrap">
-              <div className="flex items-center gap-2 text-xs text-stone-400 bg-white border border-[#E8E3DC] rounded-xl px-4 py-2.5 shadow-sm">
-                <div className="w-1.5 h-1.5 bg-[#2563EB] rounded-full animate-pulse" />
-                <span className="font-semibold">{customers.length}</span> clientes únicos registrados
-              </div>
               <button
                 onClick={() => {
                   const rows = [['Nombre', 'Teléfono', 'Email', 'Tier', 'Puntos', 'Canjes', 'Última visita']];
@@ -478,9 +464,10 @@ export default function ClientesPage() {
                   const a = document.createElement('a'); a.href = url; a.download = 'clientes.csv'; a.click();
                   URL.revokeObjectURL(url);
                 }}
-                className="flex items-center gap-2 text-xs font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-xl px-4 py-2.5 hover:bg-emerald-100 transition-colors"
+                className="flex items-center gap-2 font-bold px-5 py-3 rounded-xl text-sm transition-all"
+                style={{ background: 'white', color: '#059669', boxShadow: '0 4px 16px rgba(0,0,0,0.15)' }}
               >
-                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                 </svg>
                 Exportar CSV
@@ -488,6 +475,9 @@ export default function ClientesPage() {
             </div>
           )}
         </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 md:px-10 py-6">
 
         {/* Stats row */}
         {loading ? (

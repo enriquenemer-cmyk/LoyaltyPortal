@@ -46,20 +46,38 @@ function StatCard({
   icon: React.ReactNode;
 }) {
   const colorMap = {
-    gray:   { border: 'border-l-stone-400',  bg: 'bg-stone-100',  icon: 'text-stone-600',  num: 'text-stone-900'  },
-    orange: { border: 'border-l-blue-500', bg: 'bg-blue-50', icon: 'text-blue-600', num: 'text-blue-600' },
-    blue:   { border: 'border-l-blue-500',   bg: 'bg-blue-50',   icon: 'text-blue-600',   num: 'text-blue-600'   },
-    amber:  { border: 'border-l-blue-500',  bg: 'bg-blue-50',  icon: 'text-blue-600',  num: 'text-blue-600'  },
+    gray:   { gradient: 'linear-gradient(135deg,#f8fafc 0%,#f1f5f9 100%)', accent: '#64748b', glow: 'rgba(100,116,139,0.15)', iconBg: '#e2e8f0', iconColor: '#475569', numColor: '#0f172a' },
+    orange: { gradient: 'linear-gradient(135deg,#eff6ff 0%,#dbeafe 100%)', accent: '#2563eb', glow: 'rgba(37,99,235,0.18)', iconBg: '#dbeafe', iconColor: '#1d4ed8', numColor: '#1e40af' },
+    blue:   { gradient: 'linear-gradient(135deg,#f0fdf4 0%,#dcfce7 100%)', accent: '#16a34a', glow: 'rgba(22,163,74,0.18)', iconBg: '#bbf7d0', iconColor: '#15803d', numColor: '#14532d' },
+    amber:  { gradient: 'linear-gradient(135deg,#fffbeb 0%,#fef3c7 100%)', accent: '#d97706', glow: 'rgba(217,119,6,0.18)', iconBg: '#fde68a', iconColor: '#b45309', numColor: '#92400e' },
   };
   const c = colorMap[color];
   return (
-    <div className={`bg-white rounded-2xl border border-[#E8E3DC] border-l-4 ${c.border} shadow-[0_1px_2px_rgba(28,25,23,0.04),_0_4px_16px_rgba(28,25,23,0.06)] p-5 flex items-center gap-4 card-hover stagger-item`}>
-      <div className={`w-[52px] h-[52px] rounded-full ${c.bg} flex items-center justify-center shrink-0`}>
-        <span className={c.icon}>{icon}</span>
+    <div
+      className="relative overflow-hidden rounded-2xl p-5 flex items-center gap-4 stagger-item cursor-default"
+      style={{
+        background: c.gradient,
+        border: `1px solid ${c.accent}22`,
+        boxShadow: `0 4px 20px ${c.glow}, 0 1px 4px rgba(0,0,0,0.04)`,
+        transition: 'transform 0.2s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.2s ease',
+      }}
+      onMouseEnter={e => {
+        (e.currentTarget as HTMLDivElement).style.transform = 'translateY(-3px) scale(1.02)';
+        (e.currentTarget as HTMLDivElement).style.boxShadow = `0 12px 32px ${c.glow}, 0 4px 12px rgba(0,0,0,0.06)`;
+      }}
+      onMouseLeave={e => {
+        (e.currentTarget as HTMLDivElement).style.transform = '';
+        (e.currentTarget as HTMLDivElement).style.boxShadow = `0 4px 20px ${c.glow}, 0 1px 4px rgba(0,0,0,0.04)`;
+      }}
+    >
+      {/* Glow blob */}
+      <div className="absolute -top-4 -right-4 w-16 h-16 rounded-full blur-xl opacity-40 pointer-events-none" style={{ background: c.accent }} />
+      <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 relative z-10" style={{ background: c.iconBg, color: c.iconColor }}>
+        {icon}
       </div>
-      <div>
-        <p className="text-xs font-bold text-stone-400 uppercase tracking-widest mb-0.5">{label}</p>
-        <p className={`text-3xl font-extrabold ${c.num}`}>{value}</p>
+      <div className="relative z-10">
+        <p className="text-xs font-bold uppercase tracking-widest mb-0.5" style={{ color: c.accent + 'aa' }}>{label}</p>
+        <p className="text-3xl font-black tabular-nums" style={{ color: c.numColor }}>{value}</p>
       </div>
     </div>
   );
@@ -525,27 +543,28 @@ export default function RegistrosPage() {
   };
 
   return (
-    <div className="min-h-screen admin-bg">
-      {/* Thin orange gradient accent line at the very top */}
-      <div style={{ height: '2px', width: '100%', background: 'linear-gradient(90deg, #2563EB, #0891B2, #38BDF8, #0891B2, #2563EB)' }} />
-      <div className="max-w-7xl mx-auto px-4 py-10">
-
-        {/* Header */}
-        <div className="mb-8 flex items-start justify-between flex-wrap gap-4">
-          <div>
-            <div className="inline-flex items-center gap-2 bg-blue-50 text-[#2563EB] rounded-full px-3 py-1.5 text-xs font-bold uppercase tracking-widest mb-4 border border-blue-200 pulse-orange">
-              <span className="relative flex h-2 w-2 shrink-0">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#2563EB] opacity-60" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#2563EB]" />
-              </span>
-              {loading ? 'Registros de Cobro' : `${claims.length} ${claims.length === 1 ? 'Registro' : 'Registros'}`}
+    <div className="min-h-screen">
+      {/* Hero header */}
+      <div className="hero-gradient px-4 md:px-10 pt-6 pb-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex items-start justify-between flex-wrap gap-4">
+            <div>
+              <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-widest mb-3" style={{ background: 'rgba(255,255,255,0.15)', color: 'rgba(219,234,254,0.9)', border: '1px solid rgba(255,255,255,0.2)' }}>
+                <span className="relative flex h-2 w-2 shrink-0">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-60" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-white" />
+                </span>
+                {loading ? 'Cargando…' : `${claims.length} ${claims.length === 1 ? 'Registro' : 'Registros'}`}
+              </div>
+              <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight" style={{ textShadow: '0 2px 12px rgba(0,0,0,0.2)' }}>
+                Registros de Cobro
+              </h1>
+              <p className="text-blue-200/70 mt-1.5 text-sm">Historial completo de premios reclamados</p>
             </div>
-            <h1 className="text-3xl font-extrabold text-stone-900 tracking-tight border-l-4 border-[#2563EB] pl-4">
-              Registros de <span className="gradient-text">Cobro</span>
-            </h1>
-            <p className="text-stone-500 mt-2 text-sm pl-4">Historial de todas las personas que han reclamado premios.</p>
           </div>
         </div>
+      </div>
+      <div className="max-w-7xl mx-auto px-4 md:px-10 py-6">
 
         {loading ? <SkeletonLoading /> : (
           <>
@@ -1060,7 +1079,7 @@ export default function RegistrosPage() {
             )}
           </>
         )}
-      </div>
+      </div>{/* max-w-7xl */}
     </div>
   );
 }

@@ -441,33 +441,23 @@ export default function PremiosPage() {
   const hasSelection = selectedCount > 0;
 
   return (
-    <div className="min-h-screen admin-bg">
+    <div className="min-h-screen">
       {qrPrize && <QRModal prize={qrPrize} onClose={() => setQrPrize(null)} />}
 
-      <div className="max-w-7xl mx-auto px-4 py-10">
-
-        {/* Page header with subtle QR dot-pattern background */}
-        <div
-          className="mb-8 flex items-start justify-between flex-wrap gap-4 rounded-2xl px-6 py-6 -mx-2"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23E8521A' fill-opacity='0.06'%3E%3Crect x='0' y='0' width='8' height='8' rx='1'/%3E%3Crect x='10' y='0' width='4' height='4' rx='0.5'/%3E%3Crect x='16' y='0' width='4' height='4' rx='0.5'/%3E%3Crect x='0' y='10' width='4' height='4' rx='0.5'/%3E%3Crect x='0' y='16' width='4' height='4' rx='0.5'/%3E%3Crect x='32' y='0' width='8' height='8' rx='1'/%3E%3Crect x='26' y='0' width='4' height='4' rx='0.5'/%3E%3Crect x='36' y='10' width='4' height='4' rx='0.5'/%3E%3Crect x='36' y='16' width='4' height='4' rx='0.5'/%3E%3Crect x='0' y='32' width='8' height='8' rx='1'/%3E%3Crect x='10' y='36' width='4' height='4' rx='0.5'/%3E%3Crect x='16' y='36' width='4' height='4' rx='0.5'/%3E%3Crect x='0' y='26' width='4' height='4' rx='0.5'/%3E%3Crect x='16' y='16' width='8' height='8' rx='1'/%3E%3C/g%3E%3C/svg%3E")`,
-            backgroundSize: '40px 40px',
-          }}
-        >
+      {/* Hero */}
+      <div className="hero-gradient px-4 md:px-10 pt-6 pb-8">
+        <div className="max-w-7xl mx-auto flex items-start justify-between flex-wrap gap-4">
           <div>
-            <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-700 rounded-full px-3 py-1.5 text-xs font-bold uppercase tracking-widest mb-4 border border-blue-200">
-              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4h.01M8 8h.01M16 8h.01M4 12h.01M20 12h.01M8 16h.01M16 16h.01M12 20h.01M4 4h4v4H4zm12 0h4v4h-4zM4 16h4v4H4zm12 0h4v4h-4z" />
-              </svg>
-              Premios
+            <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-widest mb-3" style={{ background: 'rgba(255,255,255,0.15)', color: 'rgba(219,234,254,0.9)', border: '1px solid rgba(255,255,255,0.2)' }}>
+              🎁 Premios QR
             </div>
-            <h1 className="text-3xl font-black text-[#1C1917] tracking-tight border-l-4 border-[#2563EB] pl-4">Mis <span className="gradient-text">Premios</span></h1>
-            <p className="text-stone-500 mt-2 text-sm pl-4">Historial completo de premios generados.</p>
+            <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Mis Premios</h1>
+            <p className="text-blue-200/70 mt-1.5 text-sm">Historial completo de premios generados</p>
           </div>
           <Link
             href="/admin/generate"
-            className="flex items-center gap-2 text-white font-bold px-5 py-3 rounded-xl text-sm transition-all"
-            style={{ background: 'linear-gradient(135deg,#2563EB,#0891B2)', boxShadow: '0 4px 16px rgba(37,99,235,0.35)' }}
+            className="flex items-center gap-2 font-bold px-5 py-3 rounded-xl text-sm transition-all"
+            style={{ background: 'white', color: '#1d4ed8', boxShadow: '0 4px 16px rgba(0,0,0,0.15)' }}
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -475,6 +465,9 @@ export default function PremiosPage() {
             Crear Premio
           </Link>
         </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 md:px-10 py-6">
 
         {/* Stats bar */}
         <div className="flex gap-3 mb-8 overflow-x-auto pb-1">

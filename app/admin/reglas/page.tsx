@@ -140,17 +140,21 @@ export default function ReglasPrizePage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#FAFAF9]">
-      {/* Header */}
-      <div className="bg-white border-b border-[#E8E3DC] px-6 py-5">
-        <div className="max-w-4xl mx-auto flex items-center justify-between">
+    <div className="min-h-screen">
+      {/* Hero */}
+      <div className="hero-gradient px-4 md:px-10 pt-6 pb-8">
+        <div className="max-w-4xl mx-auto flex items-start justify-between flex-wrap gap-4">
           <div>
-            <h1 className="text-xl font-bold text-[#1C1917] tracking-tight">Reglas de Premios</h1>
-            <p className="text-sm text-stone-500 mt-0.5">Automatiza la entrega de premios segun el comportamiento del cliente</p>
+            <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-widest mb-3" style={{ background: 'rgba(255,255,255,0.15)', color: 'rgba(219,234,254,0.9)', border: '1px solid rgba(255,255,255,0.2)' }}>
+              ⚡ Automatización
+            </div>
+            <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Reglas de Premios</h1>
+            <p className="text-blue-200/70 mt-1.5 text-sm">Automatiza la entrega de premios según el comportamiento del cliente</p>
           </div>
           <button
             onClick={() => { setShowForm(v => !v); setError(''); setSuccess(''); }}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#2563EB] text-white text-sm font-semibold hover:bg-[#0891B2] transition-colors shadow-sm"
+            className="flex items-center gap-2 font-bold px-5 py-3 rounded-xl text-sm transition-all"
+            style={{ background: 'white', color: '#1d4ed8', boxShadow: '0 4px 16px rgba(0,0,0,0.15)' }}
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={showForm ? 'M6 18L18 6M6 6l12 12' : 'M12 4v16m8-8H4'} />
@@ -160,7 +164,7 @@ export default function ReglasPrizePage() {
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-6 py-8 space-y-6">
+      <div className="max-w-4xl mx-auto px-4 md:px-10 py-6 space-y-6">
         {/* Success/Error */}
         {success && (
           <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 px-4 py-3 rounded-xl text-sm font-medium">

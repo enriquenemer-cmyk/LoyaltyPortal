@@ -68,7 +68,7 @@ export default function RootLayout({
       lang="es"
       className={`${plusJakarta.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full bg-[#FAFAF9]">
+      <body className="min-h-full bg-[#FAFAF9]" style={{ overflowX: 'hidden', maxWidth: '100vw' }}>
         <ToastProvider>
           <OfflineIndicator />
           <ScrollToTop />

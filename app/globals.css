@@ -762,3 +762,30 @@ input[type="date"] {
     padding-top: 0 !important;
   }
 }
+
+/* ── Mobile overflow fix + global admin page polish ── */
+.admin-content {
+  overflow-x: hidden !important;
+}
+
+/* Prevent any child from breaking out on mobile */
+.admin-content > * {
+  max-width: 100%;
+}
+
+/* Nicer scrollbar on desktop */
+.admin-content::-webkit-scrollbar { width: 6px; }
+.admin-content::-webkit-scrollbar-track { background: transparent; }
+.admin-content::-webkit-scrollbar-thumb { background: rgba(37,99,235,0.2); border-radius: 3px; }
+.admin-content::-webkit-scrollbar-thumb:hover { background: rgba(37,99,235,0.4); }
+
+/* Page wrapper - consistent padding across all admin pages */
+.admin-page {
+  padding: 1.25rem;
+  max-width: 100%;
+}
+@media (min-width: 768px) {
+  .admin-page {
+    padding: 2rem 2.5rem;
+  }
+}

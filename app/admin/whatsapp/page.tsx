@@ -236,16 +236,19 @@ export default function WhatsAppPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#FAFAF9] p-4 md:p-6 space-y-5">
-      {/* Header */}
-      <div>
-        <div className="inline-flex items-center gap-2 bg-blue-50 text-[#2563EB] rounded-full px-3 py-1.5 text-xs font-bold uppercase tracking-widest mb-3 border border-blue-200">
-          <WhatsAppIcon className="w-3.5 h-3.5" />
-          WhatsApp
+    <div className="min-h-screen">
+      <div className="hero-gradient px-4 md:px-10 pt-6 pb-8">
+        <div className="max-w-4xl mx-auto flex items-start justify-between flex-wrap gap-4">
+          <div>
+            <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-widest mb-3" style={{ background: 'rgba(255,255,255,0.15)', color: 'rgba(219,234,254,0.9)', border: '1px solid rgba(255,255,255,0.2)' }}>
+              💬 WhatsApp
+            </div>
+            <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">WhatsApp</h1>
+            <p className="text-blue-200/70 mt-1.5 text-sm">Prepara y envía campañas de WhatsApp a tus clientes</p>
+          </div>
         </div>
-        <h1 className="text-3xl font-black text-[#1C1917] tracking-tight">Envío <span className="gradient-text">Masivo</span></h1>
-        <p className="text-sm text-stone-500 mt-1">Prepara y envía campañas de WhatsApp a tus clientes</p>
       </div>
+      <div className="max-w-4xl mx-auto px-4 md:px-10 py-6 space-y-5">
 
       {/* Section 1 — Mensaje */}
       <Section
@@ -517,6 +520,7 @@ export default function WhatsAppPage() {
           </div>
         )}
       </Section>
+      </div>
     </div>
   );
 }

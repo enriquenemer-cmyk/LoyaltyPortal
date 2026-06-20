@@ -1043,3 +1043,165 @@ input[type="date"] {
 .admin-content a[class*="px-"] {
   transition: all 0.15s ease !important;
 }
+
+/* ════════════════════════════════════════════════════
+   MAXIMUM AESTHETIC UPGRADE v2 — Content elements
+   ════════════════════════════════════════════════════ */
+
+/* ── White cards get glassmorphism + shadow depth ── */
+.admin-content .bg-white,
+.admin-content .bg-white\/96 {
+  background: rgba(255,255,255,0.97) !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 8px 32px rgba(37,99,235,0.06) !important;
+  border-color: rgba(226,232,240,0.7) !important;
+}
+
+/* ── All cards with border get premium treatment ── */
+.admin-content .rounded-2xl.border,
+.admin-content .rounded-xl.border {
+  transition: box-shadow 0.2s ease, transform 0.2s ease !important;
+}
+.admin-content .rounded-2xl.border:hover,
+.admin-content .rounded-xl.border:hover {
+  box-shadow: 0 4px 24px rgba(37,99,235,0.1), 0 1px 4px rgba(0,0,0,0.05) !important;
+}
+
+/* ── Inputs and selects — premium look ── */
+.admin-content input[type="text"],
+.admin-content input[type="email"],
+.admin-content input[type="number"],
+.admin-content input[type="tel"],
+.admin-content input[type="password"],
+.admin-content input[type="search"],
+.admin-content input[type="date"],
+.admin-content textarea,
+.admin-content select {
+  border-radius: 12px !important;
+  border: 1.5px solid #e2e8f0 !important;
+  background: #fafcff !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04) inset !important;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease !important;
+  font-size: 0.875rem !important;
+  padding: 0.6rem 0.875rem !important;
+}
+.admin-content input:focus,
+.admin-content textarea:focus,
+.admin-content select:focus {
+  outline: none !important;
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.12), 0 1px 3px rgba(0,0,0,0.04) inset !important;
+  background: white !important;
+}
+
+/* ── Table overhaul ── */
+.admin-content table {
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  width: 100% !important;
+}
+.admin-content table thead th {
+  background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%) !important;
+  font-size: 0.7rem !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  color: #64748b !important;
+  padding: 0.75rem 1rem !important;
+  border-bottom: 2px solid #e2e8f0 !important;
+}
+.admin-content table tbody tr {
+  transition: background 0.12s ease, box-shadow 0.12s ease !important;
+}
+.admin-content table tbody tr:hover {
+  background: linear-gradient(90deg, rgba(37,99,235,0.04) 0%, rgba(37,99,235,0.01) 100%) !important;
+  box-shadow: inset 3px 0 0 #3b82f6 !important;
+}
+.admin-content table tbody td {
+  border-bottom: 1px solid rgba(226,232,240,0.5) !important;
+  padding: 0.875rem 1rem !important;
+}
+.admin-content table tbody tr:last-child td {
+  border-bottom: none !important;
+}
+
+/* ── Status / badge pills ── */
+.admin-content .rounded-full.text-xs {
+  font-weight: 700 !important;
+  letter-spacing: 0.03em !important;
+  padding: 0.2rem 0.65rem !important;
+}
+
+/* ── Section titles inside content ── */
+.admin-content h2 {
+  font-size: 1.1rem !important;
+  font-weight: 800 !important;
+  color: #0f172a !important;
+  letter-spacing: -0.02em !important;
+}
+.admin-content h3 {
+  font-size: 0.95rem !important;
+  font-weight: 700 !important;
+  color: #1e293b !important;
+}
+
+/* ── Skeleton loading shimmer ── */
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+.admin-content .animate-pulse {
+  background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%) !important;
+  background-size: 200% auto !important;
+  animation: shimmer 1.5s linear infinite !important;
+  border-radius: 8px !important;
+  opacity: 1 !important;
+}
+
+/* ── Hero banner text polish ── */
+.hero-gradient h1 {
+  text-shadow: 0 2px 20px rgba(0,0,0,0.2) !important;
+}
+
+/* ── Notification dot pulse ── */
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.6; transform: scale(1.4); }
+}
+.admin-content .animate-pulse.rounded-full.w-2.h-2,
+.admin-content .animate-pulse.rounded-full.w-1\.5.h-1\.5 {
+  animation: pulse-dot 1.5s ease-in-out infinite !important;
+  background: #22c55e !important;
+}
+
+/* ── Footer / bottom of page breathing room ── */
+.admin-content > div:last-child {
+  padding-bottom: 3rem !important;
+}
+
+/* ── Floating card with glow on stats ── */
+.stat-card-glow {
+  position: relative;
+  overflow: hidden;
+}
+.stat-card-glow::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at top right, rgba(59,130,246,0.08), transparent 60%);
+  pointer-events: none;
+}
+
+/* ── Smooth page fade in ── */
+.admin-content > div {
+  animation: fadeInUp 0.3s ease both;
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Scrollbar — thin and branded ── */
+.admin-content *::-webkit-scrollbar { width: 5px; height: 5px; }
+.admin-content *::-webkit-scrollbar-track { background: transparent; }
+.admin-content *::-webkit-scrollbar-thumb { background: rgba(37,99,235,0.25); border-radius: 99px; }
+.admin-content *::-webkit-scrollbar-thumb:hover { background: rgba(37,99,235,0.45); }

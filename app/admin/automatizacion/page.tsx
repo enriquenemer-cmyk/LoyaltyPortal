@@ -77,23 +77,19 @@ export default function AutomatizacionPage() {
   }
 
   return (
-    <div className="min-h-screen admin-bg">
-      <div style={{ height: '2px', width: '100%', background: 'linear-gradient(90deg, #2563EB, #0891B2, #38BDF8, #0891B2, #2563EB)' }} />
-      <div className="max-w-6xl mx-auto px-4 py-10">
-
-        {/* Header */}
-        <div className="mb-8">
-          <div className="inline-flex items-center gap-2 bg-blue-50 text-[#2563EB] rounded-full px-3 py-1.5 text-xs font-bold uppercase tracking-widest mb-4 border border-blue-200">
-            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-            </svg>
-            Marketing Automation
+    <div className="min-h-screen">
+      <div className="hero-gradient px-4 md:px-10 pt-6 pb-8">
+        <div className="max-w-6xl mx-auto flex items-start justify-between flex-wrap gap-4">
+          <div>
+            <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-widest mb-3" style={{ background: 'rgba(255,255,255,0.15)', color: 'rgba(219,234,254,0.9)', border: '1px solid rgba(255,255,255,0.2)' }}>
+              🤖 Automatización
+            </div>
+            <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Automatización</h1>
+            <p className="text-blue-200/70 mt-1.5 text-sm">Gestiona campañas de reactivación y mensajes automáticos.</p>
           </div>
-          <h1 className="text-3xl font-extrabold text-stone-900 tracking-tight border-l-4 border-[#2563EB] pl-4">
-            <span className="gradient-text">Automatización</span>
-          </h1>
-          <p className="text-stone-500 mt-2 text-sm pl-4">Gestiona campanas de reactivación y mensajes automáticos.</p>
         </div>
+      </div>
+      <div className="max-w-6xl mx-auto px-4 md:px-10 py-6">
 
         {/* Section 1: Clientes Inactivos */}
         <div className="bg-white rounded-2xl border border-[#E8E3DC] shadow-[0_1px_2px_rgba(28,25,23,0.04),_0_4px_16px_rgba(28,25,23,0.06)] mb-6 overflow-hidden">

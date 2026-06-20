@@ -243,31 +243,25 @@ export default function ImportarPage() {
   // Render
   // -------------------------------------------------------------------------
   return (
-    <div className="min-h-screen bg-[#FAFAF9]">
-      <div className="max-w-3xl mx-auto px-4 py-10">
-
-        {/* Header */}
-        <div className="mb-8">
-          <Link
-            href="/admin/generate"
-            className="inline-flex items-center gap-1.5 text-xs text-stone-500 hover:text-[#2563EB] font-semibold mb-4 transition-colors"
-          >
+    <div className="min-h-screen">
+      <div className="hero-gradient px-4 md:px-10 pt-6 pb-8">
+        <div className="max-w-3xl mx-auto flex items-start justify-between flex-wrap gap-4">
+          <div>
+            <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-widest mb-3" style={{ background: 'rgba(255,255,255,0.15)', color: 'rgba(219,234,254,0.9)', border: '1px solid rgba(255,255,255,0.2)' }}>
+              📥 Importar Premios
+            </div>
+            <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Importar Premios</h1>
+            <p className="text-blue-200/70 mt-1.5 text-sm">Sube un archivo con multiples premios y genéralos en un solo paso.</p>
+          </div>
+          <Link href="/admin/generate" className="flex items-center gap-2 font-bold px-5 py-3 rounded-xl text-sm" style={{ background: 'white', color: '#1d4ed8', boxShadow: '0 4px 16px rgba(0,0,0,0.15)' }}>
             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
             Volver a Generar
           </Link>
-          <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-700 rounded-full px-3 py-1.5 text-xs font-bold uppercase tracking-widest mb-4 border border-blue-200">
-            <span className="w-2 h-2 rounded-full bg-[#2563EB] shrink-0" />
-            Importacion masiva
-          </div>
-          <h1 className="text-3xl font-black text-[#1C1917] tracking-tight border-l-4 border-[#2563EB] pl-4">
-            Importar desde CSV / Excel
-          </h1>
-          <p className="text-stone-500 mt-2 text-sm pl-4">
-            Sube un archivo con multiples premios y genéralos en un solo paso.
-          </p>
         </div>
+      </div>
+      <div className="max-w-3xl mx-auto px-4 md:px-10 py-6">
 
         <div className="space-y-6">
 

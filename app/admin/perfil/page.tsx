@@ -44,21 +44,19 @@ export default function PerfilPage() {
   const inputClass = 'w-full bg-white border border-[#E8E3DC] rounded-xl px-4 py-3 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all shadow-sm';
 
   return (
-    <div className="min-h-screen bg-[#FAFAF9]">
-      <div className="max-w-lg mx-auto px-4 py-10">
-
-        <div className="mb-8">
-          <div className="inline-flex items-center gap-2 bg-stone-100 text-stone-700 rounded-full px-3 py-1.5 text-xs font-bold uppercase tracking-widest mb-4 border border-stone-200">
-            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-            </svg>
-            Mi Perfil
+    <div className="min-h-screen">
+      <div className="hero-gradient px-4 md:px-10 pt-6 pb-8">
+        <div className="max-w-lg mx-auto flex items-start justify-between flex-wrap gap-4">
+          <div>
+            <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-widest mb-3" style={{ background: 'rgba(255,255,255,0.15)', color: 'rgba(219,234,254,0.9)', border: '1px solid rgba(255,255,255,0.2)' }}>
+              ⚙️ Mi Perfil
+            </div>
+            <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Mi Perfil</h1>
+            <p className="text-blue-200/70 mt-1.5 text-sm">Actualiza la contraseña de tu cuenta.</p>
           </div>
-          <h1 className="text-3xl font-extrabold text-[#1C1917] tracking-tight border-l-4 border-[#2563EB] pl-4">
-            Cambiar <span className="gradient-text">Contraseña</span>
-          </h1>
-          <p className="text-stone-500 mt-2 text-sm pl-4">Actualiza la contraseña de tu cuenta.</p>
         </div>
+      </div>
+      <div className="max-w-lg mx-auto px-4 md:px-10 py-6">
 
         <form onSubmit={handleSubmit} className="bg-white rounded-2xl border border-[#E8E3DC] shadow-[0_1px_2px_rgba(28,25,23,0.04),_0_4px_16px_rgba(28,25,23,0.06)] overflow-hidden" style={{ borderTop: '3px solid #2563EB' }}>
           <div className="p-6 border-b border-[#E8E3DC]">

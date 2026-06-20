@@ -167,43 +167,44 @@ export default function SistemaPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#FAFAF9] p-6">
-    <div className="max-w-5xl mx-auto space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between flex-wrap gap-3">
-        <div>
-          <div className="inline-flex items-center gap-2 bg-blue-50 text-[#2563EB] rounded-full px-3 py-1.5 text-xs font-bold uppercase tracking-widest mb-3 border border-blue-200">
-            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18" /></svg>
-            Sistema
+    <div className="min-h-screen">
+      <div className="hero-gradient px-4 md:px-10 pt-6 pb-8">
+        <div className="max-w-5xl mx-auto flex items-start justify-between flex-wrap gap-4">
+          <div>
+            <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-widest mb-3" style={{ background: 'rgba(255,255,255,0.15)', color: 'rgba(219,234,254,0.9)', border: '1px solid rgba(255,255,255,0.2)' }}>
+              🛠️ Sistema
+            </div>
+            <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Sistema</h1>
+            <p className="text-blue-200/70 mt-1.5 text-sm">
+              {lastChecked
+                ? `Ultima verificacion: ${lastChecked.toLocaleTimeString('es-MX')}`
+                : 'Estado del sistema y diagnóstico'}
+            </p>
           </div>
-          <h1 className="text-3xl font-black text-[#1C1917] tracking-tight">Estado del <span className="gradient-text">Sistema</span></h1>
-          <p className="text-sm text-stone-400 mt-0.5">
-            {lastChecked
-              ? `Ultima verificacion: ${lastChecked.toLocaleTimeString('es-MX')}`
-              : 'Cargando...'}
-          </p>
-        </div>
-        <button
-          onClick={fetchHealth}
-          disabled={loading}
-          className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium bg-[#1C1917] text-white hover:bg-stone-800 disabled:opacity-50 transition-all"
-        >
-          <svg
-            className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`}
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
+          <button
+            onClick={fetchHealth}
+            disabled={loading}
+            className="flex items-center gap-2 font-bold px-5 py-3 rounded-xl text-sm"
+            style={{ background: 'white', color: '#1d4ed8', boxShadow: '0 4px 16px rgba(0,0,0,0.15)' }}
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-            />
-          </svg>
-          Ejecutar diagnostico
-        </button>
+            <svg
+              className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`}
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+              />
+            </svg>
+            Ejecutar diagnostico
+          </button>
+        </div>
       </div>
+      <div className="max-w-5xl mx-auto px-4 md:px-10 py-6 space-y-6">
 
       {/* Status banner */}
       {health && (

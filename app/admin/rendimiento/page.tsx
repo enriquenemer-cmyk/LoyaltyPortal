@@ -99,28 +99,19 @@ export default function RendimientoPage() {
   }, [restaurantId, range]);
 
   return (
-    <div className="min-h-screen admin-bg">
-      <div className="max-w-5xl mx-auto px-4 py-10">
-
-        {/* Header */}
-        <div className="mb-8">
-          <div
-            className="inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-bold uppercase tracking-widest mb-4"
-            style={{ background: 'rgba(37,99,235,0.10)', border: '1px solid rgba(37,99,235,0.25)', color: '#2563EB' }}
-          >
-            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
-            </svg>
-            Equipo
+    <div className="min-h-screen">
+      <div className="hero-gradient px-4 md:px-10 pt-6 pb-8">
+        <div className="max-w-5xl mx-auto flex items-start justify-between flex-wrap gap-4">
+          <div>
+            <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-widest mb-3" style={{ background: 'rgba(255,255,255,0.15)', color: 'rgba(219,234,254,0.9)', border: '1px solid rgba(255,255,255,0.2)' }}>
+              📊 Rendimiento
+            </div>
+            <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Rendimiento</h1>
+            <p className="text-blue-200/70 mt-1.5 text-sm">Premios entregados y tiempos promedio por cajero</p>
           </div>
-          <h1 className="text-3xl font-black text-gray-900 tracking-tight border-l-4 border-[#2563EB] pl-4">
-            Rendimiento del{' '}
-            <span className="gradient-text">Equipo</span>
-          </h1>
-          <p className="text-gray-500 mt-2 text-sm">
-            Premios entregados y tiempos promedio por cajero
-          </p>
         </div>
+      </div>
+      <div className="max-w-5xl mx-auto px-4 md:px-10 py-6">
 
         {/* Filters */}
         <div className="bg-white rounded-2xl border border-[#E8E3DC] shadow-sm p-5 mb-6 flex flex-wrap gap-4 items-center">

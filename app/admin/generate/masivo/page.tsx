@@ -372,30 +372,25 @@ ${pagesHtml}
   })();
 
   return (
-    <div className="min-h-screen bg-[#FAFAF9]">
-      <div className="max-w-5xl mx-auto px-4 py-10">
-
-        {/* Header */}
-        <div className="mb-8 flex items-start justify-between gap-4 flex-wrap">
+    <div className="min-h-screen">
+      <div className="hero-gradient px-4 md:px-10 pt-6 pb-8">
+        <div className="max-w-5xl mx-auto flex items-start justify-between flex-wrap gap-4">
           <div>
-            <div className="inline-flex items-center gap-2 bg-blue-50 text-[#2563EB] rounded-full px-3 py-1.5 text-xs font-bold uppercase tracking-widest mb-4 border border-blue-200">
-              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h7" />
-              </svg>
-              Generación Masiva
+            <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-widest mb-3" style={{ background: 'rgba(255,255,255,0.15)', color: 'rgba(219,234,254,0.9)', border: '1px solid rgba(255,255,255,0.2)' }}>
+              🚀 Generación Masiva
             </div>
-            <h1 className="text-3xl font-extrabold text-[#1C1917] tracking-tight">
-              Generar Varios <span className="gradient-text">QRs</span>
-            </h1>
-            <p className="text-stone-500 mt-2 text-sm">Crea hasta 100 QRs únicos del mismo premio en un solo clic.</p>
+            <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Generación Masiva</h1>
+            <p className="text-blue-200/70 mt-1.5 text-sm">Crea hasta 100 QRs únicos del mismo premio en un solo clic.</p>
           </div>
-          <Link href="/admin/generate" className="flex items-center gap-2 text-sm font-semibold text-stone-500 hover:text-stone-800 border border-[#E8E3DC] hover:border-stone-300 bg-white px-4 py-2.5 rounded-xl transition-all shadow-sm">
+          <Link href="/admin/generate" className="flex items-center gap-2 font-bold px-5 py-3 rounded-xl text-sm" style={{ background: 'white', color: '#1d4ed8', boxShadow: '0 4px 16px rgba(0,0,0,0.15)' }}>
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
             Volver a individual
           </Link>
         </div>
+      </div>
+      <div className="max-w-5xl mx-auto px-4 md:px-10 py-6">
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 

@@ -96,17 +96,20 @@ export default function UsuariosPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#FAFAF9] px-4 py-8">
-      <div className="max-w-5xl mx-auto">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-6">
+    <div className="min-h-screen">
+      <div className="hero-gradient px-4 md:px-10 pt-6 pb-8">
+        <div className="max-w-5xl mx-auto flex items-start justify-between flex-wrap gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-[#1C1917]">Usuarios</h1>
-            <p className="text-sm text-stone-500 mt-0.5">Gestiona los managers por restaurante</p>
+            <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-widest mb-3" style={{ background: 'rgba(255,255,255,0.15)', color: 'rgba(219,234,254,0.9)', border: '1px solid rgba(255,255,255,0.2)' }}>
+              👤 Usuarios
+            </div>
+            <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Usuarios del Sistema</h1>
+            <p className="text-blue-200/70 mt-1.5 text-sm">Gestiona los managers por restaurante</p>
           </div>
           <button
             onClick={() => { setShowForm((v) => !v); setError(null); }}
-            className="flex items-center gap-2 bg-[#2563EB] hover:bg-[#0891B2] text-white text-sm font-semibold px-4 py-2 rounded-xl transition-colors"
+            className="flex items-center gap-2 font-bold px-5 py-3 rounded-xl text-sm"
+            style={{ background: 'white', color: '#1d4ed8', boxShadow: '0 4px 16px rgba(0,0,0,0.15)' }}
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -114,6 +117,8 @@ export default function UsuariosPage() {
             Nuevo Usuario
           </button>
         </div>
+      </div>
+      <div className="max-w-5xl mx-auto px-4 md:px-10 py-6">
 
         {/* Notifications */}
         {success && (

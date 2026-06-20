@@ -56,13 +56,19 @@ export default function GiftCardsPage() {
   const redeemed = cards.filter(c => !!c.redeemed_at);
 
   return (
-    <div className="min-h-screen bg-[#FAFAF9] p-6 md:p-10">
-      <div className="max-w-4xl mx-auto">
-        <div className="mb-8">
-          <p className="text-xs font-bold text-[#2563EB] uppercase tracking-widest mb-1">Monetización</p>
-          <h1 className="text-2xl font-bold text-[#1C1917]">Gift Cards Digitales</h1>
-          <p className="text-sm text-stone-500 mt-1">Genera códigos que los clientes canjean por puntos</p>
+    <div className="min-h-screen">
+      <div className="hero-gradient px-4 md:px-10 pt-6 pb-8">
+        <div className="max-w-4xl mx-auto flex items-start justify-between flex-wrap gap-4">
+          <div>
+            <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-widest mb-3" style={{ background: 'rgba(255,255,255,0.15)', color: 'rgba(219,234,254,0.9)', border: '1px solid rgba(255,255,255,0.2)' }}>
+              🎁 Gift Cards
+            </div>
+            <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Gift Cards</h1>
+            <p className="text-blue-200/70 mt-1.5 text-sm">Genera códigos que los clientes canjean por puntos</p>
+          </div>
         </div>
+      </div>
+      <div className="max-w-4xl mx-auto px-4 md:px-10 py-6">
 
         {/* Summary */}
         <div className="grid grid-cols-3 gap-4 mb-6">

@@ -104,19 +104,21 @@ export default function SeguridadPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#FAFAF9] p-6 md:p-10">
-      <div className="max-w-4xl mx-auto">
-        <div className="flex items-center justify-between mb-8 flex-wrap gap-4">
+    <div className="min-h-screen">
+      <div className="hero-gradient px-4 md:px-10 pt-6 pb-8">
+        <div className="max-w-4xl mx-auto flex items-start justify-between flex-wrap gap-4">
           <div>
-            <p className="text-xs font-bold text-[#2563EB] uppercase tracking-widest mb-1">Admin</p>
-            <h1 className="text-2xl font-bold text-[#1C1917]">Seguridad</h1>
-            <p className="text-sm text-[#78716c] mt-1">Registro de actividad y exportación de datos</p>
+            <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-widest mb-3" style={{ background: 'rgba(255,255,255,0.15)', color: 'rgba(219,234,254,0.9)', border: '1px solid rgba(255,255,255,0.2)' }}>
+              🔒 Seguridad
+            </div>
+            <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Seguridad</h1>
+            <p className="text-blue-200/70 mt-1.5 text-sm">Registro de actividad y exportación de datos</p>
           </div>
           <button
             onClick={handleExport}
             disabled={exporting}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-white text-sm font-bold disabled:opacity-60 transition-opacity hover:opacity-90"
-            style={{ background: '#2563EB' }}
+            className="flex items-center gap-2 font-bold px-5 py-3 rounded-xl text-sm disabled:opacity-60"
+            style={{ background: 'white', color: '#1d4ed8', boxShadow: '0 4px 16px rgba(0,0,0,0.15)' }}
           >
             {exporting ? (
               <svg className="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
@@ -131,6 +133,8 @@ export default function SeguridadPage() {
             {exporting ? 'Exportando...' : 'Exportar datos (JSON)'}
           </button>
         </div>
+      </div>
+      <div className="max-w-4xl mx-auto px-4 md:px-10 py-6">
 
         {/* Summary cards */}
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-6">

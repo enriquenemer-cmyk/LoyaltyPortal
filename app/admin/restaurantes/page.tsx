@@ -395,34 +395,20 @@ export default function RestaurantesPage() {
   const labelClass = 'block text-sm font-semibold text-gray-700 mb-1.5';
 
   return (
-    <div className="min-h-screen admin-bg">
-      <div className="max-w-7xl mx-auto px-4 py-10">
-
-        {/* Page header */}
-        <div className="mb-8 flex items-start justify-between flex-wrap gap-4">
+    <div className="min-h-screen">
+      <div className="hero-gradient px-4 md:px-10 pt-6 pb-8">
+        <div className="max-w-7xl mx-auto flex items-start justify-between flex-wrap gap-4">
           <div>
-            <div
-              className="inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-bold uppercase tracking-widest mb-4"
-              style={{ background: 'rgba(37,99,235,0.10)', border: '1px solid rgba(37,99,235,0.25)', color: '#2563EB' }}
-            >
-              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-              </svg>
-              Restaurantes
+            <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-widest mb-3" style={{ background: 'rgba(255,255,255,0.15)', color: 'rgba(219,234,254,0.9)', border: '1px solid rgba(255,255,255,0.2)' }}>
+              🍽️ Restaurantes
             </div>
-            <h1 className="text-3xl font-black text-gray-900 tracking-tight border-l-4 border-[#2563EB] pl-4">
-              Gestion de{' '}
-              <span className="gradient-text">Restaurantes</span>
-            </h1>
-            <p className="text-gray-500 mt-2 text-sm">
-              Configura cada sucursal y comparte su link de cajero
-            </p>
+            <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Mis Restaurantes</h1>
+            <p className="text-blue-200/70 mt-1.5 text-sm">Configura cada sucursal y comparte su link de cajero</p>
           </div>
-
           <button
             onClick={() => setShowForm((v) => !v)}
-            className="flex items-center gap-2 text-white font-bold px-5 py-3 rounded-xl transition-all text-sm"
-            style={{ background: 'linear-gradient(135deg,#2563EB,#0891B2)', boxShadow: '0 4px 16px rgba(37,99,235,0.35)' }}
+            className="flex items-center gap-2 font-bold px-5 py-3 rounded-xl text-sm"
+            style={{ background: 'white', color: '#1d4ed8', boxShadow: '0 4px 16px rgba(0,0,0,0.15)' }}
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -430,6 +416,8 @@ export default function RestaurantesPage() {
             Nuevo Restaurante
           </button>
         </div>
+      </div>
+      <div className="max-w-7xl mx-auto px-4 md:px-10 py-6">
 
         {/* New restaurant form */}
         {showForm && (

@@ -14,9 +14,9 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
 
   if (isAdminPage) {
     return (
-      <div className="flex min-h-full">
+      <div style={{ display: 'flex', minHeight: '100%' }}>
         <Sidebar />
-        <main className="flex-1 min-w-0 admin-content admin-bg min-h-screen">
+        <main className="flex-1 min-w-0 admin-content admin-bg" style={{ minHeight: '100vh' }}>
           <PageTransition>{children}</PageTransition>
         </main>
       </div>
@@ -25,20 +25,16 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
 
   if (isCajeroPage) {
     return (
-      <>
-        <main className="flex-1">
-          <PageTransition>{children}</PageTransition>
-        </main>
-      </>
+      <main className="flex-1">
+        <PageTransition>{children}</PageTransition>
+      </main>
     );
   }
 
-  // Login page — full screen, no navbar
   if (isAdminLogin) {
     return <>{children}</>;
   }
 
-  // Default: premio, verificar, home, etc.
   return (
     <div className="flex flex-col min-h-full">
       <Navbar />

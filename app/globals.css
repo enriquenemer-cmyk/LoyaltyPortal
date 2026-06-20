@@ -753,12 +753,12 @@ input[type="date"] {
 
 /* ── Admin content offset (sidebar = 240px) ── */
 .admin-content {
-  margin-left: 0;
-  padding-top: 3rem; /* mobile top bar h-12 */
+  margin-left: 0 !important;
+  padding-top: 3rem !important; /* mobile top bar h-12 */
 }
 @media (min-width: 768px) {
   .admin-content {
-    margin-left: 240px;
-    padding-top: 0;
+    margin-left: 240px !important;
+    padding-top: 0 !important;
   }
 }

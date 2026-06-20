@@ -728,12 +728,14 @@ export default function Sidebar() {
   return (
     <>
       {/* Desktop sidebar — max-w-[240px] */}
-      <aside className="hidden md:flex fixed left-0 top-0 h-full w-[240px] flex-col z-40 sidebar-dark">
+      <aside className="hidden md:flex fixed left-0 top-0 h-full w-[240px] flex-col z-40"
+        style={{ background: 'linear-gradient(180deg,#0f1117 0%,#111827 100%)', borderRight: '1px solid rgba(255,255,255,0.06)' }}>
         <SidebarContent />
       </aside>
 
       {/* Mobile top bar */}
-      <div className="md:hidden fixed top-0 left-0 right-0 h-12 flex items-center justify-between px-4 z-40 sidebar-dark border-b border-white/6">
+      <div className="md:hidden fixed top-0 left-0 right-0 h-12 flex items-center justify-between px-4 z-40"
+        style={{ background: '#0f1117', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
         <Link href="/admin" className="flex items-center gap-2.5">
           {LOGO}
           <span className="text-sm font-extrabold text-[#1C1917] tracking-tight leading-none">Super Tierra</span>
@@ -755,7 +757,8 @@ export default function Sidebar() {
       {mobileOpen && (
         <>
           <div className="md:hidden fixed inset-0 z-50 bg-black/30 backdrop-blur-sm" onClick={() => setMobileOpen(false)} />
-          <aside className="md:hidden fixed left-0 top-0 h-full w-[240px] z-50 flex flex-col shadow-xl sidebar-dark">
+          <aside className="md:hidden fixed left-0 top-0 h-full w-[240px] z-50 flex flex-col shadow-xl"
+            style={{ background: 'linear-gradient(180deg,#0f1117 0%,#111827 100%)', borderRight: '1px solid rgba(255,255,255,0.06)' }}>
             <SidebarContent onLinkClick={() => setMobileOpen(false)} />
           </aside>
         </>

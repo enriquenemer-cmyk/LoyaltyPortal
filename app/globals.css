@@ -750,3 +750,15 @@ input[type="date"] {
 .sidebar-dark .sidebar-link-active { background: rgba(37,99,235,0.18) !important; color: #93c5fd !important; border-color: #3b82f6 !important; }
 .sidebar-dark .sidebar-footer { border-color: rgba(255,255,255,0.06) !important; }
 .sidebar-dark .sidebar-user-text { color: #94a3b8 !important; }
+
+/* ── Admin content offset (sidebar = 240px) ── */
+.admin-content {
+  margin-left: 0;
+  padding-top: 3rem; /* mobile top bar h-12 */
+}
+@media (min-width: 768px) {
+  .admin-content {
+    margin-left: 240px;
+    padding-top: 0;
+  }
+}

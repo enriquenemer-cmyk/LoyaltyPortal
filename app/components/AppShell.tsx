@@ -16,7 +16,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     return (
       <div className="flex min-h-full">
         <Sidebar />
-        <main className="flex-1 min-w-0 md:ml-[240px] pt-12 md:pt-0 admin-bg min-h-screen">
+        <main className="flex-1 min-w-0 admin-content admin-bg min-h-screen">
           <PageTransition>{children}</PageTransition>
         </main>
       </div>

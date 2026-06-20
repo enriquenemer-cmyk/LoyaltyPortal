@@ -2,10 +2,17 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "dev",
+      "name": "modo-dev",
       "runtimeExecutable": "node",
       "runtimeArgs": ["node_modules/next/dist/bin/next", "dev"],
-      "port": 3000
+      "port": 3000,
+      "autoPort": true
+    },
+    {
+      "name": "MODO Website",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "4200", "--directory", "/Users/macbook/MODO"],
+      "port": 4200
     }
   ]
 }

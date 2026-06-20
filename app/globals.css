@@ -789,3 +789,257 @@ input[type="date"] {
     padding: 2rem 2.5rem;
   }
 }
+
+/* ══════════════════════════════════════════════════════
+   MAXIMUM AESTHETIC UPGRADE — affects all admin pages
+   ══════════════════════════════════════════════════════ */
+
+/* ── Upgrade all white cards across every page ── */
+.admin-content .bg-white,
+.admin-content [class*="bg-white"] {
+  background: rgba(255,255,255,0.96) !important;
+  backdrop-filter: blur(8px);
+  border-color: rgba(226,232,240,0.7) !important;
+}
+
+/* ── Elevated card shadow on hover everywhere ── */
+.admin-content .rounded-2xl {
+  transition: box-shadow 0.2s ease, transform 0.2s cubic-bezier(0.34,1.56,0.64,1) !important;
+}
+
+/* ── Page header style — applied to every h1 inside admin ── */
+.admin-content h1 {
+  background: linear-gradient(135deg, #0f172a 0%, #1e40af 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+}
+
+/* ── Table header rows ── */
+.admin-content table thead th,
+.admin-content thead tr th {
+  background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%) !important;
+  color: #475569 !important;
+  font-size: 0.6875rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  border-bottom: 2px solid #e2e8f0 !important;
+}
+
+/* ── Table row hover ── */
+.admin-content table tbody tr {
+  transition: background 0.15s ease !important;
+}
+.admin-content table tbody tr:hover {
+  background: linear-gradient(90deg, rgba(37,99,235,0.04) 0%, rgba(37,99,235,0.02) 100%) !important;
+  box-shadow: inset 3px 0 0 #3b82f6 !important;
+}
+
+/* ── Buttons — primary ── */
+.admin-content button[class*="bg-[#2563EB]"],
+.admin-content a[class*="bg-[#2563EB]"],
+.admin-content [style*="background: #2563EB"],
+.admin-content [style*="backgroundColor: #2563EB"],
+.admin-content [style*="background:#2563EB"] {
+  box-shadow: 0 4px 14px rgba(37,99,235,0.35) !important;
+  transition: transform 0.15s ease, box-shadow 0.15s ease !important;
+}
+.admin-content button[class*="bg-[#2563EB]"]:hover,
+.admin-content a[class*="bg-[#2563EB]"]:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 6px 20px rgba(37,99,235,0.45) !important;
+}
+
+/* ── Stat cards border-left accent ── */
+.admin-content .border-l-4 {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.04) !important;
+}
+
+/* ── Search inputs ── */
+.admin-content input[type="text"],
+.admin-content input[type="search"],
+.admin-content input:not([type="date"]):not([type="checkbox"]):not([type="radio"]) {
+  border-radius: 12px !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05), inset 0 1px 2px rgba(0,0,0,0.03) !important;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease !important;
+}
+.admin-content input:focus {
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.12), 0 1px 3px rgba(0,0,0,0.05) !important;
+  outline: none !important;
+}
+
+/* ── Select dropdowns ── */
+.admin-content select {
+  border-radius: 10px !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05) !important;
+}
+
+/* ── Status badges ── */
+.admin-content .rounded-full[class*="bg-green"],
+.admin-content .rounded-full[class*="bg-emerald"] {
+  box-shadow: 0 0 0 3px rgba(16,185,129,0.15) !important;
+}
+.admin-content .rounded-full[class*="bg-blue"] {
+  box-shadow: 0 0 0 3px rgba(37,99,235,0.12) !important;
+}
+.admin-content .rounded-full[class*="bg-amber"],
+.admin-content .rounded-full[class*="bg-yellow"] {
+  box-shadow: 0 0 0 3px rgba(245,158,11,0.15) !important;
+}
+
+/* ── Section label dividers ── */
+.admin-content .label-caps,
+.admin-content [class*="tracking-widest"][class*="uppercase"] {
+  position: relative;
+}
+
+/* ── Page containers — proper padding on mobile ── */
+.admin-content > div[class*="p-"],
+.admin-content > div[class*="px-"],
+.admin-content > div[class*="py-"] {
+  padding-left: max(1rem, env(safe-area-inset-left)) !important;
+  padding-right: max(1rem, env(safe-area-inset-right)) !important;
+}
+@media (min-width: 768px) {
+  .admin-content > div[class*="p-"],
+  .admin-content > div[class*="px-"],
+  .admin-content > div[class*="py-"] {
+    padding-left: 2.5rem !important;
+    padding-right: 2.5rem !important;
+  }
+}
+
+/* ── Rounded pill tags / badges everywhere ── */
+.admin-content span[class*="rounded-full"][class*="px-"][class*="py-"],
+.admin-content span[class*="rounded-full"][class*="text-xs"] {
+  font-weight: 700 !important;
+  letter-spacing: 0.02em !important;
+}
+
+/* ── Dividers ── */
+.admin-content hr,
+.admin-content [class*="border-b"][class*="border-[#E8E3DC]"],
+.admin-content [class*="border-b"][class*="border-stone"] {
+  border-color: rgba(226,232,240,0.6) !important;
+}
+
+/* ── Empty states ── */
+.admin-content [class*="text-center"][class*="py-"] > svg,
+.admin-content [class*="text-center"][class*="py-"] > div > svg {
+  opacity: 0.4;
+}
+
+/* ── Avatar circles ── */
+.admin-content .rounded-full[class*="w-"][class*="h-"][class*="flex"] {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12) !important;
+}
+
+/* ── Mobile: stack cards properly ── */
+@media (max-width: 767px) {
+  .admin-content .grid-cols-4,
+  .admin-content .sm\:grid-cols-4 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  .admin-content .grid-cols-3,
+  .admin-content .sm\:grid-cols-3 {
+    grid-template-columns: repeat(1, 1fr) !important;
+  }
+  /* Tables: allow horizontal scroll on mobile */
+  .admin-content .overflow-x-auto {
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* ── Premium page header component ── */
+.page-header {
+  padding: 1.5rem 1.25rem 1rem;
+  border-bottom: 1px solid rgba(226,232,240,0.6);
+  background: rgba(255,255,255,0.7);
+  backdrop-filter: blur(12px);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+@media (min-width: 768px) {
+  .page-header {
+    padding: 1.75rem 2.5rem 1.25rem;
+  }
+}
+
+/* ── Floating action buttons (FABs) ── */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: white;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  box-shadow: 0 4px 14px rgba(37,99,235,0.35);
+  border: none;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  text-decoration: none;
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(37,99,235,0.45);
+}
+.btn-primary:active { transform: translateY(0); }
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+  background: white;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  cursor: pointer;
+  transition: background 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+  text-decoration: none;
+}
+.btn-secondary:hover {
+  background: #f8fafc;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transform: translateY(-1px);
+}
+
+/* ── Stat number animation ── */
+@keyframes count-up {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.stat-num { animation: count-up 0.5s cubic-bezier(0.34,1.56,0.64,1) both; }
+
+/* ── Card lift on hover ── */
+.card-lift {
+  transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.2s ease !important;
+}
+.card-lift:hover {
+  transform: translateY(-4px) scale(1.01) !important;
+  box-shadow: 0 16px 48px rgba(37,99,235,0.12), 0 4px 12px rgba(0,0,0,0.06) !important;
+}
+
+/* ── Table cell ── */
+.admin-content td {
+  vertical-align: middle !important;
+}
+
+/* ── Smooth color transitions on interactive elements ── */
+.admin-content button,
+.admin-content a[class*="px-"] {
+  transition: all 0.15s ease !important;
+}

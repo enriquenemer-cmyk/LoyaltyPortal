@@ -309,10 +309,22 @@ function ExplainerCard() {
   );
 }
 
+function MockQR() {
+  const pattern = [
+    [1,1,1,0,1,1,1],[1,0,1,0,1,0,1],[1,1,1,0,1,1,1],[0,0,0,0,0,0,0],[1,0,1,1,1,0,1],[0,1,0,0,0,1,0],[1,1,0,1,0,1,1]
+  ];
+  return (
+    <svg width="56" height="56" viewBox="0 0 7 7">
+      {pattern.map((row, y) => row.map((cell, x) => cell ? <rect key={`${x}-${y}`} x={x} y={y} width={1} height={1} fill="white" /> : null))}
+    </svg>
+  );
+}
+
 function GenerateForm() {
   const searchParams = useSearchParams();
 
   const [step, setStep] = useState<1 | 2>(1);
+  const [previewName, setPreviewName] = useState('');
   const [selectedTemplate, setSelectedTemplate] = useState<number | 'custom' | null>(null);
 
   const [form, setForm] = useState({
@@ -396,7 +408,9 @@ function GenerateForm() {
   }, [form.restaurant_id]);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+    if (name === 'name') setPreviewName(value);
   }
 
   function setQuickEndDate(days: number) {
@@ -662,25 +676,38 @@ function GenerateForm() {
 
   const step2Valid = step1Valid && form.start_date !== '' && form.end_date !== '' && !dateError;
 
-  // Simple QR preview card (text-based placeholder; no live QR to avoid over-engineering)
+  // Live prize-card preview
   const QRPreview = (
-    <div className="bg-white rounded-2xl border border-[#E8E3DC] p-5 flex flex-col items-center gap-3">
-      <div className="text-[10px] font-bold text-[#a8a29e] uppercase tracking-widest">Vista previa</div>
-      <div className="w-40 h-40 rounded-xl border-2 border-dashed border-[#E8E3DC] flex flex-col items-center justify-center bg-[#FAFAF9] gap-2">
-        <svg className="w-10 h-10 text-[#2563EB] opacity-40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4h.01M8 8h.01M16 8h.01M4 12h.01M20 12h.01M8 16h.01M16 16h.01M12 20h.01M4 4h4v4H4zm12 0h4v4h-4zM4 16h4v4H4zm12 0h4v4h-4z" />
-        </svg>
-        <span className="text-[10px] text-[#a8a29e]">QR se generará aquí</span>
-      </div>
-      {form.name && (
-        <div className="text-center">
-          <p className="text-sm font-bold text-[#1C1917] leading-tight">{form.name}</p>
-          {form.reason && <p className="text-xs text-[#a8a29e] mt-0.5 leading-snug">{form.reason}</p>}
+    <div className="sticky top-6">
+      <div className="text-[10px] font-bold text-[#a8a29e] uppercase tracking-widest mb-2 text-center">Vista previa</div>
+      {/* Prize card */}
+      <div
+        className="rounded-2xl overflow-hidden shadow-lg"
+        style={{ background: 'linear-gradient(135deg, #2563EB 0%, #0891B2 100%)' }}
+      >
+        <div className="px-5 pt-5 pb-4">
+          <p className="text-[10px] font-bold uppercase tracking-widest text-blue-200 mb-1">Burrito Bar</p>
+          <p
+            className="text-white font-extrabold text-lg leading-tight min-h-[2rem] transition-all duration-300"
+            style={{ wordBreak: 'break-word' }}
+          >
+            {previewName || 'Tu premio'}
+          </p>
+          <p className="text-blue-200 text-xs mt-1">
+            {form.end_date ? `Válido hasta: ${form.end_date}` : 'Fecha por definir'}
+          </p>
         </div>
-      )}
-      {!form.name && (
-        <p className="text-xs text-[#a8a29e] text-center">Completa el paso 1 para ver la vista previa</p>
-      )}
+
+        {/* QR area */}
+        <div className="mx-5 mb-5 bg-white/15 rounded-xl flex flex-col items-center py-4 gap-2">
+          <MockQR />
+          <p className="text-white/60 text-[10px] uppercase tracking-widest">Escanea aquí</p>
+        </div>
+      </div>
+
+      <p className="text-[10px] text-[#a8a29e] text-center mt-3 leading-relaxed">
+        Así verá el cliente su premio al escanear el QR
+      </p>
     </div>
   );
 
@@ -723,6 +750,7 @@ function GenerateForm() {
                           onClick={() => {
                             setSelectedTemplate(i);
                             setForm((prev) => ({ ...prev, name: tpl.name, reason: tpl.reason, description: tpl.description }));
+                            setPreviewName(tpl.name);
                           }}
                           className={`relative text-left rounded-xl p-4 border cursor-pointer transition-all ${
                             active
@@ -749,6 +777,7 @@ function GenerateForm() {
                       onClick={() => {
                         setSelectedTemplate('custom');
                         setForm((prev) => ({ ...prev, name: '', reason: '', description: '' }));
+                        setPreviewName('');
                       }}
                       className={`relative text-left rounded-xl p-4 border cursor-pointer transition-all ${
                         selectedTemplate === 'custom'

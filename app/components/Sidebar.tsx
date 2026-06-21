@@ -8,7 +8,7 @@ import NotificationBell from './NotificationBell';
 // ── Types ────────────────────────────────────────────────────────────────────
 type SearchResult = {
   id: string;
-  type: 'claim' | 'prize' | 'restaurant' | 'user';
+  type: 'claim' | 'prize' | 'restaurant' | 'user' | 'premio' | 'cliente' | 'cobro';
   title: string;
   subtitle?: string;
   href: string;
@@ -316,16 +316,17 @@ function GlobalSearch() {
     if (SEARCH_CACHE.has(q)) { setResults(SEARCH_CACHE.get(q)!); setLoading(false); return; }
     setLoading(true);
     try {
-      const res = await fetch(`/api/search?q=${encodeURIComponent(q)}&limit=13`);
+      const res = await fetch(`/api/admin/search?q=${encodeURIComponent(q)}`);
       const combined: SearchResult[] = [];
       if (res.ok) {
         const d = await res.json();
-        for (const c of (d.clients ?? []))
-          combined.push({ id: c.id, type: 'claim', title: c.full_name ?? c.id, subtitle: c.prize_name, href: `/admin/cliente/${encodeURIComponent(c.phone)}` });
-        for (const p of (d.prizes ?? []))
-          combined.push({ id: p.id, type: 'prize', title: p.name ?? p.id, subtitle: p.restaurant_name, href: '/admin/premios' });
-        for (const r of (d.restaurants ?? []))
-          combined.push({ id: r.id, type: 'restaurant', title: r.name ?? r.id, href: `/admin/restaurantes/${r.id}` });
+        for (const r of (d.results ?? [])) {
+          let href = '/admin';
+          if (r.type === 'premio') href = '/admin/premios';
+          else if (r.type === 'cliente') href = `/admin/cliente/${encodeURIComponent(r.id)}`;
+          else if (r.type === 'cobro') href = '/admin/registros';
+          combined.push({ id: r.id + r.type, type: r.type, title: r.title, subtitle: r.subtitle, href });
+        }
       }
       SEARCH_CACHE.set(q, combined);
       if (SEARCH_CACHE.size > 10) {
@@ -368,12 +369,19 @@ function GlobalSearch() {
     else if (e.key === 'Escape') { setFocused(false); inputRef.current?.blur(); }
   }
 
+  const typeIcon: Record<SearchResult['type'], string> = {
+    premio: '🎁', cliente: '👤', cobro: '📋',
+    claim: '📋', prize: '🎁', restaurant: '🏠', user: '👤',
+  };
   const typeLabel: Record<SearchResult['type'], string> = {
     claim: 'Cobro', prize: 'Premio', restaurant: 'Restaurante', user: 'Usuario',
+    premio: 'Premio', cliente: 'Cliente', cobro: 'Cobro',
   };
   const typeColor: Record<SearchResult['type'], string> = {
     claim: 'bg-blue-50 text-blue-600', prize: 'bg-blue-50 text-blue-600',
     restaurant: 'bg-emerald-50 text-emerald-600', user: 'bg-purple-50 text-purple-600',
+    premio: 'bg-yellow-900/40 text-yellow-300', cliente: 'bg-blue-900/40 text-blue-300',
+    cobro: 'bg-slate-700/60 text-slate-300',
   };
 
   const showDropdown = focused && (results.length > 0 || (query === '' && recent.length > 0) || loading);
@@ -427,14 +435,15 @@ function GlobalSearch() {
                 <p className="px-3 pt-2.5 pb-1 text-[9px] font-bold tracking-widest text-slate-500 uppercase">Resultados</p>
                 {results.map((item, idx) => (
                   <button key={item.id + item.type} onMouseDown={() => selectResult(item)}
-                    className={`w-full flex items-start gap-2.5 px-3 py-2 text-left transition-colors ${idx === activeIdx ? 'bg-blue-500/20' : 'hover:bg-white/6'}`}>
+                    className={`w-full flex items-start gap-2.5 px-3 py-2 text-left transition-colors ${idx === activeIdx ? 'bg-blue-500/20' : 'hover:bg-white/10'}`}>
+                    <span className="mt-0.5 text-sm shrink-0">{typeIcon[item.type]}</span>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-xs font-semibold text-white truncate">{item.title}</p>
+                      {item.subtitle && <p className="text-[10px] text-slate-400 truncate">{item.subtitle}</p>}
+                    </div>
                     <span className={`mt-0.5 text-[9px] font-bold px-1.5 py-0.5 rounded shrink-0 ${typeColor[item.type]}`}>
                       {typeLabel[item.type]}
                     </span>
-                    <div className="min-w-0">
-                      <p className="text-xs font-semibold text-slate-200 truncate">{item.title}</p>
-                      {item.subtitle && <p className="text-[10px] text-slate-500 truncate">{item.subtitle}</p>}
-                    </div>
                   </button>
                 ))}
               </div>

@@ -3,6 +3,7 @@
 import { useEffect, useState, useMemo } from 'react';
 import { Avatar } from '@/app/components/Avatar';
 import { SkeletonCard, SkeletonTable } from '@/app/components/Skeleton';
+import { EmptyState } from '@/app/components/EmptyState';
 
 type Claim = {
   id: string;
@@ -565,49 +566,20 @@ export default function ClientesPage() {
         {loading ? (
           <SkeletonTable rows={8} />
         ) : filtered.length === 0 ? (
-          <div className="bg-white rounded-2xl border border-[#E8E3DC] shadow-sm p-12 text-center">
+          <div className="bg-white rounded-2xl border border-[#E8E3DC] shadow-sm">
             {search || segment !== 'todos' ? (
-              <>
-                <svg width="80" height="80" viewBox="0 0 80 80" fill="none" className="mx-auto mb-5" aria-hidden="true">
-                  <circle cx="40" cy="40" r="38" fill="#fdf3ee" stroke="#E8E3DC" strokeWidth="1.5" />
-                  <circle cx="38" cy="38" r="14" fill="none" stroke="#2563EB" strokeWidth="2" opacity="0.4" />
-                  <path d="M48 48 L56 56" stroke="#2563EB" strokeWidth="2.5" strokeLinecap="round" opacity="0.6" />
-                  <path d="M34 34 L42 42 M42 34 L34 42" stroke="#2563EB" strokeWidth="2" strokeLinecap="round" opacity="0.5" />
-                </svg>
-                <p className="text-[#1C1917] font-semibold">Sin resultados para este filtro</p>
-                <p className="text-[#a8a29e] text-sm mt-1">Prueba con otro segmento o término de búsqueda</p>
-                {segment !== 'todos' && (
-                  <button
-                    onClick={() => setSegment('todos')}
-                    className="mt-3 text-xs text-[#2563EB] font-bold hover:underline"
-                  >
-                    Ver todos los clientes
-                  </button>
-                )}
-              </>
+              <EmptyState
+                icon="search"
+                title="Sin resultados para este filtro"
+                description="Prueba con otro segmento o término de búsqueda."
+                action={segment !== 'todos' ? { label: 'Ver todos los clientes', onClick: () => setSegment('todos') } : undefined}
+              />
             ) : (
-              <>
-                <svg width="80" height="80" viewBox="0 0 80 80" fill="none" className="mx-auto mb-5" aria-hidden="true">
-                  <circle cx="40" cy="40" r="38" fill="#fdf3ee" stroke="#E8E3DC" strokeWidth="1.5" />
-                  <circle cx="40" cy="30" r="10" fill="#2563EB" opacity="0.15" />
-                  <circle cx="40" cy="30" r="7" fill="#2563EB" opacity="0.4" />
-                  <path d="M24 58c0-8.837 7.163-14 16-14s16 5.163 16 14" stroke="#2563EB" strokeWidth="2" strokeLinecap="round" opacity="0.35" />
-                </svg>
-                <p className="text-[#1C1917] font-bold text-base mb-2">Aún no hay clientes registrados</p>
-                <p className="text-[#78716c] text-sm max-w-sm mx-auto leading-relaxed mb-5">
-                  ¿Cómo aparecen los clientes aquí? Cuando alguien escanea un QR de premio y llena sus datos, aparece automáticamente en esta lista.
-                </p>
-                <a
-                  href="/admin/generate"
-                  className="inline-flex items-center gap-2 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition-all"
-                  style={{ background: 'linear-gradient(135deg,#2563EB,#0891B2)', boxShadow: '0 4px 14px rgba(37,99,235,0.30)' }}
-                >
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                  </svg>
-                  Ir a generar mi primer premio
-                </a>
-              </>
+              <EmptyState
+                icon="users"
+                title="Sin clientes aún"
+                description="Los clientes aparecerán aquí cuando canjeen su primer premio."
+              />
             )}
           </div>
         ) : (

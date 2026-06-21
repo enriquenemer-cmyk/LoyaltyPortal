@@ -823,8 +823,9 @@ export default function RegistrosPage() {
               )
             ) : (
               <div className="bg-white rounded-2xl border border-[#E8E3DC] shadow-[0_1px_2px_rgba(28,25,23,0.04),_0_4px_16px_rgba(28,25,23,0.06)] overflow-hidden">
-                {/* Mobile card list (sm:hidden) */}
-                <div className="sm:hidden divide-y divide-[#F0EDE8]">
+                <div className="table-to-cards">
+                {/* Mobile card list */}
+                <div className="mobile-cards sm:hidden divide-y divide-[#F0EDE8]">
                   {filtered.map((claim) => (
                     <div key={claim.id} className="flex gap-0 hover:bg-[#faf7f5] transition-colors stagger-item min-h-[64px]">
                       {/* Orange left accent bar */}
@@ -1037,6 +1038,8 @@ export default function RegistrosPage() {
                     </table>
                   </div>
                 </div>
+
+                </div>{/* end table-to-cards */}
 
                 {/* Footer: count info */}
                 <div className="px-5 py-3 bg-[#FAFAF9] border-t border-[#E8E3DC] flex items-center justify-between flex-wrap gap-3">

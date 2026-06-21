@@ -5,6 +5,8 @@ import Link from 'next/link';
 import RelativeDate from '@/app/components/RelativeDate';
 import OnboardingTour from '@/app/components/OnboardingTour';
 import { getCache, setCache } from '@/app/components/useDataCache';
+import ActivityChart from '@/app/components/ActivityChart';
+import TopPremiosChart from '@/app/components/TopPremiosChart';
 
 interface Claim {
   id: string;
@@ -1203,6 +1205,17 @@ function SetupChecklist({
   );
 }
 
+// ---- KPI Pill with counter animation ----------------------------------------
+
+function KpiPill({ value, label }: { value: number; label: string }) {
+  const animated = useAnimatedCounter(value, 800);
+  return (
+    <span className="text-sm font-bold text-white">
+      {animated.toLocaleString()} {label}
+    </span>
+  );
+}
+
 // ---- Dashboard --------------------------------------------------------------
 
 export default function AdminDashboard() {
@@ -1218,6 +1231,8 @@ export default function AdminDashboard() {
   const [dataCachedAt, setDataCachedAt] = useState<number | null>(null);
   const [showOnboardingBanner, setShowOnboardingBanner] = useState(false);
   const [ticketTiersConfigured, setTicketTiersConfigured] = useState(false);
+  const [activityData, setActivityData] = useState<Array<{ day: string; count: number }>>([]);
+  const [topPremios, setTopPremios] = useState<Array<{ name: string; count: number; percentage: number }>>([]);
 
   useEffect(() => {
     const hour = new Date().getHours();
@@ -1302,6 +1317,15 @@ export default function AdminDashboard() {
 
     loadDashboard.current = () => fetchDashboard(true);
     fetchDashboard(false);
+
+    // Fetch chart data independently (not cached with main bundle)
+    void fetch('/api/admin/activity').then((r) => r.json()).then((d: { days?: Array<{ day: string; count: number }> }) => {
+      if (d.days) setActivityData(d.days);
+    }).catch(() => { /* ignore */ });
+
+    void fetch('/api/admin/top-premios').then((r) => r.json()).then((d: { items?: Array<{ name: string; count: number; percentage: number }> }) => {
+      if (d.items) setTopPremios(d.items);
+    }).catch(() => { /* ignore */ });
 
     // Background refresh every 5 min
     const interval = setInterval(() => fetchFresh(true), TTL);
@@ -1442,13 +1466,13 @@ export default function AdminDashboard() {
             <div className="flex flex-wrap gap-3 mt-6">
               <div className="flex items-center gap-2 px-4 py-2 rounded-full" style={{ background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.18)', backdropFilter: 'blur(8px)' }}>
                 <span className="w-2 h-2 rounded-full bg-emerald-400" style={{ boxShadow: '0 0 8px rgba(52,211,153,0.8)' }} />
-                <span className="text-sm font-bold text-white">{totalCobros.toLocaleString()} cobros totales</span>
+                <KpiPill value={totalCobros} label="cobros totales" />
               </div>
               <div className="flex items-center gap-2 px-4 py-2 rounded-full" style={{ background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.18)', backdropFilter: 'blur(8px)' }}>
-                <span className="text-sm font-bold text-white">{pendientes} pendientes</span>
+                <KpiPill value={pendientes} label="pendientes" />
               </div>
               <div className="flex items-center gap-2 px-4 py-2 rounded-full" style={{ background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.18)', backdropFilter: 'blur(8px)' }}>
-                <span className="text-sm font-bold text-white">{totalPremios} premios activos</span>
+                <KpiPill value={totalPremios} label="premios activos" />
               </div>
               {claimsTrend === 'up' && claimsTrendLabel && (
                 <div className="flex items-center gap-2 px-4 py-2 rounded-full" style={{ background: 'rgba(52,211,153,0.2)', border: '1px solid rgba(52,211,153,0.3)' }}>
@@ -1596,6 +1620,35 @@ export default function AdminDashboard() {
             )}
           </div>
         </div>
+
+        {/* Actividad últimos 14 días */}
+        {!loading && (
+          <div className="bg-white rounded-2xl border border-[#E8E3DC] p-6" style={{ boxShadow: cardShadow }}>
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <h2 className="text-sm font-bold text-[#1C1917]">Actividad últimos 14 días</h2>
+                <p className="text-xs text-[#a8a29e]">Cobros diarios registrados</p>
+              </div>
+              {activityData.length > 0 && (
+                <span className="text-xs font-bold text-[#2563EB] tabular-nums">
+                  {activityData.reduce((s, d) => s + d.count, 0)} total
+                </span>
+              )}
+            </div>
+            <ActivityChart data={activityData} />
+          </div>
+        )}
+
+        {/* Top premios canjeados */}
+        {!loading && topPremios.length > 0 && (
+          <div>
+            <div className="flex items-center justify-between mb-3">
+              <h2 className="label-caps slide-up-sm">Top premios canjeados</h2>
+              <span className="text-xs text-[#a8a29e]">Últimos 30 días</span>
+            </div>
+            <TopPremiosChart items={topPremios} />
+          </div>
+        )}
 
         {/* Acciones rápidas */}
         <div>

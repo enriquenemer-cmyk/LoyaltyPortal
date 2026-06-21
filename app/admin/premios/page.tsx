@@ -62,6 +62,7 @@ function StatusPill({ status }: { status: StatusInfo }) {
 
 function QRModal({ prize, onClose }: { prize: Prize; onClose: () => void }) {
   const [qrDataUrl, setQrDataUrl] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
   const imgRef = useRef<HTMLImageElement>(null);
   const url = typeof window !== 'undefined'
     ? `${window.location.origin}/premio/${prize.id}`
@@ -79,6 +80,13 @@ function QRModal({ prize, onClose }: { prize: Prize; onClose: () => void }) {
     a.href = qrDataUrl;
     a.download = `qr-${prize.id}.png`;
     a.click();
+  }
+
+  function handleCopyLink() {
+    navigator.clipboard.writeText(url).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }).catch(() => {});
   }
 
   function handlePrint() {
@@ -142,7 +150,7 @@ function QRModal({ prize, onClose }: { prize: Prize; onClose: () => void }) {
           <p className="text-xs text-stone-400 break-all text-center max-w-[280px] leading-relaxed">{url}</p>
 
           {/* Actions */}
-          <div className="flex gap-3 w-full">
+          <div className="flex gap-3 w-full flex-wrap">
             <button
               onClick={handleDownload}
               disabled={!qrDataUrl}
@@ -164,6 +172,31 @@ function QRModal({ prize, onClose }: { prize: Prize; onClose: () => void }) {
               Imprimir
             </button>
           </div>
+          {/* Copy link button */}
+          <button
+            onClick={handleCopyLink}
+            className={`w-full flex items-center justify-center gap-2 font-bold text-sm px-4 py-2.5 rounded-xl transition-all ${
+              copied
+                ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                : 'bg-stone-50 hover:bg-stone-100 text-stone-600 border border-[#E8E3DC]'
+            }`}
+          >
+            {copied ? (
+              <>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                </svg>
+                ✓ Copiado!
+              </>
+            ) : (
+              <>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                </svg>
+                Copiar enlace
+              </>
+            )}
+          </button>
         </div>
       </div>
     </div>

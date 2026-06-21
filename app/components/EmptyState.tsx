@@ -1,15 +1,33 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 
 type EmptyStateType = 'no-claims' | 'no-prizes' | 'no-restaurants' | 'no-clients' | 'no-results';
 
-interface EmptyStateProps {
+// Legacy props (type-based)
+interface EmptyStateLegacyProps {
   type: EmptyStateType;
   title: string;
   subtitle?: string;
   action?: React.ReactNode;
+  // icon must be absent to disambiguate
+  icon?: never;
 }
+
+// New icon-based props
+type EmptyStateIcon = 'gift' | 'users' | 'clipboard' | 'chart' | 'search' | 'star';
+
+interface EmptyStateIconProps {
+  icon: EmptyStateIcon;
+  title: string;
+  description: string;
+  action?: { label: string; href?: string; onClick?: () => void };
+  // type must be absent to disambiguate
+  type?: never;
+}
+
+type EmptyStateProps = EmptyStateLegacyProps | EmptyStateIconProps;
 
 function NoClaimsIllustration() {
   return (
@@ -123,7 +141,121 @@ const illustrations: Record<EmptyStateType, React.FC> = {
   'no-results': NoResultsIllustration,
 };
 
-export function EmptyState({ type, title, subtitle, action }: EmptyStateProps) {
+// --- Icon SVGs for new API ---
+
+function IconGift() {
+  return (
+    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#2563EB" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <polyline points="20 12 20 22 4 22 4 12" />
+      <rect x="2" y="7" width="20" height="5" />
+      <line x1="12" y1="22" x2="12" y2="7" />
+      <path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z" />
+      <path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z" />
+    </svg>
+  );
+}
+
+function IconUsers() {
+  return (
+    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#2563EB" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+      <circle cx="9" cy="7" r="4" />
+      <path d="M23 21v-2a4 4 0 00-3-3.87" />
+      <path d="M16 3.13a4 4 0 010 7.75" />
+    </svg>
+  );
+}
+
+function IconClipboard() {
+  return (
+    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#2563EB" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2" />
+      <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
+      <line x1="9" y1="12" x2="15" y2="12" />
+      <line x1="9" y1="16" x2="13" y2="16" />
+    </svg>
+  );
+}
+
+function IconChart() {
+  return (
+    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#2563EB" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <line x1="18" y1="20" x2="18" y2="10" />
+      <line x1="12" y1="20" x2="12" y2="4" />
+      <line x1="6" y1="20" x2="6" y2="14" />
+      <line x1="2" y1="20" x2="22" y2="20" />
+    </svg>
+  );
+}
+
+function IconSearch() {
+  return (
+    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#2563EB" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <circle cx="11" cy="11" r="8" />
+      <line x1="21" y1="21" x2="16.65" y2="16.65" />
+    </svg>
+  );
+}
+
+function IconStar() {
+  return (
+    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#2563EB" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+    </svg>
+  );
+}
+
+const iconComponents: Record<EmptyStateIcon, React.FC> = {
+  gift: IconGift,
+  users: IconUsers,
+  clipboard: IconClipboard,
+  chart: IconChart,
+  search: IconSearch,
+  star: IconStar,
+};
+
+export function EmptyState(props: EmptyStateProps) {
+  // New icon-based API
+  if ('icon' in props && props.icon) {
+    const { icon, title, description, action } = props;
+    const IconComp = iconComponents[icon];
+    return (
+      <div
+        className="flex flex-col items-center justify-center py-16 px-6 text-center"
+        style={{ animation: 'fadeInUp 0.4s ease both' }}
+      >
+        <div className="bg-blue-50 rounded-2xl p-4 mb-5 inline-flex items-center justify-center">
+          <IconComp />
+        </div>
+        <p className="text-slate-800 font-bold text-lg mb-2">{title}</p>
+        <p className="text-slate-500 text-sm max-w-xs leading-relaxed">{description}</p>
+        {action && (
+          <div className="mt-5">
+            {action.href ? (
+              <Link
+                href={action.href}
+                className="inline-flex items-center gap-2 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition-all hover:opacity-90"
+                style={{ background: 'linear-gradient(135deg,#2563EB,#0891B2)', boxShadow: '0 4px 14px rgba(37,99,235,0.30)' }}
+              >
+                {action.label}
+              </Link>
+            ) : (
+              <button
+                onClick={action.onClick}
+                className="inline-flex items-center gap-2 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition-all hover:opacity-90"
+                style={{ background: 'linear-gradient(135deg,#2563EB,#0891B2)', boxShadow: '0 4px 14px rgba(37,99,235,0.30)' }}
+              >
+                {action.label}
+              </button>
+            )}
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  // Legacy type-based API
+  const { type, title, subtitle, action } = props as EmptyStateLegacyProps;
   const Illustration = illustrations[type];
 
   return (

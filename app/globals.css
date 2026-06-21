@@ -1319,3 +1319,12 @@ input[type="date"] {
 /* ── Remove duplicate fadeIn on admin-content > div (was causing flicker) ── */
 .admin-content > div { animation: none !important; }
 .admin-content > div > div { animation: fadeInUp 0.25s ease both; }
+
+/* ── Mobile: hide table, show cards ── */
+@media (max-width: 767px) {
+  .table-to-cards table { display: none !important; }
+  .table-to-cards .mobile-cards { display: flex !important; flex-direction: column; gap: 12px; }
+}
+@media (min-width: 768px) {
+  .table-to-cards .mobile-cards { display: none !important; }
+}

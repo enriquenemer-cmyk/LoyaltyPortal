@@ -807,14 +807,31 @@ input[type="date"] {
   transition: box-shadow 0.2s ease, transform 0.2s cubic-bezier(0.34,1.56,0.64,1) !important;
 }
 
-/* ── Page header style — applied to every h1 inside admin ── */
+/* ── Page header style — applied to h1 inside content (NOT hero) ── */
 .admin-content h1 {
-  background: linear-gradient(135deg, #0f172a 0%, #1e40af 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
   font-weight: 900;
   letter-spacing: -0.03em;
+  color: #0f172a;
+}
+
+/* ── Hero banner h1 must ALWAYS be white ── */
+.hero-gradient h1,
+.hero-gradient * h1 {
+  background: none !important;
+  -webkit-background-clip: unset !important;
+  -webkit-text-fill-color: white !important;
+  background-clip: unset !important;
+  color: white !important;
+  text-shadow: 0 2px 24px rgba(0,0,0,0.18) !important;
+}
+
+/* ── Hero subtitle and badge text ── */
+.hero-gradient p,
+.hero-gradient span:not([style*="background"]) {
+  color: rgba(219,234,254,0.85) !important;
+}
+.hero-gradient > div > div > div > div[style*="rgba(255,255,255,0.15)"] {
+  color: rgba(219,234,254,0.9) !important;
 }
 
 /* ── Table header rows ── */
@@ -1157,10 +1174,7 @@ input[type="date"] {
   opacity: 1 !important;
 }
 
-/* ── Hero banner text polish ── */
-.hero-gradient h1 {
-  text-shadow: 0 2px 20px rgba(0,0,0,0.2) !important;
-}
+/* ── Hero banner text polish (duplicate guard — primary rule is above) ── */
 
 /* ── Notification dot pulse ── */
 @keyframes pulse-dot {
@@ -1205,3 +1219,103 @@ input[type="date"] {
 .admin-content *::-webkit-scrollbar-track { background: transparent; }
 .admin-content *::-webkit-scrollbar-thumb { background: rgba(37,99,235,0.25); border-radius: 99px; }
 .admin-content *::-webkit-scrollbar-thumb:hover { background: rgba(37,99,235,0.45); }
+
+/* ════════════════════════════════════════════════════
+   LAYOUT COHERENCE FIX — dimensiones y overflow
+   ════════════════════════════════════════════════════ */
+
+/* ── Hero banner: mobile padding accounts for fixed topbar ── */
+@media (max-width: 767px) {
+  .hero-gradient {
+    padding-top: 1.5rem !important;
+    padding-bottom: 2rem !important;
+  }
+  /* Content area below hero */
+  .hero-gradient + div,
+  .hero-gradient ~ div {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+}
+
+/* ── Horizontal scrollable stat rows on mobile: full bleed clip ── */
+@media (max-width: 767px) {
+  .admin-content .flex.gap-3.overflow-x-auto,
+  .admin-content .flex.gap-4.overflow-x-auto,
+  .admin-content .flex.gap-3,
+  .admin-content .flex.gap-4 {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    padding-bottom: 4px !important;
+    /* hide scrollbar but keep scroll */
+    scrollbar-width: none !important;
+  }
+  .admin-content .flex.gap-3::-webkit-scrollbar,
+  .admin-content .flex.gap-4::-webkit-scrollbar {
+    display: none !important;
+  }
+}
+
+/* ── Grid cards: 2 columns on mobile, 4 on desktop ── */
+@media (max-width: 767px) {
+  .admin-content .grid.grid-cols-4,
+  .admin-content .grid.sm\:grid-cols-4 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  .admin-content .grid.grid-cols-3,
+  .admin-content .grid.sm\:grid-cols-3 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+/* ── Make sure no child of admin-content causes overflow ── */
+.admin-content {
+  overflow-x: hidden !important;
+}
+.admin-content > * {
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* ── Hero badge pill — force white text regardless of inheritance ── */
+.hero-gradient [style*="rgba(255,255,255,0.15)"] {
+  color: rgba(219,234,254,0.95) !important;
+}
+
+/* ── Button in hero — white bg, blue text ── */
+.hero-gradient button,
+.hero-gradient a[class*="rounded"] {
+  flex-shrink: 0 !important;
+}
+
+/* ── Coherent max-width across all content areas ── */
+.admin-content .max-w-7xl,
+.admin-content .max-w-6xl,
+.admin-content .max-w-5xl,
+.admin-content .max-w-4xl {
+  width: 100% !important;
+}
+
+/* ── Card border-radius consistency ── */
+.admin-content .rounded-2xl { border-radius: 16px !important; }
+.admin-content .rounded-xl  { border-radius: 12px !important; }
+.admin-content .rounded-lg  { border-radius: 10px !important; }
+
+/* ── Table container: always scrollable on mobile ── */
+@media (max-width: 767px) {
+  .admin-content table {
+    min-width: 500px !important;
+  }
+  .admin-content .overflow-x-auto {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    margin-left: -1rem !important;
+    margin-right: -1rem !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+}
+
+/* ── Remove duplicate fadeIn on admin-content > div (was causing flicker) ── */
+.admin-content > div { animation: none !important; }
+.admin-content > div > div { animation: fadeInUp 0.25s ease both; }

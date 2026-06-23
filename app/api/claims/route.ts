@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { insertClaim, getAllClaims, getPrizeById, getPrizeClaimCount, logActivity, getRecentClaimsByContact, getAllPrizeRules, insertPrize, countClaimsByContact, createNotification, upsertCustomerPoints, getPool } from '@/lib/db';
 import { checkRateLimit, getClientIp } from '@/lib/rateLimit';
+import { getSession } from '@/lib/session';
 import { randomUUID } from 'crypto';
 
 export async function POST(request: NextRequest) {
@@ -261,9 +262,12 @@ export async function GET(request: NextRequest) {
     const since = searchParams.get('since') ?? undefined;
     const offsetParam = searchParams.get('offset');
     const limitParam = searchParams.get('limit');
-    const opts = (offsetParam != null || limitParam != null) ? {
+    const session = await getSession();
+    const restaurantId = (session.role === 'manager' && session.restaurantId) ? session.restaurantId : undefined;
+    const opts = (offsetParam != null || limitParam != null || restaurantId) ? {
       offset: offsetParam != null ? parseInt(offsetParam, 10) : undefined,
       limit: limitParam != null ? parseInt(limitParam, 10) : undefined,
+      restaurantId,
     } : undefined;
     const claims = await getAllClaims(status ?? undefined, since, opts);
     return NextResponse.json({ claims });

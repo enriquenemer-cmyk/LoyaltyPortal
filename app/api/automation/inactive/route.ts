@@ -1,11 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getPool } from '@/lib/db';
 
-export async function POST(request: NextRequest) {
-  try {
-    const body = await request.json().catch(() => ({}));
-    const days = parseInt(body.days ?? '30', 10) || 30;
+// Accept Vercel Cron's automatic `Authorization: Bearer <CRON_SECRET>` header,
+// as well as the manual `x-cron-secret` header / `secret` query param conventions
+// used by the other cron routes for local testing.
+function isCronAuthorized(req: NextRequest): boolean {
+  if (!process.env.CRON_SECRET) return true;
+  const bearer = req.headers.get('authorization');
+  if (bearer === `Bearer ${process.env.CRON_SECRET}`) return true;
+  const secret = req.headers.get('x-cron-secret') ?? req.nextUrl.searchParams.get('secret');
+  return secret === process.env.CRON_SECRET;
+}
 
+async function runInactiveAutomation(days: number) {
+  try {
     const { rows } = await getPool().query<{
       phone: string;
       email: string;
@@ -74,4 +82,20 @@ export async function POST(request: NextRequest) {
     console.error('Error fetching inactive customers:', error);
     return NextResponse.json({ error: 'Error interno del servidor.' }, { status: 500 });
   }
+}
+
+// Called manually from the admin UI.
+export async function POST(request: NextRequest) {
+  const body = await request.json().catch(() => ({}));
+  const days = parseInt(body.days ?? '30', 10) || 30;
+  return runInactiveAutomation(days);
+}
+
+// Called daily/weekly via cron (e.g. Vercel Cron). CRON_SECRET env var protects this endpoint.
+export async function GET(request: NextRequest) {
+  if (!isCronAuthorized(request)) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+  const days = parseInt(request.nextUrl.searchParams.get('days') ?? '30', 10) || 30;
+  return runInactiveAutomation(days);
 }

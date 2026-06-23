@@ -1,0 +1,9 @@
+{
+  "crons": [
+    { "path": "/api/cron/birthday", "schedule": "0 9 * * *" },
+    { "path": "/api/cron/daily-report", "schedule": "0 8 * * *" },
+    { "path": "/api/cron/expiring-prizes", "schedule": "0 10 * * *" },
+    { "path": "/api/automation/inactive", "schedule": "0 11 * * 1" },
+    { "path": "/api/cron/run-rules", "schedule": "0 12 * * *" }
+  ]
+}

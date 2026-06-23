@@ -273,6 +273,13 @@ async function ensureSchema(): Promise<void> {
         last_triggered_at TIMESTAMPTZ,
         created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
       );
+      CREATE TABLE IF NOT EXISTS prize_rule_executions (
+        id TEXT PRIMARY KEY,
+        rule_id TEXT NOT NULL REFERENCES prize_rules(id),
+        phone TEXT NOT NULL,
+        executed_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+        UNIQUE(rule_id, phone)
+      );
     `);
     schemaInitialized = true;
   } finally {
@@ -834,7 +841,7 @@ export async function deliverClaim(id: string, deliveredBy: string): Promise<Cla
 export async function getAllClaims(
   status?: 'pending' | 'delivered',
   since?: string,
-  opts?: { offset?: number; limit?: number },
+  opts?: { offset?: number; limit?: number; restaurantId?: string },
 ): Promise<ClaimWithPrize[]> {
   await ensureSchema();
   const conditions: string[] = [];
@@ -842,6 +849,7 @@ export async function getAllClaims(
   let i = 1;
   if (status) { conditions.push(`c.status = $${i++}`); params.push(status); }
   if (since) { conditions.push(`c.claimed_at > $${i++}`); params.push(since); }
+  if (opts?.restaurantId) { conditions.push(`p.restaurant_id = $${i++}`); params.push(opts.restaurantId); }
   const where = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : '';
   const limitClause = opts?.limit != null ? `LIMIT $${i++}` : '';
   if (opts?.limit != null) params.push(opts.limit);

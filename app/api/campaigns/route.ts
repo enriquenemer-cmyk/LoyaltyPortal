@@ -1,11 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getAllCampaigns, insertCampaign } from '@/lib/db';
 import { randomUUID } from 'crypto';
+import { getSession } from '@/lib/session';
 
 export async function GET(request: NextRequest) {
   try {
+    const session = await getSession();
     const { searchParams } = new URL(request.url);
-    const restaurantId = searchParams.get('restaurant_id') ?? undefined;
+    let restaurantId = searchParams.get('restaurant_id') ?? undefined;
+    // Managers are locked to their own restaurant regardless of the query param.
+    if (session.role === 'manager' && session.restaurantId) {
+      restaurantId = session.restaurantId;
+    }
     const campaigns = await getAllCampaigns(restaurantId);
     return NextResponse.json({ campaigns });
   } catch (err) {

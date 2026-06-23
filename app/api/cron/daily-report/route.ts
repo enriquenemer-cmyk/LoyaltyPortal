@@ -3,8 +3,13 @@ import { getPool } from '@/lib/db';
 import { Resend } from 'resend';
 
 export async function GET(req: NextRequest) {
+  const bearer = req.headers.get('authorization');
   const secret = req.headers.get('x-cron-secret') ?? req.nextUrl.searchParams.get('secret');
-  if (process.env.CRON_SECRET && secret !== process.env.CRON_SECRET) {
+  const authorized =
+    !process.env.CRON_SECRET ||
+    bearer === `Bearer ${process.env.CRON_SECRET}` ||
+    secret === process.env.CRON_SECRET;
+  if (!authorized) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 

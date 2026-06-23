@@ -51,7 +51,7 @@ export async function POST(request: NextRequest) {
         restaurant_id,
         action: 'prize_created',
         description: `Premio creado: ${name}`,
-        user_name: 'Admin',
+        user_name: generatedBy ?? 'Sistema',
         metadata: { prize_id: id },
       }).catch(() => {});
     }

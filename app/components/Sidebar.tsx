@@ -46,6 +46,29 @@ function saveRecent(query: string) {
 
 // ── Icons ────────────────────────────────────────────────────────────────────
 const Icons = {
+  ventas: (
+    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" />
+    </svg>
+  ),
+  inventario: (
+    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 2.5L20 6.5V14.5L12 18.5L4 14.5V6.5L12 2.5Z" />
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6.5L12 10.5L20 6.5M12 10.5V18.5" />
+    </svg>
+  ),
+  fichajes: (
+    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="9" strokeWidth={2} />
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 7v5l3 3" />
+    </svg>
+  ),
+  capacitacion: (
+    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M22 10L12 5 2 10l10 5 10-5z" />
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 12v5c0 1.5 2.5 3 6 3s6-1.5 6-3v-5M22 10v6" />
+    </svg>
+  ),
   dashboard: (
     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
@@ -237,6 +260,17 @@ const ALL_SECTIONS: SectionDef[] = [
       { href: '/admin/automatizacion', label: 'Automatizacion', icon: Icons.automatizacion },
       { href: '/admin/misiones', label: 'Misiones Semanales', icon: Icons.misiones },
       { href: '/admin/feedback', label: 'Feedback / NPS', icon: Icons.feedback },
+    ],
+  },
+  {
+    key: 'OPERACIONES',
+    label: 'OPERACIONES',
+    roles: ['admin', 'manager'],
+    links: [
+      { href: '/admin/ventas', label: 'Ventas Diarias', icon: Icons.ventas },
+      { href: '/admin/inventario', label: 'Inventario', icon: Icons.inventario },
+      { href: '/admin/fichajes', label: 'Fichajes', icon: Icons.fichajes },
+      { href: '/admin/capacitacion', label: 'Capacitación', icon: Icons.capacitacion },
     ],
   },
   {

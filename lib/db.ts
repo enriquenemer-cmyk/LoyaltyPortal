@@ -281,6 +281,96 @@ async function ensureSchema(): Promise<void> {
         UNIQUE(rule_id, phone)
       );
     `);
+    await client.query(`
+      -- ── Comando de Ventas: ventas diarias ──────────────────────────────
+      CREATE TABLE IF NOT EXISTS daily_sales (
+        id TEXT PRIMARY KEY,
+        restaurant_id TEXT REFERENCES restaurants(id),
+        sale_date DATE NOT NULL,
+        cash_amount NUMERIC NOT NULL DEFAULT 0,
+        card_amount NUMERIC NOT NULL DEFAULT 0,
+        other_amount NUMERIC NOT NULL DEFAULT 0,
+        total_amount NUMERIC NOT NULL DEFAULT 0,
+        ticket_count INTEGER NOT NULL DEFAULT 0,
+        notes TEXT,
+        created_by TEXT,
+        created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      );
+      CREATE INDEX IF NOT EXISTS daily_sales_date_idx ON daily_sales(restaurant_id, sale_date);
+
+      -- ── Inventario simple: entradas y salidas ──────────────────────────
+      CREATE TABLE IF NOT EXISTS inventory_products (
+        id TEXT PRIMARY KEY,
+        restaurant_id TEXT REFERENCES restaurants(id),
+        name TEXT NOT NULL,
+        unit TEXT NOT NULL DEFAULT 'unidad',
+        current_stock NUMERIC NOT NULL DEFAULT 0,
+        min_stock_alert NUMERIC NOT NULL DEFAULT 0,
+        active BOOLEAN NOT NULL DEFAULT TRUE,
+        created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      );
+      CREATE TABLE IF NOT EXISTS inventory_movements (
+        id TEXT PRIMARY KEY,
+        product_id TEXT NOT NULL REFERENCES inventory_products(id) ON DELETE CASCADE,
+        type TEXT NOT NULL,
+        quantity NUMERIC NOT NULL,
+        note TEXT,
+        created_by TEXT,
+        created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      );
+      CREATE INDEX IF NOT EXISTS inventory_movements_product_idx ON inventory_movements(product_id);
+
+      -- ── Empleados + fichajes (PIN-based clock in/out) ──────────────────
+      CREATE TABLE IF NOT EXISTS employees (
+        id TEXT PRIMARY KEY,
+        restaurant_id TEXT REFERENCES restaurants(id),
+        full_name TEXT NOT NULL,
+        pin_hash TEXT NOT NULL,
+        position TEXT,
+        photo_url TEXT,
+        active BOOLEAN NOT NULL DEFAULT TRUE,
+        total_training_points INTEGER NOT NULL DEFAULT 0,
+        created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      );
+      CREATE TABLE IF NOT EXISTS time_clock_entries (
+        id TEXT PRIMARY KEY,
+        employee_id TEXT NOT NULL REFERENCES employees(id) ON DELETE CASCADE,
+        clock_in TIMESTAMPTZ NOT NULL,
+        clock_out TIMESTAMPTZ,
+        created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      );
+      CREATE INDEX IF NOT EXISTS time_clock_employee_idx ON time_clock_entries(employee_id);
+
+      -- ── Capacitación gamificada (quiz con puntos) ──────────────────────
+      CREATE TABLE IF NOT EXISTS training_modules (
+        id TEXT PRIMARY KEY,
+        restaurant_id TEXT REFERENCES restaurants(id),
+        title TEXT NOT NULL,
+        description TEXT,
+        icon TEXT DEFAULT '📚',
+        active BOOLEAN NOT NULL DEFAULT TRUE,
+        sort_order INTEGER NOT NULL DEFAULT 0,
+        created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      );
+      CREATE TABLE IF NOT EXISTS training_questions (
+        id TEXT PRIMARY KEY,
+        module_id TEXT NOT NULL REFERENCES training_modules(id) ON DELETE CASCADE,
+        question TEXT NOT NULL,
+        options JSONB NOT NULL,
+        correct_index INTEGER NOT NULL,
+        points INTEGER NOT NULL DEFAULT 10,
+        sort_order INTEGER NOT NULL DEFAULT 0
+      );
+      CREATE TABLE IF NOT EXISTS training_attempts (
+        id TEXT PRIMARY KEY,
+        employee_id TEXT NOT NULL REFERENCES employees(id) ON DELETE CASCADE,
+        module_id TEXT NOT NULL REFERENCES training_modules(id) ON DELETE CASCADE,
+        score INTEGER NOT NULL DEFAULT 0,
+        total_points INTEGER NOT NULL DEFAULT 0,
+        completed_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      );
+      CREATE INDEX IF NOT EXISTS training_attempts_employee_idx ON training_attempts(employee_id);
+    `);
     schemaInitialized = true;
   } finally {
     client.release();

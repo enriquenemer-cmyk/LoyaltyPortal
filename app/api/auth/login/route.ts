@@ -4,8 +4,15 @@ import { getIronSession } from 'iron-session';
 import { SessionData, sessionOptions } from '@/lib/session';
 import { getUserByUsername } from '@/lib/db';
 import bcrypt from 'bcryptjs';
+import { checkRateLimit, getClientIp } from '@/lib/rateLimit';
 
 export async function POST(request: NextRequest) {
+  // Rate limit: max 10 attempts per 5 minutes per IP.
+  const ip = getClientIp(request);
+  if (!await checkRateLimit(`admin_login_${ip}`, 10, 5 * 60 * 1000)) {
+    return NextResponse.json({ error: 'Demasiados intentos. Intenta de nuevo en unos minutos.' }, { status: 429 });
+  }
+
   try {
     const { username, password, rememberMe } = await request.json();
 

@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getPool } from '@/lib/db';
+import { getSession } from '@/lib/session';
 
 export interface AtRiskClient {
   full_name: string;
@@ -11,6 +12,10 @@ export interface AtRiskClient {
 }
 
 export async function GET() {
+  const session = await getSession();
+  if (!session.username) {
+    return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
+  }
   try {
     const pool = getPool();
     const { rows } = await pool.query<{

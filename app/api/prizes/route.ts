@@ -7,6 +7,21 @@ import { SessionData, sessionOptions } from '@/lib/session';
 
 export async function POST(request: NextRequest) {
   try {
+    // Require an authenticated admin/manager session — this route is used by
+    // the internal admin UI to mint prize QR codes, not a public endpoint
+    // (public/external access goes through /api/v1/prizes with an API key).
+    let generatedBy: string | null = null;
+    try {
+      const cookieStore = await cookies();
+      const session = await getIronSession<SessionData>(cookieStore, sessionOptions);
+      if (session.username) generatedBy = session.username;
+    } catch {
+      // session not available
+    }
+    if (!generatedBy) {
+      return NextResponse.json({ error: 'No autorizado.' }, { status: 401 });
+    }
+
     const body = await request.json();
     const { name, reason, start_date, end_date, description, restaurant_id, max_uses, photo_url, campaign_id, valid_hours, valid_days, activate_at, game_type } = body;
 
@@ -15,16 +30,6 @@ export async function POST(request: NextRequest) {
         { error: 'Todos los campos son obligatorios.' },
         { status: 400 }
       );
-    }
-
-    // Get session user for generated_by
-    let generatedBy: string | null = null;
-    try {
-      const cookieStore = await cookies();
-      const session = await getIronSession<SessionData>(cookieStore, sessionOptions);
-      if (session.username) generatedBy = session.username;
-    } catch {
-      // session not available
     }
 
     const id = randomUUID();

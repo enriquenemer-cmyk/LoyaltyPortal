@@ -1,7 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getPool } from '@/lib/db';
+import { getSession } from '@/lib/session';
 
 export async function POST(req: NextRequest) {
+  const session = await getSession();
+  if (!session.username) {
+    return NextResponse.json({ error: 'No autorizado.' }, { status: 401 });
+  }
+
   let body: { action?: string };
   try {
     body = await req.json();

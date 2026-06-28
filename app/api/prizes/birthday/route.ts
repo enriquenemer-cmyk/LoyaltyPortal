@@ -59,7 +59,10 @@ export async function POST(req: NextRequest) {
     // Send push notification (non-blocking)
     fetch(`${baseUrl}/api/push/send`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        ...(process.env.CRON_SECRET ? { 'x-internal-secret': process.env.CRON_SECRET } : {}),
+      },
       body: JSON.stringify({
         title: `¡Feliz cumpleaños, ${full_name.split(' ')[0]}! 🎂`,
         body: 'Tienes un premio especial de cumpleaños esperándote.',

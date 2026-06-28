@@ -21,18 +21,22 @@ export async function GET() {
 
   const pool = getPool();
   try {
-    const result = await pool.query(
-      `SELECT
-         m.id, m.restaurant_id, m.title, m.description, m.icon, m.active, m.sort_order, m.created_at,
-         COUNT(DISTINCT q.id)::int AS question_count,
-         COUNT(DISTINCT a.employee_id)::int AS completed_by_count
-       FROM training_modules m
-       LEFT JOIN training_questions q ON q.module_id = m.id
-       LEFT JOIN training_attempts a ON a.module_id = m.id
-       GROUP BY m.id
-       ORDER BY m.sort_order ASC, m.created_at ASC`
-    );
-    return NextResponse.json({ modules: result.rows });
+    const [modulesResult, activeEmployeesResult] = await Promise.all([
+      pool.query(
+        `SELECT
+           m.id, m.restaurant_id, m.title, m.description, m.icon, m.active, m.sort_order, m.created_at,
+           COUNT(DISTINCT q.id)::int AS question_count,
+           COUNT(DISTINCT a.employee_id)::int AS completed_by_count
+         FROM training_modules m
+         LEFT JOIN training_questions q ON q.module_id = m.id
+         LEFT JOIN training_attempts a ON a.module_id = m.id
+         GROUP BY m.id
+         ORDER BY m.sort_order ASC, m.created_at ASC`
+      ),
+      pool.query<{ count: string }>(`SELECT COUNT(*) AS count FROM employees WHERE active = TRUE`),
+    ]);
+    const activeEmployeeCount = Number(activeEmployeesResult.rows[0]?.count ?? 0);
+    return NextResponse.json({ modules: modulesResult.rows, activeEmployeeCount });
   } catch (error) {
     console.error('[GET /api/admin/training/modules]', error);
     return NextResponse.json({ error: 'Error interno del servidor.' }, { status: 500 });

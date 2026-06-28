@@ -30,6 +30,8 @@ type Summary = {
   weekChangePct: number | null;
   monthChangePct: number | null;
   last14Days: { date: string; total: number }[];
+  paymentBreakdown?: { cash: number; card: number; other: number };
+  bestDayOfWeek?: { name: string; average: number } | null;
 };
 
 const PAGE_SIZE = 15;
@@ -41,6 +43,102 @@ function formatCurrency(n: number): string {
 function formatDateShort(d: string) {
   const [y, m, day] = d.slice(0, 10).split('-').map(Number);
   return new Date(y, m - 1, day).toLocaleDateString('es-MX', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+
+function WeeklyComparisonWidget({ summary }: { summary: Summary | null }) {
+  const changePct = summary?.weekChangePct ?? null;
+  const direction = changePct === null ? 'flat' : changePct > 0 ? 'up' : changePct < 0 ? 'down' : 'flat';
+  const arrowColor = direction === 'up' ? '#059669' : direction === 'down' ? '#dc2626' : '#a8a29e';
+  const arrowLabel = changePct === null
+    ? '— Sin datos previos'
+    : direction === 'up'
+      ? `▲ +${changePct.toFixed(1)}%`
+      : direction === 'down'
+        ? `▼ ${changePct.toFixed(1)}%`
+        : '= 0%';
+
+  // last week total = current week total minus implied delta; derive from last14Days if possible
+  const lastWeekApprox = summary && changePct !== null && changePct !== -100
+    ? summary.week / (1 + changePct / 100)
+    : null;
+
+  return (
+    <div className="bg-white rounded-2xl border border-[#E8E3DC] p-6 flex flex-col gap-4 shadow-sm">
+      <div>
+        <h2 className="text-sm font-bold text-[#1C1917]">Esta semana vs semana anterior</h2>
+        <p className="text-xs text-[#a8a29e] mt-0.5">Comparativa de ventas totales</p>
+      </div>
+      <div className="flex flex-col gap-3">
+        <div className="flex items-end gap-3">
+          <span className="text-3xl font-black text-[#1C1917]">{formatCurrency(summary?.week ?? 0)}</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="text-sm font-black" style={{ color: arrowColor }}>{arrowLabel}</span>
+        </div>
+        {lastWeekApprox !== null && (
+          <p className="text-xs text-[#a8a29e]">
+            vs semana anterior: <span className="font-semibold text-[#78716c]">{formatCurrency(lastWeekApprox)}</span>
+          </p>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function PaymentMethodCards({ breakdown }: { breakdown?: { cash: number; card: number; other: number } }) {
+  const cash = breakdown?.cash ?? 0;
+  const card = breakdown?.card ?? 0;
+  const other = breakdown?.other ?? 0;
+  const total = cash + card + other;
+
+  const methods = [
+    { label: 'Efectivo', value: cash, icon: '💵', color: '#059669', bg: '#d1fae5' },
+    { label: 'Tarjeta', value: card, icon: '💳', color: '#2563EB', bg: '#dbeafe' },
+    { label: 'Otros', value: other, icon: '🧾', color: '#7c3aed', bg: '#ede9fe' },
+  ];
+
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      {methods.map((m) => {
+        const pct = total > 0 ? Math.round((m.value / total) * 100) : 0;
+        return (
+          <div
+            key={m.label}
+            className="bg-white rounded-2xl border border-[#E8E3DC] p-5 flex items-center gap-4 shadow-sm"
+          >
+            <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 text-xl" style={{ backgroundColor: m.bg }}>
+              {m.icon}
+            </div>
+            <div className="min-w-0">
+              <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest mb-0.5">{m.label} (mes)</p>
+              <p className="text-xl font-extrabold" style={{ color: m.color }}>{formatCurrency(m.value)}</p>
+              <p className="text-xs text-stone-400 mt-0.5">{pct}% del total</p>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function BestDayInsight({ bestDay }: { bestDay?: { name: string; average: number } | null }) {
+  if (!bestDay) return null;
+  return (
+    <div
+      className="rounded-2xl border border-blue-200 bg-blue-50 p-5 flex items-center gap-4"
+      style={{ boxShadow: '0 1px 2px rgba(37,99,235,0.04), 0 4px 12px rgba(37,99,235,0.08)' }}
+    >
+      <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 text-xl" style={{ background: '#dbeafe' }}>
+        📈
+      </div>
+      <div className="min-w-0">
+        <p className="text-xs font-bold text-blue-700 uppercase tracking-widest mb-0.5">Mejor día de la semana</p>
+        <p className="text-base font-black text-blue-900 leading-snug">
+          <span style={{ color: '#2563EB' }}>{bestDay.name}</span> es tu día más fuerte, con un promedio de {formatCurrency(bestDay.average)} en ventas
+        </p>
+      </div>
+    </div>
+  );
 }
 
 function ChangeBadge({ pct }: { pct: number | null }) {
@@ -406,6 +504,20 @@ export default function VentasPage() {
             <div className="h-20 flex items-center justify-center text-stone-300 text-xs">Sin datos suficientes</div>
           )}
         </div>
+
+        {/* Reporting section */}
+        {!loading && summary && (
+          <div className="flex flex-col gap-6 mb-8">
+            <BestDayInsight bestDay={summary.bestDayOfWeek} />
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <WeeklyComparisonWidget summary={summary} />
+              <div className="flex flex-col gap-4">
+                <p className="text-xs font-bold text-stone-400 uppercase tracking-widest">Por método de pago (mes)</p>
+                <PaymentMethodCards breakdown={summary.paymentBreakdown} />
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Error */}
         {error && (

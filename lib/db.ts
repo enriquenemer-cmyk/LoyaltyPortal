@@ -371,6 +371,14 @@ async function ensureSchema(): Promise<void> {
       );
       CREATE INDEX IF NOT EXISTS training_attempts_employee_idx ON training_attempts(employee_id);
     `);
+    await client.query(`
+      -- ── Índices adicionales para consultas frecuentes ──────────────────
+      CREATE INDEX IF NOT EXISTS claims_phone_idx ON claims(phone);
+      CREATE INDEX IF NOT EXISTS claims_prize_id_idx ON claims(prize_id);
+      CREATE INDEX IF NOT EXISTS claims_claimed_at_idx ON claims(claimed_at);
+      CREATE INDEX IF NOT EXISTS prizes_restaurant_id_idx ON prizes(restaurant_id);
+      CREATE INDEX IF NOT EXISTS inventory_products_restaurant_id_idx ON inventory_products(restaurant_id);
+    `);
     schemaInitialized = true;
   } finally {
     client.release();

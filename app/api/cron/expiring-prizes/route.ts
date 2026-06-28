@@ -44,7 +44,10 @@ export async function GET(req: NextRequest) {
 
       fetch(`${baseUrl}/api/push/send`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...(process.env.CRON_SECRET ? { 'x-internal-secret': process.env.CRON_SECRET } : {}),
+        },
         body: JSON.stringify({
           phone: row.phone,
           title: 'Premio por vencer',

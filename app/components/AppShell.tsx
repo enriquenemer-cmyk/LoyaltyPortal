@@ -13,6 +13,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const isAdminLogin = pathname === '/admin/login';
   const isAdminPage = pathname.startsWith('/admin') && !isAdminLogin;
   const isCajeroPage = pathname.startsWith('/cajero');
+  const isEmpleadosPage = pathname.startsWith('/empleados');
 
   if (isAdminPage) {
     return (
@@ -34,7 +35,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     );
   }
 
-  if (isAdminLogin) {
+  if (isAdminLogin || isEmpleadosPage) {
     return <>{children}</>;
   }
 

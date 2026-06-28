@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getRestaurantById, getRestaurantStats, getClaimsByRestaurant, updateRestaurant, getRestaurantActivity } from '@/lib/db';
 import { put } from '@vercel/blob';
+import { getSession } from '@/lib/session';
 
 export async function GET(
   _request: NextRequest,
@@ -29,6 +30,10 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const session = await getSession();
+    if (!session.username) {
+      return NextResponse.json({ error: 'No autorizado.' }, { status: 401 });
+    }
     const { id } = await params;
     const restaurant = await getRestaurantById(id);
     if (!restaurant) return NextResponse.json({ error: 'Restaurante no encontrado.' }, { status: 404 });

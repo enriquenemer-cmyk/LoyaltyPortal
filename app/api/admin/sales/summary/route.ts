@@ -67,6 +67,8 @@ export async function GET() {
       monthResult,
       prevMonthResult,
       last14Result,
+      paymentMethodResult,
+      weekdayAvgResult,
     ] = await Promise.all([
       pool.query<{ total: string | null }>(
         `SELECT COALESCE(SUM(total_amount), 0) AS total FROM daily_sales WHERE sale_date = $1`,
@@ -96,6 +98,17 @@ export async function GET() {
          ORDER BY sale_date ASC`,
         [fourteenDaysAgoStr, today]
       ),
+      pool.query<{ cash: string | null; card: string | null; other: string | null }>(
+        `SELECT COALESCE(SUM(cash_amount), 0) AS cash, COALESCE(SUM(card_amount), 0) AS card, COALESCE(SUM(other_amount), 0) AS other
+         FROM daily_sales
+         WHERE sale_date >= $1 AND sale_date <= $2`,
+        [monthStartStr, today]
+      ),
+      pool.query<{ dow: number; avg_total: string | null }>(
+        `SELECT EXTRACT(DOW FROM sale_date)::int AS dow, AVG(total_amount) AS avg_total
+         FROM daily_sales
+         GROUP BY dow`
+      ),
     ]);
 
     const todayTotal = Number(todayResult.rows[0]?.total ?? 0);
@@ -117,6 +130,19 @@ export async function GET() {
       last14Days.push({ date: iso, total: totalsByDate.get(iso) ?? 0 });
     }
 
+    const cash = Number(paymentMethodResult.rows[0]?.cash ?? 0);
+    const card = Number(paymentMethodResult.rows[0]?.card ?? 0);
+    const other = Number(paymentMethodResult.rows[0]?.other ?? 0);
+
+    const WEEKDAY_NAMES = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+    let bestDay: { name: string; average: number } | null = null;
+    for (const row of weekdayAvgResult.rows) {
+      const avg = Number(row.avg_total ?? 0);
+      if (!bestDay || avg > bestDay.average) {
+        bestDay = { name: WEEKDAY_NAMES[row.dow], average: avg };
+      }
+    }
+
     return NextResponse.json({
       today: todayTotal,
       week: weekTotal,
@@ -124,6 +150,8 @@ export async function GET() {
       weekChangePct: pctChange(weekTotal, prevWeekTotal),
       monthChangePct: pctChange(monthTotal, prevMonthTotal),
       last14Days,
+      paymentBreakdown: { cash, card, other },
+      bestDayOfWeek: bestDay,
     });
   } catch (err) {
     console.error('[/api/admin/sales/summary GET]', err);

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getRestaurantTicketConfig, upsertRestaurantTicketConfig } from '@/lib/db';
+import { getSession } from '@/lib/session';
 
 export async function GET(
   _req: NextRequest,
@@ -19,6 +20,10 @@ export async function PUT(
   req: NextRequest,
   { params }: { params: Promise<{ restaurantId: string }> }
 ) {
+  const session = await getSession();
+  if (!session.username) {
+    return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
+  }
   const { restaurantId } = await params;
   try {
     const body = await req.json();

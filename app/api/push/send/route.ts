@@ -1,10 +1,26 @@
 import { NextRequest, NextResponse } from 'next/server';
 import webpush from 'web-push';
 import { getPool } from '@/lib/db';
+import { getSession } from '@/lib/session';
 
 export const dynamic = 'force-dynamic';
 
+// Authorized either by an admin session (manual use) or the shared
+// CRON_SECRET used by server-to-server callers (automation/inactive,
+// prizes/birthday, cron/expiring-prizes) — this endpoint can blast a push
+// notification to every subscriber, so it must not be left open to the public.
+async function isAuthorized(req: NextRequest): Promise<boolean> {
+  const session = await getSession();
+  if (session.username) return true;
+  if (!process.env.CRON_SECRET) return false;
+  const internalSecret = req.headers.get('x-internal-secret');
+  return internalSecret === process.env.CRON_SECRET;
+}
+
 export async function POST(req: NextRequest) {
+  if (!await isAuthorized(req)) {
+    return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
+  }
   webpush.setVapidDetails(
     process.env.VAPID_SUBJECT || 'mailto:admin@supertierra.mx',
     process.env.VAPID_PUBLIC_KEY!,

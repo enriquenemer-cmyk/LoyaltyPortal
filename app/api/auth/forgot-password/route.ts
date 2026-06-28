@@ -1,7 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getUserByUsername, insertResetToken, logActivity } from '@/lib/db';
+import { checkRateLimit, getClientIp } from '@/lib/rateLimit';
 
 export async function POST(req: NextRequest) {
+  // Rate limit: max 5 requests per 15 minutes per IP to prevent abuse/enumeration spam.
+  const ip = getClientIp(req);
+  if (!await checkRateLimit(`forgot_password_${ip}`, 5, 15 * 60 * 1000)) {
+    return NextResponse.json({ ok: true });
+  }
+
   try {
     const { username } = await req.json();
 

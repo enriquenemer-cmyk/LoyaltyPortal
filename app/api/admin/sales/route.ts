@@ -97,8 +97,16 @@ export async function POST(req: NextRequest) {
     const cash = Number(cash_amount) || 0;
     const card = Number(card_amount) || 0;
     const other = Number(other_amount) || 0;
-    const total = cash + card + other;
     const tickets = Number(ticket_count) || 0;
+
+    if (cash < 0 || card < 0 || other < 0) {
+      return NextResponse.json({ error: 'Los montos no pueden ser negativos' }, { status: 400 });
+    }
+    if (tickets < 0) {
+      return NextResponse.json({ error: 'ticket_count no puede ser negativo' }, { status: 400 });
+    }
+
+    const total = cash + card + other;
 
     const pool = getPool();
 

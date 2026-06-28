@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import { getPool } from '@/lib/db';
 import { getEmployeeSession } from '@/lib/employee-session';
+import { checkRateLimit, getClientIp } from '@/lib/rateLimit';
 
 export const runtime = 'nodejs';
 
@@ -13,6 +14,12 @@ type EmployeeRow = {
 };
 
 export async function POST(request: NextRequest) {
+  // Rate limit: max 10 attempts per 5 minutes per IP — PINs are only 4-6 digits.
+  const ip = getClientIp(request);
+  if (!await checkRateLimit(`employee_login_${ip}`, 10, 5 * 60 * 1000)) {
+    return NextResponse.json({ error: 'Demasiados intentos. Intenta de nuevo en unos minutos.' }, { status: 429 });
+  }
+
   try {
     const { pin } = await request.json();
 

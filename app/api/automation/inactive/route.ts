@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getPool } from '@/lib/db';
+import { getSession } from '@/lib/session';
 
 // Accept Vercel Cron's automatic `Authorization: Bearer <CRON_SECRET>` header,
 // as well as the manual `x-cron-secret` header / `secret` query param conventions
@@ -67,7 +68,10 @@ async function runInactiveAutomation(days: number) {
       const name = c.full_name.split(' ')[0];
       fetch(`${baseUrl}/api/push/send`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...(process.env.CRON_SECRET ? { 'x-internal-secret': process.env.CRON_SECRET } : {}),
+        },
         body: JSON.stringify({
           phone: c.phone,
           title: `¡Te extrañamos, ${name}! 🌯`,
@@ -86,6 +90,10 @@ async function runInactiveAutomation(days: number) {
 
 // Called manually from the admin UI.
 export async function POST(request: NextRequest) {
+  const session = await getSession();
+  if (!session.username) {
+    return NextResponse.json({ error: 'No autorizado.' }, { status: 401 });
+  }
   const body = await request.json().catch(() => ({}));
   const days = parseInt(body.days ?? '30', 10) || 30;
   return runInactiveAutomation(days);

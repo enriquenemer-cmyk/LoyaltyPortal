@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 
 type Restaurant = {
   id: string;
@@ -241,7 +242,7 @@ export default function RestaurantProfilePage() {
             <div className="flex items-center gap-5">
               <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-white text-2xl font-extrabold shrink-0 overflow-hidden" style={{ background: 'linear-gradient(135deg,#2563EB,#0891B2)', boxShadow: '0 6px 20px rgba(37,99,235,0.40)' }}>
                 {restaurant.logo_url ? (
-                  <img src={restaurant.logo_url} alt={restaurant.name} className="w-full h-full object-cover" />
+                  <Image src={restaurant.logo_url} alt={restaurant.name} width={64} height={64} className="w-full h-full object-cover" />
                 ) : (
                   restaurant.name.split(' ').slice(0, 2).map((n) => n[0]).join('').toUpperCase()
                 )}

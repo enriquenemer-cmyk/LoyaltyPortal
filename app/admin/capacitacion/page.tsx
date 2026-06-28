@@ -44,12 +44,32 @@ const labelClass = 'block text-[10px] font-semibold text-[#78716c] uppercase tra
 
 const MEDALS = ['🥇', '🥈', '🥉'];
 
+function CompletionBar({ completed, total }: { completed: number; total: number }) {
+  const pct = total > 0 ? Math.round((completed / total) * 100) : 0;
+  return (
+    <div className="mt-3">
+      <div className="flex items-center justify-between mb-1">
+        <span className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">Tasa de finalización</span>
+        <span className="text-[10px] font-bold text-[#2563EB]">{pct}% ({completed}/{total})</span>
+      </div>
+      <div className="h-2 bg-[#F5F0EB] rounded-full overflow-hidden">
+        <div
+          className="h-2 rounded-full transition-all duration-500"
+          style={{ width: `${pct}%`, background: 'linear-gradient(90deg,#2563EB,#0EA5E9)' }}
+        />
+      </div>
+    </div>
+  );
+}
+
 function ModuleCard({
   mod,
+  activeEmployeeCount,
   onUpdated,
   onDeleted,
 }: {
   mod: Module;
+  activeEmployeeCount: number;
   onUpdated: (m: Module) => void;
   onDeleted: (id: string) => void;
 }) {
@@ -108,6 +128,9 @@ function ModuleCard({
               <span>{mod.question_count} {mod.question_count === 1 ? 'pregunta' : 'preguntas'}</span>
               <span>{mod.completed_by_count} {mod.completed_by_count === 1 ? 'empleado completó' : 'empleados completaron'}</span>
             </div>
+            {activeEmployeeCount > 0 && (
+              <CompletionBar completed={mod.completed_by_count} total={activeEmployeeCount} />
+            )}
           </div>
         </div>
 
@@ -384,6 +407,7 @@ function QuestionEditor({ moduleId, onChanged }: { moduleId: string; onChanged: 
 export default function CapacitacionAdminPage() {
   const [modules, setModules] = useState<Module[]>([]);
   const [leaderboard, setLeaderboard] = useState<LeaderboardRow[]>([]);
+  const [activeEmployeeCount, setActiveEmployeeCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -399,6 +423,7 @@ export default function CapacitacionAdminPage() {
     ])
       .then(([modsData, lbData]) => {
         setModules(modsData.modules ?? []);
+        setActiveEmployeeCount(modsData.activeEmployeeCount ?? 0);
         setLeaderboard(lbData.leaderboard ?? []);
       })
       .catch(() => {})
@@ -556,7 +581,7 @@ export default function CapacitacionAdminPage() {
         ) : (
           <div className="space-y-3">
             {modules.map((mod) => (
-              <ModuleCard key={mod.id} mod={mod} onUpdated={handleUpdated} onDeleted={handleDeleted} />
+              <ModuleCard key={mod.id} mod={mod} activeEmployeeCount={activeEmployeeCount} onUpdated={handleUpdated} onDeleted={handleDeleted} />
             ))}
           </div>
         )}

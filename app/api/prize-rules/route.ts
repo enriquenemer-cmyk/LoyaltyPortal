@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getAllPrizeRules, insertPrizeRule, togglePrizeRule } from '@/lib/db';
 import { randomUUID } from 'crypto';
+import { getSession } from '@/lib/session';
 
 export async function GET() {
   try {
@@ -14,6 +15,10 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
+    const session = await getSession();
+    if (!session.username) {
+      return NextResponse.json({ error: 'No autorizado.' }, { status: 401 });
+    }
     const body = await request.json();
 
     // Toggle active state

@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useMemo, useCallback } from 'react';
 import { EmptyState } from '@/app/components/EmptyState';
+import HorizontalBarList from '@/app/components/HorizontalBarList';
 
 type InventoryProduct = {
   id: string;
@@ -26,6 +27,13 @@ type InventoryMovement = {
 };
 
 type Restaurant = { id: string; name: string };
+
+type TopConsumedItem = {
+  product_id: string;
+  name: string;
+  total_quantity: number;
+  percentage: number;
+};
 
 type Tab = 'productos' | 'movimientos';
 
@@ -64,6 +72,59 @@ function StockBadge({ stock, minAlert }: { stock: number; minAlert: number }) {
     <span className={`inline-flex items-center gap-1.5 text-xs font-bold px-2.5 py-1 rounded-full border ${cls}`}>
       {stock} <span className="opacity-60 font-medium">· {label}</span>
     </span>
+  );
+}
+
+function LowStockBanner({ products }: { products: InventoryProduct[] }) {
+  const [dismissed, setDismissed] = useState(() => {
+    try { return typeof window !== 'undefined' && !!sessionStorage.getItem('inv_low_stock_dismissed'); }
+    catch { return false; }
+  });
+
+  const lowStockProducts = products.filter(
+    (p) => p.active && Number(p.min_stock_alert) > 0 && Number(p.current_stock) <= Number(p.min_stock_alert)
+  );
+
+  if (dismissed || lowStockProducts.length === 0) return null;
+
+  function dismiss() {
+    try { sessionStorage.setItem('inv_low_stock_dismissed', '1'); } catch { /* ignore */ }
+    setDismissed(true);
+  }
+
+  return (
+    <div
+      className="rounded-2xl border border-red-200 bg-red-50 p-5 flex items-start justify-between gap-3 mb-6"
+      style={{ boxShadow: '0 1px 2px rgba(220,38,38,0.05), 0 4px 12px rgba(220,38,38,0.08)' }}
+    >
+      <div className="flex items-start gap-3 min-w-0">
+        <span className="text-lg leading-none shrink-0">⚠️</span>
+        <div className="min-w-0">
+          <p className="font-bold text-red-800 text-sm mb-1.5">
+            {lowStockProducts.length === 1
+              ? '1 producto con stock bajo'
+              : `${lowStockProducts.length} productos con stock bajo`}
+          </p>
+          <ul className="flex flex-col gap-1">
+            {lowStockProducts.slice(0, 6).map((p) => (
+              <li key={p.id} className="text-xs text-red-700">
+                <span className="font-semibold">{p.name}</span>: {p.current_stock} {p.unit} (mínimo {p.min_stock_alert})
+              </li>
+            ))}
+            {lowStockProducts.length > 6 && (
+              <li className="text-xs text-red-500">y {lowStockProducts.length - 6} más...</li>
+            )}
+          </ul>
+        </div>
+      </div>
+      <button
+        onClick={dismiss}
+        className="text-red-400 hover:text-red-600 transition-colors text-sm font-bold leading-none shrink-0"
+        aria-label="Descartar alerta de stock bajo"
+      >
+        ✕
+      </button>
+    </div>
   );
 }
 
@@ -312,6 +373,7 @@ export default function InventarioPage() {
   const [products, setProducts] = useState<InventoryProduct[]>([]);
   const [movements, setMovements] = useState<InventoryMovement[]>([]);
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
+  const [topConsumed, setTopConsumed] = useState<TopConsumedItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [tab, setTab] = useState<Tab>('productos');
@@ -349,6 +411,10 @@ export default function InventarioPage() {
         fetch('/api/restaurants')
           .then((r) => r.json())
           .then((d) => setRestaurants(d.restaurants ?? []))
+          .catch(() => {}),
+        fetch('/api/admin/inventory/top-consumed')
+          .then((r) => r.json())
+          .then((d) => setTopConsumed(d.items ?? []))
           .catch(() => {}),
       ]);
       setLoading(false);
@@ -396,6 +462,9 @@ export default function InventarioPage() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 md:px-10 py-6">
+        {/* Low stock alert banner */}
+        {!loading && <LowStockBanner products={activeProducts} />}
+
         {/* KPI cards */}
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-8">
           {[
@@ -418,6 +487,18 @@ export default function InventarioPage() {
             </div>
           ))}
         </div>
+
+        {/* Top 5 productos más consumidos */}
+        {!loading && (
+          <div className="mb-8">
+            <p className="text-xs font-bold text-stone-400 uppercase tracking-widest mb-3">Top 5 productos más consumidos (últimos 30 días)</p>
+            <HorizontalBarList
+              items={topConsumed.map((i) => ({ label: i.name, value: i.total_quantity, percentage: i.percentage }))}
+              emptyMessage="Sin movimientos de salida en los últimos 30 días."
+              barColor="linear-gradient(90deg, #dc2626, #ea580c)"
+            />
+          </div>
+        )}
 
         {/* Tabs */}
         <div className="flex items-center gap-2 flex-wrap mb-4">

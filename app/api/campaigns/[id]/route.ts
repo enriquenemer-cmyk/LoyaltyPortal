@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getCampaignById, updateCampaign, deleteCampaign } from '@/lib/db';
+import { getSession } from '@/lib/session';
 
 export async function GET(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -15,6 +16,10 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
 
 export async function PUT(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
+    const session = await getSession();
+    if (!session.username) {
+      return NextResponse.json({ error: 'No autorizado.' }, { status: 401 });
+    }
     const { id } = await params;
     const body = await request.json();
     const { name, description, restaurant_id, qr_dot_color, qr_background, qr_dot_style, qr_corner_style, qr_gradient_end } = body;
@@ -38,6 +43,10 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
 
 export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
+    const session = await getSession();
+    if (!session.username) {
+      return NextResponse.json({ error: 'No autorizado.' }, { status: 401 });
+    }
     const { id } = await params;
     await deleteCampaign(id);
     return NextResponse.json({ success: true });

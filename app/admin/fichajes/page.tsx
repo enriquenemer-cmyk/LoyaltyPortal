@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
+import WeekdayBarChart from '@/app/components/WeekdayBarChart';
 
 type Employee = {
   id: string;
@@ -32,6 +33,94 @@ function formatDuration(seconds: number | null): string {
   return `${h}h ${m}m`;
 }
 
+type LeaderboardEntry = {
+  employee_id: string;
+  full_name: string;
+  position: string | null;
+  total_hours: number;
+};
+
+type Anomaly = {
+  id: string;
+  type: 'long_shift' | 'forgotten_clock_out';
+  employee_id: string;
+  full_name: string;
+  clock_in: string;
+  clock_out: string | null;
+  hours: number;
+};
+
+type WeekdayHour = { label: string; value: number };
+
+function AnomalyWarnings({ anomalies }: { anomalies: Anomaly[] }) {
+  if (anomalies.length === 0) return null;
+  return (
+    <div
+      className="rounded-2xl border border-amber-200 bg-amber-50 p-5 mb-6"
+      style={{ boxShadow: '0 1px 2px rgba(217,119,6,0.05), 0 4px 12px rgba(217,119,6,0.08)' }}
+    >
+      <div className="flex items-center gap-2 mb-3">
+        <span className="text-lg leading-none">⚠️</span>
+        <span className="font-bold text-amber-800 text-sm">
+          {anomalies.length === 1 ? '1 anomalía detectada en fichajes' : `${anomalies.length} anomalías detectadas en fichajes`}
+        </span>
+      </div>
+      <ul className="flex flex-col gap-1.5">
+        {anomalies.map((a) => (
+          <li key={a.id} className="text-xs text-amber-900 flex items-center justify-between gap-2 flex-wrap">
+            <span className="font-semibold">{a.full_name}</span>
+            <span className="text-amber-700">
+              {a.type === 'long_shift'
+                ? `Turno de ${a.hours.toFixed(1)}h (excede 12h)`
+                : `Sin fichar salida desde hace ${a.hours.toFixed(1)}h — posible olvido`}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function HoursLeaderboard({ leaderboard }: { leaderboard: LeaderboardEntry[] }) {
+  if (leaderboard.length === 0) {
+    return (
+      <div className="bg-white border border-[#E8E3DC] rounded-2xl p-6 shadow-sm">
+        <p className="text-sm text-stone-400">Sin horas registradas esta semana.</p>
+      </div>
+    );
+  }
+  const max = Math.max(...leaderboard.map((l) => l.total_hours), 1);
+  return (
+    <div className="bg-white border border-[#E8E3DC] rounded-2xl p-6 shadow-sm flex flex-col gap-3">
+      {leaderboard.map((entry, i) => {
+        const pct = Math.round((entry.total_hours / max) * 100);
+        return (
+          <div key={entry.employee_id} className="flex items-center gap-3">
+            <span className="text-xs font-semibold text-slate-600 shrink-0 w-36 truncate" title={entry.full_name}>
+              {i + 1}. {entry.full_name}
+            </span>
+            <div className="flex-1 bg-slate-100 rounded-full" style={{ height: 8 }}>
+              <div
+                className="h-full rounded-full"
+                style={{
+                  width: `${pct}%`,
+                  background: 'linear-gradient(90deg, #2563EB, #0EA5E9)',
+                  borderRadius: 4,
+                  minWidth: pct > 0 ? 4 : 0,
+                  transition: 'width 0.6s cubic-bezier(0.34,1.56,0.64,1)',
+                }}
+              />
+            </div>
+            <span className="text-xs font-black text-slate-700 shrink-0 tabular-nums w-16 text-right">
+              {entry.total_hours.toFixed(1)}h
+            </span>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 export default function FichajesPage() {
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [entries, setEntries] = useState<TimeClockEntry[]>([]);
@@ -46,6 +135,20 @@ export default function FichajesPage() {
   const [resettingId, setResettingId] = useState<string | null>(null);
   const [resetPinValue, setResetPinValue] = useState('');
   const [deletingId, setDeletingId] = useState<string | null>(null);
+
+  const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
+  const [anomalies, setAnomalies] = useState<Anomaly[]>([]);
+  const [weekdayHours, setWeekdayHours] = useState<WeekdayHour[]>([]);
+
+  async function loadReports() {
+    const res = await fetch('/api/admin/time-clock/reports');
+    if (res.ok) {
+      const data = await res.json();
+      setLeaderboard(data.leaderboard ?? []);
+      setAnomalies(data.anomalies ?? []);
+      setWeekdayHours(data.weekdayHours ?? []);
+    }
+  }
 
   async function loadEmployees() {
     const res = await fetch('/api/admin/employees');
@@ -64,7 +167,7 @@ export default function FichajesPage() {
   }
 
   useEffect(() => {
-    Promise.all([loadEmployees(), loadEntries()]).finally(() => setLoading(false));
+    Promise.all([loadEmployees(), loadEntries(), loadReports()]).finally(() => setLoading(false));
   }, []);
 
   const kpis = useMemo(() => {
@@ -208,6 +311,9 @@ export default function FichajesPage() {
           </div>
         )}
 
+        {/* Anomaly warnings */}
+        {!loading && <AnomalyWarnings anomalies={anomalies} />}
+
         {/* KPI cards */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
           <div className="bg-white border border-[#E8E3DC] rounded-2xl p-5 shadow-sm">
@@ -223,6 +329,20 @@ export default function FichajesPage() {
             <p className="text-3xl font-black text-[#1C1917] mt-1">{kpis.hoursToday}h</p>
           </div>
         </div>
+
+        {/* Reporting: leaderboard + weekday hours */}
+        {!loading && (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <div>
+              <p className="text-xs font-bold text-stone-400 uppercase tracking-widest mb-3">Horas trabajadas esta semana</p>
+              <HoursLeaderboard leaderboard={leaderboard} />
+            </div>
+            <div className="bg-white border border-[#E8E3DC] rounded-2xl p-6 shadow-sm">
+              <p className="text-xs font-bold text-stone-400 uppercase tracking-widest mb-3">Horas totales por día de la semana</p>
+              <WeekdayBarChart data={weekdayHours} valueSuffix="h" />
+            </div>
+          </div>
+        )}
 
         {/* Create form */}
         {showForm && (

@@ -28,6 +28,8 @@ type SectionDef = {
   label: string;
   links: NavItem[];
   roles: Role[];
+  groupIcon?: React.ReactNode;
+  accent?: string;
 };
 
 // ── localStorage helpers ─────────────────────────────────────────────────────
@@ -227,12 +229,59 @@ const Icons = {
   ),
 };
 
+// ── Group header icons (one per section, slightly larger/bolder) ───────────
+const GroupIcons = {
+  principal: (
+    <svg className="w-[18px] h-[18px]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+    </svg>
+  ),
+  premios: (
+    <svg className="w-[18px] h-[18px]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
+    </svg>
+  ),
+  clientes: (
+    <svg className="w-[18px] h-[18px]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+    </svg>
+  ),
+  operaciones: (
+    <svg className="w-[18px] h-[18px]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m-3 0h14a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2z" />
+    </svg>
+  ),
+  juegos: (
+    <svg className="w-[18px] h-[18px]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
+    </svg>
+  ),
+  restaurantes: (
+    <svg className="w-[18px] h-[18px]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+    </svg>
+  ),
+  reportes: (
+    <svg className="w-[18px] h-[18px]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+    </svg>
+  ),
+  configuracion: (
+    <svg className="w-[18px] h-[18px]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+      <circle cx="12" cy="12" r="3" strokeWidth={2} />
+    </svg>
+  ),
+};
+
 // ── Nav sections definition ──────────────────────────────────────────────────
 const ALL_SECTIONS: SectionDef[] = [
   {
     key: 'PRINCIPAL',
-    label: 'PRINCIPAL',
+    label: 'Principal',
     roles: ['admin', 'manager', 'cajero'],
+    groupIcon: GroupIcons.principal,
+    accent: '#60a5fa',
     links: [
       { href: '/admin', label: 'Dashboard', exact: true, icon: Icons.dashboard },
       { href: '/admin/generate', label: 'Generar Premio', icon: Icons.generate },
@@ -240,8 +289,10 @@ const ALL_SECTIONS: SectionDef[] = [
   },
   {
     key: 'PREMIOS',
-    label: 'PREMIOS',
+    label: 'Premios',
     roles: ['admin', 'manager'],
+    groupIcon: GroupIcons.premios,
+    accent: '#f59e0b',
     links: [
       { href: '/admin/premios', label: 'Mis Premios', icon: Icons.premios },
       { href: '/admin/registros', label: 'Registros de Cobro', icon: Icons.registros },
@@ -251,8 +302,10 @@ const ALL_SECTIONS: SectionDef[] = [
   },
   {
     key: 'CLIENTES',
-    label: 'CLIENTES',
+    label: 'Clientes',
     roles: ['admin', 'manager'],
+    groupIcon: GroupIcons.clientes,
+    accent: '#a78bfa',
     links: [
       { href: '/admin/clientes', label: 'Base de Clientes', icon: Icons.clientes },
       { href: '/admin/segmentacion', label: 'Segmentación', icon: Icons.segmentacion },
@@ -264,8 +317,10 @@ const ALL_SECTIONS: SectionDef[] = [
   },
   {
     key: 'OPERACIONES',
-    label: 'OPERACIONES',
+    label: 'Operaciones',
     roles: ['admin', 'manager'],
+    groupIcon: GroupIcons.operaciones,
+    accent: '#34d399',
     links: [
       { href: '/admin/ventas', label: 'Ventas Diarias', icon: Icons.ventas },
       { href: '/admin/inventario', label: 'Inventario', icon: Icons.inventario },
@@ -275,8 +330,10 @@ const ALL_SECTIONS: SectionDef[] = [
   },
   {
     key: 'JUEGOS Y TICKETS',
-    label: 'JUEGOS Y TICKETS',
+    label: 'Juegos y Tickets',
     roles: ['admin', 'manager'],
+    groupIcon: GroupIcons.juegos,
+    accent: '#f472b6',
     links: [
       { href: '/admin/game-bundles', label: 'Juegos con Premios', icon: Icons.juegos },
       { href: '/admin/ticket-tiers', label: 'Premio por Consumo', icon: Icons.ticket },
@@ -285,8 +342,10 @@ const ALL_SECTIONS: SectionDef[] = [
   },
   {
     key: 'RESTAURANTES',
-    label: 'RESTAURANTES',
+    label: 'Restaurantes',
     roles: ['admin', 'manager'],
+    groupIcon: GroupIcons.restaurantes,
+    accent: '#fb923c',
     links: [
       { href: '/admin/restaurantes', label: 'Mis Restaurantes', icon: Icons.restaurantes },
       { href: '/admin/rendimiento', label: 'Rendimiento del Equipo', icon: Icons.rendimiento },
@@ -296,8 +355,10 @@ const ALL_SECTIONS: SectionDef[] = [
   },
   {
     key: 'REPORTES',
-    label: 'REPORTES',
+    label: 'Reportes',
     roles: ['admin'],
+    groupIcon: GroupIcons.reportes,
+    accent: '#22d3ee',
     links: [
       { href: '/admin/corporativo', label: 'Vista Corporativa', icon: Icons.corporativo },
       { href: '/admin/analitica', label: 'Analitica Avanzada', icon: Icons.analitica },
@@ -312,8 +373,10 @@ const ALL_SECTIONS: SectionDef[] = [
   },
   {
     key: 'CONFIGURACION',
-    label: 'CONFIGURACION',
+    label: 'Configuración',
     roles: ['admin'],
+    groupIcon: GroupIcons.configuracion,
+    accent: '#94a3b8',
     links: [
       { href: '/admin/usuarios', label: 'Usuarios', icon: Icons.usuarios },
       { href: '/admin/permisos', label: 'Permisos', icon: Icons.permisos },
@@ -336,17 +399,30 @@ const CAJERO_LINKS: NavItem[] = [
 // Manager hidden links in CONFIGURACION
 const MANAGER_HIDDEN_LINKS = ['/admin/usuarios', '/admin/webhooks'];
 
-// Sections collapsed by default
-function getDefaultCollapsed(): Record<string, boolean> {
-  return {
-    PRINCIPAL: false,
-    PREMIOS: false,
-    CLIENTES: false,
-    'JUEGOS Y TICKETS': false,
-    RESTAURANTES: false,
-    REPORTES: false,
-    CONFIGURACION: true,
-  };
+// ── Accordion open-section persistence ──────────────────────────────────────
+const OPEN_SECTION_KEY = 'premia_sidebar_open_section';
+
+function sectionForPathname(sections: SectionDef[], pathname: string): string | null {
+  for (const section of sections) {
+    for (const link of section.links) {
+      const isMatch = link.exact ? pathname === link.href : pathname === link.href || pathname.startsWith(link.href + '/');
+      if (isMatch) return section.key;
+    }
+  }
+  return null;
+}
+
+function loadStoredOpenSection(): string | null {
+  if (typeof window === 'undefined') return null;
+  try { return localStorage.getItem(OPEN_SECTION_KEY); } catch { return null; }
+}
+
+function saveStoredOpenSection(key: string | null) {
+  if (typeof window === 'undefined') return;
+  try {
+    if (key) localStorage.setItem(OPEN_SECTION_KEY, key);
+    else localStorage.removeItem(OPEN_SECTION_KEY);
+  } catch { /* ignore */ }
 }
 
 // ── Global Search ────────────────────────────────────────────────────────────
@@ -537,17 +613,73 @@ function NavLink({ href, label, icon, exact }: NavItem) {
   );
 }
 
-// ── Nav section with always-visible header ───────────────────────────────────
-function NavSection({ section }: { section: SectionDef }) {
+// ── Accordion section: group header (icon + label + count + chevron) ───────
+// Collapses with a smooth grid-template-rows animation (0fr → 1fr), no JS
+// height measuring needed. Only one section is open at a time (true accordion).
+function AccordionSection({
+  section,
+  isOpen,
+  hasActiveLink,
+  onToggle,
+}: {
+  section: SectionDef;
+  isOpen: boolean;
+  hasActiveLink: boolean;
+  onToggle: () => void;
+}) {
+  const accent = section.accent ?? '#60a5fa';
+
   return (
-    <div>
-      <p className="text-[10px] font-bold uppercase tracking-widest px-3 py-2" style={{ color: 'rgba(100,116,139,0.7)' }}>
-        {section.label}
-      </p>
-      <div className="space-y-0.5">
-        {section.links.map((link) => (
-          <NavLink key={link.href} {...link} />
-        ))}
+    <div className="rounded-xl overflow-hidden" style={{ marginBottom: 2 }}>
+      <button
+        onClick={onToggle}
+        aria-expanded={isOpen}
+        className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl transition-colors"
+        style={{
+          background: isOpen ? 'rgba(255,255,255,0.06)' : hasActiveLink ? 'rgba(255,255,255,0.03)' : 'transparent',
+        }}
+        onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.07)'; }}
+        onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = isOpen ? 'rgba(255,255,255,0.06)' : hasActiveLink ? 'rgba(255,255,255,0.03)' : 'transparent'; }}
+      >
+        <span
+          className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-colors"
+          style={{
+            background: isOpen || hasActiveLink ? `${accent}22` : 'rgba(255,255,255,0.05)',
+            color: isOpen || hasActiveLink ? accent : 'rgba(148,163,184,0.75)',
+          }}
+        >
+          {section.groupIcon}
+        </span>
+        <span
+          className="flex-1 text-left text-[12.5px] font-bold truncate"
+          style={{ color: isOpen || hasActiveLink ? '#f1f5f9' : 'rgba(203,213,225,0.85)' }}
+        >
+          {section.label}
+        </span>
+        {hasActiveLink && !isOpen && (
+          <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: accent, boxShadow: `0 0 6px ${accent}` }} />
+        )}
+        <svg
+          className="w-3.5 h-3.5 shrink-0 transition-transform duration-300"
+          style={{ transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)', color: 'rgba(148,163,184,0.6)' }}
+          fill="none" stroke="currentColor" viewBox="0 0 24 24"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+
+      {/* Smooth expand/collapse: grid-template-rows 0fr<->1fr avoids height measuring */}
+      <div
+        className="grid transition-[grid-template-rows] duration-300 ease-out"
+        style={{ gridTemplateRows: isOpen ? '1fr' : '0fr' }}
+      >
+        <div className="overflow-hidden min-h-0">
+          <div className="pt-1 pb-1.5 pl-2 space-y-0.5" style={{ borderLeft: `2px solid ${accent}33`, marginLeft: 17 }}>
+            {section.links.map((link) => (
+              <NavLink key={link.href} {...link} />
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -635,8 +767,10 @@ function SidebarContent({ onLinkClick }: { onLinkClick?: () => void }) {
     visibleSections = [
       {
         key: 'PRINCIPAL',
-        label: 'PRINCIPAL',
+        label: 'Principal',
         roles: ['cajero'],
+        groupIcon: GroupIcons.principal,
+        accent: '#60a5fa',
         links: CAJERO_LINKS,
       },
     ];
@@ -651,12 +785,27 @@ function SidebarContent({ onLinkClick }: { onLinkClick?: () => void }) {
       });
   }
 
-  // Sections with default collapsed state (only CONFIGURACION starts collapsed)
-  const defaultCollapsed = getDefaultCollapsed();
-  const [collapsed, setCollapsed] = useState<Record<string, boolean>>(defaultCollapsed);
+  // Accordion: only one section open at a time. Defaults to whichever section
+  // contains the current route, falling back to the last section the user had
+  // open (persisted), falling back to the first visible section.
+  const [openSection, setOpenSection] = useState<string | null>(() => {
+    return sectionForPathname(visibleSections, pathname) ?? loadStoredOpenSection() ?? visibleSections[0]?.key ?? null;
+  });
+
+  // Re-sync the open section whenever navigation lands on a route belonging
+  // to a different section (e.g. user clicked a link, or used global search).
+  useEffect(() => {
+    const match = sectionForPathname(visibleSections, pathname);
+    if (match) setOpenSection(match);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname]);
 
   function toggleSection(key: string) {
-    setCollapsed((prev) => ({ ...prev, [key]: !prev[key] }));
+    setOpenSection((prev) => {
+      const next = prev === key ? null : key;
+      saveStoredOpenSection(next);
+      return next;
+    });
   }
 
   return (
@@ -696,41 +845,20 @@ function SidebarContent({ onLinkClick }: { onLinkClick?: () => void }) {
       {/* Global data search */}
       <GlobalSearch />
 
-      {/* Nav sections */}
+      {/* Nav sections — accordion: one group open at a time */}
       <nav
-        className="flex-1 px-3 py-2 overflow-y-auto space-y-1"
+        className="flex-1 px-2.5 py-2 overflow-y-auto"
         onClick={onLinkClick ? (e) => { if ((e.target as HTMLElement).closest('a')) onLinkClick(); } : undefined}
       >
-        {visibleSections.map((section) => {
-          // CONFIGURACION is collapsible; all others are always expanded
-          if (section.key === 'CONFIGURACION') {
-            const isCollapsed = collapsed['CONFIGURACION'] ?? true;
-            return (
-              <div key={section.key}>
-                <button
-                  onClick={() => toggleSection('CONFIGURACION')}
-                  className="w-full flex items-center justify-between px-3 py-2 text-[10px] font-bold uppercase tracking-widest text-stone-400 hover:text-stone-600 transition-colors"
-                >
-                  <span>{section.label}</span>
-                  <svg
-                    className={`w-3 h-3 transition-transform duration-200 ${isCollapsed ? '-rotate-90' : ''}`}
-                    fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </button>
-                {!isCollapsed && (
-                  <div className="space-y-0.5">
-                    {section.links.map((link) => (
-                      <NavLink key={link.href} {...link} />
-                    ))}
-                  </div>
-                )}
-              </div>
-            );
-          }
-          return <NavSection key={section.key} section={section} />;
-        })}
+        {visibleSections.map((section) => (
+          <AccordionSection
+            key={section.key}
+            section={section}
+            isOpen={openSection === section.key}
+            hasActiveLink={sectionForPathname([section], pathname) === section.key}
+            onToggle={() => toggleSection(section.key)}
+          />
+        ))}
       </nav>
 
       {/* User footer */}

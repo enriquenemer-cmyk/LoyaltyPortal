@@ -1328,3 +1328,23 @@ input[type="date"] {
 @media (min-width: 768px) {
   .table-to-cards .mobile-cards { display: none !important; }
 }
+
+/* ════════════════════════════════════════════════════
+   SIDEBAR — compact mode + search-result highlight
+   ════════════════════════════════════════════════════ */
+
+/* Compact rail (icon-only) shifts content from 240px to 64px on desktop */
+@media (min-width: 768px) {
+  html.sidebar-compact .admin-content {
+    margin-left: 64px !important;
+  }
+}
+
+/* Brief glow/pulse on a sidebar link reached via global search */
+@keyframes sidebarLinkPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(96,165,250,0.5); }
+  50%       { box-shadow: 0 0 0 4px rgba(96,165,250,0.25); }
+}
+.sidebar-link-pulse {
+  animation: sidebarLinkPulse 0.6s ease-in-out 2;
+}

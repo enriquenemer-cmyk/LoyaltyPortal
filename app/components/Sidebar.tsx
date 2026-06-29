@@ -399,6 +399,14 @@ const CAJERO_LINKS: NavItem[] = [
 // Manager hidden links in CONFIGURACION
 const MANAGER_HIDDEN_LINKS = ['/admin/usuarios', '/admin/webhooks'];
 
+// Flat href -> NavItem lookup, built once, used to render the favorites strip
+// and to resolve a link's icon/label when only its href is known.
+const ALL_LINKS_FLAT: Map<string, NavItem> = new Map();
+for (const section of ALL_SECTIONS) {
+  for (const link of section.links) ALL_LINKS_FLAT.set(link.href, link);
+}
+for (const link of CAJERO_LINKS) ALL_LINKS_FLAT.set(link.href, link);
+
 // ── Accordion open-section persistence ──────────────────────────────────────
 const OPEN_SECTION_KEY = 'premia_sidebar_open_section';
 
@@ -425,8 +433,39 @@ function saveStoredOpenSection(key: string | null) {
   } catch { /* ignore */ }
 }
 
+// ── Favorites (pinned quick-access links) ───────────────────────────────────
+const FAVORITES_KEY = 'premia_sidebar_favorites';
+
+function loadFavorites(): string[] {
+  if (typeof window === 'undefined') return [];
+  try { return JSON.parse(localStorage.getItem(FAVORITES_KEY) ?? '[]'); } catch { return []; }
+}
+function saveFavorites(hrefs: string[]) {
+  if (typeof window === 'undefined') return;
+  try { localStorage.setItem(FAVORITES_KEY, JSON.stringify(hrefs)); } catch { /* ignore */ }
+}
+
+// ── Compact mode (icon-only desktop sidebar) ────────────────────────────────
+const COMPACT_KEY = 'premia_sidebar_compact';
+
+function loadCompact(): boolean {
+  if (typeof window === 'undefined') return false;
+  try { return localStorage.getItem(COMPACT_KEY) === '1'; } catch { return false; }
+}
+function saveCompact(value: boolean) {
+  if (typeof window === 'undefined') return;
+  try { localStorage.setItem(COMPACT_KEY, value ? '1' : '0'); } catch { /* ignore */ }
+  document.documentElement.classList.toggle('sidebar-compact', value);
+}
+
+// ── Search-result type → which section to auto-open + highlight ────────────
+const TYPE_TO_SECTION: Record<string, string> = {
+  premio: 'PREMIOS', prize: 'PREMIOS', cobro: 'PREMIOS', claim: 'PREMIOS',
+  cliente: 'CLIENTES', user: 'CONFIGURACION', restaurant: 'RESTAURANTES',
+};
+
 // ── Global Search ────────────────────────────────────────────────────────────
-function GlobalSearch() {
+function GlobalSearch({ onSelect }: { onSelect?: (item: SearchResult) => void }) {
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -482,6 +521,7 @@ function GlobalSearch() {
     setRecent(loadRecent());
     setQuery(''); setResults([]); setFocused(false);
     router.push(item.href);
+    onSelect?.(item);
   }
 
   function selectRecent(q: string) {
@@ -588,18 +628,25 @@ function GlobalSearch() {
 }
 
 // ── Single nav link ──────────────────────────────────────────────────────────
-function NavLink({ href, label, icon, exact }: NavItem) {
+function NavLink({
+  href, label, icon, exact, highlighted, favorited, onToggleFavorite, showFavoriteToggle,
+}: NavItem & {
+  highlighted?: boolean;
+  favorited?: boolean;
+  onToggleFavorite?: () => void;
+  showFavoriteToggle?: boolean;
+}) {
   const pathname = usePathname();
   const isActive = exact ? pathname === href : pathname === href || pathname.startsWith(href + '/');
 
   return (
     <Link
       href={href}
-      className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm transition-all border-l-2 ${
+      className={`group/navlink flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm transition-all border-l-2 ${
         isActive
           ? 'font-semibold border-blue-400 pl-[10px]'
           : 'border-transparent pl-[10px]'
-      }`}
+      } ${highlighted ? 'sidebar-link-pulse' : ''}`}
       style={isActive
         ? { background: 'rgba(59,130,246,0.18)', color: '#93c5fd' }
         : { color: 'rgba(148,163,184,0.85)' }
@@ -608,7 +655,18 @@ function NavLink({ href, label, icon, exact }: NavItem) {
       onMouseLeave={e => { if (!isActive) { (e.currentTarget as HTMLAnchorElement).style.background = ''; (e.currentTarget as HTMLAnchorElement).style.color = 'rgba(148,163,184,0.85)'; } }}
     >
       <span className="w-4 h-4 shrink-0 flex items-center justify-center">{icon}</span>
-      <span className="truncate text-xs">{label}</span>
+      <span className="truncate text-xs flex-1">{label}</span>
+      {showFavoriteToggle && (
+        <button
+          onClick={(e) => { e.preventDefault(); e.stopPropagation(); onToggleFavorite?.(); }}
+          aria-label={favorited ? 'Quitar de favoritos' : 'Agregar a favoritos'}
+          className={`shrink-0 p-0.5 rounded transition-opacity ${favorited ? 'opacity-100' : 'opacity-0 group-hover/navlink:opacity-60 hover:opacity-100'}`}
+        >
+          <svg className="w-3 h-3" viewBox="0 0 24 24" fill={favorited ? '#fbbf24' : 'none'} stroke={favorited ? '#fbbf24' : 'currentColor'} strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.196-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.783-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+          </svg>
+        </button>
+      )}
     </Link>
   );
 }
@@ -621,11 +679,19 @@ function AccordionSection({
   isOpen,
   hasActiveLink,
   onToggle,
+  badge,
+  favorites,
+  onToggleFavorite,
+  highlightedHref,
 }: {
   section: SectionDef;
   isOpen: boolean;
   hasActiveLink: boolean;
   onToggle: () => void;
+  badge?: number;
+  favorites: Set<string>;
+  onToggleFavorite: (href: string) => void;
+  highlightedHref: string | null;
 }) {
   const accent = section.accent ?? '#60a5fa';
 
@@ -642,13 +708,18 @@ function AccordionSection({
         onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = isOpen ? 'rgba(255,255,255,0.06)' : hasActiveLink ? 'rgba(255,255,255,0.03)' : 'transparent'; }}
       >
         <span
-          className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-colors"
+          className="relative w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-colors"
           style={{
             background: isOpen || hasActiveLink ? `${accent}22` : 'rgba(255,255,255,0.05)',
             color: isOpen || hasActiveLink ? accent : 'rgba(148,163,184,0.75)',
           }}
         >
           {section.groupIcon}
+          {!!badge && badge > 0 && (
+            <span className="absolute -top-1 -right-1 min-w-[15px] h-[15px] px-0.5 rounded-full bg-red-500 text-white text-[8px] font-bold flex items-center justify-center leading-none ring-2" style={{ boxShadow: '0 0 0 2px #0f1117' }}>
+              {badge > 99 ? '99+' : badge}
+            </span>
+          )}
         </span>
         <span
           className="flex-1 text-left text-[12.5px] font-bold truncate"
@@ -676,9 +747,101 @@ function AccordionSection({
         <div className="overflow-hidden min-h-0">
           <div className="pt-1 pb-1.5 pl-2 space-y-0.5" style={{ borderLeft: `2px solid ${accent}33`, marginLeft: 17 }}>
             {section.links.map((link) => (
-              <NavLink key={link.href} {...link} />
+              <NavLink
+                key={link.href}
+                {...link}
+                showFavoriteToggle
+                favorited={favorites.has(link.href)}
+                onToggleFavorite={() => onToggleFavorite(link.href)}
+                highlighted={highlightedHref === link.href}
+              />
             ))}
           </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Favorites strip: pinned quick-access links, shown above all groups ─────
+function FavoritesStrip({
+  hrefs,
+  highlightedHref,
+  onToggleFavorite,
+}: {
+  hrefs: string[];
+  highlightedHref: string | null;
+  onToggleFavorite: (href: string) => void;
+}) {
+  if (hrefs.length === 0) return null;
+  return (
+    <div className="mb-2 rounded-xl px-1 py-1.5" style={{ background: 'rgba(251,191,36,0.06)', border: '1px solid rgba(251,191,36,0.15)' }}>
+      <p className="flex items-center gap-1.5 px-2 pb-1 text-[10px] font-bold uppercase tracking-widest" style={{ color: '#fbbf24' }}>
+        <svg className="w-3 h-3" viewBox="0 0 24 24" fill="#fbbf24">
+          <path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.196-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.783-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+        </svg>
+        Favoritos
+      </p>
+      <div className="space-y-0.5">
+        {hrefs.map((href) => {
+          const link = ALL_LINKS_FLAT.get(href);
+          if (!link) return null;
+          return (
+            <NavLink
+              key={href}
+              {...link}
+              showFavoriteToggle
+              favorited
+              onToggleFavorite={() => onToggleFavorite(href)}
+              highlighted={highlightedHref === href}
+            />
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+// ── Compact mode: icon-only rail with a hover flyout per group ─────────────
+function CompactGroupIcon({
+  section,
+  hasActiveLink,
+  badge,
+}: {
+  section: SectionDef;
+  hasActiveLink: boolean;
+  badge?: number;
+}) {
+  const accent = section.accent ?? '#60a5fa';
+  return (
+    <div className="group/compact relative">
+      <div
+        className="relative w-9 h-9 mx-auto mb-1 rounded-lg flex items-center justify-center cursor-pointer transition-colors"
+        style={{
+          background: hasActiveLink ? `${accent}22` : 'rgba(255,255,255,0.05)',
+          color: hasActiveLink ? accent : 'rgba(148,163,184,0.75)',
+        }}
+      >
+        {section.groupIcon}
+        {!!badge && badge > 0 && (
+          <span className="absolute -top-1 -right-1 min-w-[15px] h-[15px] px-0.5 rounded-full bg-red-500 text-white text-[8px] font-bold flex items-center justify-center leading-none" style={{ boxShadow: '0 0 0 2px #0f1117' }}>
+            {badge > 99 ? '99+' : badge}
+          </span>
+        )}
+      </div>
+
+      {/* Flyout panel: appears to the right on hover, pure CSS (group-hover) */}
+      <div
+        className="invisible opacity-0 group-hover/compact:visible group-hover/compact:opacity-100 transition-opacity duration-150 absolute left-full top-0 ml-2 w-52 rounded-xl z-50 pointer-events-none group-hover/compact:pointer-events-auto"
+        style={{ background: '#1a1f2e', border: '1px solid rgba(255,255,255,0.1)', boxShadow: '0 8px 32px rgba(0,0,0,0.5)' }}
+      >
+        <p className="px-3 pt-2.5 pb-1.5 text-[11px] font-bold uppercase tracking-widest" style={{ color: accent }}>
+          {section.label}
+        </p>
+        <div className="px-1.5 pb-1.5 space-y-0.5">
+          {section.links.map((link) => (
+            <NavLink key={link.href} {...link} />
+          ))}
         </div>
       </div>
     </div>
@@ -715,7 +878,15 @@ function useDarkMode() {
 }
 
 // ── SidebarContent ───────────────────────────────────────────────────────────
-function SidebarContent({ onLinkClick }: { onLinkClick?: () => void }) {
+function SidebarContent({
+  onLinkClick,
+  compact = false,
+  onToggleCompact,
+}: {
+  onLinkClick?: () => void;
+  compact?: boolean;
+  onToggleCompact?: () => void;
+}) {
   const router = useRouter();
   const pathname = usePathname();
 
@@ -724,6 +895,23 @@ function SidebarContent({ onLinkClick }: { onLinkClick?: () => void }) {
   const [loggingOut, setLoggingOut] = useState(false);
   const [pendingCount, setPendingCount] = useState(0);
   const { dark, toggle: toggleDark } = useDarkMode();
+
+  // Favorites (pinned quick-access links)
+  const [favorites, setFavorites] = useState<string[]>([]);
+  useEffect(() => { setFavorites(loadFavorites()); }, []);
+  const favoritesSet = new Set(favorites);
+  function toggleFavorite(href: string) {
+    setFavorites((prev) => {
+      const next = prev.includes(href) ? prev.filter((h) => h !== href) : [...prev, href];
+      saveFavorites(next);
+      return next;
+    });
+  }
+
+  // Highlight a link briefly (2s) after it's reached via global search
+  const [highlightedHref, setHighlightedHref] = useState<string | null>(null);
+  const highlightTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(() => () => { if (highlightTimerRef.current) clearTimeout(highlightTimerRef.current); }, []);
 
   // Fetch current user + role
   useEffect(() => {
@@ -808,10 +996,26 @@ function SidebarContent({ onLinkClick }: { onLinkClick?: () => void }) {
     });
   }
 
+  // Called when a global-search result is picked: jump straight to the
+  // section that owns it and briefly highlight the matching link.
+  function handleSearchSelect(item: SearchResult) {
+    const sectionKey = TYPE_TO_SECTION[item.type];
+    if (sectionKey) {
+      setOpenSection(sectionKey);
+      saveStoredOpenSection(sectionKey);
+    }
+    setHighlightedHref(item.href);
+    if (highlightTimerRef.current) clearTimeout(highlightTimerRef.current);
+    highlightTimerRef.current = setTimeout(() => setHighlightedHref(null), 2000);
+  }
+
+  // Badges shown on collapsed group headers (real counts only — no invented data)
+  const sectionBadges: Record<string, number> = { PREMIOS: pendingCount };
+
   return (
     <div className="flex flex-col h-full" onClick={onLinkClick ? undefined : undefined}>
       {/* Logo header */}
-      <div className="px-3 py-3 border-b border-white/6 flex items-center justify-between">
+      <div className={`px-3 py-3 border-b border-white/6 flex items-center ${compact ? 'flex-col gap-2' : 'justify-between'}`}>
         <Link href="/admin" className="flex items-center gap-2" onClick={onLinkClick}>
           <div className="shrink-0 flex items-center justify-center text-white/90">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 180" width="46" height="41">
@@ -820,10 +1024,10 @@ function SidebarContent({ onLinkClick }: { onLinkClick?: () => void }) {
               <line x1="30" y1="132" x2="170" y2="132" stroke="currentColor" strokeWidth="1.5" opacity="0.3"/>
             </svg>
           </div>
-          <span className="text-xs font-extrabold text-white/90 tracking-tight leading-none">Super Tierra</span>
+          {!compact && <span className="text-xs font-extrabold text-white/90 tracking-tight leading-none">Super Tierra</span>}
         </Link>
-        <div className="flex items-center gap-1">
-          <NotificationBell />
+        <div className={`flex items-center gap-1 ${compact ? 'flex-col' : ''}`}>
+          {!compact && <NotificationBell />}
           <Link
             href="/admin/registros?status=pending"
             onClick={onLinkClick}
@@ -839,41 +1043,76 @@ function SidebarContent({ onLinkClick }: { onLinkClick?: () => void }) {
               </span>
             )}
           </Link>
+          {onToggleCompact && (
+            <button
+              onClick={onToggleCompact}
+              title={compact ? 'Expandir menú' : 'Modo compacto'}
+              className="hidden md:flex p-1.5 rounded-lg text-slate-400 hover:text-blue-400 hover:bg-white/8 transition-colors"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ transform: compact ? 'rotate(180deg)' : 'none' }}>
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
+              </svg>
+            </button>
+          )}
         </div>
       </div>
 
-      {/* Global data search */}
-      <GlobalSearch />
+      {compact ? (
+        /* ── Compact rail: icons only, hover for a flyout with full labels ── */
+        <nav className="flex-1 px-1.5 py-2 overflow-y-auto overflow-x-visible">
+          {visibleSections.map((section) => (
+            <CompactGroupIcon
+              key={section.key}
+              section={section}
+              hasActiveLink={sectionForPathname([section], pathname) === section.key}
+              badge={sectionBadges[section.key]}
+            />
+          ))}
+        </nav>
+      ) : (
+        <>
+          {/* Global data search */}
+          <GlobalSearch onSelect={handleSearchSelect} />
 
-      {/* Nav sections — accordion: one group open at a time */}
-      <nav
-        className="flex-1 px-2.5 py-2 overflow-y-auto"
-        onClick={onLinkClick ? (e) => { if ((e.target as HTMLElement).closest('a')) onLinkClick(); } : undefined}
-      >
-        {visibleSections.map((section) => (
-          <AccordionSection
-            key={section.key}
-            section={section}
-            isOpen={openSection === section.key}
-            hasActiveLink={sectionForPathname([section], pathname) === section.key}
-            onToggle={() => toggleSection(section.key)}
-          />
-        ))}
-      </nav>
+          {/* Nav sections — favorites strip + accordion (one group open at a time) */}
+          <nav
+            className="flex-1 px-2.5 py-2 overflow-y-auto"
+            onClick={onLinkClick ? (e) => { if ((e.target as HTMLElement).closest('a')) onLinkClick(); } : undefined}
+          >
+            <FavoritesStrip hrefs={favorites} highlightedHref={highlightedHref} onToggleFavorite={toggleFavorite} />
+            {visibleSections.map((section) => (
+              <AccordionSection
+                key={section.key}
+                section={section}
+                isOpen={openSection === section.key}
+                hasActiveLink={sectionForPathname([section], pathname) === section.key}
+                onToggle={() => toggleSection(section.key)}
+                badge={sectionBadges[section.key]}
+                favorites={favoritesSet}
+                onToggleFavorite={toggleFavorite}
+                highlightedHref={highlightedHref}
+              />
+            ))}
+          </nav>
+        </>
+      )}
 
       {/* User footer */}
       {username && (
         <div className="px-3 py-2" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
-          <div className="flex items-center gap-2 px-2 py-1 mb-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" style={{ boxShadow: '0 0 6px rgba(52,211,153,0.6)' }} />
-            <span className="text-xs font-semibold truncate" style={{ color: '#94a3b8' }}>{username}</span>
-            <span className="ml-auto text-[9px] font-bold tracking-wide uppercase" style={{ color: 'rgba(100,116,139,0.6)' }}>{role}</span>
-          </div>
-          <div className="flex gap-1.5">
+          {!compact && (
+            <div className="flex items-center gap-2 px-2 py-1 mb-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" style={{ boxShadow: '0 0 6px rgba(52,211,153,0.6)' }} />
+              <span className="text-xs font-semibold truncate" style={{ color: '#94a3b8' }}>{username}</span>
+              <span className="ml-auto text-[9px] font-bold tracking-wide uppercase" style={{ color: 'rgba(100,116,139,0.6)' }}>{role}</span>
+            </div>
+          )}
+          <div className={`flex gap-1.5 ${compact ? 'flex-col items-center' : ''}`}>
             <button
               onClick={handleLogout}
               disabled={loggingOut}
-              className="flex-1 flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
+              title="Cerrar sesion"
+              className={`flex items-center gap-2 rounded-lg text-xs font-medium transition-all ${compact ? 'p-1.5' : 'flex-1 px-3 py-1.5'}`}
               style={{ color: '#94a3b8', border: '1px solid rgba(255,255,255,0.06)' }}
               onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.color = '#fca5a5'; (e.currentTarget as HTMLButtonElement).style.background = 'rgba(239,68,68,0.1)'; (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(239,68,68,0.2)'; }}
               onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.color = '#94a3b8'; (e.currentTarget as HTMLButtonElement).style.background = ''; (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(255,255,255,0.06)'; }}
@@ -881,7 +1120,7 @@ function SidebarContent({ onLinkClick }: { onLinkClick?: () => void }) {
               <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
               </svg>
-              {loggingOut ? 'Saliendo...' : 'Cerrar sesion'}
+              {!compact && (loggingOut ? 'Saliendo...' : 'Cerrar sesion')}
             </button>
             <button
               onClick={toggleDark}
@@ -911,16 +1150,33 @@ function SidebarContent({ onLinkClick }: { onLinkClick?: () => void }) {
 // ── Default export ────────────────────────────────────────────────────────────
 export default function Sidebar() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [compact, setCompact] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => { setMobileOpen(false); }, [pathname]);
 
+  // Restore compact preference on mount and reflect it on <html> so
+  // app/globals.css can shift .admin-content's margin-left to match.
+  useEffect(() => {
+    const stored = loadCompact();
+    setCompact(stored);
+    document.documentElement.classList.toggle('sidebar-compact', stored);
+  }, []);
+
+  function handleToggleCompact() {
+    setCompact((prev) => {
+      const next = !prev;
+      saveCompact(next);
+      return next;
+    });
+  }
+
   return (
     <>
-      {/* Desktop sidebar — max-w-[240px] */}
-      <aside className="hidden md:flex fixed left-0 top-0 h-full w-[240px] flex-col z-40"
+      {/* Desktop sidebar — 240px expanded, 64px compact (icon rail) */}
+      <aside className={`hidden md:flex fixed left-0 top-0 h-full flex-col z-40 transition-[width] duration-200 ${compact ? 'w-16' : 'w-[240px]'}`}
         style={{ background: 'linear-gradient(180deg,#0f1117 0%,#111827 100%)', borderRight: '1px solid rgba(255,255,255,0.06)' }}>
-        <SidebarContent />
+        <SidebarContent compact={compact} onToggleCompact={handleToggleCompact} />
       </aside>
 
       {/* Mobile top bar */}

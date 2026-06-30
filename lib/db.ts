@@ -379,6 +379,72 @@ async function ensureSchema(): Promise<void> {
       CREATE INDEX IF NOT EXISTS prizes_restaurant_id_idx ON prizes(restaurant_id);
       CREATE INDEX IF NOT EXISTS inventory_products_restaurant_id_idx ON inventory_products(restaurant_id);
     `);
+    await client.query(`
+      -- ── IA generativa: log/caché de generaciones (mensajes, recomendaciones) ──
+      CREATE TABLE IF NOT EXISTS ai_generations (
+        id TEXT PRIMARY KEY,
+        type TEXT NOT NULL,
+        phone TEXT,
+        input_summary TEXT,
+        output TEXT NOT NULL,
+        created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      );
+      CREATE INDEX IF NOT EXISTS ai_generations_phone_idx ON ai_generations(phone);
+
+      -- ── Moneda social: regalo de puntos entre clientes ─────────────────
+      CREATE TABLE IF NOT EXISTS point_transfers (
+        id TEXT PRIMARY KEY,
+        from_phone TEXT NOT NULL,
+        to_phone TEXT NOT NULL,
+        points INTEGER NOT NULL,
+        message TEXT,
+        created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      );
+      CREATE INDEX IF NOT EXISTS point_transfers_from_idx ON point_transfers(from_phone);
+      CREATE INDEX IF NOT EXISTS point_transfers_to_idx ON point_transfers(to_phone);
+
+      -- ── Battle pass / temporadas gamificadas ───────────────────────────
+      CREATE TABLE IF NOT EXISTS seasons (
+        id TEXT PRIMARY KEY,
+        name TEXT NOT NULL,
+        restaurant_id TEXT REFERENCES restaurants(id),
+        start_date DATE NOT NULL,
+        end_date DATE NOT NULL,
+        active BOOLEAN NOT NULL DEFAULT TRUE,
+        created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      );
+      CREATE TABLE IF NOT EXISTS season_tiers (
+        id TEXT PRIMARY KEY,
+        season_id TEXT NOT NULL REFERENCES seasons(id) ON DELETE CASCADE,
+        level INTEGER NOT NULL,
+        points_required INTEGER NOT NULL,
+        reward_name TEXT NOT NULL,
+        reward_description TEXT,
+        UNIQUE(season_id, level)
+      );
+      CREATE TABLE IF NOT EXISTS season_progress (
+        id TEXT PRIMARY KEY,
+        season_id TEXT NOT NULL REFERENCES seasons(id) ON DELETE CASCADE,
+        phone TEXT NOT NULL,
+        season_points INTEGER NOT NULL DEFAULT 0,
+        claimed_levels INTEGER[] NOT NULL DEFAULT '{}',
+        UNIQUE(season_id, phone)
+      );
+      CREATE INDEX IF NOT EXISTS season_progress_phone_idx ON season_progress(phone);
+
+      -- ── Eventos dinámicos por clima/contexto (dedupe diario) ───────────
+      ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS lat NUMERIC;
+      ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS lng NUMERIC;
+      CREATE TABLE IF NOT EXISTS dynamic_event_log (
+        id TEXT PRIMARY KEY,
+        restaurant_id TEXT REFERENCES restaurants(id),
+        trigger_type TEXT NOT NULL,
+        event_id TEXT REFERENCES restaurant_events(id),
+        triggered_date DATE NOT NULL,
+        created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+        UNIQUE(restaurant_id, trigger_type, triggered_date)
+      );
+    `);
     schemaInitialized = true;
   } finally {
     client.release();
@@ -393,6 +459,8 @@ export type Restaurant = {
   logo_url: string | null;
   accent_color: string;
   google_maps_url: string | null;
+  lat: number | null;
+  lng: number | null;
   created_at: string;
 };
 
@@ -1004,7 +1072,7 @@ export async function cancelPrize(id: string): Promise<Prize | undefined> {
   return rows[0];
 }
 
-export async function updateRestaurant(id: string, fields: { name?: string; address?: string; phone?: string | null; logo_url?: string | null; google_maps_url?: string | null }): Promise<Restaurant | undefined> {
+export async function updateRestaurant(id: string, fields: { name?: string; address?: string; phone?: string | null; logo_url?: string | null; google_maps_url?: string | null; lat?: number | null; lng?: number | null }): Promise<Restaurant | undefined> {
   await ensureSchema();
   const sets: string[] = [];
   const vals: unknown[] = [];
@@ -1014,6 +1082,8 @@ export async function updateRestaurant(id: string, fields: { name?: string; addr
   if (fields.phone !== undefined) { sets.push(`phone = $${i++}`); vals.push(fields.phone); }
   if (fields.logo_url !== undefined) { sets.push(`logo_url = $${i++}`); vals.push(fields.logo_url); }
   if (fields.google_maps_url !== undefined) { sets.push(`google_maps_url = $${i++}`); vals.push(fields.google_maps_url); }
+  if (fields.lat !== undefined) { sets.push(`lat = $${i++}`); vals.push(fields.lat); }
+  if (fields.lng !== undefined) { sets.push(`lng = $${i++}`); vals.push(fields.lng); }
   if (sets.length === 0) return getRestaurantById(id);
   vals.push(id);
   const { rows } = await getPool().query<Restaurant>(
@@ -1718,6 +1788,59 @@ export async function incrementParticipants(eventId: string): Promise<Restaurant
     [eventId]
   );
   return rows[0];
+}
+
+// ── Dynamic (auto-triggered) events ─────────────────────────────────────────
+
+export type RestaurantWithLocation = Restaurant & { lat: number; lng: number };
+
+export async function getRestaurantsWithLocation(): Promise<RestaurantWithLocation[]> {
+  await ensureSchema();
+  const { rows } = await getPool().query<RestaurantWithLocation>(
+    `SELECT * FROM restaurants WHERE lat IS NOT NULL AND lng IS NOT NULL`
+  );
+  return rows;
+}
+
+export async function logDynamicEvent(params: {
+  id: string;
+  restaurant_id: string;
+  trigger_type: string;
+  event_id: string;
+  triggered_date: string;
+}): Promise<void> {
+  await ensureSchema();
+  await getPool().query(
+    `INSERT INTO dynamic_event_log (id, restaurant_id, trigger_type, event_id, triggered_date)
+     VALUES ($1,$2,$3,$4,$5)`,
+    [params.id, params.restaurant_id, params.trigger_type, params.event_id, params.triggered_date]
+  );
+}
+
+export async function getDayOfWeekAverages(restaurantId: string): Promise<Array<{ dow: number; avg_count: number }>> {
+  await ensureSchema();
+  const { rows } = await getPool().query<{ dow: number; avg_count: number }>(
+    `SELECT dow, AVG(daily_count) AS avg_count
+     FROM (
+       SELECT DATE(c.claimed_at) AS d, EXTRACT(DOW FROM c.claimed_at)::int AS dow, COUNT(*) AS daily_count
+       FROM claims c
+       JOIN prizes p ON c.prize_id = p.id
+       WHERE p.restaurant_id = $1
+         AND c.claimed_at > NOW() - INTERVAL '28 days'
+       GROUP BY DATE(c.claimed_at), EXTRACT(DOW FROM c.claimed_at)
+     ) sub
+     GROUP BY dow
+     ORDER BY avg_count ASC`,
+    [restaurantId]
+  );
+  return rows;
+}
+
+export async function getSlowestDayOfWeek(restaurantId: string): Promise<number | null> {
+  const averages = await getDayOfWeekAverages(restaurantId);
+  // Need data for at least 4 distinct days-of-week to draw a meaningful comparison.
+  if (averages.length < 4) return null;
+  return averages[0].dow;
 }
 
 // ── Game Analytics ────────────────────────────────────────────────────────────

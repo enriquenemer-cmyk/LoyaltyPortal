@@ -44,6 +44,8 @@ export async function PUT(
     let phone: string | null | undefined;
     let logo_url: string | null | undefined;
     let google_maps_url: string | null | undefined;
+    let lat: number | null | undefined;
+    let lng: number | null | undefined;
 
     if (contentType.includes('multipart/form-data')) {
       const formData = await request.formData();
@@ -53,6 +55,10 @@ export async function PUT(
       phone = phoneVal || null;
       const googleMapsVal = formData.get('google_maps_url') as string;
       google_maps_url = googleMapsVal || null;
+      const latVal = formData.get('lat') as string;
+      lat = latVal !== null && latVal !== '' ? Number(latVal) : null;
+      const lngVal = formData.get('lng') as string;
+      lng = lngVal !== null && lngVal !== '' ? Number(lngVal) : null;
       const file = formData.get('logo') as File | null;
       if (file && file.size > 0) {
         if (!process.env.BLOB_READ_WRITE_TOKEN) {
@@ -71,9 +77,11 @@ export async function PUT(
       phone = body.phone;
       logo_url = body.logo_url;
       google_maps_url = body.google_maps_url;
+      lat = body.lat !== undefined ? (body.lat === null || body.lat === '' ? null : Number(body.lat)) : undefined;
+      lng = body.lng !== undefined ? (body.lng === null || body.lng === '' ? null : Number(body.lng)) : undefined;
     }
 
-    const updated = await updateRestaurant(id, { name, address, phone, logo_url, google_maps_url });
+    const updated = await updateRestaurant(id, { name, address, phone, logo_url, google_maps_url, lat, lng });
     return NextResponse.json({ restaurant: updated });
   } catch (error) {
     console.error('Error updating restaurant:', error);

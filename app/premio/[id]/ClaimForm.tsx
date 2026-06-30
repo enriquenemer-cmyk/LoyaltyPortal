@@ -24,6 +24,44 @@ export default function ClaimForm({ prizeId, prizeName }: Props) {
   const [qrDataUrl, setQrDataUrl] = useState<string | null>(null);
   const [showParticles, setShowParticles] = useState(false);
 
+  const [caption, setCaption] = useState<string | null>(null);
+  const [captionLoading, setCaptionLoading] = useState(false);
+  const [captionError, setCaptionError] = useState('');
+  const [captionCopied, setCaptionCopied] = useState(false);
+
+  async function generateCaption() {
+    setCaptionLoading(true);
+    setCaptionError('');
+    try {
+      const res = await fetch('/api/ai/share-caption', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prize_name: prizeName, restaurant_name: 'Burrito Bar' }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.caption) {
+        setCaptionError(data.error || 'No se pudo generar el mensaje, intenta de nuevo');
+        return;
+      }
+      setCaption(data.caption);
+    } catch {
+      setCaptionError('No se pudo generar el mensaje, intenta de nuevo');
+    } finally {
+      setCaptionLoading(false);
+    }
+  }
+
+  async function copyCaption() {
+    if (!caption) return;
+    try {
+      await navigator.clipboard.writeText(caption);
+      setCaptionCopied(true);
+      setTimeout(() => setCaptionCopied(false), 2000);
+    } catch {
+      // ignore
+    }
+  }
+
   // Basic: at least 7 digits
   const phoneValid = form.phone.replace(/\D/g, '').length >= 7;
   const phoneError = phoneTouched && form.phone.length > 0 && !phoneValid;
@@ -151,6 +189,39 @@ export default function ClaimForm({ prizeId, prizeName }: Props) {
             </button>
           </div>
         )}
+
+        {/* AI share caption */}
+        <div className="text-left bg-white rounded-2xl p-4" style={{ border: '1px solid #E8E3DC' }}>
+          {!caption ? (
+            <button
+              onClick={generateCaption}
+              disabled={captionLoading}
+              className="w-full flex items-center justify-center gap-2 font-bold py-3 rounded-xl text-sm border border-[#E8E3DC] bg-white text-[#1C1917] hover:bg-[#FAFAF9] transition-colors disabled:opacity-60"
+            >
+              {captionLoading ? (
+                <svg className="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
+                </svg>
+              ) : (
+                <span>✨</span>
+              )}
+              {captionLoading ? 'Generando...' : 'Generar caption para compartir'}
+            </button>
+          ) : (
+            <div className="space-y-2">
+              <p className="text-xs font-bold text-[#78716c] uppercase tracking-widest">Tu caption</p>
+              <p className="text-sm text-[#1C1917] bg-[#FAFAF9] border border-[#E8E3DC] rounded-xl px-4 py-3">{caption}</p>
+              <button
+                onClick={copyCaption}
+                className="w-full font-bold py-2.5 rounded-xl text-sm border border-[#E8E3DC] bg-white text-[#1C1917] hover:bg-[#FAFAF9] transition-colors"
+              >
+                {captionCopied ? '✓ Copiado' : 'Copiar'}
+              </button>
+            </div>
+          )}
+          {captionError && <p className="text-xs text-red-500 mt-2">{captionError}</p>}
+        </div>
 
         <p className="text-[#a8a29e] text-xs">Burrito Bar · Plataforma de Premios</p>
       </div>

@@ -159,6 +159,33 @@ export async function POST(request: NextRequest) {
       }
     })();
 
+    // Battle pass: increment season_points for any currently active season (non-blocking, never fails the claim)
+    (async () => {
+      try {
+        const pointsEarned = claim.points_earned ?? 0;
+        if (pointsEarned <= 0) return;
+        const { rows: seasonRows } = await getPool().query<{ id: string }>(
+          `SELECT id FROM seasons
+           WHERE active = true AND start_date <= NOW() AND end_date >= NOW()
+             AND (restaurant_id IS NULL OR restaurant_id = $1)
+           ORDER BY restaurant_id NULLS LAST LIMIT 1`,
+          [prize.restaurant_id ?? null]
+        );
+        const season = seasonRows[0];
+        if (!season) return;
+        const { randomUUID: uuid } = await import('crypto');
+        await getPool().query(
+          `INSERT INTO season_progress (id, season_id, phone, season_points)
+           VALUES ($1, $2, $3, $4)
+           ON CONFLICT (season_id, phone)
+           DO UPDATE SET season_points = season_progress.season_points + $4`,
+          [uuid(), season.id, phone, pointsEarned]
+        );
+      } catch (err) {
+        console.error('Battle pass season tracking error:', err);
+      }
+    })();
+
     // Referral reward: award 50 points to the referrer on first claim of referred customer
     if (referred_by) {
       (async () => {

@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { SendMessageForm } from './SendMessageForm';
+import { PrizeRecommendation } from './PrizeRecommendation';
 import {
   getClaimsByContact,
   getCustomerPoints,
@@ -446,6 +447,11 @@ export default async function CustomerProfilePage({
               ))}
             </div>
           )}
+        </div>
+
+        {/* ── AI prize recommendation ── */}
+        <div className="mb-6">
+          <PrizeRecommendation phone={phone} />
         </div>
 
         {/* ── Send message placeholder ── */}

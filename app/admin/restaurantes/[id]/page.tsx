@@ -11,6 +11,8 @@ type Restaurant = {
   address: string;
   phone: string | null;
   logo_url: string | null;
+  lat: number | null;
+  lng: number | null;
 };
 
 type Stats = {
@@ -115,7 +117,7 @@ export default function RestaurantProfilePage() {
 
   // Edit form
   const [showEdit, setShowEdit] = useState(false);
-  const [editForm, setEditForm] = useState({ name: '', address: '', phone: '' });
+  const [editForm, setEditForm] = useState({ name: '', address: '', phone: '', lat: '', lng: '' });
   const [editFile, setEditFile] = useState<File | null>(null);
   const [editLoading, setEditLoading] = useState(false);
   const [editError, setEditError] = useState('');
@@ -136,7 +138,13 @@ export default function RestaurantProfilePage() {
       setStats(data.stats);
       setClaims(data.claims);
       setActivity(data.activity || []);
-      setEditForm({ name: data.restaurant.name, address: data.restaurant.address, phone: data.restaurant.phone || '' });
+      setEditForm({
+        name: data.restaurant.name,
+        address: data.restaurant.address,
+        phone: data.restaurant.phone || '',
+        lat: data.restaurant.lat != null ? String(data.restaurant.lat) : '',
+        lng: data.restaurant.lng != null ? String(data.restaurant.lng) : '',
+      });
     } catch {
       setError('No se pudo cargar el perfil del restaurante.');
     } finally {
@@ -160,6 +168,8 @@ export default function RestaurantProfilePage() {
       formData.append('name', editForm.name);
       formData.append('address', editForm.address);
       formData.append('phone', editForm.phone);
+      formData.append('lat', editForm.lat);
+      formData.append('lng', editForm.lng);
       if (editFile) formData.append('logo', editFile);
       const res = await fetch(`/api/restaurants/${id}`, { method: 'PUT', body: formData });
       const data = await res.json();
@@ -297,6 +307,43 @@ export default function RestaurantProfilePage() {
               <div>
                 <label className={labelClass}>Logo (imagen)</label>
                 <input type="file" accept="image/*" onChange={(e) => setEditFile(e.target.files?.[0] || null)} className="w-full text-sm text-slate-600 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:bg-blue-50 file:text-blue-700 file:font-semibold" />
+              </div>
+              <div>
+                <label className={labelClass}>Latitud</label>
+                <input
+                  type="number"
+                  step="any"
+                  value={editForm.lat}
+                  onChange={(e) => setEditForm((p) => ({ ...p, lat: e.target.value }))}
+                  placeholder="Ej: 19.4326"
+                  className={inputClass}
+                />
+              </div>
+              <div>
+                <label className={labelClass}>Longitud</label>
+                <input
+                  type="number"
+                  step="any"
+                  value={editForm.lng}
+                  onChange={(e) => setEditForm((p) => ({ ...p, lng: e.target.value }))}
+                  placeholder="Ej: -99.1332"
+                  className={inputClass}
+                />
+              </div>
+              <div className="sm:col-span-2 -mt-2 flex items-center justify-between flex-wrap gap-2">
+                <p className="text-xs text-stone-400">
+                  Usado para activar promociones automáticas según el clima (ej. lluvia = puntos dobles).
+                </p>
+                {editForm.address && (
+                  <a
+                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(editForm.address)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs font-semibold text-blue-600 hover:underline whitespace-nowrap"
+                  >
+                    📍 Buscar en Google Maps
+                  </a>
+                )}
               </div>
               {editError && <div className="sm:col-span-2 text-red-600 text-sm bg-red-50 border border-red-200 rounded-xl px-4 py-2">{editError}</div>}
               <div className="sm:col-span-2 flex justify-end gap-3">

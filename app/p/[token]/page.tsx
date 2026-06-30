@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation';
+import GiftPoints from './GiftPoints';
 
 const TIER_LABEL: Record<string, string> = { bronze: 'Bronce', silver: 'Plata', gold: 'Oro' };
 const TIER_COLOR: Record<string, string> = { bronze: '#CD7F32', silver: '#94A3B8', gold: '#F59E0B' };
@@ -19,6 +20,13 @@ type Profile = {
 type Claim = { id: string; prize_name: string; status: string; claimed_at: string };
 type StampCard = { stamps_count: number; stamps_required: number; completed_at: string | null };
 
+type SeasonTier = { id: string; level: number; points_required: number; reward_name: string; reward_description: string | null };
+type SeasonData = {
+  season: { id: string; name: string; start_date: string; end_date: string };
+  tiers: SeasonTier[];
+  progress: { season_points: number; claimed_levels: number[] };
+} | null;
+
 function getTierProgress(tier: string, totalPoints: number) {
   const next = tier === 'gold' ? null : tier === 'silver' ? 'gold' : 'silver';
   const nextThreshold = next ? TIER_THRESHOLDS[next as 'silver' | 'gold'] : null;
@@ -37,9 +45,21 @@ async function getData(token: string) {
   return res.json() as Promise<{ profile: Profile; claims: Claim[]; stamp_card: StampCard | null }>;
 }
 
+async function getSeasonData(token: string): Promise<SeasonData> {
+  const base = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000';
+  try {
+    const res = await fetch(`${base}/api/seasons/active/${token}`, { cache: 'no-store' });
+    if (!res.ok) return null;
+    const data = await res.json();
+    return data && data.season ? data : null;
+  } catch {
+    return null;
+  }
+}
+
 export default async function PublicProfilePage({ params }: { params: Promise<{ token: string }> }) {
   const { token } = await params;
-  const data = await getData(token);
+  const [data, seasonData] = await Promise.all([getData(token), getSeasonData(token)]);
 
   if (!data) {
     return (
@@ -123,6 +143,9 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
           )}
         </div>
 
+        {/* Battle Pass / Season track */}
+        {seasonData && <BattlePassTrack seasonData={seasonData} />}
+
         {/* Streak + Boost */}
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 16 }}>
           {profile.streak_days > 0 && (
@@ -179,6 +202,9 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
           </div>
         )}
 
+        {/* Gift points */}
+        <GiftPoints token={token} initialBalance={profile.total_points} />
+
         {/* Wallet button */}
         <div style={{ position: 'relative' }} title="Próximamente">
           <button
@@ -208,6 +234,150 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
 
         <p style={{ textAlign: 'center', fontSize: 11, color: '#A8A29E', marginTop: 24 }}>Powered by Super Tierra</p>
       </div>
+    </div>
+  );
+}
+
+function BattlePassTrack({ seasonData }: { seasonData: NonNullable<SeasonData> }) {
+  const { season, tiers, progress } = seasonData;
+  const sortedTiers = [...tiers].sort((a, b) => a.level - b.level);
+  const points = progress.season_points;
+
+  const nextTier = sortedTiers.find((t) => points < t.points_required);
+  const prevThreshold = sortedTiers
+    .filter((t) => points >= t.points_required)
+    .reduce((max, t) => Math.max(max, t.points_required), 0);
+  const nextThreshold = nextTier ? nextTier.points_required : prevThreshold;
+  const progressPct = nextTier
+    ? Math.min(100, Math.max(0, Math.round(((points - prevThreshold) / (nextThreshold - prevThreshold)) * 100)))
+    : 100;
+  const pointsToNext = nextTier ? Math.max(0, nextTier.points_required - points) : 0;
+
+  return (
+    <div style={{
+      background: '#fff',
+      borderRadius: 16,
+      border: '1px solid #E8E3DC',
+      padding: 16,
+      marginBottom: 16,
+      position: 'relative',
+      overflow: 'hidden',
+    }}>
+      <style>{`
+        @keyframes bp-glow {
+          0%, 100% { box-shadow: 0 0 0 0 rgba(245,158,11,0.45); }
+          50% { box-shadow: 0 0 0 6px rgba(245,158,11,0); }
+        }
+        @keyframes bp-pulse {
+          0%, 100% { transform: scale(1); }
+          50% { transform: scale(1.08); }
+        }
+        .bp-unlocked { animation: bp-glow 2.2s ease-in-out infinite; }
+        .bp-next { animation: bp-pulse 1.6s ease-in-out infinite; }
+        .bp-track::-webkit-scrollbar { height: 6px; }
+        .bp-track::-webkit-scrollbar-thumb { background: #E8E3DC; border-radius: 4px; }
+      `}</style>
+
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
+        <p style={{ fontSize: 12, fontWeight: 800, color: '#1C1917', margin: 0, display: 'flex', alignItems: 'center', gap: 6 }}>
+          🏆 {season.name}
+        </p>
+        <span style={{ fontSize: 10, fontWeight: 700, color: '#7C3AED', background: 'rgba(124,58,237,0.1)', padding: '2px 8px', borderRadius: 20 }}>
+          Battle Pass
+        </span>
+      </div>
+      <p style={{ fontSize: 11, color: '#78716C', margin: '0 0 14px' }}>
+        Hasta {new Date(season.end_date).toLocaleDateString('es-MX', { day: 'numeric', month: 'short' })}
+      </p>
+
+      {/* Horizontal scrollable track */}
+      <div
+        className="bp-track"
+        style={{
+          display: 'flex',
+          alignItems: 'flex-start',
+          gap: 0,
+          overflowX: 'auto',
+          paddingBottom: 8,
+          marginBottom: 14,
+        }}
+      >
+        {sortedTiers.map((t, i) => {
+          const unlocked = points >= t.points_required;
+          const isNext = !unlocked && t.id === nextTier?.id;
+          return (
+            <div key={t.id} style={{ display: 'flex', alignItems: 'flex-start', flexShrink: 0 }}>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: 76 }}>
+                <div
+                  className={unlocked ? 'bp-unlocked' : isNext ? 'bp-next' : undefined}
+                  style={{
+                    width: 44,
+                    height: 44,
+                    borderRadius: '50%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: 15,
+                    fontWeight: 800,
+                    color: unlocked ? '#fff' : isNext ? '#1D4ED8' : '#A8A29E',
+                    background: unlocked
+                      ? 'linear-gradient(135deg,#F59E0B,#D97706)'
+                      : isNext
+                        ? 'linear-gradient(135deg,#DBEAFE,#EDE9FE)'
+                        : '#F5F3F0',
+                    border: unlocked ? '2px solid #FBBF24' : isNext ? '2px solid #2563EB' : '2px solid #E8E3DC',
+                    flexShrink: 0,
+                  }}
+                >
+                  {unlocked ? '✓' : t.level}
+                </div>
+                <p style={{
+                  fontSize: 10,
+                  fontWeight: 700,
+                  color: unlocked ? '#B45309' : '#78716C',
+                  margin: '6px 0 0',
+                  textAlign: 'center',
+                  lineHeight: 1.2,
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  display: '-webkit-box',
+                  WebkitLineClamp: 2,
+                  WebkitBoxOrient: 'vertical',
+                }}>
+                  {t.reward_name}
+                </p>
+                <p style={{ fontSize: 9, color: '#A8A29E', margin: '2px 0 0' }}>{t.points_required} pts</p>
+              </div>
+              {i < sortedTiers.length - 1 && (
+                <div style={{
+                  width: 28,
+                  height: 3,
+                  marginTop: 21,
+                  borderRadius: 2,
+                  background: unlocked ? 'linear-gradient(90deg,#F59E0B,#D97706)' : '#E8E3DC',
+                  flexShrink: 0,
+                }} />
+              )}
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Big progress bar */}
+      <div style={{ background: '#F5F3F0', borderRadius: 8, height: 10, overflow: 'hidden' }}>
+        <div style={{
+          width: `${progressPct}%`,
+          height: '100%',
+          background: 'linear-gradient(90deg,#2563EB,#7C3AED)',
+          borderRadius: 8,
+          transition: 'width 0.3s ease',
+        }} />
+      </div>
+      <p style={{ fontSize: 11, color: '#78716C', margin: '8px 0 0', textAlign: 'center' }}>
+        {nextTier
+          ? <>{pointsToNext.toLocaleString()} / {(nextThreshold - prevThreshold).toLocaleString()} puntos para el siguiente nivel</>
+          : <span style={{ color: '#F59E0B', fontWeight: 700 }}>🏆 ¡Completaste el battle pass de esta temporada!</span>}
+      </p>
     </div>
   );
 }

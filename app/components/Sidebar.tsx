@@ -111,6 +111,11 @@ const Icons = {
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.783-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
     </svg>
   ),
+  temporada: (
+    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 21h8M12 17v4M7 4h10v4a5 5 0 01-10 0V4zM7 4H4a3 3 0 003 3M17 4h3a3 3 0 01-3 3" />
+    </svg>
+  ),
   automatizacion: (
     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -310,6 +315,7 @@ const ALL_SECTIONS: SectionDef[] = [
       { href: '/admin/clientes', label: 'Base de Clientes', icon: Icons.clientes },
       { href: '/admin/segmentacion', label: 'Segmentación', icon: Icons.segmentacion },
       { href: '/admin/cumpleanos', label: 'Puntos y Sellos', icon: Icons.puntos },
+      { href: '/admin/temporada', label: 'Temporada', icon: Icons.temporada },
       { href: '/admin/automatizacion', label: 'Automatizacion', icon: Icons.automatizacion },
       { href: '/admin/misiones', label: 'Misiones Semanales', icon: Icons.misiones },
       { href: '/admin/feedback', label: 'Feedback / NPS', icon: Icons.feedback },

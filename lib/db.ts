@@ -445,6 +445,43 @@ async function ensureSchema(): Promise<void> {
         UNIQUE(restaurant_id, trigger_type, triggered_date)
       );
     `);
+    await client.query(`
+      -- ── Chat con tus datos (IA): historial de conversación por admin ───
+      CREATE TABLE IF NOT EXISTS ai_chat_messages (
+        id TEXT PRIMARY KEY,
+        session_id TEXT NOT NULL,
+        username TEXT,
+        role TEXT NOT NULL,
+        content TEXT NOT NULL,
+        created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      );
+      CREATE INDEX IF NOT EXISTS ai_chat_messages_session_idx ON ai_chat_messages(session_id);
+
+      -- ── Detector de fraude ──────────────────────────────────────────────
+      CREATE TABLE IF NOT EXISTS fraud_alerts (
+        id TEXT PRIMARY KEY,
+        type TEXT NOT NULL,
+        severity TEXT NOT NULL DEFAULT 'medium',
+        phone TEXT,
+        restaurant_id TEXT REFERENCES restaurants(id),
+        description TEXT NOT NULL,
+        metadata JSONB,
+        resolved BOOLEAN NOT NULL DEFAULT FALSE,
+        created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      );
+      CREATE INDEX IF NOT EXISTS fraud_alerts_resolved_idx ON fraud_alerts(resolved);
+      ALTER TABLE claims ADD COLUMN IF NOT EXISTS ip_address TEXT;
+
+      -- ── Tarjeta de cliente generada por IA ──────────────────────────────
+      CREATE TABLE IF NOT EXISTS ai_customer_cards (
+        id TEXT PRIMARY KEY,
+        phone TEXT NOT NULL,
+        image_url TEXT NOT NULL,
+        prompt_used TEXT,
+        created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      );
+      CREATE INDEX IF NOT EXISTS ai_customer_cards_phone_idx ON ai_customer_cards(phone);
+    `);
     schemaInitialized = true;
   } finally {
     client.release();
@@ -546,6 +583,7 @@ export type Claim = {
   referred_by: string | null;
   expires_at?: string | null;
   points_earned?: number;
+  ip_address?: string | null;
 };
 
 export type ClaimWithPrize = Claim & {
@@ -713,9 +751,9 @@ export async function insertClaim(
   await ensureSchema();
   const points = calcProportionalPoints(claim.ticket_amount ?? null, 10);
   const { rows } = await getPool().query<Claim>(
-    `INSERT INTO claims (id, prize_id, full_name, phone, email, location, referral_code, referred_by, expires_at, points_earned)
-     VALUES ($1,$2,$3,$4,$5,$6,$7,$8, NOW() + INTERVAL '2 hours', $9) RETURNING *`,
-    [claim.id, claim.prize_id, claim.full_name, claim.phone, claim.email, claim.location ?? null, claim.referral_code ?? null, claim.referred_by ?? null, points]
+    `INSERT INTO claims (id, prize_id, full_name, phone, email, location, referral_code, referred_by, expires_at, points_earned, ip_address)
+     VALUES ($1,$2,$3,$4,$5,$6,$7,$8, NOW() + INTERVAL '2 hours', $9, $10) RETURNING *`,
+    [claim.id, claim.prize_id, claim.full_name, claim.phone, claim.email, claim.location ?? null, claim.referral_code ?? null, claim.referred_by ?? null, points, claim.ip_address ?? null]
   );
   // Award points non-blocking
   upsertCustomerPoints(claim.phone, claim.email, points).catch(() => {});

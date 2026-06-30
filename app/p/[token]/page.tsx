@@ -27,6 +27,8 @@ type SeasonData = {
   progress: { season_points: number; claimed_levels: number[] };
 } | null;
 
+type CustomerCard = { image_url: string; prompt_used: string | null; created_at: string } | null;
+
 function getTierProgress(tier: string, totalPoints: number) {
   const next = tier === 'gold' ? null : tier === 'silver' ? 'gold' : 'silver';
   const nextThreshold = next ? TIER_THRESHOLDS[next as 'silver' | 'gold'] : null;
@@ -57,9 +59,21 @@ async function getSeasonData(token: string): Promise<SeasonData> {
   }
 }
 
+async function getCustomerCard(token: string): Promise<CustomerCard> {
+  const base = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000';
+  try {
+    const res = await fetch(`${base}/api/customer-card/${token}`, { cache: 'no-store' });
+    if (!res.ok) return null;
+    const data = await res.json();
+    return data?.card ?? null;
+  } catch {
+    return null;
+  }
+}
+
 export default async function PublicProfilePage({ params }: { params: Promise<{ token: string }> }) {
   const { token } = await params;
-  const [data, seasonData] = await Promise.all([getData(token), getSeasonData(token)]);
+  const [data, seasonData, customerCard] = await Promise.all([getData(token), getSeasonData(token), getCustomerCard(token)]);
 
   if (!data) {
     return (
@@ -201,6 +215,9 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
             </div>
           </div>
         )}
+
+        {/* AI collectible card */}
+        <CollectibleCard card={customerCard} name={profile.full_name} tier={profile.tier} tierColor={tierColor} tierEmoji={tierEmoji} />
 
         {/* Gift points */}
         <GiftPoints token={token} initialBalance={profile.total_points} />
@@ -378,6 +395,115 @@ function BattlePassTrack({ seasonData }: { seasonData: NonNullable<SeasonData> }
           ? <>{pointsToNext.toLocaleString()} / {(nextThreshold - prevThreshold).toLocaleString()} puntos para el siguiente nivel</>
           : <span style={{ color: '#F59E0B', fontWeight: 700 }}>🏆 ¡Completaste el battle pass de esta temporada!</span>}
       </p>
+    </div>
+  );
+}
+
+function CollectibleCard({
+  card,
+  name,
+  tier,
+  tierColor,
+  tierEmoji,
+}: {
+  card: CustomerCard;
+  name: string | null;
+  tier: string;
+  tierColor: string;
+  tierEmoji: string;
+}) {
+  const tierLabel = TIER_LABEL[tier] ?? tier;
+  const glow = `0 0 28px ${tierColor}55, 0 6px 18px ${tierColor}33`;
+
+  return (
+    <div style={{ marginBottom: 16 }}>
+      <p style={{ fontSize: 12, fontWeight: 800, color: '#1C1917', margin: '0 0 8px', display: 'flex', alignItems: 'center', gap: 6 }}>
+        ✨ Tu tarjeta coleccionable
+      </p>
+
+      {card ? (
+        <div
+          style={{
+            position: 'relative',
+            width: '100%',
+            aspectRatio: '1 / 1',
+            borderRadius: 20,
+            overflow: 'hidden',
+            border: `2px solid ${tierColor}`,
+            boxShadow: glow,
+          }}
+        >
+          <img
+            src={card.image_url}
+            alt="Tarjeta coleccionable"
+            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+          />
+          {/* Gradient overlay for legibility */}
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.25) 35%, rgba(0,0,0,0) 60%)',
+            }}
+          />
+          {/* Tier badge top-right */}
+          <div
+            style={{
+              position: 'absolute',
+              top: 12,
+              right: 12,
+              fontSize: 12,
+              fontWeight: 800,
+              color: '#fff',
+              background: `${tierColor}CC`,
+              padding: '4px 12px',
+              borderRadius: 20,
+              display: 'flex',
+              alignItems: 'center',
+              gap: 4,
+              backdropFilter: 'blur(4px)',
+            }}
+          >
+            {tierEmoji} {tierLabel}
+          </div>
+          {/* Name overlay bottom */}
+          <div style={{ position: 'absolute', left: 0, right: 0, bottom: 0, padding: '16px' }}>
+            <p style={{ fontSize: 18, fontWeight: 800, color: '#fff', margin: 0, textShadow: '0 2px 6px rgba(0,0,0,0.5)' }}>
+              {name ?? 'Cliente Super Tierra'}
+            </p>
+            <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.85)', margin: '2px 0 0' }}>
+              Edición coleccionable · Super Tierra
+            </p>
+          </div>
+        </div>
+      ) : (
+        <div
+          style={{
+            position: 'relative',
+            width: '100%',
+            aspectRatio: '1 / 1',
+            borderRadius: 20,
+            overflow: 'hidden',
+            border: `1px dashed ${tierColor}88`,
+            background: `linear-gradient(135deg, ${tierColor}22, ${tierColor}05)`,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            textAlign: 'center',
+            padding: 24,
+          }}
+        >
+          <div>
+            <div style={{ fontSize: 36, marginBottom: 10 }}>🔒</div>
+            <p style={{ fontSize: 13, fontWeight: 700, color: '#1C1917', margin: '0 0 4px' }}>
+              Tarjeta coleccionable bloqueada
+            </p>
+            <p style={{ fontSize: 12, color: '#78716C', margin: 0, maxWidth: 240, marginLeft: 'auto', marginRight: 'auto' }}>
+              Tu tarjeta coleccionable se desbloqueará cuando subas de nivel
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

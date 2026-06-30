@@ -167,9 +167,19 @@ const Icons = {
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
     </svg>
   ),
+  asistente: (
+    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.86 9.86 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+    </svg>
+  ),
   corporativo: (
     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 6a9 9 0 0118 0M3 6v12a2 2 0 002 2h14a2 2 0 002-2V6M3 6h18M9 10h.01M15 10h.01M9 14h6" />
+    </svg>
+  ),
+  competencia: (
+    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l.5 2H19l-2.5 5L19 15h-9.5l-.5-2H5v4H3z" />
     </svg>
   ),
   analitica: (
@@ -210,6 +220,11 @@ const Icons = {
   auditoria: (
     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+    </svg>
+  ),
+  fraude: (
+    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-8.99 4.5h.008v.008h-.008v-.008z" />
     </svg>
   ),
   misiones: (
@@ -355,6 +370,7 @@ const ALL_SECTIONS: SectionDef[] = [
     links: [
       { href: '/admin/restaurantes', label: 'Mis Restaurantes', icon: Icons.restaurantes },
       { href: '/admin/rendimiento', label: 'Rendimiento del Equipo', icon: Icons.rendimiento },
+      { href: '/admin/competencia', label: 'Competencia', icon: Icons.competencia },
       { href: '/admin/eventos', label: 'Eventos Especiales', icon: Icons.eventos },
       { href: '/admin/flash', label: 'Campana Flash', icon: Icons.flash },
     ],
@@ -366,6 +382,7 @@ const ALL_SECTIONS: SectionDef[] = [
     groupIcon: GroupIcons.reportes,
     accent: '#22d3ee',
     links: [
+      { href: '/admin/asistente', label: 'Asistente IA', icon: Icons.asistente },
       { href: '/admin/corporativo', label: 'Vista Corporativa', icon: Icons.corporativo },
       { href: '/admin/analitica', label: 'Analitica Avanzada', icon: Icons.analitica },
       { href: '/admin/reporte', label: 'Reportes', icon: Icons.reportes },
@@ -390,6 +407,7 @@ const ALL_SECTIONS: SectionDef[] = [
       { href: '/admin/api-docs', label: 'API Docs', icon: Icons.apidocs },
       { href: '/admin/sistema', label: 'Sistema', icon: Icons.sistema },
       { href: '/admin/auditoria', label: 'Auditoría', icon: Icons.auditoria },
+      { href: '/admin/fraude', label: 'Detector de Fraude', icon: Icons.fraude },
     ],
   },
 ];
@@ -635,12 +653,13 @@ function GlobalSearch({ onSelect }: { onSelect?: (item: SearchResult) => void })
 
 // ── Single nav link ──────────────────────────────────────────────────────────
 function NavLink({
-  href, label, icon, exact, highlighted, favorited, onToggleFavorite, showFavoriteToggle,
+  href, label, icon, exact, highlighted, favorited, onToggleFavorite, showFavoriteToggle, linkBadge,
 }: NavItem & {
   highlighted?: boolean;
   favorited?: boolean;
   onToggleFavorite?: () => void;
   showFavoriteToggle?: boolean;
+  linkBadge?: number;
 }) {
   const pathname = usePathname();
   const isActive = exact ? pathname === href : pathname === href || pathname.startsWith(href + '/');
@@ -662,6 +681,11 @@ function NavLink({
     >
       <span className="w-4 h-4 shrink-0 flex items-center justify-center">{icon}</span>
       <span className="truncate text-xs flex-1">{label}</span>
+      {!!linkBadge && linkBadge > 0 && (
+        <span className="shrink-0 min-w-[16px] h-4 px-1 rounded-full bg-red-500 text-white text-[9px] font-bold flex items-center justify-center leading-none">
+          {linkBadge > 99 ? '99+' : linkBadge}
+        </span>
+      )}
       {showFavoriteToggle && (
         <button
           onClick={(e) => { e.preventDefault(); e.stopPropagation(); onToggleFavorite?.(); }}
@@ -689,6 +713,7 @@ function AccordionSection({
   favorites,
   onToggleFavorite,
   highlightedHref,
+  linkBadges,
 }: {
   section: SectionDef;
   isOpen: boolean;
@@ -698,6 +723,7 @@ function AccordionSection({
   favorites: Set<string>;
   onToggleFavorite: (href: string) => void;
   highlightedHref: string | null;
+  linkBadges?: Record<string, number>;
 }) {
   const accent = section.accent ?? '#60a5fa';
 
@@ -760,6 +786,7 @@ function AccordionSection({
                 favorited={favorites.has(link.href)}
                 onToggleFavorite={() => onToggleFavorite(link.href)}
                 highlighted={highlightedHref === link.href}
+                linkBadge={linkBadges?.[link.href]}
               />
             ))}
           </div>
@@ -900,6 +927,7 @@ function SidebarContent({
   const [role, setRole] = useState<Role>('admin');
   const [loggingOut, setLoggingOut] = useState(false);
   const [pendingCount, setPendingCount] = useState(0);
+  const [highFraudCount, setHighFraudCount] = useState(0);
   const { dark, toggle: toggleDark } = useDarkMode();
 
   // Favorites (pinned quick-access links)
@@ -946,6 +974,23 @@ function SidebarContent({
     const interval = setInterval(fetchPending, 30_000);
     return () => clearInterval(interval);
   }, []);
+
+  // Unresolved high-severity fraud alerts badge (admin only)
+  useEffect(() => {
+    if (role !== 'admin') { setHighFraudCount(0); return; }
+    async function fetchFraud() {
+      try {
+        const res = await fetch('/api/admin/fraud-alerts?resolved=false');
+        if (!res.ok) return;
+        const data = await res.json();
+        const highCount = (data.alerts ?? []).filter((a: { severity: string }) => a.severity === 'high').length;
+        setHighFraudCount(highCount);
+      } catch { /* ignore */ }
+    }
+    fetchFraud();
+    const interval = setInterval(fetchFraud, 60_000);
+    return () => clearInterval(interval);
+  }, [role]);
 
   async function handleLogout() {
     setLoggingOut(true);
@@ -1017,6 +1062,8 @@ function SidebarContent({
 
   // Badges shown on collapsed group headers (real counts only — no invented data)
   const sectionBadges: Record<string, number> = { PREMIOS: pendingCount };
+  // Per-link badge: unresolved HIGH severity fraud alerts on the Fraude page link
+  const linkBadges: Record<string, number> = { '/admin/fraude': highFraudCount };
 
   return (
     <div className="flex flex-col h-full" onClick={onLinkClick ? undefined : undefined}>
@@ -1097,6 +1144,7 @@ function SidebarContent({
                   favorites={favoritesSet}
                   onToggleFavorite={toggleFavorite}
                   highlightedHref={highlightedHref}
+                  linkBadges={linkBadges}
                 />
               </div>
             ))}

@@ -84,12 +84,15 @@ export async function POST(request: NextRequest) {
       return true;
     });
 
+    const claimIp = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ?? request.headers.get('x-real-ip') ?? null;
+
     const id = randomUUID();
     const claim = await insertClaim({
       id, prize_id, full_name, phone, email,
       location: location || null,
       referral_code: referral_code || null,
       referred_by: referred_by || null,
+      ip_address: claimIp,
     });
 
     // Dispatch claim_created webhook (non-blocking)

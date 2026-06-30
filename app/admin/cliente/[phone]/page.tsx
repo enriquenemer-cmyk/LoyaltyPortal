@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { SendMessageForm } from './SendMessageForm';
 import { PrizeRecommendation } from './PrizeRecommendation';
+import { AiCardGenerator } from './AiCardGenerator';
 import {
   getClaimsByContact,
   getCustomerPoints,
@@ -452,6 +453,11 @@ export default async function CustomerProfilePage({
         {/* ── AI prize recommendation ── */}
         <div className="mb-6">
           <PrizeRecommendation phone={phone} />
+        </div>
+
+        {/* ── AI generated collectible card ── */}
+        <div className="mb-6">
+          <AiCardGenerator phone={phone} tier={tier} />
         </div>
 
         {/* ── Send message placeholder ── */}

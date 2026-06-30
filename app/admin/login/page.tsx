@@ -107,6 +107,27 @@ export default function LoginPage() {
           style={{ width: 256, height: 256, background: 'rgba(255,255,255,0.05)', top: -60, left: -60 }}
         />
 
+        {/* Decorative geometric pattern — abstract QR/rewards motif */}
+        <svg
+          className="absolute inset-0 w-full h-full pointer-events-none"
+          viewBox="0 0 400 800"
+          preserveAspectRatio="xMidYMid slice"
+          aria-hidden="true"
+        >
+          {/* Rounded squares suggesting QR modules */}
+          <rect x="40" y="90" width="46" height="46" rx="10" fill="rgba(255,255,255,0.06)" />
+          <rect x="100" y="90" width="46" height="46" rx="10" fill="rgba(255,255,255,0.04)" />
+          <rect x="40" y="150" width="46" height="46" rx="10" fill="rgba(255,255,255,0.04)" />
+          <rect x="290" y="120" width="60" height="60" rx="14" fill="rgba(255,255,255,0.05)" />
+          {/* Translucent circles suggesting data points / coins */}
+          <circle cx="330" cy="560" r="70" fill="rgba(255,255,255,0.04)" />
+          <circle cx="60" cy="640" r="44" fill="rgba(255,255,255,0.05)" />
+          <circle cx="350" cy="680" r="20" fill="rgba(255,255,255,0.07)" />
+          {/* Thin outlined rounded square — like a QR frame corner */}
+          <rect x="250" y="600" width="90" height="90" rx="18" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="2" />
+          <rect x="270" y="620" width="50" height="50" rx="10" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="1.5" />
+        </svg>
+
         {/* Top spacer */}
         <div />
 

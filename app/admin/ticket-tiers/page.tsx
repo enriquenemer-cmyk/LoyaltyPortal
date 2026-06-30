@@ -210,18 +210,23 @@ export default function TicketTiersPage() {
   const selectedRestaurant = restaurants.find((r) => r.id === selectedId);
 
   return (
-    <div style={{ minHeight: '100vh', background: '#FAFAF9', padding: '24px', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
-      <div style={{ maxWidth: 820, margin: '0 auto' }}>
-        {/* Header */}
-        <div style={{ marginBottom: 28 }}>
-          <h1 style={{ fontSize: 22, fontWeight: 800, color: '#1C1917', margin: '0 0 4px' }}>
-            Ticket Scanner — Niveles de Premio
-          </h1>
-          <p style={{ color: '#78716C', fontSize: 14 }}>
+    <div className="min-h-screen">
+      {/* Hero */}
+      <div className="hero-gradient px-4 md:px-10 pt-6 pb-8">
+        <div className="hero-blobs" aria-hidden="true"><span key="b1" /><span key="b2" /><span key="b3" /></div>
+        <div className="max-w-[820px] mx-auto">
+          <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-widest mb-3" style={{ background: 'rgba(255,255,255,0.15)', color: 'rgba(219,234,254,0.9)', border: '1px solid rgba(255,255,255,0.2)' }}>
+            🎟️ Premio por Consumo
+          </div>
+          <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Ticket Scanner — Niveles de Premio</h1>
+          <p className="text-blue-200/70 mt-1.5 text-sm">
             Configura qué premios se asignan según el monto del ticket del cliente.
           </p>
         </div>
+      </div>
 
+    <div style={{ minHeight: '100vh', background: '#FAFAF9', padding: '24px', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
+      <div style={{ maxWidth: 820, margin: '0 auto' }}>
         {/* Restaurant selector */}
         <div style={{ background: 'white', border: '1px solid #E8E3DC', borderRadius: 14, padding: 20, marginBottom: 20 }}>
           <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#1C1917', marginBottom: 8 }}>
@@ -620,6 +625,7 @@ export default function TicketTiersPage() {
           </>
         )}
       </div>
+    </div>
     </div>
   );
 }

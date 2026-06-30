@@ -180,24 +180,15 @@ export default function FlashPage() {
 
   return (
     <div className="min-h-screen bg-[#0F0F0F]">
-      {/* Dark header with orange gradient */}
-      <div
-        className="relative overflow-hidden"
-        style={{ background: 'linear-gradient(135deg, #1a0a00 0%, #2d1200 40%, #1a0a00 100%)' }}
-      >
-        <div
-          className="absolute inset-0 opacity-30"
-          style={{ background: 'radial-gradient(ellipse at 60% 0%, #2563EB 0%, transparent 70%)' }}
-        />
-        <div className="relative max-w-3xl mx-auto px-6 pt-10 pb-8">
-          <div className="flex items-center gap-3 mb-2">
-            <span className="text-3xl">⚡</span>
-            <span className="text-[10px] font-bold tracking-[0.3em] text-blue-400 uppercase">Modo Urgente</span>
+      {/* Hero */}
+      <div className="hero-gradient px-4 md:px-10 pt-6 pb-8">
+        <div className="hero-blobs" aria-hidden="true"><span key="b1" /><span key="b2" /><span key="b3" /></div>
+        <div className="max-w-3xl mx-auto">
+          <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-widest mb-3" style={{ background: 'rgba(255,255,255,0.15)', color: 'rgba(219,234,254,0.9)', border: '1px solid rgba(255,255,255,0.2)' }}>
+            ⚡ Campaña Flash
           </div>
-          <h1 className="text-4xl sm:text-5xl font-black text-white tracking-tight leading-none mb-2">
-            CAMPAÑA FLASH
-          </h1>
-          <p className="text-blue-200/70 text-sm font-medium">
+          <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">CAMPAÑA FLASH</h1>
+          <p className="text-blue-200/70 mt-1.5 text-sm">
             Genera decenas de QRs en segundos. Activa una campaña de tiempo limitado ahora mismo.
           </p>
         </div>

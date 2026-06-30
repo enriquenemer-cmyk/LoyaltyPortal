@@ -120,28 +120,35 @@ export default function CorporativoPage() {
     : [];
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-8">
-      {/* Header */}
-      <div className="mb-6 flex items-start justify-between gap-4 flex-wrap">
-        <div>
-          <h1 className="text-2xl font-extrabold text-[#1C1917] tracking-tight">Vista Corporativa</h1>
-          <p className="text-stone-500 text-sm mt-1">
-            {new Date().toLocaleDateString('es-MX', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
-          </p>
+    <div className="min-h-screen">
+      {/* Hero */}
+      <div className="hero-gradient px-4 md:px-10 pt-6 pb-8">
+        <div className="hero-blobs" aria-hidden="true"><span key="b1" /><span key="b2" /><span key="b3" /></div>
+        <div className="max-w-5xl mx-auto flex items-start justify-between flex-wrap gap-4">
+          <div>
+            <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-widest mb-3" style={{ background: 'rgba(255,255,255,0.15)', color: 'rgba(219,234,254,0.9)', border: '1px solid rgba(255,255,255,0.2)' }}>
+              🏢 Vista Corporativa
+            </div>
+            <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Vista Corporativa</h1>
+            <p className="text-blue-200/70 mt-1.5 text-sm">
+              {new Date().toLocaleDateString('es-MX', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
+            </p>
+          </div>
+          <button
+            onClick={exportCSV}
+            disabled={!data}
+            className="flex items-center gap-2 font-bold px-5 py-3 rounded-xl text-sm transition-all disabled:opacity-50"
+            style={{ background: 'white', color: '#1d4ed8', boxShadow: '0 4px 16px rgba(0,0,0,0.15)' }}
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>
+            Exportar CSV
+          </button>
         </div>
-        <button
-          onClick={exportCSV}
-          disabled={!data}
-          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-bold text-white disabled:opacity-50 transition-colors"
-          style={{ background: '#2563EB' }}
-        >
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-          </svg>
-          Exportar CSV
-        </button>
       </div>
 
+    <div className="max-w-5xl mx-auto px-4 py-8">
       {/* Date filter */}
       <form onSubmit={handleFilter} className="mb-6 flex flex-wrap gap-3 items-end">
         <div>
@@ -270,6 +277,7 @@ export default function CorporativoPage() {
           </div>
         </>
       ) : null}
+    </div>
     </div>
   );
 }

@@ -44,16 +44,21 @@ const GAMES = [
 export default function GameBundlesPage() {
   return (
     <div className="min-h-screen bg-[#FAFAF9]">
-      <div className="max-w-4xl mx-auto px-4 py-10">
-
-        {/* Header */}
-        <div className="mb-8">
-          <p className="text-xs font-bold text-[#2563EB] uppercase tracking-widest mb-2">Juegos con Premios</p>
-          <h1 className="text-2xl font-black text-[#1C1917] tracking-tight">Premios gamificados 🎮</h1>
-          <p className="text-sm text-[#78716c] mt-1.5 max-w-xl">
+      {/* Hero */}
+      <div className="hero-gradient px-4 md:px-10 pt-6 pb-8">
+        <div className="hero-blobs" aria-hidden="true"><span key="b1" /><span key="b2" /><span key="b3" /></div>
+        <div className="max-w-4xl mx-auto">
+          <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-widest mb-3" style={{ background: 'rgba(255,255,255,0.15)', color: 'rgba(219,234,254,0.9)', border: '1px solid rgba(255,255,255,0.2)' }}>
+            🎲 Juegos con Premios
+          </div>
+          <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Premios Gamificados</h1>
+          <p className="text-blue-200/70 mt-1.5 text-sm max-w-xl">
             Convierte cada premio en una experiencia. El cliente escanea el QR y antes de ver su premio, juega un mini-juego. Más emoción, más recuerdo de marca.
           </p>
         </div>
+      </div>
+
+      <div className="max-w-4xl mx-auto px-4 py-10">
 
         {/* How it works banner */}
         <div className="bg-white border border-[#E8E3DC] rounded-2xl p-5 mb-8 flex gap-4 items-start">

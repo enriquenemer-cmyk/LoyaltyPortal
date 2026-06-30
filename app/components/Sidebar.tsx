@@ -1080,18 +1080,19 @@ function SidebarContent({
             onClick={onLinkClick ? (e) => { if ((e.target as HTMLElement).closest('a')) onLinkClick(); } : undefined}
           >
             <FavoritesStrip hrefs={favorites} highlightedHref={highlightedHref} onToggleFavorite={toggleFavorite} />
-            {visibleSections.map((section) => (
-              <AccordionSection
-                key={section.key}
-                section={section}
-                isOpen={openSection === section.key}
-                hasActiveLink={sectionForPathname([section], pathname) === section.key}
-                onToggle={() => toggleSection(section.key)}
-                badge={sectionBadges[section.key]}
-                favorites={favoritesSet}
-                onToggleFavorite={toggleFavorite}
-                highlightedHref={highlightedHref}
-              />
+            {visibleSections.map((section, index) => (
+              <div key={section.key} className="sidebar-group-enter" style={{ animationDelay: `${index * 40}ms` }}>
+                <AccordionSection
+                  section={section}
+                  isOpen={openSection === section.key}
+                  hasActiveLink={sectionForPathname([section], pathname) === section.key}
+                  onToggle={() => toggleSection(section.key)}
+                  badge={sectionBadges[section.key]}
+                  favorites={favoritesSet}
+                  onToggleFavorite={toggleFavorite}
+                  highlightedHref={highlightedHref}
+                />
+              </div>
             ))}
           </nav>
         </>

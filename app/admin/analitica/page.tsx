@@ -64,14 +64,20 @@ export default function AnaliticaPage() {
   }, []);
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-8">
-      <div className="mb-6">
-        <h1 className="text-2xl font-extrabold text-[#1C1917] tracking-tight">Analitica Avanzada</h1>
-        <p className="text-stone-500 text-sm mt-1">
-          Valor de cliente (LTV), retencion y rendimiento de campanas.
-        </p>
+    <div className="min-h-screen">
+      {/* Hero */}
+      <div className="hero-gradient px-4 md:px-10 pt-6 pb-8">
+        <div className="hero-blobs" aria-hidden="true"><span key="b1" /><span key="b2" /><span key="b3" /></div>
+        <div className="max-w-5xl mx-auto">
+          <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-widest mb-3" style={{ background: 'rgba(255,255,255,0.15)', color: 'rgba(219,234,254,0.9)', border: '1px solid rgba(255,255,255,0.2)' }}>
+            📈 Analítica Avanzada
+          </div>
+          <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Analítica Avanzada</h1>
+          <p className="text-blue-200/70 mt-1.5 text-sm">Valor de cliente (LTV), retención y rendimiento de campañas</p>
+        </div>
       </div>
 
+    <div className="max-w-5xl mx-auto px-4 py-8">
       {error && (
         <div className="mb-4 p-4 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm">{error}</div>
       )}
@@ -230,6 +236,7 @@ export default function AnaliticaPage() {
           </div>
         </>
       ) : null}
+    </div>
     </div>
   );
 }

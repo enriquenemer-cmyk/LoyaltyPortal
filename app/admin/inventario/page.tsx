@@ -440,6 +440,7 @@ export default function InventarioPage() {
     <div className="min-h-screen">
       {/* Hero */}
       <div className="hero-gradient px-4 md:px-10 pt-6 pb-8">
+        <div className="hero-blobs" aria-hidden="true"><span key="b1" /><span key="b2" /><span key="b3" /></div>
         <div className="max-w-7xl mx-auto flex items-start justify-between flex-wrap gap-4">
           <div>
             <div

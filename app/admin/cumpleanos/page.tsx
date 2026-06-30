@@ -117,26 +117,21 @@ export default function CumpleanosPage() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: 'linear-gradient(135deg,#150800 0%,#2a0d00 50%,#3D1200 100%)', padding: '40px 20px' }}>
-      <div style={{ maxWidth: 700, margin: '0 auto' }}>
-
-        {/* Header */}
-        <div style={{ marginBottom: 36 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 8 }}>
-            <div style={{
-              width: 48, height: 48, borderRadius: '50%',
-              background: 'linear-gradient(135deg,#0891B2,#0891B2)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontSize: 24, boxShadow: '0 0 0 6px rgba(249,115,22,0.15)',
-            }}>
-              🎂
-            </div>
-            <div>
-              <h1 style={{ color: 'white', fontSize: 26, fontWeight: 900, margin: 0 }}>Premios de Cumpleaños</h1>
-              <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: 13, margin: 0 }}>Genera premios especiales — manual o automático</p>
-            </div>
+    <div className="min-h-screen">
+      {/* Hero */}
+      <div className="hero-gradient px-4 md:px-10 pt-6 pb-8">
+        <div className="hero-blobs" aria-hidden="true"><span key="b1" /><span key="b2" /><span key="b3" /></div>
+        <div className="max-w-[700px] mx-auto">
+          <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-widest mb-3" style={{ background: 'rgba(255,255,255,0.15)', color: 'rgba(219,234,254,0.9)', border: '1px solid rgba(255,255,255,0.2)' }}>
+            🎂 Puntos y Sellos
           </div>
+          <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Premios de Cumpleaños</h1>
+          <p className="text-blue-200/70 mt-1.5 text-sm">Genera premios especiales — manual o automático</p>
         </div>
+      </div>
+
+      <div style={{ minHeight: '100vh', background: 'linear-gradient(135deg,#150800 0%,#2a0d00 50%,#3D1200 100%)', padding: '40px 20px' }}>
+      <div style={{ maxWidth: 700, margin: '0 auto' }}>
 
         {/* Auto section */}
         <div style={{
@@ -323,6 +318,7 @@ export default function CumpleanosPage() {
             </div>
           </div>
         )}
+      </div>
       </div>
     </div>
   );

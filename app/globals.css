@@ -681,6 +681,12 @@ input[type="date"] {
     radial-gradient(ellipse 60% 40% at 80% 110%, rgba(124,58,237,0.05) 0%, transparent 60%),
     radial-gradient(circle, rgba(100,116,139,0.13) 1px, transparent 1px) !important;
   background-size: auto, auto, 28px 28px !important;
+  animation: dotgrid-drift 75s ease-in-out infinite;
+}
+@keyframes dotgrid-drift {
+  0%   { background-position: 0 0, 0 0, 0 0; }
+  50%  { background-position: 0 0, 0 0, 14px 10px; }
+  100% { background-position: 0 0, 0 0, 0 0; }
 }
 
 /* ── Premium card ── */
@@ -703,8 +709,23 @@ input[type="date"] {
 /* ── Hero gradient banner ── */
 .hero-gradient {
   background: linear-gradient(135deg, #1e3a8a 0%, #1d4ed8 35%, #2563eb 60%, #7c3aed 100%);
+  background-size: 200% 200%;
+  animation: gradientShift 18s ease-in-out infinite;
   position: relative;
   overflow: hidden;
+}
+@keyframes gradientShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+@keyframes float-slow {
+  0%, 100% { transform: translate(0, 0); }
+  50%      { transform: translate(10px, -15px); }
+}
+@keyframes float-slow-alt {
+  0%, 100% { transform: translate(0, 0); }
+  50%      { transform: translate(-12px, 12px); }
 }
 .hero-gradient::before {
   content: '';
@@ -726,6 +747,52 @@ input[type="date"] {
   z-index: 0;
 }
 .hero-gradient > * { position: relative; z-index: 1; }
+
+/* ── Decorative floating blobs (purely cosmetic, behind content) ──
+   Rendered via a single .hero-blobs wrapper with 3 <span> children. Add
+   <div className="hero-blobs"><span/><span/><span/></div> as the first
+   child of any .hero-gradient container to enable; pages that don't add it
+   simply don't get the blobs (no CSS-only fallback needed since the gradient
+   mesh animation + existing glow layers already provide motion). */
+.hero-gradient .hero-blobs {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+.hero-gradient .hero-blobs span {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(40px);
+  will-change: transform;
+  display: block;
+}
+.hero-gradient .hero-blobs span:nth-child(1) {
+  width: 280px;
+  height: 280px;
+  top: -80px;
+  left: 8%;
+  background: rgba(255,255,255,0.12);
+  animation: float-slow 10s ease-in-out infinite;
+}
+.hero-gradient .hero-blobs span:nth-child(2) {
+  width: 220px;
+  height: 220px;
+  bottom: -60px;
+  right: 12%;
+  background: rgba(147,197,253,0.15);
+  animation: float-slow-alt 12s ease-in-out infinite;
+  animation-delay: -3s;
+}
+.hero-gradient .hero-blobs span:nth-child(3) {
+  width: 160px;
+  height: 160px;
+  top: 30%;
+  right: 30%;
+  background: rgba(255,255,255,0.08);
+  animation: float-slow 9s ease-in-out infinite;
+  animation-delay: -5s;
+}
 
 /* ── Glow utilities ── */
 .glow-blue   { box-shadow: 0 0 24px rgba(37,99,235,0.28), 0 4px 12px rgba(37,99,235,0.18); }
@@ -1034,6 +1101,42 @@ input[type="date"] {
   transform: translateY(-1px);
 }
 
+/* ── Toast entry/exit + icon micro-animations ── */
+@keyframes toast-in {
+  0%   { transform: translateX(110%); opacity: 0; }
+  60%  { transform: translateX(-6%); opacity: 1; }
+  80%  { transform: translateX(2%); }
+  100% { transform: translateX(0); opacity: 1; }
+}
+@keyframes toast-out {
+  from { transform: translateX(0) scale(1); opacity: 1; }
+  to   { transform: translateX(40%) scale(0.92); opacity: 0; }
+}
+@keyframes toast-icon-pop {
+  0%   { transform: scale(0); }
+  60%  { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+@keyframes toast-icon-shake {
+  0%, 100% { transform: translateX(0); }
+  20%      { transform: translateX(-2px); }
+  40%      { transform: translateX(2px); }
+  60%      { transform: translateX(-2px); }
+  80%      { transform: translateX(2px); }
+}
+.toast-enter {
+  animation: toast-in 0.45s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+.toast-exit {
+  animation: toast-out 0.25s ease both;
+}
+.toast-icon-success {
+  animation: toast-icon-pop 0.4s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+.toast-icon-error {
+  animation: toast-icon-shake 0.4s ease-in-out 2;
+}
+
 /* ── Stat number animation ── */
 @keyframes count-up {
   from { opacity: 0; transform: translateY(6px); }
@@ -1041,13 +1144,21 @@ input[type="date"] {
 }
 .stat-num { animation: count-up 0.5s cubic-bezier(0.34,1.56,0.64,1) both; }
 
+/* ── KPI counter completion pop ── */
+@keyframes count-pop {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+.count-pop { animation: count-pop 0.3s ease-out; display: inline-block; }
+
 /* ── Card lift on hover ── */
 .card-lift {
-  transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.2s ease !important;
+  transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.35s ease !important;
 }
 .card-lift:hover {
-  transform: translateY(-4px) scale(1.01) !important;
-  box-shadow: 0 16px 48px rgba(37,99,235,0.12), 0 4px 12px rgba(0,0,0,0.06) !important;
+  transform: translateY(-4px) scale(1.015) !important;
+  box-shadow: 0 20px 56px rgba(37,99,235,0.14), 0 6px 16px rgba(0,0,0,0.07) !important;
 }
 
 /* ── Table cell ── */
@@ -1059,6 +1170,19 @@ input[type="date"] {
 .admin-content button,
 .admin-content a[class*="px-"] {
   transition: all 0.15s ease !important;
+}
+
+/* ── Button press feedback (site-wide, CSS-only) ── */
+.admin-content button:not(:disabled) {
+  transition: transform 0.1s ease, background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease, border-color 0.15s ease !important;
+}
+.admin-content button:not(:disabled):active {
+  transform: scale(0.96);
+}
+/* Cards that already lift on hover keep their hover transform; pressing
+   while hovering should still scale down slightly via :active priority. */
+.admin-content .card-lift:active {
+  transform: translateY(-4px) scale(0.97) !important;
 }
 
 /* ════════════════════════════════════════════════════
@@ -1348,3 +1472,53 @@ input[type="date"] {
 .sidebar-link-pulse {
   animation: sidebarLinkPulse 0.6s ease-in-out 2;
 }
+
+/* ── Notification bell ring (triggers when pendingCount increases) ── */
+@keyframes bell-ring {
+  0%, 100% { transform: rotate(0); }
+  10%, 30% { transform: rotate(-12deg); }
+  20%, 40% { transform: rotate(12deg); }
+  50% { transform: rotate(-6deg); }
+  60% { transform: rotate(6deg); }
+  70% { transform: rotate(0); }
+}
+.bell-ringing {
+  animation: bell-ring 0.6s ease-in-out;
+  transform-origin: top center;
+}
+
+/* ── Sidebar group: subtle one-time stagger on initial mount ── */
+@keyframes sidebarGroupEnter {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.sidebar-group-enter {
+  animation: sidebarGroupEnter 0.28s ease-out both;
+}
+
+/* ── Scroll-reveal for cards (useScrollReveal hook) ── */
+@keyframes scroll-reveal-in {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(16px);
+}
+.scroll-reveal.scroll-reveal-visible {
+  animation: scroll-reveal-in 0.45s cubic-bezier(0.22,1,0.36,1) both;
+}
+
+/* Stat card grid: children fade-in-up with staggered delay once the grid
+   container scrolls into view (see StatCardGrid in app/admin/page.tsx). */
+.scroll-reveal-children > * {
+  opacity: 0;
+}
+.scroll-reveal-children-visible > * {
+  animation: scroll-reveal-in 0.45s cubic-bezier(0.22,1,0.36,1) both;
+}
+.scroll-reveal-children-visible > *:nth-child(1) { animation-delay: 0ms; }
+.scroll-reveal-children-visible > *:nth-child(2) { animation-delay: 50ms; }
+.scroll-reveal-children-visible > *:nth-child(3) { animation-delay: 100ms; }
+.scroll-reveal-children-visible > *:nth-child(4) { animation-delay: 150ms; }
+.scroll-reveal-children-visible > *:nth-child(5) { animation-delay: 200ms; }

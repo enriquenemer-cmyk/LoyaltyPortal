@@ -8,6 +8,7 @@ import { getCache, setCache } from '@/app/components/useDataCache';
 import ActivityChart from '@/app/components/ActivityChart';
 import TopPremiosChart from '@/app/components/TopPremiosChart';
 import HourHeatmap from '@/app/components/HourHeatmap';
+import { useScrollReveal } from '@/app/hooks/useScrollReveal';
 
 interface Claim {
   id: string;
@@ -138,6 +139,18 @@ function StatCard({
           <span className="text-xs font-semibold">{trendLabel}</span>
         </div>
       )}
+    </div>
+  );
+}
+
+function StatCardGrid({ children, loading }: { children: React.ReactNode; loading: boolean }) {
+  const { ref, visible } = useScrollReveal<HTMLDivElement>(0.1);
+  return (
+    <div
+      ref={ref}
+      className={`grid grid-cols-2 lg:grid-cols-5 gap-4 ${!loading && visible ? 'scroll-reveal-children-visible' : !loading ? 'scroll-reveal-children' : ''}`}
+    >
+      {children}
     </div>
   );
 }
@@ -1380,9 +1393,21 @@ function SetupChecklist({
 
 function KpiPill({ value, label }: { value: number; label: string }) {
   const animated = useAnimatedCounter(value, 800);
+  const [popped, setPopped] = useState(false);
+
+  useEffect(() => {
+    if (value === 0) return;
+    const timer = setTimeout(() => {
+      setPopped(true);
+      const reset = setTimeout(() => setPopped(false), 300);
+      return () => clearTimeout(reset);
+    }, 800);
+    return () => clearTimeout(timer);
+  }, [value]);
+
   return (
     <span className="text-sm font-bold text-white">
-      {animated.toLocaleString()} {label}
+      <span className={popped ? 'count-pop' : undefined}>{animated.toLocaleString()}</span> {label}
     </span>
   );
 }
@@ -1597,6 +1622,7 @@ export default function AdminDashboard() {
     <div className="min-h-screen">
       {/* ── Hero Banner ── */}
       <div className="hero-gradient px-6 md:px-10 pt-8 pb-10">
+        <div className="hero-blobs" aria-hidden="true"><span key="b1" /><span key="b2" /><span key="b3" /></div>
         <div className="max-w-6xl mx-auto">
           <div className="flex items-start justify-between flex-wrap gap-6">
             <div>
@@ -1773,7 +1799,7 @@ export default function AdminDashboard() {
               ))}
             </select>
           </div>
-          <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
+          <StatCardGrid loading={loading}>
             {loading ? (
               <><SkeletonCard /><SkeletonCard /><SkeletonCard /><SkeletonCard /><SkeletonCard /></>
             ) : (
@@ -1787,7 +1813,7 @@ export default function AdminDashboard() {
                   gradient="linear-gradient(135deg,#2563EB 0%,#0EA5E9 100%)"
                   trend={claimsTrend}
                   trendLabel={claimsTrendLabel}
-                  icon={<svg width="20" height="20" fill="none" stroke="white" strokeWidth="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" strokeLinecap="round" strokeLinejoin="round" /></svg>}
+                  icon={<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="rgba(255,255,255,0.22)" /><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg>}
                 />
                 <StatCard
                   label="Pendientes"
@@ -1796,7 +1822,7 @@ export default function AdminDashboard() {
                   bgColor="rgba(255,255,255,0.25)"
                   textColor="white"
                   gradient="linear-gradient(135deg,#F59E0B 0%,#EF4444 100%)"
-                  icon={<svg width="20" height="20" fill="none" stroke="white" strokeWidth="2.5" viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" strokeLinecap="round" strokeLinejoin="round" /></svg>}
+                  icon={<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" fill="rgba(255,255,255,0.22)" /><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg>}
                 />
                 <StatCard
                   label="Total Premios"
@@ -1805,7 +1831,7 @@ export default function AdminDashboard() {
                   bgColor="rgba(255,255,255,0.25)"
                   textColor="white"
                   gradient="linear-gradient(135deg,#7C3AED 0%,#A78BFA 100%)"
-                  icon={<svg width="20" height="20" fill="none" stroke="white" strokeWidth="2.5" viewBox="0 0 24 24"><path d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" strokeLinecap="round" strokeLinejoin="round" /></svg>}
+                  icon={<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3" y="9" width="18" height="11" rx="2" fill="rgba(255,255,255,0.22)" /><path d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg>}
                 />
                 <StatCard
                   label="Total Cobros"
@@ -1816,7 +1842,7 @@ export default function AdminDashboard() {
                   gradient="linear-gradient(135deg,#059669 0%,#10B981 100%)"
                   trend={claimsTrend}
                   trendLabel={claimsTrendLabel}
-                  icon={<svg width="20" height="20" fill="none" stroke="white" strokeWidth="2.5" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" strokeLinecap="round" strokeLinejoin="round" /></svg>}
+                  icon={<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" fill="rgba(255,255,255,0.22)" /><path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg>}
                 />
                 <StatCard
                   label="Conversión"
@@ -1826,11 +1852,11 @@ export default function AdminDashboard() {
                   bgColor="rgba(255,255,255,0.25)"
                   textColor="white"
                   gradient="linear-gradient(135deg,#EC4899 0%,#F97316 100%)"
-                  icon={<svg width="20" height="20" fill="none" stroke="white" strokeWidth="2.5" viewBox="0 0 24 24"><path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" strokeLinecap="round" strokeLinejoin="round" /></svg>}
+                  icon={<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M13 7h8v8L13 7z" fill="rgba(255,255,255,0.22)" /><path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg>}
                 />
               </>
             )}
-          </div>
+          </StatCardGrid>
         </div>
 
         {/* Actividad últimos 14 días */}

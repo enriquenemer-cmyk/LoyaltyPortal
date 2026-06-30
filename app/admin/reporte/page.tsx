@@ -741,53 +741,63 @@ export default function ReportePage() {
     : [];
 
   return (
-    <div className="max-w-xl mx-auto px-4 py-8">
-      <div className="mb-6 flex items-start justify-between gap-4 flex-wrap">
-        <div>
-          <h1 className="text-2xl font-extrabold text-[#1C1917] tracking-tight">Reporte Semanal</h1>
-          {stats && (
-            <p className="text-stone-500 text-sm mt-1">Semana del {stats.weekStart} al {stats.weekEnd}</p>
+    <div className="min-h-screen">
+      {/* Hero */}
+      <div className="hero-gradient px-4 md:px-10 pt-6 pb-8">
+        <div className="hero-blobs" aria-hidden="true"><span key="b1" /><span key="b2" /><span key="b3" /></div>
+        <div className="max-w-xl mx-auto flex items-start justify-between flex-wrap gap-4">
+          <div>
+            <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-widest mb-3" style={{ background: 'rgba(255,255,255,0.15)', color: 'rgba(219,234,254,0.9)', border: '1px solid rgba(255,255,255,0.2)' }}>
+              📊 Reportes
+            </div>
+            <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Reporte Semanal</h1>
+            {stats && (
+              <p className="text-blue-200/70 mt-1.5 text-sm">Semana del {stats.weekStart} al {stats.weekEnd}</p>
+            )}
+          </div>
+          {!loading && allClaims.length > 0 && (
+            <div className="flex items-center gap-2 flex-wrap">
+              <button
+                onClick={exportCSV}
+                className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-bold transition-colors"
+                style={{ background: 'rgba(255,255,255,0.15)', color: 'white', border: '1px solid rgba(255,255,255,0.25)' }}
+                title="Exportar CSV compatible con Excel"
+              >
+                📊 Exportar CSV
+              </button>
+              <button
+                onClick={handleDownloadPdf}
+                disabled={generatingPdf}
+                className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-bold transition-all disabled:opacity-60"
+                style={{ background: 'white', color: '#1d4ed8', boxShadow: '0 4px 16px rgba(0,0,0,0.15)' }}
+                title="Descargar PDF completo"
+              >
+                {generatingPdf ? (
+                  <>
+                    <svg className="animate-spin w-3.5 h-3.5" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
+                    </svg>
+                    Generando...
+                  </>
+                ) : (
+                  <>📄 Descargar PDF</>
+                )}
+              </button>
+              <button
+                onClick={handlePdfPrint}
+                className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-bold transition-colors"
+                style={{ background: 'rgba(255,255,255,0.15)', color: 'white', border: '1px solid rgba(255,255,255,0.25)' }}
+                title="Imprimir como PDF"
+              >
+                🖨️ Imprimir
+              </button>
+            </div>
           )}
         </div>
-        {!loading && allClaims.length > 0 && (
-          <div className="flex items-center gap-2 flex-wrap">
-            <button
-              onClick={exportCSV}
-              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-bold text-emerald-700 border border-emerald-300 bg-emerald-50 hover:bg-emerald-100 transition-colors"
-              title="Exportar CSV compatible con Excel"
-            >
-              📊 Exportar CSV
-            </button>
-            <button
-              onClick={handleDownloadPdf}
-              disabled={generatingPdf}
-              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-bold text-white border border-[#0891B2] transition-colors disabled:opacity-60"
-              style={{ background: generatingPdf ? '#0891B299' : '#2563EB' }}
-              title="Descargar PDF completo"
-            >
-              {generatingPdf ? (
-                <>
-                  <svg className="animate-spin w-3.5 h-3.5" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
-                  </svg>
-                  Generando...
-                </>
-              ) : (
-                <>📄 Descargar PDF</>
-              )}
-            </button>
-            <button
-              onClick={handlePdfPrint}
-              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-bold text-stone-700 border border-stone-300 bg-white hover:bg-stone-50 transition-colors"
-              title="Imprimir como PDF"
-            >
-              🖨️ Imprimir
-            </button>
-          </div>
-        )}
       </div>
 
+    <div className="max-w-xl mx-auto px-4 py-8">
       {loading ? (
         <div className="flex items-center justify-center h-48">
           <svg className="animate-spin w-8 h-8 text-blue-400" fill="none" viewBox="0 0 24 24">
@@ -880,6 +890,7 @@ export default function ReportePage() {
           </div>
         </>
       )}
+    </div>
     </div>
   );
 }

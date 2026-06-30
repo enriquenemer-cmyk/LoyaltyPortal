@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import HourHeatmap from '@/app/components/HourHeatmap';
 
 type ByType = {
   game_type: string;
@@ -68,45 +69,6 @@ function GameTypeCard({ data }: { data: ByType }) {
             style={{ width: `${Math.min(data.completion_rate, 100)}%` }}
           />
         </div>
-      </div>
-    </div>
-  );
-}
-
-function HourlyHeatmap({ data }: { data: HourlyEntry[] }) {
-  const byHour: Record<number, number> = {};
-  for (const e of data) byHour[e.hour] = e.count;
-  const max = Math.max(...Object.values(byHour), 1);
-
-  return (
-    <div className="bg-white border border-[#E8E3DC] rounded-2xl p-5 shadow-sm">
-      <p className="text-sm font-bold text-[#1C1917] mb-4">Mapa de calor por hora</p>
-      <div className="grid grid-cols-12 gap-1">
-        {Array.from({ length: 24 }, (_, h) => {
-          const count = byHour[h] ?? 0;
-          const intensity = count / max;
-          const bg = intensity === 0
-            ? '#F5F3F0'
-            : `rgba(232, 82, 26, ${0.15 + intensity * 0.85})`;
-          return (
-            <div
-              key={h}
-              title={`${h}:00 — ${count} partidas`}
-              className="aspect-square rounded flex items-center justify-center cursor-default"
-              style={{ background: bg }}
-            >
-              <span className="text-[9px] font-bold" style={{ color: intensity > 0.5 ? 'white' : '#78716C' }}>
-                {h}
-              </span>
-            </div>
-          );
-        })}
-      </div>
-      <div className="mt-3 flex items-center gap-2 text-[10px] text-stone-400">
-        <div className="w-3 h-3 rounded" style={{ background: '#F5F3F0' }} />
-        <span>Sin actividad</span>
-        <div className="w-3 h-3 rounded ml-2" style={{ background: 'rgba(232, 82, 26, 1)' }} />
-        <span>Alta actividad</span>
       </div>
     </div>
   );
@@ -204,13 +166,26 @@ export default function GameAnalyticsPage() {
     };
   });
 
+  const hourlyFilled = Array.from({ length: 24 }, (_, h) => ({
+    hour: h,
+    count: data.hourly.find((e) => e.hour === h)?.count ?? 0,
+  }));
+
   return (
-    <div className="p-6 max-w-5xl mx-auto space-y-6">
-      <div>
-        <h1 className="text-xl font-extrabold text-[#1C1917] tracking-tight">Game Analytics</h1>
-        <p className="text-sm text-stone-400 mt-1">Metricas de rendimiento de los juegos interactivos</p>
+    <div className="min-h-screen">
+      {/* Hero */}
+      <div className="hero-gradient px-4 md:px-10 pt-6 pb-8">
+        <div className="hero-blobs" aria-hidden="true"><span key="b1" /><span key="b2" /><span key="b3" /></div>
+        <div className="max-w-5xl mx-auto">
+          <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-widest mb-3" style={{ background: 'rgba(255,255,255,0.15)', color: 'rgba(219,234,254,0.9)', border: '1px solid rgba(255,255,255,0.2)' }}>
+            🎮 Analítica de Juegos
+          </div>
+          <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Analítica de Juegos</h1>
+          <p className="text-blue-200/70 mt-1.5 text-sm">Métricas de rendimiento de los juegos interactivos</p>
+        </div>
       </div>
 
+    <div className="p-6 max-w-5xl mx-auto space-y-6">
       {/* Stats row */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard label="Total partidas" value={totalGames.toLocaleString()} />
@@ -235,9 +210,10 @@ export default function GameAnalyticsPage() {
 
       {/* Hourly heatmap + Prize distribution */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <HourlyHeatmap data={data.hourly} />
+        <HourHeatmap hours={hourlyFilled} />
         <PrizeDistribution data={data.prizes} />
       </div>
+    </div>
     </div>
   );
 }

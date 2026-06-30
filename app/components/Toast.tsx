@@ -53,6 +53,7 @@ function ToastItem({ toast, onDismiss }: { toast: Toast; onDismiss: (id: number)
   return (
     <div
       role="alert"
+      className={visible ? "toast-enter" : "toast-exit"}
       style={{
         display: "flex",
         alignItems: "flex-start",
@@ -65,12 +66,10 @@ function ToastItem({ toast, onDismiss }: { toast: Toast; onDismiss: (id: number)
         boxShadow: "0 4px 12px rgba(0,0,0,0.12)",
         minWidth: "280px",
         maxWidth: "360px",
-        transform: visible ? "translateX(0)" : "translateX(110%)",
-        opacity: visible ? 1 : 0,
-        transition: "transform 0.3s ease, opacity 0.3s ease",
       }}
     >
       <span
+        className={toast.type === "success" ? "toast-icon-success" : toast.type === "error" ? "toast-icon-error" : undefined}
         style={{
           flexShrink: 0,
           width: "20px",

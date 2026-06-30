@@ -145,62 +145,104 @@ const illustrations: Record<EmptyStateType, React.FC> = {
 
 function IconGift() {
   return (
-    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#2563EB" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <polyline points="20 12 20 22 4 22 4 12" />
-      <rect x="2" y="7" width="20" height="5" />
-      <line x1="12" y1="22" x2="12" y2="7" />
-      <path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z" />
-      <path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z" />
+    <svg width="72" height="72" viewBox="0 0 72 72" fill="none" aria-hidden="true">
+      {/* Soft background blob */}
+      <circle cx="36" cy="36" r="32" fill="#2563EB" opacity="0.07" />
+      <circle cx="36" cy="36" r="22" fill="#7C3AED" opacity="0.06" />
+      {/* Main gift icon, duotone */}
+      <g transform="translate(18,16)">
+        <path d="M2 13h32v22H2z" fill="#2563EB" opacity="0.12" />
+        <polyline points="30 18 30 33 6 33 6 18" stroke="#2563EB" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+        <rect x="2" y="11" width="32" height="7" rx="1.5" fill="#2563EB" opacity="0.18" stroke="#2563EB" strokeWidth="1.8" strokeLinejoin="round" />
+        <line x1="18" y1="33" x2="18" y2="11" stroke="#2563EB" strokeWidth="1.8" strokeLinecap="round" />
+        <path d="M18 11h-6.5a3.5 3.5 0 010-7C16 4 18 11 18 11z" fill="#7C3AED" opacity="0.15" stroke="#7C3AED" strokeWidth="1.8" strokeLinejoin="round" />
+        <path d="M18 11h6.5a3.5 3.5 0 000-7C20 4 18 11 18 11z" fill="#7C3AED" opacity="0.15" stroke="#7C3AED" strokeWidth="1.8" strokeLinejoin="round" />
+      </g>
+      {/* Decorative sparkles */}
+      <circle cx="56" cy="20" r="2.5" fill="#0EA5E9" opacity="0.5" />
+      <circle cx="14" cy="50" r="2" fill="#7C3AED" opacity="0.4" />
+      <path d="M58 50l2 2-2 2-2-2z" fill="#2563EB" opacity="0.35" />
     </svg>
   );
 }
 
 function IconUsers() {
   return (
-    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#2563EB" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
-      <circle cx="9" cy="7" r="4" />
-      <path d="M23 21v-2a4 4 0 00-3-3.87" />
-      <path d="M16 3.13a4 4 0 010 7.75" />
+    <svg width="72" height="72" viewBox="0 0 72 72" fill="none" aria-hidden="true">
+      <circle cx="36" cy="36" r="32" fill="#0EA5E9" opacity="0.07" />
+      <circle cx="36" cy="36" r="22" fill="#2563EB" opacity="0.06" />
+      <g transform="translate(16,18)">
+        <circle cx="14" cy="9" r="7" fill="#2563EB" opacity="0.15" stroke="#2563EB" strokeWidth="1.8" />
+        <path d="M27 35v-3a6 6 0 00-6-6H7a6 6 0 00-6 6v3" fill="#2563EB" opacity="0.1" stroke="#2563EB" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M35 35v-3a6 6 0 00-4.5-5.8" stroke="#7C3AED" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M24 2.2a7 7 0 010 13.6" stroke="#7C3AED" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+      </g>
+      <circle cx="58" cy="18" r="2.5" fill="#7C3AED" opacity="0.45" />
+      <circle cx="13" cy="52" r="2" fill="#0EA5E9" opacity="0.5" />
     </svg>
   );
 }
 
 function IconClipboard() {
   return (
-    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#2563EB" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2" />
-      <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
-      <line x1="9" y1="12" x2="15" y2="12" />
-      <line x1="9" y1="16" x2="13" y2="16" />
+    <svg width="72" height="72" viewBox="0 0 72 72" fill="none" aria-hidden="true">
+      <circle cx="36" cy="36" r="32" fill="#2563EB" opacity="0.07" />
+      <circle cx="36" cy="36" r="22" fill="#0EA5E9" opacity="0.06" />
+      <g transform="translate(20,14)">
+        <path d="M16 4h2a2 2 0 012 2v26a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2"
+          fill="#2563EB" opacity="0.1" stroke="#2563EB" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+        <rect x="8" y="2" width="8" height="4" rx="1" fill="#2563EB" opacity="0.2" stroke="#2563EB" strokeWidth="1.8" />
+        <line x1="9" y1="14" x2="15" y2="14" stroke="#7C3AED" strokeWidth="1.8" strokeLinecap="round" />
+        <line x1="9" y1="19" x2="13" y2="19" stroke="#7C3AED" strokeWidth="1.8" strokeLinecap="round" />
+      </g>
+      <path d="M56 48l2 2-2 2-2-2z" fill="#2563EB" opacity="0.4" />
+      <circle cx="14" cy="50" r="2.2" fill="#0EA5E9" opacity="0.45" />
     </svg>
   );
 }
 
 function IconChart() {
   return (
-    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#2563EB" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <line x1="18" y1="20" x2="18" y2="10" />
-      <line x1="12" y1="20" x2="12" y2="4" />
-      <line x1="6" y1="20" x2="6" y2="14" />
-      <line x1="2" y1="20" x2="22" y2="20" />
+    <svg width="72" height="72" viewBox="0 0 72 72" fill="none" aria-hidden="true">
+      <circle cx="36" cy="36" r="32" fill="#0EA5E9" opacity="0.07" />
+      <circle cx="36" cy="36" r="22" fill="#2563EB" opacity="0.06" />
+      <g transform="translate(18,18)">
+        <rect x="2" y="22" width="6" height="14" rx="1.5" fill="#0EA5E9" opacity="0.18" stroke="#0EA5E9" strokeWidth="1.8" />
+        <rect x="14" y="12" width="6" height="24" rx="1.5" fill="#2563EB" opacity="0.18" stroke="#2563EB" strokeWidth="1.8" />
+        <rect x="26" y="2" width="6" height="34" rx="1.5" fill="#7C3AED" opacity="0.18" stroke="#7C3AED" strokeWidth="1.8" />
+      </g>
+      <circle cx="56" cy="20" r="2.3" fill="#7C3AED" opacity="0.4" />
+      <circle cx="14" cy="50" r="2" fill="#0EA5E9" opacity="0.5" />
     </svg>
   );
 }
 
 function IconSearch() {
   return (
-    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#2563EB" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <circle cx="11" cy="11" r="8" />
-      <line x1="21" y1="21" x2="16.65" y2="16.65" />
+    <svg width="72" height="72" viewBox="0 0 72 72" fill="none" aria-hidden="true">
+      <circle cx="36" cy="36" r="32" fill="#2563EB" opacity="0.07" />
+      <circle cx="36" cy="36" r="22" fill="#0EA5E9" opacity="0.06" />
+      <g transform="translate(18,18)">
+        <circle cx="15" cy="15" r="11" fill="#2563EB" opacity="0.12" stroke="#2563EB" strokeWidth="1.8" />
+        <line x1="29" y1="29" x2="35" y2="35" stroke="#7C3AED" strokeWidth="2.2" strokeLinecap="round" />
+      </g>
+      <circle cx="56" cy="50" r="2.2" fill="#7C3AED" opacity="0.4" />
+      <circle cx="14" cy="50" r="2" fill="#0EA5E9" opacity="0.5" />
     </svg>
   );
 }
 
 function IconStar() {
   return (
-    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#2563EB" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+    <svg width="72" height="72" viewBox="0 0 72 72" fill="none" aria-hidden="true">
+      <circle cx="36" cy="36" r="32" fill="#7C3AED" opacity="0.07" />
+      <circle cx="36" cy="36" r="22" fill="#2563EB" opacity="0.06" />
+      <g transform="translate(16,16)">
+        <polygon points="20 3 25.15 13.77 37 15.45 28.5 23.57 30.55 35.35 20 29.77 9.45 35.35 11.5 23.57 3 15.45 14.85 13.77"
+          fill="#2563EB" opacity="0.15" stroke="#2563EB" strokeWidth="1.8" strokeLinejoin="round" />
+      </g>
+      <circle cx="56" cy="20" r="2.3" fill="#0EA5E9" opacity="0.45" />
+      <path d="M14 52l2 2-2 2-2-2z" fill="#7C3AED" opacity="0.4" />
     </svg>
   );
 }
@@ -224,7 +266,7 @@ export function EmptyState(props: EmptyStateProps) {
         className="flex flex-col items-center justify-center py-16 px-6 text-center"
         style={{ animation: 'fadeInUp 0.4s ease both' }}
       >
-        <div className="bg-blue-50 rounded-2xl p-4 mb-5 inline-flex items-center justify-center">
+        <div className="mb-5 inline-flex items-center justify-center">
           <IconComp />
         </div>
         <p className="text-slate-800 font-bold text-lg mb-2">{title}</p>

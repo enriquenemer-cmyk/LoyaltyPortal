@@ -11,7 +11,7 @@ export function getPool(): Pool {
 
 let schemaInitialized = false;
 
-async function ensureSchema(): Promise<void> {
+export async function ensureSchema(): Promise<void> {
   if (schemaInitialized) return;
   const client = await getPool().connect();
   try {

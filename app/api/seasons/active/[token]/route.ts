@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getPool } from '@/lib/db';
+import { getPool, ensureSchema } from '@/lib/db';
 
 export const runtime = 'nodejs';
 
@@ -8,6 +8,7 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ tok
   const pool = getPool();
 
   try {
+    await ensureSchema();
     const { rows: customerRows } = await pool.query<{ phone: string }>(
       `SELECT phone FROM customer_points WHERE public_token = $1`,
       [token]

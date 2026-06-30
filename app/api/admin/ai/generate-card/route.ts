@@ -3,7 +3,7 @@ import { cookies } from 'next/headers';
 import { getIronSession } from 'iron-session';
 import { randomUUID } from 'crypto';
 import { SessionData, sessionOptions } from '@/lib/session';
-import { getPool, getCustomerPoints } from '@/lib/db';
+import { getPool, getCustomerPoints, ensureSchema } from '@/lib/db';
 import { generateImage } from '@/lib/openai';
 
 export const runtime = 'nodejs';
@@ -38,6 +38,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Falta el teléfono del cliente' }, { status: 400 });
   }
 
+  await ensureSchema();
   const pool = getPool();
 
   try {

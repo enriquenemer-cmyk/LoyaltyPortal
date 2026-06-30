@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { getIronSession } from 'iron-session';
 import { SessionData, sessionOptions } from '@/lib/session';
-import { getPool } from '@/lib/db';
+import { getPool, ensureSchema } from '@/lib/db';
 import { randomUUID } from 'crypto';
 
 export const runtime = 'nodejs';
@@ -19,6 +19,7 @@ export async function GET() {
     return NextResponse.json({ error: 'No autorizado.' }, { status: 401 });
   }
 
+  await ensureSchema();
   const pool = getPool();
   try {
     const { rows: seasons } = await pool.query(
@@ -57,6 +58,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Faltan campos obligatorios.' }, { status: 400 });
     }
 
+    await ensureSchema();
     const pool = getPool();
     const client = await pool.connect();
     try {

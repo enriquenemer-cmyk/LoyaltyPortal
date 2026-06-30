@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { getIronSession } from 'iron-session';
 import { SessionData, sessionOptions } from '@/lib/session';
-import { getPool } from '@/lib/db';
+import { getPool, ensureSchema } from '@/lib/db';
 
 export const runtime = 'nodejs';
 
@@ -38,6 +38,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     }
 
     values.push(id);
+    await ensureSchema();
     const { rows } = await getPool().query(
       `UPDATE seasons SET ${fields.join(', ')} WHERE id = $${i} RETURNING *`,
       values
@@ -62,6 +63,7 @@ export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ 
 
   try {
     // Never hard-delete: deactivate so progress data is preserved.
+    await ensureSchema();
     const { rows } = await getPool().query(
       `UPDATE seasons SET active = false WHERE id = $1 RETURNING *`,
       [id]

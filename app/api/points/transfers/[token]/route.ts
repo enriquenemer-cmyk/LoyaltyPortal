@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getPool } from '@/lib/db';
+import { getPool, ensureSchema } from '@/lib/db';
 
 export async function GET(_req: NextRequest, { params }: { params: Promise<{ token: string }> }) {
   const { token } = await params;
+  await ensureSchema();
   const pool = getPool();
 
   const { rows: customerRows } = await pool.query(

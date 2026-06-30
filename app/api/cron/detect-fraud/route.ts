@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getPool, getDayOfWeekAverages } from '@/lib/db';
+import { getPool, getDayOfWeekAverages, ensureSchema } from '@/lib/db';
 import { randomUUID } from 'crypto';
 
 // Called daily via cron. CRON_SECRET env var protects this endpoint.
@@ -15,6 +15,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
+  await ensureSchema();
   const pool = getPool();
   let alertsCreated = 0;
 

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { getIronSession } from 'iron-session';
 import { SessionData, sessionOptions } from '@/lib/session';
-import { getPool } from '@/lib/db';
+import { getPool, ensureSchema } from '@/lib/db';
 
 export const runtime = 'nodejs';
 
@@ -21,6 +21,7 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
   const { id } = await params;
 
   try {
+    await ensureSchema();
     const { rows } = await getPool().query(
       `SELECT sp.phone, sp.season_points,
               (SELECT full_name FROM claims c WHERE c.phone = sp.phone ORDER BY c.claimed_at DESC LIMIT 1) AS full_name

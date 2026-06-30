@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { getIronSession } from 'iron-session';
 import { SessionData, sessionOptions } from '@/lib/session';
-import { getPool } from '@/lib/db';
+import { getPool, ensureSchema } from '@/lib/db';
 
 export const runtime = 'nodejs';
 
@@ -41,6 +41,7 @@ export async function GET(req: NextRequest) {
   const pool = getPool();
 
   try {
+    await ensureSchema();
     // Single query, one row per restaurant, using subqueries/JOINs (no N+1 looping):
     //  - claims_count: ticket_claims rows for this restaurant within the period
     //  - sales_total: sum of daily_sales.total_amount for sale_date within the period

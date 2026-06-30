@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getPool, logActivity } from '@/lib/db';
+import { getPool, logActivity, ensureSchema } from '@/lib/db';
 
 const MIN_POINTS = 10;
 
@@ -27,6 +27,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'El mensaje no puede superar 100 caracteres.' }, { status: 400 });
   }
 
+  await ensureSchema();
   const pool = getPool();
 
   const { rows: senderRows } = await pool.query(

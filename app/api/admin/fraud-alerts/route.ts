@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { getIronSession } from 'iron-session';
 import { SessionData, sessionOptions } from '@/lib/session';
-import { getPool } from '@/lib/db';
+import { getPool, ensureSchema } from '@/lib/db';
 
 export const runtime = 'nodejs';
 
@@ -22,6 +22,7 @@ export async function GET(req: NextRequest) {
   const resolvedParam = searchParams.get('resolved');
   const onlyUnresolved = resolvedParam !== 'true' && resolvedParam !== 'all';
 
+  await ensureSchema();
   const pool = getPool();
 
   try {

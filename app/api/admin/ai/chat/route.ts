@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { randomUUID } from 'crypto';
 import { getSession } from '@/lib/session';
-import { getPool } from '@/lib/db';
+import { getPool, ensureSchema } from '@/lib/db';
 import { generateWithTools, ChatMessage, ToolDefinition } from '@/lib/openai';
 import {
   getSalesForDateRange,
@@ -196,6 +196,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'message y session_id son requeridos' }, { status: 400 });
   }
 
+  await ensureSchema();
   const pool = getPool();
 
   try {

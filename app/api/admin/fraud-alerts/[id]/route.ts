@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { getIronSession } from 'iron-session';
 import { SessionData, sessionOptions } from '@/lib/session';
-import { getPool } from '@/lib/db';
+import { getPool, ensureSchema } from '@/lib/db';
 
 export const runtime = 'nodejs';
 
@@ -23,6 +23,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
   const resolved = body.resolved === true;
 
   try {
+    await ensureSchema();
     const { rows } = await getPool().query(
       `UPDATE fraud_alerts SET resolved = $1 WHERE id = $2 RETURNING *`,
       [resolved, id]

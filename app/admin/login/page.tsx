@@ -135,22 +135,18 @@ export default function LoginPage() {
         <div className="relative z-10 flex flex-col items-center text-center gap-6">
           {/* Logo ST */}
           <div className="relative flex items-center justify-center" style={{ animation: 'float 4s ease-in-out infinite' }}>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 242 210" width="230" height="199">
-              {/* "3" green */}
-              <rect x="0"  y="0"   width="116" height="42" fill="#1a6b3c"/>
-              <rect x="85" y="42"  width="31"  height="36" fill="#1a6b3c"/>
-              <rect x="61" y="78"  width="55"  height="36" fill="#1a6b3c"/>
-              <rect x="85" y="114" width="31"  height="36" fill="#1a6b3c"/>
-              <rect x="0"  y="150" width="116" height="30" fill="#1a6b3c"/>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 460" width="220" height="220">
+              {/* "3" green — diagonal cuts matching official logo */}
+              <path d="M 0,0 L 248,0 L 248,420 L 0,420 L 0,330 L 100,255 L 100,175 L 0,100 Z" fill="#1a6b3c"/>
               {/* white separator */}
-              <rect x="116" y="0" width="6" height="180" fill="white"/>
+              <rect x="248" y="0" width="10" height="420" fill="white"/>
               {/* "E" white (dark bg) */}
-              <rect x="122" y="0"   width="32" height="180" fill="white"/>
-              <rect x="154" y="0"   width="88" height="42"  fill="white"/>
-              <rect x="154" y="78"  width="66" height="36"  fill="white"/>
-              <rect x="154" y="150" width="88" height="30"  fill="white"/>
+              <rect x="258" y="0"   width="38"  height="420" fill="white"/>
+              <rect x="296" y="0"   width="164" height="100" fill="white"/>
+              <rect x="296" y="175" width="130" height="80"  fill="white"/>
+              <rect x="296" y="330" width="164" height="90"  fill="white"/>
               {/* by ENM */}
-              <text x="121" y="204" textAnchor="middle" fontFamily="'Helvetica Neue', Helvetica, Arial, sans-serif" fontWeight="400" fontSize="20" fill="white" opacity="0.65" letterSpacing="5">by ENM</text>
+              <text x="228" y="454" textAnchor="middle" fontFamily="'Helvetica Neue', Helvetica, Arial, sans-serif" fontWeight="400" fontSize="26" fill="white" opacity="0.65" letterSpacing="6">by ENM</text>
             </svg>
           </div>
 
@@ -211,20 +207,16 @@ export default function LoginPage() {
           <div className="mb-8 flex flex-col items-center gap-3">
             {/* Show logo on mobile (left panel is hidden) */}
             <div className="md:hidden">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 242 180" width="116" height="86">
-                {/* "3" green */}
-                <rect x="0"  y="0"   width="116" height="42" fill="#1a6b3c"/>
-                <rect x="85" y="42"  width="31"  height="36" fill="#1a6b3c"/>
-                <rect x="61" y="78"  width="55"  height="36" fill="#1a6b3c"/>
-                <rect x="85" y="114" width="31"  height="36" fill="#1a6b3c"/>
-                <rect x="0"  y="150" width="116" height="30" fill="#1a6b3c"/>
-                {/* light separator */}
-                <rect x="116" y="0" width="6" height="180" fill="#f3f4f6"/>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 420" width="120" height="110">
+                {/* "3" green — diagonal cuts */}
+                <path d="M 0,0 L 248,0 L 248,420 L 0,420 L 0,330 L 100,255 L 100,175 L 0,100 Z" fill="#1a6b3c"/>
+                {/* separator */}
+                <rect x="248" y="0" width="10" height="420" fill="#f3f4f6"/>
                 {/* "E" black (light bg) */}
-                <rect x="122" y="0"   width="32" height="180" fill="#111111"/>
-                <rect x="154" y="0"   width="88" height="42"  fill="#111111"/>
-                <rect x="154" y="78"  width="66" height="36"  fill="#111111"/>
-                <rect x="154" y="150" width="88" height="30"  fill="#111111"/>
+                <rect x="258" y="0"   width="38"  height="420" fill="#111111"/>
+                <rect x="296" y="0"   width="164" height="100" fill="#111111"/>
+                <rect x="296" y="175" width="130" height="80"  fill="#111111"/>
+                <rect x="296" y="330" width="164" height="90"  fill="#111111"/>
               </svg>
             </div>
 

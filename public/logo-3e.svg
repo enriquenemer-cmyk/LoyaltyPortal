@@ -1,17 +1,36 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 242 210">
-  <!-- "3" green — bars aligned with E -->
-  <rect x="0"  y="0"   width="116" height="42" fill="#1a6b3c"/>
-  <rect x="85" y="42"  width="31"  height="36" fill="#1a6b3c"/>
-  <rect x="61" y="78"  width="55"  height="36" fill="#1a6b3c"/>
-  <rect x="85" y="114" width="31"  height="36" fill="#1a6b3c"/>
-  <rect x="0"  y="150" width="116" height="30" fill="#1a6b3c"/>
-  <!-- white separator -->
-  <rect x="116" y="0" width="6" height="180" fill="white"/>
-  <!-- "E" black (light bg) -->
-  <rect x="122" y="0"   width="32" height="180" fill="#111111"/>
-  <rect x="154" y="0"   width="88" height="42"  fill="#111111"/>
-  <rect x="154" y="78"  width="66" height="36"  fill="#111111"/>
-  <rect x="154" y="150" width="88" height="30"  fill="#111111"/>
-  <!-- by ENM -->
-  <text x="121" y="204" text-anchor="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="400" font-size="20" fill="#111111" letter-spacing="5">by ENM</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 450">
+  <!--
+    "3" green — path with diagonal cuts matching the official logo.
+    Arms aligned with E arms. Two concave "bites" on the left create the "3" shape.
+    Top arm: y 0-100, Middle arm: y 175-255, Bottom arm: y 330-420
+    Diagonals: (0,100)→(100,175) upper concave, (100,255)→(0,330) lower concave
+  -->
+  <path
+    d="M 0,0 L 248,0 L 248,420 L 0,420 L 0,330 L 100,255 L 100,175 L 0,100 Z"
+    fill="#1a6b3c"
+  />
+
+  <!-- White separator between 3 and E -->
+  <rect x="248" y="0" width="10" height="420" fill="white"/>
+
+  <!-- "E" dark (light background version) -->
+  <!-- Left vertical bar -->
+  <rect x="258" y="0"   width="38"  height="420" fill="#111111"/>
+  <!-- Top bar -->
+  <rect x="296" y="0"   width="164" height="100" fill="#111111"/>
+  <!-- Middle bar (shorter) -->
+  <rect x="296" y="175" width="130" height="80"  fill="#111111"/>
+  <!-- Bottom bar -->
+  <rect x="296" y="330" width="164" height="90"  fill="#111111"/>
+
+  <!-- by ENM subtitle -->
+  <text
+    x="228" y="444"
+    text-anchor="middle"
+    font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+    font-size="24"
+    font-weight="400"
+    fill="#111111"
+    letter-spacing="5"
+  >by ENM</text>
 </svg>

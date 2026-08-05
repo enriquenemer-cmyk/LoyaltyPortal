@@ -884,20 +884,16 @@ function CompactGroupIcon({
 // ── Logo ─────────────────────────────────────────────────────────────────────
 const LOGO = (
   <div className="shrink-0 flex items-center justify-center">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 242 180" width="68" height="50">
-      {/* "3" green — bars aligned with E */}
-      <rect x="0"  y="0"   width="116" height="42" fill="#1a6b3c"/>
-      <rect x="85" y="42"  width="31"  height="36" fill="#1a6b3c"/>
-      <rect x="61" y="78"  width="55"  height="36" fill="#1a6b3c"/>
-      <rect x="85" y="114" width="31"  height="36" fill="#1a6b3c"/>
-      <rect x="0"  y="150" width="116" height="30" fill="#1a6b3c"/>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 420" width="72" height="65">
+      {/* "3" green — diagonal cuts matching official logo */}
+      <path d="M 0,0 L 248,0 L 248,420 L 0,420 L 0,330 L 100,255 L 100,175 L 0,100 Z" fill="#1a6b3c"/>
       {/* white separator */}
-      <rect x="116" y="0" width="6" height="180" fill="white"/>
-      {/* "E" white (dark bg) */}
-      <rect x="122" y="0"   width="32" height="180" fill="white"/>
-      <rect x="154" y="0"   width="88" height="42"  fill="white"/>
-      <rect x="154" y="78"  width="66" height="36"  fill="white"/>
-      <rect x="154" y="150" width="88" height="30"  fill="white"/>
+      <rect x="248" y="0" width="10" height="420" fill="white"/>
+      {/* "E" white — dark background */}
+      <rect x="258" y="0"   width="38"  height="420" fill="white"/>
+      <rect x="296" y="0"   width="164" height="100" fill="white"/>
+      <rect x="296" y="175" width="130" height="80"  fill="white"/>
+      <rect x="296" y="330" width="164" height="90"  fill="white"/>
     </svg>
   </div>
 );
@@ -1081,17 +1077,13 @@ function SidebarContent({
       <div className={`px-3 py-3 border-b border-white/6 flex items-center ${compact ? 'flex-col gap-2' : 'justify-between'}`}>
         <Link href="/admin" className="flex items-center gap-2" onClick={onLinkClick}>
           <div className="shrink-0 flex items-center justify-center">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 242 180" width="58" height="43">
-              <rect x="0"  y="0"   width="116" height="42" fill="#1a6b3c"/>
-              <rect x="85" y="42"  width="31"  height="36" fill="#1a6b3c"/>
-              <rect x="61" y="78"  width="55"  height="36" fill="#1a6b3c"/>
-              <rect x="85" y="114" width="31"  height="36" fill="#1a6b3c"/>
-              <rect x="0"  y="150" width="116" height="30" fill="#1a6b3c"/>
-              <rect x="116" y="0" width="6" height="180" fill="white"/>
-              <rect x="122" y="0"   width="32" height="180" fill="white"/>
-              <rect x="154" y="0"   width="88" height="42"  fill="white"/>
-              <rect x="154" y="78"  width="66" height="36"  fill="white"/>
-              <rect x="154" y="150" width="88" height="30"  fill="white"/>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 420" width="60" height="55">
+              <path d="M 0,0 L 248,0 L 248,420 L 0,420 L 0,330 L 100,255 L 100,175 L 0,100 Z" fill="#1a6b3c"/>
+              <rect x="248" y="0" width="10" height="420" fill="white"/>
+              <rect x="258" y="0"   width="38"  height="420" fill="white"/>
+              <rect x="296" y="0"   width="164" height="100" fill="white"/>
+              <rect x="296" y="175" width="130" height="80"  fill="white"/>
+              <rect x="296" y="330" width="164" height="90"  fill="white"/>
             </svg>
           </div>
           {!compact && <span className="text-xs font-extrabold text-white/90 tracking-tight leading-none">3E</span>}

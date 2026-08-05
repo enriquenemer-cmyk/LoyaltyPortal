@@ -1229,21 +1229,19 @@ export default function Sidebar() {
       </aside>
 
       {/* Mobile top bar */}
-      <div className="md:hidden fixed top-0 left-0 right-0 h-12 flex items-center justify-between px-4 z-40"
-        style={{ background: '#0f1117', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+      <div className="md:hidden fixed top-0 left-0 right-0 h-14 flex items-center justify-between px-4 z-40 bg-white border-b-2 border-black">
         <Link href="/admin" className="flex items-center gap-2.5">
           {LOGO}
-          <span className="text-sm font-extrabold text-[#1C1917] tracking-tight leading-none">3E</span>
         </Link>
         <button
           onClick={() => setMobileOpen((v) => !v)}
-          className="p-2 rounded-lg text-stone-500 hover:bg-stone-50 transition-colors"
+          className="p-2 rounded-lg text-black hover:bg-stone-100 transition-colors"
           aria-label="Toggle menu"
         >
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-5 h-5 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             {mobileOpen
-              ? <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              : <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />}
+              ? <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
+              : <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 6h16M4 12h16M4 18h16" />}
           </svg>
         </button>
       </div>

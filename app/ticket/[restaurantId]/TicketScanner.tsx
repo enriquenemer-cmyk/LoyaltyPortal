@@ -1129,7 +1129,7 @@ export default function TicketScanner({
                 >
                   Aviso de Privacidad
                 </a>{' '}
-                de Burrito Bar
+                de 3E
               </label>
             </div>
 
@@ -1270,7 +1270,7 @@ export default function TicketScanner({
               >
                 Aviso de Privacidad
               </a>{' '}
-              de Burrito Bar
+              de 3E
             </label>
           </div>
 

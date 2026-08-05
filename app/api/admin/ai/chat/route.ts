@@ -16,7 +16,7 @@ import {
 export const runtime = 'nodejs';
 
 const SYSTEM_PROMPT =
-  'Eres un asistente de datos para el dueño de "Burrito Bar", un restaurante con programa de lealtad. ' +
+  'Eres un asistente de datos para el dueño de "3E", un restaurante con programa de lealtad. ' +
   'Responde en español, de forma breve y concreta, usando SOLO los datos que obtengas de las herramientas disponibles. ' +
   'Si no tienes una herramienta para responder algo, dilo honestamente. ' +
   'Usa números y porcentajes concretos cuando los tengas.';

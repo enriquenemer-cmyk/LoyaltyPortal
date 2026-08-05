@@ -61,7 +61,7 @@ export default function KioscoPage() {
         <div className="text-center mb-10">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 180" width="64" height="58" className="mx-auto mb-3">
             <line x1="30" y1="28" x2="170" y2="28" stroke="white" strokeWidth="1.5" opacity="0.25"/>
-            <text x="100" y="120" textAnchor="middle" fontFamily="Georgia, serif" fontSize="100" fill="white" letterSpacing="14">ST</text>
+            <text x="100" y="120" textAnchor="middle" fontFamily="Georgia, serif" fontSize="100" fill="white" letterSpacing="8">3E</text>
             <line x1="30" y1="132" x2="170" y2="132" stroke="white" strokeWidth="1.5" opacity="0.25"/>
           </svg>
           <p className="text-white/50 text-sm">Acumula tus puntos</p>

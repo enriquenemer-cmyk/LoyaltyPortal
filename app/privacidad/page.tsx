@@ -1,6 +1,6 @@
 export const metadata = {
-  title: 'Aviso de Privacidad | Burrito Bar',
-  description: 'Aviso de Privacidad de Burrito Bar conforme a la LFPDPPP.',
+  title: 'Aviso de Privacidad | 3E',
+  description: 'Aviso de Privacidad de 3E conforme a la LFPDPPP.',
 };
 
 export default function PrivacidadPage() {
@@ -23,7 +23,7 @@ export default function PrivacidadPage() {
             1. Identidad y domicilio del Responsable
           </h2>
           <p style={{ fontSize: 15, lineHeight: 1.7, color: '#1C1917' }}>
-            <strong>Burrito Bar</strong> (en adelante "el Responsable"), con domicilio en la
+            <strong>3E</strong> (en adelante "el Responsable"), con domicilio en la
             República Mexicana, es responsable del tratamiento de los datos personales que usted
             nos proporciona a través de la plataforma de fidelización 3E, en cumplimiento
             con lo establecido en la{' '}
@@ -61,7 +61,7 @@ export default function PrivacidadPage() {
             las cuales son necesarias para la relación jurídica entre usted y el Responsable:
           </p>
           <ul style={{ fontSize: 15, lineHeight: 1.8, color: '#1C1917', paddingLeft: 24, margin: 0 }}>
-            <li>Administrar su participación en el programa de fidelización y premios de Burrito Bar.</li>
+            <li>Administrar su participación en el programa de fidelización y premios de 3E.</li>
             <li>Verificar la entrega de premios y beneficios.</li>
             <li>Identificarle y contactarle en caso de que sea necesario validar un premio o registro.</li>
             <li>Enviar notificaciones relacionadas con sus premios, vigencias y beneficios del programa.</li>
@@ -85,7 +85,7 @@ export default function PrivacidadPage() {
             4. Transferencias de datos personales
           </h2>
           <p style={{ fontSize: 15, lineHeight: 1.7, color: '#1C1917' }}>
-            Burrito Bar no comparte, vende ni transfiere sus datos personales a terceros con
+            3E no comparte, vende ni transfiere sus datos personales a terceros con
             fines comerciales. Únicamente se podrán realizar transferencias a encargados que presten
             servicios de tecnología (hospedaje de plataforma, envío de correos electrónicos), quienes
             estarán obligados a proteger sus datos conforme a la ley.
@@ -150,7 +150,7 @@ export default function PrivacidadPage() {
             presente aviso en cualquier momento, para atender cambios legislativos, políticas
             internas o nuevas funciones de la plataforma. Las actualizaciones estarán disponibles en
             esta misma página en la dirección:{' '}
-            <strong>supertierra.vercel.app/privacidad</strong>
+            <strong>3e.vercel.app/privacidad</strong>
           </p>
         </section>
 
@@ -165,7 +165,7 @@ export default function PrivacidadPage() {
             Este aviso de privacidad fue elaborado conforme a lo dispuesto por la{' '}
             <em>Ley Federal de Protección de Datos Personales en Posesión de los Particulares</em>,
             publicada en el Diario Oficial de la Federación el 5 de julio de 2010, y su Reglamento.
-            Responsable: <strong>Burrito Bar</strong> &mdash; Mexico.
+            Responsable: <strong>3E</strong> &mdash; Mexico.
           </p>
         </div>
 

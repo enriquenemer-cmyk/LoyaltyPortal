@@ -135,11 +135,10 @@ export default function LoginPage() {
         <div className="relative z-10 flex flex-col items-center text-center gap-6">
           {/* Logo ST */}
           <div className="relative flex items-center justify-center" style={{ animation: 'float 4s ease-in-out infinite' }}>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 180" width="220" height="198">
-              <line x1="30" y1="28" x2="170" y2="28" stroke="white" strokeWidth="0.8" opacity="0.35"/>
-              <text x="100" y="120" textAnchor="middle" fontFamily="Georgia, 'Times New Roman', serif" fontWeight="400" fontSize="100" fill="white" letterSpacing="14">ST</text>
-              <line x1="30" y1="132" x2="170" y2="132" stroke="white" strokeWidth="0.8" opacity="0.35"/>
-              <text x="100" y="155" textAnchor="middle" fontFamily="Arial, Helvetica, sans-serif" fontWeight="400" fontSize="10" fill="white" opacity="0.45" letterSpacing="6">SUPER TIERRA</text>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 180" width="260" height="195">
+              <text x="10" y="145" fontFamily="Georgia, 'Times New Roman', serif" fontWeight="700" fontSize="140" fill="#1a6b3c">3</text>
+              <text x="118" y="145" fontFamily="Georgia, 'Times New Roman', serif" fontWeight="700" fontSize="140" fill="white">E</text>
+              <text x="120" y="172" textAnchor="middle" fontFamily="Arial, Helvetica, sans-serif" fontWeight="400" fontSize="13" fill="white" opacity="0.6" letterSpacing="4">by ENM</text>
             </svg>
           </div>
 
@@ -200,10 +199,9 @@ export default function LoginPage() {
           <div className="mb-8 flex flex-col items-center gap-3">
             {/* Show logo on mobile (left panel is hidden) */}
             <div className="md:hidden">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="90" height="90">
-                <line x1="28" y1="36" x2="132" y2="36" stroke="#1C1917" strokeWidth="0.8" opacity="0.2"/>
-                <text x="80" y="112" textAnchor="middle" fontFamily="Georgia, 'Times New Roman', serif" fontWeight="400" fontSize="90" fill="#1C1917" letterSpacing="10">ST</text>
-                <line x1="28" y1="120" x2="132" y2="120" stroke="#1C1917" strokeWidth="0.8" opacity="0.2"/>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 120" width="110" height="80">
+                <text x="2" y="98" fontFamily="Georgia, 'Times New Roman', serif" fontWeight="700" fontSize="100" fill="#1a6b3c">3</text>
+                <text x="74" y="98" fontFamily="Georgia, 'Times New Roman', serif" fontWeight="700" fontSize="100" fill="#111111">E</text>
               </svg>
             </div>
 

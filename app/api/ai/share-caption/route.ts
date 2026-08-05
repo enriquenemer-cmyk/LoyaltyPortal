@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Falta el nombre del premio' }, { status: 400 });
   }
 
-  const prompt = `Escribe un caption corto y divertido para Instagram/WhatsApp Status (máx 150 caracteres, en español, con 2-3 emojis) celebrando que alguien acaba de ganar "${prize_name}" en ${restaurant_name ?? 'Burrito Bar'}. Tono casual y emocionado, como de Gen-Z. No uses comillas.`;
+  const prompt = `Escribe un caption corto y divertido para Instagram/WhatsApp Status (máx 150 caracteres, en español, con 2-3 emojis) celebrando que alguien acaba de ganar "${prize_name}" en ${restaurant_name ?? '3E'}. Tono casual y emocionado, como de Gen-Z. No uses comillas.`;
 
   try {
     const caption = await generateText(prompt, { maxTokens: 100, temperature: 0.9 });

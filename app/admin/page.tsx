@@ -1211,7 +1211,7 @@ function AtRiskWidget({ clients }: { clients: AtRiskClient[] }) {
           const aiMsg = aiMessages[key];
           const isLoading = !!aiLoading[key];
           const errMsg = aiError[key];
-          const defaultText = `Hola ${client.full_name}, te extrañamos en Burrito Bar...`;
+          const defaultText = `Hola ${client.full_name}, te extrañamos en 3E...`;
           const waText = aiMsg || defaultText;
           const waLink = `https://wa.me/52${client.phone.replace(/\D/g, '')}?text=${encodeURIComponent(waText)}`;
           return (

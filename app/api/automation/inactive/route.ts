@@ -46,7 +46,7 @@ async function runInactiveAutomation(days: number) {
       const prizeUrl = `${appUrl}/premio/regreso`;
 
       const name = row.full_name.split(' ')[0];
-      const message = `¡Hola ${name}! Te extrañamos en Burrito Bar 🌯 Aquí tienes un premio especial de regreso: ${prizeUrl}`;
+      const message = `¡Hola ${name}! Te extrañamos en 3E 🌯 Aquí tienes un premio especial de regreso: ${prizeUrl}`;
       const waUrl = `https://wa.me/${row.phone.replace(/\D/g, '')}?text=${encodeURIComponent(message)}`;
 
       return {
@@ -75,7 +75,7 @@ async function runInactiveAutomation(days: number) {
         body: JSON.stringify({
           phone: c.phone,
           title: `¡Te extrañamos, ${name}! 🌯`,
-          body: 'Tenemos un premio especial de regreso esperándote en Burrito Bar.',
+          body: 'Tenemos un premio especial de regreso esperándote en 3E.',
           url: `${appUrl}/premio/regreso`,
         }),
       }).catch(() => {});

@@ -22,7 +22,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "3E - Plataforma de Premios QR",
-  description: "Genera y gestiona premios con códigos QR para Burrito Bar",
+  description: "Genera y gestiona premios con códigos QR para 3E",
   manifest: "/manifest.json",
   icons: {
     icon: [
@@ -37,15 +37,15 @@ export const metadata: Metadata = {
     title: "3E",
   },
   openGraph: {
-    siteName: "Burrito Bar · 3E",
+    siteName: "3E · by ENM",
     type: "website",
     title: "3E",
-    description: "Plataforma de premios QR de Burrito Bar",
+    description: "Plataforma de premios QR de 3E",
   },
   twitter: {
     card: "summary",
     title: "3E",
-    description: "Plataforma de premios QR de Burrito Bar",
+    description: "Plataforma de premios QR de 3E",
   },
   other: {
     "mobile-web-app-capable": "yes",

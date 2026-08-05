@@ -686,7 +686,7 @@ function GenerateForm() {
         style={{ background: 'linear-gradient(135deg, #2563EB 0%, #0891B2 100%)' }}
       >
         <div className="px-5 pt-5 pb-4">
-          <p className="text-[10px] font-bold uppercase tracking-widest text-blue-200 mb-1">Burrito Bar</p>
+          <p className="text-[10px] font-bold uppercase tracking-widest text-blue-200 mb-1">3E</p>
           <p
             className="text-white font-extrabold text-lg leading-tight min-h-[2rem] transition-all duration-300"
             style={{ wordBreak: 'break-word' }}

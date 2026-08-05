@@ -190,7 +190,7 @@ export default function MasivoPage() {
           <div class="page-header">
             <div class="brand">
               <span class="brand-icon">🌱</span>
-              <span class="brand-name">Burrito Bar</span>
+              <span class="brand-name">3E</span>
             </div>
             <div class="brand-right">
               <span class="prize-badge">Premio: ${form.name}</span>

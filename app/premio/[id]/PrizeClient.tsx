@@ -222,7 +222,7 @@ export default function PrizeClient({ prize, claimCount, weeklyCount, daysLeft }
           </div>
 
           <p style={{ textAlign: 'center', color: '#c4bfb8', fontSize: 11, marginTop: 24, letterSpacing: '0.04em' }}>
-            Burrito Bar · Plataforma de Premios
+            3E · Plataforma de Premios
           </p>
         </div>
       </div>

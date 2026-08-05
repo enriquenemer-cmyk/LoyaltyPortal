@@ -21,7 +21,7 @@ export default function NotFound() {
           Esta página no existe
         </h1>
         <p style={{ color: '#78716c', fontSize: 15, lineHeight: 1.6, marginBottom: 32 }}>
-          El enlace que seguiste ya no es válido, fue removido o nunca existió en el sistema de Burrito Bar.
+          El enlace que seguiste ya no es válido, fue removido o nunca existió en el sistema de 3E.
         </p>
 
         <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
@@ -33,7 +33,7 @@ export default function NotFound() {
           </Link>
         </div>
 
-        <p style={{ color: '#a8a29e', fontSize: 12, marginTop: 40 }}>Burrito Bar · Plataforma de Premios</p>
+        <p style={{ color: '#a8a29e', fontSize: 12, marginTop: 40 }}>3E · Plataforma de Premios</p>
       </div>
     </div>
   );

@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Faltan campos requeridos' }, { status: 400 });
   }
 
-  const prompt = `Escribe un mensaje corto y cálido de WhatsApp (máx 280 caracteres, en español, tono amigable de restaurante mexicano "Burrito Bar") para invitar de vuelta a ${full_name}, quien no visita hace ${days_inactive} días y es cliente nivel ${tier}. Incluye un emoji relevante. No incluyas comillas ni explicación, solo el mensaje final.`;
+  const prompt = `Escribe un mensaje corto y cálido de WhatsApp (máx 280 caracteres, en español, tono amigable de restaurante mexicano "3E") para invitar de vuelta a ${full_name}, quien no visita hace ${days_inactive} días y es cliente nivel ${tier}. Incluye un emoji relevante. No incluyas comillas ni explicación, solo el mensaje final.`;
 
   try {
     const message = await generateText(prompt, { maxTokens: 150, temperature: 0.8 });

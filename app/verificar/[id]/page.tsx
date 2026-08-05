@@ -128,7 +128,7 @@ export default async function VerificarPage({ params }: Props) {
           </p>
         </div>
 
-        <p style={{ textAlign: 'center', color: '#bbb', fontSize: 11, marginTop: 24 }}>Burrito Bar · Plataforma de Premios</p>
+        <p style={{ textAlign: 'center', color: '#bbb', fontSize: 11, marginTop: 24 }}>3E · Plataforma de Premios</p>
       </div>
     </div>
   );

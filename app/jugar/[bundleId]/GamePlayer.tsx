@@ -400,7 +400,7 @@ export default function GamePlayer({
         <div style={{ background: 'linear-gradient(135deg,#2563EB,#0891B2)' }} className="px-5 pt-10 pb-8 text-center">
           <p className="text-white/70 text-xs font-bold uppercase tracking-widest mb-2">{gameLabel}</p>
           <h1 className="text-2xl font-black text-white leading-tight">{bundle.name}</h1>
-          <p className="text-white/60 text-sm mt-1">Burrito Bar</p>
+          <p className="text-white/60 text-sm mt-1">3E</p>
         </div>
 
         <div className="max-w-md mx-auto px-4 py-6 space-y-5">

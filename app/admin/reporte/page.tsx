@@ -30,7 +30,7 @@ function getWeekRange() {
 
 function buildMessage(stats: WeeklyStats) {
   return (
-    `📊 Reporte Semanal · Burrito Bar\n\n` +
+    `📊 Reporte Semanal · 3E\n\n` +
     `✅ Premios generados: ${stats.generados}\n` +
     `🎁 Cobros realizados: ${stats.cobrados}\n` +
     `⏳ Pendientes de cobro: ${stats.pendientes}\n` +
@@ -392,7 +392,7 @@ export default function ReportePage() {
       doc.setTextColor(...WHITE);
       doc.setFontSize(28);
       doc.setFont('helvetica', 'bold');
-      doc.text('Burrito Bar', marginL, 28);
+      doc.text('3E', marginL, 28);
 
       doc.setFontSize(14);
       doc.setFont('helvetica', 'normal');
@@ -810,7 +810,7 @@ export default function ReportePage() {
           <div className="rounded-2xl border border-[#E8E3DC] bg-white overflow-hidden mb-5"
             style={{ boxShadow: '0 2px 16px rgba(0,0,0,0.06)' }}>
             <div className="p-4 text-center" style={{ background: 'linear-gradient(135deg, #2563EB, #0891B2)' }}>
-              <p className="text-white/70 text-xs font-bold uppercase tracking-widest mb-0.5">Burrito Bar</p>
+              <p className="text-white/70 text-xs font-bold uppercase tracking-widest mb-0.5">3E</p>
               <p className="text-white font-extrabold text-lg">📊 Reporte Semanal</p>
             </div>
             <div className="divide-y divide-[#F3EFE9]">

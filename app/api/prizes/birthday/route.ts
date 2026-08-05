@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
     const prize = await insertPrize({
       id: prizeId,
       name: `Premio de Cumpleaños - ${full_name}`,
-      reason: '¡Feliz cumpleaños! De parte de todo el equipo de Burrito Bar',
+      reason: '¡Feliz cumpleaños! De parte de todo el equipo de 3E',
       description: 'Un postre de temporada completamente gratis para celebrar tu día especial.',
       start_date: startDate,
       end_date: endDate,
@@ -53,7 +53,7 @@ export async function POST(req: NextRequest) {
       max_uses: 1,
     });
 
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://supertierra.vercel.app';
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://3e.vercel.app';
     const prizeUrl = `${baseUrl}/premio/${prize.id}`;
 
     // Send push notification (non-blocking)

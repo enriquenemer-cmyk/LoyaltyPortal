@@ -135,7 +135,7 @@ export default function CashierAction({ claimId, prizeName, defaultCajero = '', 
           const waPhoneSelf = rawDigits.startsWith('34') ? rawDigits : `34${rawDigits}`;
           const folio = claimId.slice(-8).toUpperCase();
           const cajeroUrl = `${typeof window !== 'undefined' ? window.location.origin : ''}/cajero/${claimId}`;
-          const selfMsg = `🎁 Tu premio en Burrito Bar está listo!\n\nPremio: ${prizeName}\nFolio: #${folio}\n\nMuestra este mensaje al cajero cuando llegues:\n${cajeroUrl}`;
+          const selfMsg = `🎁 Tu premio en 3E está listo!\n\nPremio: ${prizeName}\nFolio: #${folio}\n\nMuestra este mensaje al cajero cuando llegues:\n${cajeroUrl}`;
           const waSelfUrl = `https://wa.me/${waPhoneSelf}?text=${encodeURIComponent(selfMsg)}`;
           return (
             <a

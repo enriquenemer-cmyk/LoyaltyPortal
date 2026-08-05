@@ -177,7 +177,7 @@ export default function CajeroPage() {
         )}
 
         <p className="text-center text-stone-300 text-xs mt-10">
-          Burrito Bar · Panel de Cajeros · 3E
+          3E · Panel de Cajeros · 3E
         </p>
       </div>
     </div>

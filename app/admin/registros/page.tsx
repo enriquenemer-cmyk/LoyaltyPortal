@@ -475,7 +475,7 @@ export default function RegistrosPage() {
     </table>
   </div>
   <div class="report-footer">
-    <span class="footer-brand">Burrito Bar</span>
+    <span class="footer-brand">3E</span>
     <span class="footer-note">Documento generado por el sistema 3E &copy; ${new Date().getFullYear()}</span>
   </div>
 </body>

@@ -45,7 +45,7 @@ function saveCampaign(c: Campaign) {
 }
 
 const DEFAULT_TEMPLATE =
-  '¡Hola {nombre}! 🌯 Tienes un premio especial esperándote en Burrito Bar: [prize_name]. Reclámalo aquí: [prize_url]';
+  '¡Hola {nombre}! 🌯 Tienes un premio especial esperándote en 3E: [prize_name]. Reclámalo aquí: [prize_url]';
 
 // ── WhatsApp icon ─────────────────────────────────────────────────────────────
 function WhatsAppIcon({ className = 'w-5 h-5' }: { className?: string }) {

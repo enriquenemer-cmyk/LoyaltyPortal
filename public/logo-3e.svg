@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 140" fill="none">
+  <!-- "3" en verde -->
+  <text x="10" y="105" font-family="Georgia, serif" font-size="110" font-weight="700" fill="#1a6b3c">3</text>
+  <!-- "E" en negro -->
+  <text x="108" y="105" font-family="Georgia, serif" font-size="110" font-weight="700" fill="#111111">E</text>
+  <!-- "by ENM" -->
+  <text x="60" y="130" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#111111" text-anchor="middle">by ENM</text>
+</svg>

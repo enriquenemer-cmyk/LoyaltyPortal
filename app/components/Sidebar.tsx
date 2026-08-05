@@ -884,10 +884,9 @@ function CompactGroupIcon({
 // ── Logo ─────────────────────────────────────────────────────────────────────
 const LOGO = (
   <div className="shrink-0 flex items-center justify-center">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 180" width="52" height="47">
-      <line x1="30" y1="28" x2="170" y2="28" stroke="currentColor" strokeWidth="1.5" opacity="0.25"/>
-      <text x="100" y="120" textAnchor="middle" fontFamily="Georgia, 'Times New Roman', serif" fontWeight="400" fontSize="100" fill="currentColor" letterSpacing="14">ST</text>
-      <line x1="30" y1="132" x2="170" y2="132" stroke="currentColor" strokeWidth="1.5" opacity="0.25"/>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 150" width="60" height="45">
+      <text x="4" y="128" fontFamily="Georgia, 'Times New Roman', serif" fontWeight="700" fontSize="120" fill="#1a6b3c">3</text>
+      <text x="96" y="128" fontFamily="Georgia, 'Times New Roman', serif" fontWeight="700" fontSize="120" fill="white">E</text>
     </svg>
   </div>
 );
@@ -1070,11 +1069,10 @@ function SidebarContent({
       {/* Logo header */}
       <div className={`px-3 py-3 border-b border-white/6 flex items-center ${compact ? 'flex-col gap-2' : 'justify-between'}`}>
         <Link href="/admin" className="flex items-center gap-2" onClick={onLinkClick}>
-          <div className="shrink-0 flex items-center justify-center text-white/90">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 180" width="46" height="41">
-              <line x1="30" y1="28" x2="170" y2="28" stroke="currentColor" strokeWidth="1.5" opacity="0.3"/>
-              <text x="100" y="120" textAnchor="middle" fontFamily="Georgia, 'Times New Roman', serif" fontWeight="400" fontSize="100" fill="currentColor" letterSpacing="14">ST</text>
-              <line x1="30" y1="132" x2="170" y2="132" stroke="currentColor" strokeWidth="1.5" opacity="0.3"/>
+          <div className="shrink-0 flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 150" width="54" height="40">
+              <text x="4" y="128" fontFamily="Georgia, 'Times New Roman', serif" fontWeight="700" fontSize="120" fill="#1a6b3c">3</text>
+              <text x="96" y="128" fontFamily="Georgia, 'Times New Roman', serif" fontWeight="700" fontSize="120" fill="white">E</text>
             </svg>
           </div>
           {!compact && <span className="text-xs font-extrabold text-white/90 tracking-tight leading-none">3E</span>}

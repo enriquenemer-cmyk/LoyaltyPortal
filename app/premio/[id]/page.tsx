@@ -25,12 +25,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const prize = await getPrizeById(id);
   if (!prize) return { title: 'Premio no encontrado' };
   return {
-    title: prize.name + ' — Burrito Bar',
+    title: prize.name + ' — 3E',
     description: prize.description,
     openGraph: {
       title: '🎁 ' + prize.name,
-      description: 'Gané un premio en Burrito Bar: ' + prize.description,
-      siteName: 'Burrito Bar · 3E',
+      description: 'Gané un premio en 3E: ' + prize.description,
+      siteName: '3E · by ENM',
       type: 'website',
     },
     twitter: {

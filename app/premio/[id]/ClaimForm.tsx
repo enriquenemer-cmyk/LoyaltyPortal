@@ -36,7 +36,7 @@ export default function ClaimForm({ prizeId, prizeName }: Props) {
       const res = await fetch('/api/ai/share-caption', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prize_name: prizeName, restaurant_name: 'Burrito Bar' }),
+        body: JSON.stringify({ prize_name: prizeName, restaurant_name: '3E' }),
       });
       const data = await res.json();
       if (!res.ok || !data.caption) {
@@ -113,7 +113,7 @@ export default function ClaimForm({ prizeId, prizeName }: Props) {
     const cajeroUrl = typeof window !== 'undefined'
       ? `${window.location.origin}/cajero/${claimId}`
       : '';
-    const waMsg = `🎁 Mi premio en Burrito Bar\n\nPremio: ${prizeName}\nFolio: #${folio}\n\n${cajeroUrl}`;
+    const waMsg = `🎁 Mi premio en 3E\n\nPremio: ${prizeName}\nFolio: #${folio}\n\n${cajeroUrl}`;
 
     return (
       <div className="text-center space-y-5">
@@ -173,7 +173,7 @@ export default function ClaimForm({ prizeId, prizeName }: Props) {
                   const blob = await (await fetch(qrDataUrl)).blob();
                   const file = new File([blob], 'mi-premio.png', { type: 'image/png' });
                   if (navigator.canShare?.({ files: [file] })) {
-                    await navigator.share({ files: [file], title: 'Premio: ' + prizeName, text: '¡Gané un premio en Burrito Bar!' });
+                    await navigator.share({ files: [file], title: 'Premio: ' + prizeName, text: '¡Gané un premio en 3E!' });
                   } else {
                     const a = document.createElement('a');
                     a.href = qrDataUrl; a.download = 'mi-premio.png'; a.click();
@@ -223,7 +223,7 @@ export default function ClaimForm({ prizeId, prizeName }: Props) {
           {captionError && <p className="text-xs text-red-500 mt-2">{captionError}</p>}
         </div>
 
-        <p className="text-[#a8a29e] text-xs">Burrito Bar · Plataforma de Premios</p>
+        <p className="text-[#a8a29e] text-xs">3E · Plataforma de Premios</p>
       </div>
     );
   }
@@ -302,7 +302,7 @@ export default function ClaimForm({ prizeId, prizeName }: Props) {
             className="text-[#2563EB] hover:underline font-semibold">
             Aviso de Privacidad
           </a>{' '}
-          de Burrito Bar
+          de 3E
         </label>
       </div>
 

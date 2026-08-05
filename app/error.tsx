@@ -21,7 +21,7 @@ export default function Error({
         <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-black" style={{ background: 'linear-gradient(135deg,#2563EB,#0891B2)' }}>
           P
         </div>
-        <span className="text-sm font-bold text-stone-500 uppercase tracking-widest">Burrito Bar</span>
+        <span className="text-sm font-bold text-stone-500 uppercase tracking-widest">3E</span>
       </div>
 
       {/* Error number */}
@@ -71,7 +71,7 @@ export default function Error({
       </div>
 
       {/* Subtle branding footer */}
-      <p className="text-xs text-stone-300 mt-4">3E &mdash; Burrito Bar</p>
+      <p className="text-xs text-stone-300 mt-4">3E &mdash; 3E</p>
     </div>
   )
 }

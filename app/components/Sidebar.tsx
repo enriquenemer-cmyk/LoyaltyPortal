@@ -574,22 +574,22 @@ function GlobalSearch({ onSelect }: { onSelect?: (item: SearchResult) => void })
     claim: 'bg-blue-50 text-blue-600', prize: 'bg-blue-50 text-blue-600',
     restaurant: 'bg-emerald-50 text-emerald-600', user: 'bg-purple-50 text-purple-600',
     premio: 'bg-yellow-900/40 text-yellow-300', cliente: 'bg-blue-900/40 text-blue-300',
-    cobro: 'bg-slate-700/60 text-slate-300',
+    cobro: 'bg-stone-200/60 text-stone-600',
   };
 
   const showDropdown = focused && (results.length > 0 || (query === '' && recent.length > 0) || loading);
 
   return (
-    <div className="px-3 py-2 border-b border-white/6">
+    <div className="px-3 py-2 border-b-2 border-black">
       <div className="relative">
         <div className="relative flex items-center">
           {loading ? (
-            <svg className="absolute left-2.5 w-3.5 h-3.5 text-blue-400 animate-spin shrink-0" fill="none" viewBox="0 0 24 24">
+            <svg className="absolute left-2.5 w-3.5 h-3.5 text-[#1a6b3c] animate-spin shrink-0" fill="none" viewBox="0 0 24 24">
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
             </svg>
           ) : (
-            <svg className="absolute left-2.5 w-3.5 h-3.5 text-slate-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="absolute left-2.5 w-3.5 h-3.5 text-stone-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
           )}
@@ -610,11 +610,11 @@ function GlobalSearch({ onSelect }: { onSelect?: (item: SearchResult) => void })
             style={{ background: '#1e293b', border: '1px solid rgba(255,255,255,0.1)', boxShadow: '0 8px 32px rgba(0,0,0,0.5)' }}>
             {query === '' && recent.length > 0 && (
               <div>
-                <p className="px-3 pt-2.5 pb-1 text-[9px] font-bold tracking-widest text-slate-500 uppercase">Búsquedas recientes</p>
+                <p className="px-3 pt-2.5 pb-1 text-[9px] font-bold tracking-widest text-stone-500 uppercase">Búsquedas recientes</p>
                 {recent.map((q) => (
                   <button key={q} onMouseDown={() => selectRecent(q)}
-                    className="w-full flex items-center gap-2 px-3 py-2 text-xs text-slate-300 hover:bg-white/8 transition-colors text-left">
-                    <svg className="w-3 h-3 text-slate-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    className="w-full flex items-center gap-2 px-3 py-2 text-xs text-stone-600 hover:bg-black/6 transition-colors text-left">
+                    <svg className="w-3 h-3 text-stone-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                     {q}
@@ -625,14 +625,14 @@ function GlobalSearch({ onSelect }: { onSelect?: (item: SearchResult) => void })
             {results.length > 0 && (
               <div>
                 {query !== '' && recent.length > 0 && <div style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }} />}
-                <p className="px-3 pt-2.5 pb-1 text-[9px] font-bold tracking-widest text-slate-500 uppercase">Resultados</p>
+                <p className="px-3 pt-2.5 pb-1 text-[9px] font-bold tracking-widest text-stone-500 uppercase">Resultados</p>
                 {results.map((item, idx) => (
                   <button key={item.id + item.type} onMouseDown={() => selectResult(item)}
-                    className={`w-full flex items-start gap-2.5 px-3 py-2 text-left transition-colors ${idx === activeIdx ? 'bg-blue-500/20' : 'hover:bg-white/10'}`}>
+                    className={`w-full flex items-start gap-2.5 px-3 py-2 text-left transition-colors ${idx === activeIdx ? 'bg-blue-500/20' : 'hover:bg-black/8'}`}>
                     <span className="mt-0.5 text-sm shrink-0">{typeIcon[item.type]}</span>
                     <div className="min-w-0 flex-1">
-                      <p className="text-xs font-semibold text-white truncate">{item.title}</p>
-                      {item.subtitle && <p className="text-[10px] text-slate-400 truncate">{item.subtitle}</p>}
+                      <p className="text-xs font-semibold text-black truncate">{item.title}</p>
+                      {item.subtitle && <p className="text-[10px] text-stone-500 truncate">{item.subtitle}</p>}
                     </div>
                     <span className={`mt-0.5 text-[9px] font-bold px-1.5 py-0.5 rounded shrink-0 ${typeColor[item.type]}`}>
                       {typeLabel[item.type]}
@@ -642,7 +642,7 @@ function GlobalSearch({ onSelect }: { onSelect?: (item: SearchResult) => void })
               </div>
             )}
             {!loading && query !== '' && results.length === 0 && (
-              <p className="px-3 py-3 text-xs text-slate-500 text-center">Sin resultados para &ldquo;{query}&rdquo;</p>
+              <p className="px-3 py-3 text-xs text-stone-500 text-center">Sin resultados para &ldquo;{query}&rdquo;</p>
             )}
           </div>
         )}
@@ -682,7 +682,7 @@ function NavLink({
       <span className="w-4 h-4 shrink-0 flex items-center justify-center">{icon}</span>
       <span className="truncate text-xs flex-1">{label}</span>
       {!!linkBadge && linkBadge > 0 && (
-        <span className="shrink-0 min-w-[16px] h-4 px-1 rounded-full bg-red-500 text-white text-[9px] font-bold flex items-center justify-center leading-none">
+        <span className="shrink-0 min-w-[16px] h-4 px-1 rounded-full bg-red-500 text-black text-[9px] font-bold flex items-center justify-center leading-none">
           {linkBadge > 99 ? '99+' : linkBadge}
         </span>
       )}
@@ -748,7 +748,7 @@ function AccordionSection({
         >
           {section.groupIcon}
           {!!badge && badge > 0 && (
-            <span className="absolute -top-1 -right-1 min-w-[15px] h-[15px] px-0.5 rounded-full bg-red-500 text-white text-[8px] font-bold flex items-center justify-center leading-none ring-2" style={{ boxShadow: '0 0 0 2px #0f1117' }}>
+            <span className="absolute -top-1 -right-1 min-w-[15px] h-[15px] px-0.5 rounded-full bg-red-500 text-black text-[8px] font-bold flex items-center justify-center leading-none ring-2" style={{ boxShadow: '0 0 0 2px #0f1117' }}>
               {badge > 99 ? '99+' : badge}
             </span>
           )}
@@ -857,7 +857,7 @@ function CompactGroupIcon({
       >
         {section.groupIcon}
         {!!badge && badge > 0 && (
-          <span className="absolute -top-1 -right-1 min-w-[15px] h-[15px] px-0.5 rounded-full bg-red-500 text-white text-[8px] font-bold flex items-center justify-center leading-none" style={{ boxShadow: '0 0 0 2px #0f1117' }}>
+          <span className="absolute -top-1 -right-1 min-w-[15px] h-[15px] px-0.5 rounded-full bg-red-500 text-black text-[8px] font-bold flex items-center justify-center leading-none" style={{ boxShadow: '0 0 0 2px #0f1117' }}>
             {badge > 99 ? '99+' : badge}
           </span>
         )}
@@ -1065,13 +1065,13 @@ function SidebarContent({
   return (
     <div className="flex flex-col h-full" onClick={onLinkClick ? undefined : undefined}>
       {/* Logo header */}
-      <div className={`px-3 py-3 border-b border-white/6 flex items-center ${compact ? 'flex-col gap-2' : 'justify-between'}`}>
+      <div className={`px-3 py-3 border-b-2 border-black flex items-center ${compact ? 'flex-col gap-2' : 'justify-between'}`}>
         <Link href="/admin" className="flex items-center gap-2" onClick={onLinkClick}>
           <div className="shrink-0 flex items-center justify-center">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/logo-3e-oficial.webp" alt="3E by ENM" width={52} height={52} style={{ objectFit: 'contain' }} />
           </div>
-          {!compact && <span className="text-xs font-extrabold text-white/90 tracking-tight leading-none">3E</span>}
+          {!compact && <span className="text-xs font-extrabold text-black tracking-tight leading-none">3E</span>}
         </Link>
         <div className={`flex items-center gap-1 ${compact ? 'flex-col' : ''}`}>
           {!compact && <NotificationBell />}
@@ -1079,13 +1079,13 @@ function SidebarContent({
             href="/admin/registros?status=pending"
             onClick={onLinkClick}
             aria-label="Cobros pendientes"
-            className="relative p-1.5 rounded-lg text-slate-400 hover:text-blue-400 hover:bg-white/8 transition-colors"
+            className="relative p-1.5 rounded-lg text-stone-500 hover:text-[#1a6b3c] hover:bg-black/6 transition-colors"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             {pendingCount > 0 && (
-              <span className="absolute -top-0.5 -right-0.5 min-w-[16px] h-4 px-0.5 rounded-full bg-red-500 text-white text-[9px] font-bold flex items-center justify-center leading-none">
+              <span className="absolute -top-0.5 -right-0.5 min-w-[16px] h-4 px-0.5 rounded-full bg-red-500 text-black text-[9px] font-bold flex items-center justify-center leading-none">
                 {pendingCount > 99 ? '99+' : pendingCount}
               </span>
             )}
@@ -1094,7 +1094,7 @@ function SidebarContent({
             <button
               onClick={onToggleCompact}
               title={compact ? 'Expandir menú' : 'Modo compacto'}
-              className="hidden md:flex p-1.5 rounded-lg text-slate-400 hover:text-blue-400 hover:bg-white/8 transition-colors"
+              className="hidden md:flex p-1.5 rounded-lg text-stone-500 hover:text-[#1a6b3c] hover:bg-black/6 transition-colors"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ transform: compact ? 'rotate(180deg)' : 'none' }}>
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
@@ -1224,7 +1224,7 @@ export default function Sidebar() {
     <>
       {/* Desktop sidebar — 240px expanded, 64px compact (icon rail) */}
       <aside className={`hidden md:flex fixed left-0 top-0 h-full flex-col z-40 transition-[width] duration-200 ${compact ? 'w-16' : 'w-[240px]'}`}
-        style={{ background: 'linear-gradient(180deg,#0f1117 0%,#111827 100%)', borderRight: '1px solid rgba(255,255,255,0.06)' }}>
+        style={{ background: '#ffffff', borderRight: '2px solid #000000' }}>
         <SidebarContent compact={compact} onToggleCompact={handleToggleCompact} />
       </aside>
 
@@ -1251,7 +1251,7 @@ export default function Sidebar() {
         <>
           <div className="md:hidden fixed inset-0 z-50 bg-black/30 backdrop-blur-sm" onClick={() => setMobileOpen(false)} />
           <aside className="md:hidden fixed left-0 top-0 h-full w-[240px] z-50 flex flex-col shadow-xl"
-            style={{ background: 'linear-gradient(180deg,#0f1117 0%,#111827 100%)', borderRight: '1px solid rgba(255,255,255,0.06)' }}>
+            style={{ background: '#ffffff', borderRight: '2px solid #000000' }}>
             <SidebarContent onLinkClick={() => setMobileOpen(false)} />
           </aside>
         </>

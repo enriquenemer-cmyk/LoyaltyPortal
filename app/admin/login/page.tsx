@@ -135,10 +135,22 @@ export default function LoginPage() {
         <div className="relative z-10 flex flex-col items-center text-center gap-6">
           {/* Logo ST */}
           <div className="relative flex items-center justify-center" style={{ animation: 'float 4s ease-in-out infinite' }}>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 180" width="260" height="195">
-              <text x="10" y="145" fontFamily="Georgia, 'Times New Roman', serif" fontWeight="700" fontSize="140" fill="#1a6b3c">3</text>
-              <text x="118" y="145" fontFamily="Georgia, 'Times New Roman', serif" fontWeight="700" fontSize="140" fill="white">E</text>
-              <text x="120" y="172" textAnchor="middle" fontFamily="Arial, Helvetica, sans-serif" fontWeight="400" fontSize="13" fill="white" opacity="0.6" letterSpacing="4">by ENM</text>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 242 210" width="230" height="199">
+              {/* "3" green */}
+              <rect x="0"  y="0"   width="116" height="42" fill="#1a6b3c"/>
+              <rect x="85" y="42"  width="31"  height="36" fill="#1a6b3c"/>
+              <rect x="61" y="78"  width="55"  height="36" fill="#1a6b3c"/>
+              <rect x="85" y="114" width="31"  height="36" fill="#1a6b3c"/>
+              <rect x="0"  y="150" width="116" height="30" fill="#1a6b3c"/>
+              {/* white separator */}
+              <rect x="116" y="0" width="6" height="180" fill="white"/>
+              {/* "E" white (dark bg) */}
+              <rect x="122" y="0"   width="32" height="180" fill="white"/>
+              <rect x="154" y="0"   width="88" height="42"  fill="white"/>
+              <rect x="154" y="78"  width="66" height="36"  fill="white"/>
+              <rect x="154" y="150" width="88" height="30"  fill="white"/>
+              {/* by ENM */}
+              <text x="121" y="204" textAnchor="middle" fontFamily="'Helvetica Neue', Helvetica, Arial, sans-serif" fontWeight="400" fontSize="20" fill="white" opacity="0.65" letterSpacing="5">by ENM</text>
             </svg>
           </div>
 
@@ -199,9 +211,20 @@ export default function LoginPage() {
           <div className="mb-8 flex flex-col items-center gap-3">
             {/* Show logo on mobile (left panel is hidden) */}
             <div className="md:hidden">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 120" width="110" height="80">
-                <text x="2" y="98" fontFamily="Georgia, 'Times New Roman', serif" fontWeight="700" fontSize="100" fill="#1a6b3c">3</text>
-                <text x="74" y="98" fontFamily="Georgia, 'Times New Roman', serif" fontWeight="700" fontSize="100" fill="#111111">E</text>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 242 180" width="116" height="86">
+                {/* "3" green */}
+                <rect x="0"  y="0"   width="116" height="42" fill="#1a6b3c"/>
+                <rect x="85" y="42"  width="31"  height="36" fill="#1a6b3c"/>
+                <rect x="61" y="78"  width="55"  height="36" fill="#1a6b3c"/>
+                <rect x="85" y="114" width="31"  height="36" fill="#1a6b3c"/>
+                <rect x="0"  y="150" width="116" height="30" fill="#1a6b3c"/>
+                {/* light separator */}
+                <rect x="116" y="0" width="6" height="180" fill="#f3f4f6"/>
+                {/* "E" black (light bg) */}
+                <rect x="122" y="0"   width="32" height="180" fill="#111111"/>
+                <rect x="154" y="0"   width="88" height="42"  fill="#111111"/>
+                <rect x="154" y="78"  width="66" height="36"  fill="#111111"/>
+                <rect x="154" y="150" width="88" height="30"  fill="#111111"/>
               </svg>
             </div>
 

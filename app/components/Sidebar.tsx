@@ -884,9 +884,20 @@ function CompactGroupIcon({
 // ── Logo ─────────────────────────────────────────────────────────────────────
 const LOGO = (
   <div className="shrink-0 flex items-center justify-center">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 150" width="60" height="45">
-      <text x="4" y="128" fontFamily="Georgia, 'Times New Roman', serif" fontWeight="700" fontSize="120" fill="#1a6b3c">3</text>
-      <text x="96" y="128" fontFamily="Georgia, 'Times New Roman', serif" fontWeight="700" fontSize="120" fill="white">E</text>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 242 180" width="68" height="50">
+      {/* "3" green — bars aligned with E */}
+      <rect x="0"  y="0"   width="116" height="42" fill="#1a6b3c"/>
+      <rect x="85" y="42"  width="31"  height="36" fill="#1a6b3c"/>
+      <rect x="61" y="78"  width="55"  height="36" fill="#1a6b3c"/>
+      <rect x="85" y="114" width="31"  height="36" fill="#1a6b3c"/>
+      <rect x="0"  y="150" width="116" height="30" fill="#1a6b3c"/>
+      {/* white separator */}
+      <rect x="116" y="0" width="6" height="180" fill="white"/>
+      {/* "E" white (dark bg) */}
+      <rect x="122" y="0"   width="32" height="180" fill="white"/>
+      <rect x="154" y="0"   width="88" height="42"  fill="white"/>
+      <rect x="154" y="78"  width="66" height="36"  fill="white"/>
+      <rect x="154" y="150" width="88" height="30"  fill="white"/>
     </svg>
   </div>
 );
@@ -1070,9 +1081,17 @@ function SidebarContent({
       <div className={`px-3 py-3 border-b border-white/6 flex items-center ${compact ? 'flex-col gap-2' : 'justify-between'}`}>
         <Link href="/admin" className="flex items-center gap-2" onClick={onLinkClick}>
           <div className="shrink-0 flex items-center justify-center">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 150" width="54" height="40">
-              <text x="4" y="128" fontFamily="Georgia, 'Times New Roman', serif" fontWeight="700" fontSize="120" fill="#1a6b3c">3</text>
-              <text x="96" y="128" fontFamily="Georgia, 'Times New Roman', serif" fontWeight="700" fontSize="120" fill="white">E</text>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 242 180" width="58" height="43">
+              <rect x="0"  y="0"   width="116" height="42" fill="#1a6b3c"/>
+              <rect x="85" y="42"  width="31"  height="36" fill="#1a6b3c"/>
+              <rect x="61" y="78"  width="55"  height="36" fill="#1a6b3c"/>
+              <rect x="85" y="114" width="31"  height="36" fill="#1a6b3c"/>
+              <rect x="0"  y="150" width="116" height="30" fill="#1a6b3c"/>
+              <rect x="116" y="0" width="6" height="180" fill="white"/>
+              <rect x="122" y="0"   width="32" height="180" fill="white"/>
+              <rect x="154" y="0"   width="88" height="42"  fill="white"/>
+              <rect x="154" y="78"  width="66" height="36"  fill="white"/>
+              <rect x="154" y="150" width="88" height="30"  fill="white"/>
             </svg>
           </div>
           {!compact && <span className="text-xs font-extrabold text-white/90 tracking-tight leading-none">3E</span>}

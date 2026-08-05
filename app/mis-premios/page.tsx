@@ -424,7 +424,7 @@ export default function MisPremiosPage() {
                 d="M20 12v10H4V12M22 7H2v5h20V7zM12 22V7" />
             </svg>
           </div>
-          <p className="text-[#a8a29e] text-xs font-medium">Burrito Bar · Super Tierra</p>
+          <p className="text-[#a8a29e] text-xs font-medium">Burrito Bar · 3E</p>
         </div>
       </div>
     </div>

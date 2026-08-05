@@ -61,9 +61,9 @@ export async function GET(req: NextRequest) {
   const dateStr = yesterday.toLocaleDateString('es-MX', { weekday: 'long', day: 'numeric', month: 'long' });
 
   await resend.emails.send({
-    from: process.env.RESEND_FROM ?? 'Super Tierra <no-reply@supertierra.mx>',
+    from: process.env.RESEND_FROM ?? '3E <no-reply@supertierra.mx>',
     to: adminEmail,
-    subject: `Reporte diario Super Tierra — ${dateStr}`,
+    subject: `Reporte diario 3E — ${dateStr}`,
     html: `
 <!DOCTYPE html>
 <html>
@@ -118,7 +118,7 @@ export async function GET(req: NextRequest) {
       </a>
     </div>
 
-    <div class="footer">Super Tierra · Reporte automático diario</div>
+    <div class="footer">3E · Reporte automático diario</div>
   </div>
 </body>
 </html>`,

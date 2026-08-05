@@ -216,7 +216,7 @@ export default async function CajeroPage({ params, searchParams }: Props) {
           )}
         </div>
 
-        <p className="text-center text-stone-300 text-xs">Super Tierra · Panel de Cajero</p>
+        <p className="text-center text-stone-300 text-xs">3E · Panel de Cajero</p>
       </div>
     </div>
   );

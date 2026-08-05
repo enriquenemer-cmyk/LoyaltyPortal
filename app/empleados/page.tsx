@@ -80,7 +80,7 @@ export default function EmpleadosLoginPage() {
       >
         <div className="text-center mb-6">
           <div className="text-3xl font-black text-[#1C1917] tracking-tight">
-            Super Tierra
+            3E
           </div>
           <p className="text-stone-500 text-sm font-medium mt-1">Ingresa tu PIN</p>
         </div>

@@ -8,7 +8,7 @@ interface SendEmailOptions {
 
 async function sendEmail(opts: SendEmailOptions): Promise<void> {
   const apiKey = process.env.RESEND_API_KEY;
-  const from = process.env.EMAIL_FROM ?? 'Super Tierra <noreply@burritobar.mx>';
+  const from = process.env.EMAIL_FROM ?? '3E <noreply@burritobar.mx>';
 
   if (!apiKey) {
     console.log('[email] No RESEND_API_KEY — skipping send to:', opts.to, '|', opts.subject);
@@ -63,7 +63,7 @@ export async function sendClaimLink(opts: {
       <p style="color:#94a3b8;font-size:11px;margin-top:20px;text-align:center;word-break:break-all;">${opts.claim_url}</p>
     </div>
     <div style="background:#f8fafc;padding:16px 32px;border-top:1px solid #e2e8f0;">
-      <p style="margin:0;color:#94a3b8;font-size:11px;text-align:center;">© ${new Date().getFullYear()} Burrito Bar · Super Tierra</p>
+      <p style="margin:0;color:#94a3b8;font-size:11px;text-align:center;">© ${new Date().getFullYear()} Burrito Bar · 3E</p>
     </div>
   </div>
 </body>

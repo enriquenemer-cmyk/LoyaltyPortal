@@ -110,7 +110,7 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
             {tierEmoji || '🏅'}
           </div>
           <h1 style={{ fontSize: 22, fontWeight: 800, color: '#fff', margin: '0 0 6px' }}>
-            {profile.full_name ?? 'Cliente Super Tierra'}
+            {profile.full_name ?? 'Cliente 3E'}
           </h1>
           <span style={{ fontSize: 13, fontWeight: 700, color: '#1D4ED8', background: '#fff', padding: '4px 14px', borderRadius: 20, display: 'inline-block' }}>
             Nivel {TIER_LABEL[profile.tier] ?? profile.tier}
@@ -249,7 +249,7 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
           </button>
         </div>
 
-        <p style={{ textAlign: 'center', fontSize: 11, color: '#A8A29E', marginTop: 24 }}>Powered by Super Tierra</p>
+        <p style={{ textAlign: 'center', fontSize: 11, color: '#A8A29E', marginTop: 24 }}>Powered by 3E</p>
       </div>
     </div>
   );
@@ -469,10 +469,10 @@ function CollectibleCard({
           {/* Name overlay bottom */}
           <div style={{ position: 'absolute', left: 0, right: 0, bottom: 0, padding: '16px' }}>
             <p style={{ fontSize: 18, fontWeight: 800, color: '#fff', margin: 0, textShadow: '0 2px 6px rgba(0,0,0,0.5)' }}>
-              {name ?? 'Cliente Super Tierra'}
+              {name ?? 'Cliente 3E'}
             </p>
             <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.85)', margin: '2px 0 0' }}>
-              Edición coleccionable · Super Tierra
+              Edición coleccionable · 3E
             </p>
           </div>
         </div>

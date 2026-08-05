@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
     const { rows } = await pool.query('SELECT * FROM outgoing_webhooks WHERE id = $1', [body.id]);
     const wh = rows[0];
     if (!wh) return NextResponse.json({ error: 'Webhook no encontrado.' }, { status: 404 });
-    const payload = JSON.stringify({ event: 'test', timestamp: new Date().toISOString(), data: { message: 'Test desde Super Tierra' } });
+    const payload = JSON.stringify({ event: 'test', timestamp: new Date().toISOString(), data: { message: 'Test desde 3E' } });
     const sig = wh.secret ? createHmac('sha256', wh.secret).update(payload).digest('hex') : null;
     try {
       const res = await fetch(wh.url, {

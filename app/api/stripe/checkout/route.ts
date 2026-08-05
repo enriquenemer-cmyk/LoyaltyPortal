@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
         price_data: {
           currency: 'mxn',
           recurring: { interval: 'month' },
-          product_data: { name: 'Super Tierra VIP', description: 'Puntos dobles, acceso anticipado y premios exclusivos' },
+          product_data: { name: '3E VIP', description: 'Puntos dobles, acceso anticipado y premios exclusivos' },
           unit_amount: 9900, // $99 MXN
         },
       }),

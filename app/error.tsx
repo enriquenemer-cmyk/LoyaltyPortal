@@ -71,7 +71,7 @@ export default function Error({
       </div>
 
       {/* Subtle branding footer */}
-      <p className="text-xs text-stone-300 mt-4">Super Tierra &mdash; Burrito Bar</p>
+      <p className="text-xs text-stone-300 mt-4">3E &mdash; Burrito Bar</p>
     </div>
   )
 }

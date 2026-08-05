@@ -15,10 +15,10 @@ export async function POST(req: NextRequest) {
   const { restaurant_id, email, plan = 'pro' } = body;
 
   const PLAN_PRICES: Record<string, number> = { starter: 29900, pro: 59900, enterprise: 99900 };
-  const PLAN_NAMES: Record<string, string> = { starter: 'Super Tierra Starter', pro: 'Super Tierra Pro', enterprise: 'Super Tierra Enterprise' };
+  const PLAN_NAMES: Record<string, string> = { starter: '3E Starter', pro: '3E Pro', enterprise: '3E Enterprise' };
 
   const priceAmount = PLAN_PRICES[plan] ?? 29900;
-  const planName = PLAN_NAMES[plan] ?? 'Super Tierra Pro';
+  const planName = PLAN_NAMES[plan] ?? '3E Pro';
 
   const Stripe = (await import('stripe')).default;
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
       price_data: {
         currency: 'mxn',
         recurring: { interval: 'month' },
-        product_data: { name: planName, description: 'Plataforma de lealtad Super Tierra' },
+        product_data: { name: planName, description: 'Plataforma de lealtad 3E' },
         unit_amount: priceAmount,
       },
       quantity: 1,

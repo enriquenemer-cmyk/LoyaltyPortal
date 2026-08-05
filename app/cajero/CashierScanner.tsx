@@ -120,7 +120,7 @@ export default function CashierScanner() {
             </svg>
           </div>
           <div>
-            <p className="text-white font-bold text-base leading-tight">Super Tierra · Cajero</p>
+            <p className="text-white font-bold text-base leading-tight">3E · Cajero</p>
             <p className="text-white/40 text-xs">{history.length} premios entregados hoy</p>
           </div>
         </div>

@@ -1077,7 +1077,7 @@ function SidebarContent({
               <line x1="30" y1="132" x2="170" y2="132" stroke="currentColor" strokeWidth="1.5" opacity="0.3"/>
             </svg>
           </div>
-          {!compact && <span className="text-xs font-extrabold text-white/90 tracking-tight leading-none">Super Tierra</span>}
+          {!compact && <span className="text-xs font-extrabold text-white/90 tracking-tight leading-none">3E</span>}
         </Link>
         <div className={`flex items-center gap-1 ${compact ? 'flex-col' : ''}`}>
           {!compact && <NotificationBell />}
@@ -1239,7 +1239,7 @@ export default function Sidebar() {
         style={{ background: '#0f1117', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
         <Link href="/admin" className="flex items-center gap-2.5">
           {LOGO}
-          <span className="text-sm font-extrabold text-[#1C1917] tracking-tight leading-none">Super Tierra</span>
+          <span className="text-sm font-extrabold text-[#1C1917] tracking-tight leading-none">3E</span>
         </Link>
         <button
           onClick={() => setMobileOpen((v) => !v)}

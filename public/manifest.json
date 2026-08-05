@@ -1,6 +1,6 @@
 {
-  "name": "Super Tierra",
-  "short_name": "Super Tierra",
+  "name": "3E",
+  "short_name": "3E",
   "description": "Plataforma de Premios QR",
   "start_url": "/admin",
   "display": "standalone",

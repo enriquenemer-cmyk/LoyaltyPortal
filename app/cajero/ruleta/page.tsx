@@ -153,7 +153,7 @@ function RuletaContent() {
   return (
     <div className="min-h-screen bg-[#FAFAF9] flex flex-col items-center justify-center p-6">
       <div className="text-center mb-8">
-        <p className="text-xs font-bold text-[#2563EB] uppercase tracking-widest mb-1">Super Tierra</p>
+        <p className="text-xs font-bold text-[#2563EB] uppercase tracking-widest mb-1">3E</p>
         <h1 className="text-2xl font-bold text-[#1C1917]">Ruleta de Premios</h1>
         {phone && <p className="text-sm text-stone-400 mt-1">Para: {phone}</p>}
       </div>

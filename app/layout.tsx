@@ -21,7 +21,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Super Tierra - Plataforma de Premios QR",
+  title: "3E - Plataforma de Premios QR",
   description: "Genera y gestiona premios con códigos QR para Burrito Bar",
   manifest: "/manifest.json",
   icons: {
@@ -34,17 +34,17 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "Super Tierra",
+    title: "3E",
   },
   openGraph: {
-    siteName: "Burrito Bar · Super Tierra",
+    siteName: "Burrito Bar · 3E",
     type: "website",
-    title: "Super Tierra",
+    title: "3E",
     description: "Plataforma de premios QR de Burrito Bar",
   },
   twitter: {
     card: "summary",
-    title: "Super Tierra",
+    title: "3E",
     description: "Plataforma de premios QR de Burrito Bar",
   },
   other: {

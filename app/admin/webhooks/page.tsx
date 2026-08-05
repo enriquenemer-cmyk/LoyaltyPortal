@@ -88,7 +88,7 @@ export default function WebhooksPage() {
             🔗 Webhooks
           </div>
           <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Integración con Zapier / Make / n8n</h1>
-          <p className="text-blue-200/70 mt-1.5 text-sm">Conecta Super Tierra con tus flujos de automatización</p>
+          <p className="text-blue-200/70 mt-1.5 text-sm">Conecta 3E con tus flujos de automatización</p>
         </div>
       </div>
 
@@ -121,7 +121,7 @@ export default function WebhooksPage() {
             <div>
               <p className="font-bold text-blue-800 text-sm mb-1">Configura la variable de entorno</p>
               <p className="text-blue-700 text-sm mb-2">
-                Para que Super Tierra envíe eventos a tu plataforma, agrega esta variable en Vercel (Settings → Environment Variables):
+                Para que 3E envíe eventos a tu plataforma, agrega esta variable en Vercel (Settings → Environment Variables):
               </p>
               <code className="block bg-blue-100 border border-blue-300 rounded-lg px-3 py-2 text-xs font-mono text-blue-900">
                 WEBHOOK_URL=https://hooks.zapier.com/hooks/catch/...

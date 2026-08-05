@@ -59,7 +59,7 @@ function Step1({ onNext }: { onNext: () => void }) {
     <div className="flex flex-col items-center text-center gap-6">
       <BurritoIllustration />
       <div className="flex flex-col gap-3">
-        <h1 className="text-3xl font-black text-[#1C1917]">Bienvenido a Super Tierra</h1>
+        <h1 className="text-3xl font-black text-[#1C1917]">Bienvenido a 3E</h1>
         <p className="text-base text-[#78716c] max-w-sm mx-auto">
           La plataforma de premios y fidelidad para Burrito. Genera QRs de premio, gestiona restaurantes y haz seguimiento de cobros en tiempo real.
         </p>
@@ -271,7 +271,7 @@ export default function OnboardingPage() {
                 <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none" />
               </svg>
             </div>
-            <span className="text-sm font-bold text-[#1C1917]">Super Tierra</span>
+            <span className="text-sm font-bold text-[#1C1917]">3E</span>
           </div>
           <StepIndicator current={step} total={3} />
         </div>

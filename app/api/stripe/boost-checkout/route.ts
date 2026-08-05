@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
     line_items: [{
       price_data: {
         currency: 'mxn',
-        product_data: { name: `Boost ${multiplier}× puntos por ${days} días`, description: 'Multiplica tus puntos en Super Tierra' },
+        product_data: { name: `Boost ${multiplier}× puntos por ${days} días`, description: 'Multiplica tus puntos en 3E' },
         unit_amount: 2900,
       },
       quantity: 1,

@@ -884,17 +884,8 @@ function CompactGroupIcon({
 // ── Logo ─────────────────────────────────────────────────────────────────────
 const LOGO = (
   <div className="shrink-0 flex items-center justify-center">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 420" width="72" height="65">
-      {/* "3" green — diagonal cuts matching official logo */}
-      <path d="M 0,0 L 248,0 L 248,420 L 0,420 L 0,330 L 100,255 L 100,175 L 0,100 Z" fill="#1a6b3c"/>
-      {/* white separator */}
-      <rect x="248" y="0" width="10" height="420" fill="white"/>
-      {/* "E" white — dark background */}
-      <rect x="258" y="0"   width="38"  height="420" fill="white"/>
-      <rect x="296" y="0"   width="164" height="100" fill="white"/>
-      <rect x="296" y="175" width="130" height="80"  fill="white"/>
-      <rect x="296" y="330" width="164" height="90"  fill="white"/>
-    </svg>
+    {/* eslint-disable-next-line @next/next/no-img-element */}
+    <img src="/logo-3e-oficial.webp" alt="3E by ENM" width={64} height={64} style={{ objectFit: 'contain' }} />
   </div>
 );
 
@@ -1077,14 +1068,8 @@ function SidebarContent({
       <div className={`px-3 py-3 border-b border-white/6 flex items-center ${compact ? 'flex-col gap-2' : 'justify-between'}`}>
         <Link href="/admin" className="flex items-center gap-2" onClick={onLinkClick}>
           <div className="shrink-0 flex items-center justify-center">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 420" width="60" height="55">
-              <path d="M 0,0 L 248,0 L 248,420 L 0,420 L 0,330 L 100,255 L 100,175 L 0,100 Z" fill="#1a6b3c"/>
-              <rect x="248" y="0" width="10" height="420" fill="white"/>
-              <rect x="258" y="0"   width="38"  height="420" fill="white"/>
-              <rect x="296" y="0"   width="164" height="100" fill="white"/>
-              <rect x="296" y="175" width="130" height="80"  fill="white"/>
-              <rect x="296" y="330" width="164" height="90"  fill="white"/>
-            </svg>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo-3e-oficial.webp" alt="3E by ENM" width={52} height={52} style={{ objectFit: 'contain' }} />
           </div>
           {!compact && <span className="text-xs font-extrabold text-white/90 tracking-tight leading-none">3E</span>}
         </Link>

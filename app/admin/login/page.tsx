@@ -135,19 +135,8 @@ export default function LoginPage() {
         <div className="relative z-10 flex flex-col items-center text-center gap-6">
           {/* Logo ST */}
           <div className="relative flex items-center justify-center" style={{ animation: 'float 4s ease-in-out infinite' }}>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 460" width="220" height="220">
-              {/* "3" green — diagonal cuts matching official logo */}
-              <path d="M 0,0 L 248,0 L 248,420 L 0,420 L 0,330 L 100,255 L 100,175 L 0,100 Z" fill="#1a6b3c"/>
-              {/* white separator */}
-              <rect x="248" y="0" width="10" height="420" fill="white"/>
-              {/* "E" white (dark bg) */}
-              <rect x="258" y="0"   width="38"  height="420" fill="white"/>
-              <rect x="296" y="0"   width="164" height="100" fill="white"/>
-              <rect x="296" y="175" width="130" height="80"  fill="white"/>
-              <rect x="296" y="330" width="164" height="90"  fill="white"/>
-              {/* by ENM */}
-              <text x="228" y="454" textAnchor="middle" fontFamily="'Helvetica Neue', Helvetica, Arial, sans-serif" fontWeight="400" fontSize="26" fill="white" opacity="0.65" letterSpacing="6">by ENM</text>
-            </svg>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo-3e-oficial.webp" alt="3E by ENM" width={220} height={220} style={{ objectFit: 'contain', mixBlendMode: 'multiply' }} />
           </div>
 
           <div>
@@ -207,17 +196,8 @@ export default function LoginPage() {
           <div className="mb-8 flex flex-col items-center gap-3">
             {/* Show logo on mobile (left panel is hidden) */}
             <div className="md:hidden">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 420" width="120" height="110">
-                {/* "3" green — diagonal cuts */}
-                <path d="M 0,0 L 248,0 L 248,420 L 0,420 L 0,330 L 100,255 L 100,175 L 0,100 Z" fill="#1a6b3c"/>
-                {/* separator */}
-                <rect x="248" y="0" width="10" height="420" fill="#f3f4f6"/>
-                {/* "E" black (light bg) */}
-                <rect x="258" y="0"   width="38"  height="420" fill="#111111"/>
-                <rect x="296" y="0"   width="164" height="100" fill="#111111"/>
-                <rect x="296" y="175" width="130" height="80"  fill="#111111"/>
-                <rect x="296" y="330" width="164" height="90"  fill="#111111"/>
-              </svg>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/logo-3e-oficial.webp" alt="3E by ENM" width={110} height={110} style={{ objectFit: 'contain' }} />
             </div>
 
             <div className="text-center">

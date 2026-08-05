@@ -1,4 +1,5 @@
 'use client';
+import { BellIcon } from '@heroicons/react/24/outline';
 
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
@@ -18,14 +19,14 @@ type Notification = {
 
 function typeIcon(type: NotificationType): string {
   switch (type) {
-    case 'new_claim': return '🎁';
-    case 'prize_expiring': return '⚠️';
-    case 'vip_customer': return '⭐';
-    case 'new_delivery': return '🚚';
-    case 'low_prizes': return '⚠️';
-    case 'daily_summary': return '📊';
-    case 'platform_update': return '🆕';
-    default: return '🔔';
+    case 'new_claim': return '';
+    case 'prize_expiring': return '';
+    case 'vip_customer': return '';
+    case 'new_delivery': return '';
+    case 'low_prizes': return '';
+    case 'daily_summary': return '';
+    case 'platform_update': return '';
+    default: return '';
   }
 }
 
@@ -211,7 +212,7 @@ export default function NotificationBell() {
           <div className="max-h-[340px] overflow-y-auto divide-y divide-[#F5F3F0]">
             {visible.length === 0 ? (
               <div className="px-4 py-8 text-center">
-                <p className="text-2xl mb-1">🔔</p>
+                <p className="text-2xl mb-1"><BellIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></p>
                 <p className="text-xs text-stone-400">Sin notificaciones nuevas</p>
               </div>
             ) : (

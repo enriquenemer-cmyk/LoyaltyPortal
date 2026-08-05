@@ -1,4 +1,5 @@
 'use client';
+import { FireIcon } from '@heroicons/react/24/outline';
 
 import { useState } from 'react';
 
@@ -113,7 +114,7 @@ export default function KioscoPage() {
               </div>
               <div className="bg-[#FAFAF9] rounded-xl p-3">
                 <p className="text-2xl font-extrabold" style={{ color: TIER_COLOR[tier] ?? '#2563EB' }}>
-                  {tier === 'gold' ? '🥇' : tier === 'silver' ? '🥈' : '🥉'}
+                  {tier === 'gold' ? '' : tier === 'silver' ? '' : ''}
                 </p>
                 <p className="text-xs text-stone-400 mt-0.5">{TIER_LABEL[tier] ?? tier}</p>
               </div>
@@ -121,7 +122,7 @@ export default function KioscoPage() {
 
             {streak > 1 && (
               <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 mb-4">
-                <p className="text-amber-700 font-bold text-sm">🔥 {streak} días de racha</p>
+                <p className="text-amber-700 font-bold text-sm"><FireIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> {streak} días de racha</p>
               </div>
             )}
 

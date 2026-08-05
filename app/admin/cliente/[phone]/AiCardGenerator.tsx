@@ -1,4 +1,5 @@
 'use client';
+import { PaintBrushIcon } from '@heroicons/react/24/outline';
 
 import { useState } from 'react';
 
@@ -50,7 +51,7 @@ export function AiCardGenerator({ phone, tier }: { phone: string; tier: string }
   return (
     <div className="bg-white rounded-2xl border border-[#E8E3DC] shadow-[0_1px_2px_rgba(28,25,23,0.04),_0_4px_16px_rgba(28,25,23,0.06)] p-5">
       <h2 className="text-sm font-extrabold text-[#1C1917] uppercase tracking-wider mb-3">
-        🎨 Tarjeta Coleccionable IA
+        <PaintBrushIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Tarjeta Coleccionable IA
         {(tier === 'gold' || tier === 'silver') && (
           <span className="ml-2 text-[10px] font-bold px-2 py-0.5 rounded-full bg-yellow-50 text-yellow-700 border border-yellow-300 align-middle">
             VIP
@@ -63,7 +64,7 @@ export function AiCardGenerator({ phone, tier }: { phone: string; tier: string }
           onClick={handleGenerate}
           className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold text-white bg-[#2563EB] hover:bg-[#0891B2] transition-all shadow-sm"
         >
-          <span>🎨</span>
+          <span><PaintBrushIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></span>
           Generar Tarjeta IA
         </button>
       )}

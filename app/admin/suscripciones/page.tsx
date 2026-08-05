@@ -1,4 +1,5 @@
 'use client';
+import { DevicePhoneMobileIcon } from '@heroicons/react/24/outline';
 
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
@@ -67,7 +68,7 @@ function SuscripcionesContent() {
         <div className="max-w-4xl mx-auto flex items-start justify-between flex-wrap gap-4">
           <div>
             <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-widest mb-3" style={{ background: 'rgba(255,255,255,0.15)', color: 'rgba(219,234,254,0.9)', border: '1px solid rgba(255,255,255,0.2)' }}>
-              📱 Suscripciones
+              <DevicePhoneMobileIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Suscripciones
             </div>
             <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Suscripciones</h1>
             <p className="text-blue-200/70 mt-1.5 text-sm">Clientes VIP pagan $99/mes por puntos dobles y acceso exclusivo</p>
@@ -99,9 +100,9 @@ function SuscripcionesContent() {
         {/* Benefits */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
           {[
-            { icon: '🥇', title: 'Nivel Oro automático', desc: 'Al suscribirse, el cliente sube a Gold inmediatamente' },
+            { icon: '', title: 'Nivel Oro automático', desc: 'Al suscribirse, el cliente sube a Gold inmediatamente' },
             { icon: '2×', title: 'Puntos dobles', desc: 'Cada visita acumula el doble de puntos durante la suscripción' },
-            { icon: '🎁', title: 'Premios exclusivos', desc: 'Acceso a campañas y premios solo para miembros VIP' },
+            { icon: '', title: 'Premios exclusivos', desc: 'Acceso a campañas y premios solo para miembros VIP' },
           ].map(b => (
             <div key={b.title} className="bg-white rounded-2xl border border-[#E8E3DC] p-4">
               <div className="text-2xl mb-2">{b.icon}</div>

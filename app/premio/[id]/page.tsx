@@ -1,3 +1,4 @@
+import { GiftIcon, NoSymbolIcon } from '@heroicons/react/24/outline';
 import { getPrizeById, getPrizeClaimCount } from '@/lib/db';
 import { notFound } from 'next/navigation';
 import { createHmac } from 'crypto';
@@ -28,14 +29,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: prize.name + ' — 3E',
     description: prize.description,
     openGraph: {
-      title: '🎁 ' + prize.name,
+      title: ' ' + prize.name,
       description: 'Gané un premio en 3E: ' + prize.description,
       siteName: '3E · by ENM',
       type: 'website',
     },
     twitter: {
       card: 'summary',
-      title: '🎁 ' + prize.name,
+      title: ' ' + prize.name,
       description: prize.description,
     },
   };
@@ -59,7 +60,7 @@ export default async function PremioPage({ params, searchParams }: Props) {
     return (
       <div style={{ minHeight:'100vh', background:'#f8f8f8', display:'flex', alignItems:'center', justifyContent:'center', padding:24 }}>
         <div style={{ background:'white', borderRadius:24, padding:40, textAlign:'center', maxWidth:360, width:'100%', boxShadow:'0 8px 40px rgba(0,0,0,0.08)' }}>
-          <div style={{ fontSize:56, marginBottom:16 }}>⛔</div>
+          <div style={{ fontSize:56, marginBottom:16 }}><NoSymbolIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
           <h2 style={{ fontSize:20, fontWeight:900, color:'#111', marginBottom:8 }}>QR inválido</h2>
           <p style={{ color:'#888', fontSize:14, lineHeight:1.6 }}>Este código QR no es auténtico o ha sido alterado.</p>
         </div>
@@ -85,7 +86,7 @@ export default async function PremioPage({ params, searchParams }: Props) {
     return (
       <div style={{ minHeight:'100vh', background:'#f8f8f8', display:'flex', alignItems:'center', justifyContent:'center', padding:24 }}>
         <div style={{ background:'white', borderRadius:24, padding:40, textAlign:'center', maxWidth:360, width:'100%', boxShadow:'0 8px 40px rgba(0,0,0,0.08)' }}>
-          <div style={{ fontSize:56, marginBottom:16 }}>{isCancelled ? '⛔' : '😔'}</div>
+          <div style={{ fontSize:56, marginBottom:16 }}>{isCancelled ? '' : '😔'}</div>
           <h2 style={{ fontSize:20, fontWeight:900, color:'#111', marginBottom:8 }}>
             {isCancelled ? 'Premio cancelado' : 'Premio vencido'}
           </h2>

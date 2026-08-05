@@ -9,12 +9,12 @@ type RfmSegmentKey =
   | 'regulares';
 
 const SEGMENT_META: { key: RfmSegmentKey; emoji: string; label: string; bg: string; text: string; border: string }[] = [
-  { key: 'champions', emoji: '🏆', label: 'Campeones', bg: '#fef3c7', text: '#92400e', border: '#fcd34d' },
-  { key: 'leales', emoji: '💙', label: 'Leales', bg: '#dbeafe', text: '#1e40af', border: '#93c5fd' },
-  { key: 'nuevos_prometedores', emoji: '🌱', label: 'Nuevos prometedores', bg: '#d1fae5', text: '#065f46', border: '#6ee7b7' },
-  { key: 'en_riesgo', emoji: '⚠️', label: 'En riesgo', bg: '#ffedd5', text: '#9a3412', border: '#fdba74' },
-  { key: 'perdidos', emoji: '💔', label: 'Perdidos', bg: '#fee2e2', text: '#991b1b', border: '#fca5a5' },
-  { key: 'regulares', emoji: '👤', label: 'Regulares', bg: '#f1f5f9', text: '#334155', border: '#cbd5e1' },
+  { key: 'champions', emoji: '', label: 'Campeones', bg: '#fef3c7', text: '#92400e', border: '#fcd34d' },
+  { key: 'leales', emoji: '', label: 'Leales', bg: '#dbeafe', text: '#1e40af', border: '#93c5fd' },
+  { key: 'nuevos_prometedores', emoji: '', label: 'Nuevos prometedores', bg: '#d1fae5', text: '#065f46', border: '#6ee7b7' },
+  { key: 'en_riesgo', emoji: '', label: 'En riesgo', bg: '#ffedd5', text: '#9a3412', border: '#fdba74' },
+  { key: 'perdidos', emoji: '', label: 'Perdidos', bg: '#fee2e2', text: '#991b1b', border: '#fca5a5' },
+  { key: 'regulares', emoji: '', label: 'Regulares', bg: '#f1f5f9', text: '#334155', border: '#cbd5e1' },
 ];
 
 export default function RfmChart({

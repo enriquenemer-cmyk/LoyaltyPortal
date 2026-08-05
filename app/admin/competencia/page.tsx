@@ -1,4 +1,5 @@
 'use client';
+import { CheckCircleIcon, FlagIcon } from '@heroicons/react/24/outline';
 
 import { useEffect, useRef, useState } from 'react';
 
@@ -34,17 +35,17 @@ const RANK_STYLES: Record<number, { card: string; border: string; emoji: string 
   1: {
     card: 'bg-gradient-to-r from-amber-50 via-yellow-50 to-amber-50',
     border: 'border-amber-300',
-    emoji: '🏆',
+    emoji: '',
   },
   2: {
     card: 'bg-gradient-to-r from-slate-50 to-slate-100',
     border: 'border-slate-300',
-    emoji: '🥈',
+    emoji: '',
   },
   3: {
     card: 'bg-gradient-to-r from-orange-50 to-orange-100',
     border: 'border-orange-300',
-    emoji: '🥉',
+    emoji: '',
   },
 };
 
@@ -148,7 +149,7 @@ export default function CompetenciaPage() {
         <div className="max-w-5xl mx-auto flex items-start justify-between flex-wrap gap-4">
           <div>
             <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-widest mb-3" style={{ background: 'rgba(255,255,255,0.15)', color: 'rgba(219,234,254,0.9)', border: '1px solid rgba(255,255,255,0.2)' }}>
-              🏁 Competencia
+              <FlagIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Competencia
             </div>
             <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Competencia entre Sucursales</h1>
             <p className="text-blue-200/70 mt-1.5 text-sm">Ranking en vivo de tus restaurantes</p>
@@ -158,7 +159,7 @@ export default function CompetenciaPage() {
             style={{ background: 'rgba(255,255,255,0.15)', color: '#bbf7d0', border: '1px solid rgba(255,255,255,0.2)' }}
           >
             <span className={`w-2 h-2 rounded-full bg-emerald-400 inline-block ${pulse ? 'animate-pulse' : ''}`} />
-            🟢 En vivo
+            <CheckCircleIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> En vivo
           </div>
         </div>
       </div>
@@ -194,7 +195,7 @@ export default function CompetenciaPage() {
           </div>
         ) : restaurants.length <= 1 ? (
           <div className="rounded-2xl border border-[#E8E3DC] bg-white p-10 text-center">
-            <div className="text-4xl mb-3">🏁</div>
+            <div className="text-4xl mb-3"><FlagIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
             <h3 className="text-lg font-bold text-gray-900 mb-1">Agrega más restaurantes para activar la competencia entre sucursales</h3>
             <p className="text-stone-400 text-sm">Necesitas al menos 2 sucursales registradas para ver un ranking.</p>
           </div>

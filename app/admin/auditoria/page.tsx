@@ -1,5 +1,6 @@
 'use client';
 
+import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { useEffect, useState, useCallback } from 'react';
 
 type AuditLog = {
@@ -105,7 +106,7 @@ export default function AuditoriaPage() {
                 {loading ? 'Cargando…' : `${total} ${total === 1 ? 'Registro' : 'Registros'}`}
               </div>
               <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight" style={{ textShadow: '0 2px 12px rgba(0,0,0,0.2)' }}>
-                🔍 Auditoría
+                <MagnifyingGlassIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Auditoría
               </h1>
               <p className="text-blue-200/70 mt-1.5 text-sm">Registro completo de acciones del sistema</p>
             </div>

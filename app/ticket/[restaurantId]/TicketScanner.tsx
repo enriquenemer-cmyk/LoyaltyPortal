@@ -1,4 +1,5 @@
 'use client';
+import { CameraIcon, ChatBubbleLeftRightIcon, CpuChipIcon, DevicePhoneMobileIcon, ExclamationTriangleIcon, GiftIcon, ReceiptPercentIcon, SparklesIcon, StarIcon } from '@heroicons/react/24/outline';
 
 import { useRef, useState, useCallback, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
@@ -378,9 +379,9 @@ export default function TicketScanner({
               animation: 'eventPulse 2s infinite',
             }}>
               <p style={{ color: '#fef3c7', fontWeight: 900, fontSize: 16, margin: 0, lineHeight: 1.4 }}>
-                {activeEvent.event_type === 'double_points' && `⚡ ${activeEvent.name} — ¡Doble puntos hoy!`}
-                {activeEvent.event_type === 'first_N' && `⚡ ¡Primeros ${activeEvent.max_participants ?? '?'} clientes ganan un extra! (${activeEvent.participants_count} registrados)`}
-                {activeEvent.event_type === 'min_amount_boost' && `⚡ ${activeEvent.name} — ¡Monto mínimo reducido ${activeEvent.multiplier}%!`}
+                {activeEvent.event_type === 'double_points' && ` ${activeEvent.name} — ¡Doble puntos hoy!`}
+                {activeEvent.event_type === 'first_N' && ` ¡Primeros ${activeEvent.max_participants ?? '?'} clientes ganan un extra! (${activeEvent.participants_count} registrados)`}
+                {activeEvent.event_type === 'min_amount_boost' && ` ${activeEvent.name} — ¡Monto mínimo reducido ${activeEvent.multiplier}%!`}
               </p>
             </div>
           )}
@@ -437,7 +438,7 @@ export default function TicketScanner({
                   </span>
                   <span style={{ color: 'white', fontSize: 13, fontWeight: 600 }}>
                     {t.prize_name}
-                    {t.game_type ? ' 🎰' : ''}
+                    {t.game_type ? ' ' : ''}
                   </span>
                 </div>
               ))}
@@ -537,7 +538,7 @@ export default function TicketScanner({
                     minWidth: 40, height: 40, borderRadius: '50%',
                     background: primaryColor, display: 'flex', alignItems: 'center', justifyContent: 'center',
                     fontSize: 20, flexShrink: 0,
-                  }}>📸</div>
+                  }}><CameraIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
                   <div>
                     <p style={{ color: 'white', fontWeight: 700, fontSize: 14, margin: '0 0 4px' }}>
                       Toma una foto clara de tu cuenta o recibo
@@ -582,7 +583,7 @@ export default function TicketScanner({
                     minWidth: 40, height: 40, borderRadius: '50%',
                     background: primaryColor, display: 'flex', alignItems: 'center', justifyContent: 'center',
                     fontSize: 20, flexShrink: 0,
-                  }}>🤖</div>
+                  }}><CpuChipIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
                   <div>
                     <p style={{ color: 'white', fontWeight: 700, fontSize: 14, margin: '0 0 4px' }}>
                       Nuestra IA lee el monto automáticamente
@@ -601,7 +602,7 @@ export default function TicketScanner({
                     minWidth: 40, height: 40, borderRadius: '50%',
                     background: primaryColor, display: 'flex', alignItems: 'center', justifyContent: 'center',
                     fontSize: 20, flexShrink: 0,
-                  }}>🎁</div>
+                  }}><GiftIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
                   <div>
                     <p style={{ color: 'white', fontWeight: 700, fontSize: 14, margin: '0 0 4px' }}>
                       Gana un premio según tu consumo
@@ -738,7 +739,7 @@ export default function TicketScanner({
         fontFamily: 'system-ui, -apple-system, sans-serif',
       }}>
         <div style={{ width: '100%', maxWidth: 400, textAlign: 'center' }}>
-          <div style={{ fontSize: 56, marginBottom: 16 }}>🧾</div>
+          <div style={{ fontSize: 56, marginBottom: 16 }}><ReceiptPercentIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
           <h2 style={{ color: 'white', fontSize: 22, fontWeight: 800, marginBottom: 8 }}>
             Confirma tu monto
           </h2>
@@ -817,13 +818,13 @@ export default function TicketScanner({
     const hasTier = !unreadable && !!scanResult.tier;
     const vip = hasTier && isVipTier(scanResult.tier!.prize_name);
 
-    let errorEmoji = '🤔';
+    let errorEmoji = '';
     let errorTitle = 'No pudimos leer el monto';
     let errorBody = 'Por favor asegúrate que el ticket sea legible y el monto total sea visible';
 
-    if (scanResult.duplicate) { errorEmoji = '🚫'; errorTitle = 'Ticket ya utilizado'; errorBody = 'Este ticket ya fue canjeado anteriormente.'; }
-    else if (scanResult.invalid) { errorEmoji = '❌'; errorTitle = 'No es ticket de restaurante'; errorBody = 'Solo aceptamos tickets de restaurante o consumo de alimentos.'; }
-    else if (scanResult.outdated) { errorEmoji = '📅'; errorTitle = 'Ticket no es de hoy'; errorBody = 'Solo se aceptan tickets del día actual.'; }
+    if (scanResult.duplicate) { errorEmoji = ''; errorTitle = 'Ticket ya utilizado'; errorBody = 'Este ticket ya fue canjeado anteriormente.'; }
+    else if (scanResult.invalid) { errorEmoji = ''; errorTitle = 'No es ticket de restaurante'; errorBody = 'Solo aceptamos tickets de restaurante o consumo de alimentos.'; }
+    else if (scanResult.outdated) { errorEmoji = ''; errorTitle = 'Ticket no es de hoy'; errorBody = 'Solo se aceptan tickets del día actual.'; }
 
     return (
       <div style={{
@@ -905,7 +906,7 @@ export default function TicketScanner({
                     fontSize: 16,
                     animation: `confettiFall ${2 + (i % 3) * 0.5}s ${i * 0.12}s linear forwards`,
                   }}>
-                    {['🎉', '⭐', '🌟', '✨', '🎊'][i % 5]}
+                    {['', '', '', '', ''][i % 5]}
                   </div>
                 ))}
               </div>
@@ -922,7 +923,7 @@ export default function TicketScanner({
                   boxShadow: '0 0 24px rgba(56,189,248,0.3)',
                 }}>
                   <p style={{ color: '#fef3c7', fontWeight: 900, fontSize: 16, margin: 0 }}>
-                    ⭐ ¡Cliente VIP! Tu consumo te da el mejor premio
+                    <StarIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> ¡Cliente VIP! Tu consumo te da el mejor premio
                   </p>
                 </div>
               )}
@@ -1037,7 +1038,7 @@ export default function TicketScanner({
               marginBottom: 12,
               display: 'inline-block',
               animation: 'giftBounce 1.8s ease-in-out infinite',
-            }}>🎁</div>
+            }}><GiftIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
             <p style={{ color: '#0284C7', fontWeight: 900, fontSize: 18, marginBottom: 12 }}>
               ¡Pero tenemos algo para ti!
             </p>
@@ -1096,7 +1097,7 @@ export default function TicketScanner({
                 />
                 {limitWarning && (
                   <p style={{ color: '#38BDF8', fontSize: 12, marginTop: 6, background: 'rgba(56,189,248,0.1)', borderRadius: 8, padding: '6px 10px' }}>
-                    ⚠️ {limitWarning}
+                    <ExclamationTriangleIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> {limitWarning}
                   </p>
                 )}
               </div>
@@ -1203,7 +1204,7 @@ export default function TicketScanner({
       }}>
         <div style={{ width: '100%', maxWidth: 400 }}>
           <div style={{ textAlign: 'center', marginBottom: 32 }}>
-            <div style={{ fontSize: 48, marginBottom: 12 }}>🎁</div>
+            <div style={{ fontSize: 48, marginBottom: 12 }}><GiftIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
             <h2 style={{ color: 'white', fontSize: 22, fontWeight: 800, marginBottom: 4 }}>
               ¡Casi listo!
             </h2>
@@ -1237,7 +1238,7 @@ export default function TicketScanner({
               />
               {limitWarning && (
                 <p style={{ color: '#38BDF8', fontSize: 12, marginTop: 6, background: 'rgba(56,189,248,0.1)', borderRadius: 8, padding: '6px 10px' }}>
-                  ⚠️ {limitWarning}
+                  <ExclamationTriangleIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> {limitWarning}
                 </p>
               )}
             </div>
@@ -1328,7 +1329,7 @@ export default function TicketScanner({
               fontSize: 18,
               animation: `confettiFall ${2 + (i % 3) * 0.5}s ${i * 0.15}s linear forwards`,
             }}>
-              {['🌮', '🍕', '🎉', '⭐', '🌟', '🎊', '🍔', '🥤'][i % 8]}
+              {['', '', '', '', '', '', '', ''][i % 8]}
             </div>
           ))}
         </div>
@@ -1343,7 +1344,7 @@ export default function TicketScanner({
           textAlign: 'center',
           animation: 'popIn 0.5s ease-out',
         }}>
-          <div style={{ fontSize: 56, marginBottom: 12 }}>🎁</div>
+          <div style={{ fontSize: 56, marginBottom: 12 }}><GiftIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
           <h2 style={{ color: 'white', fontSize: 22, fontWeight: 900, marginBottom: 8 }}>
             ¡Código registrado!
           </h2>
@@ -1377,7 +1378,7 @@ export default function TicketScanner({
           {/* WhatsApp share */}
           <button
             onClick={() => {
-              const text = encodeURIComponent(`¡Gané un premio en ${restaurant.name}! 🎁 ${scanResult?.consolation?.name} — Código: ${consolationFolio}`);
+              const text = encodeURIComponent(`¡Gané un premio en ${restaurant.name}!  ${scanResult?.consolation?.name} — Código: ${consolationFolio}`);
               window.open(`https://wa.me/?text=${text}`, '_blank');
             }}
             style={{
@@ -1394,7 +1395,7 @@ export default function TicketScanner({
               minHeight: btnHeight,
             }}
           >
-            📱 Compartir por WhatsApp
+            <DevicePhoneMobileIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Compartir por WhatsApp
           </button>
 
           <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: 12, marginBottom: 16, lineHeight: 1.5 }}>
@@ -1476,12 +1477,12 @@ export default function TicketScanner({
               boxShadow: '0 0 20px rgba(56,189,248,0.3)',
             }}>
               <p style={{ color: '#fef3c7', fontWeight: 900, fontSize: 15, margin: 0 }}>
-                ⭐ ¡Cliente VIP! Tu consumo te da el mejor premio
+                <StarIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> ¡Cliente VIP! Tu consumo te da el mejor premio
               </p>
             </div>
           )}
 
-          <div style={{ fontSize: 64, marginBottom: 16 }}>🎉</div>
+          <div style={{ fontSize: 64, marginBottom: 16 }}><SparklesIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
           <h2 style={{ color: 'white', fontSize: 24, fontWeight: 900, marginBottom: 8 }}>
             ¡Premio registrado!
           </h2>
@@ -1523,7 +1524,7 @@ export default function TicketScanner({
               cursor: 'pointer',
             }}
           >
-            📱 Notificar al cajero
+            <DevicePhoneMobileIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Notificar al cajero
           </button>
 
           {kiosk && (
@@ -1585,7 +1586,7 @@ export default function TicketScanner({
         fontFamily: 'system-ui, -apple-system, sans-serif',
       }}>
         <div style={{ width: '100%', maxWidth: 380, textAlign: 'center' }}>
-          <div style={{ fontSize: 48, marginBottom: 16 }}>💬</div>
+          <div style={{ fontSize: 48, marginBottom: 16 }}><ChatBubbleLeftRightIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
           <h2 style={{ color: 'white', fontSize: 22, fontWeight: 900, marginBottom: 8 }}>
             ¿Cómo fue tu experiencia hoy?
           </h2>
@@ -1613,7 +1614,7 @@ export default function TicketScanner({
                   padding: 0,
                 }}
               >
-                ⭐
+                <StarIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" />
               </button>
             ))}
           </div>
@@ -1696,9 +1697,9 @@ export default function TicketScanner({
             75%{transform:scale(1.1)}
           }
         `}</style>
-        <div style={{ fontSize: 72, animation: 'heartbeat 1.5s ease-in-out infinite', marginBottom: 24 }}>🧡</div>
+        <div style={{ fontSize: 72, animation: 'heartbeat 1.5s ease-in-out infinite', marginBottom: 24 }}></div>
         <h2 style={{ color: 'white', fontSize: 26, fontWeight: 900, marginBottom: 12 }}>
-          ¡Gracias! Tu opinión nos ayuda a mejorar 🧡
+          ¡Gracias! Tu opinión nos ayuda a mejorar 
         </h2>
         <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 16 }}>
           ¡Hasta pronto!

@@ -1,4 +1,5 @@
 'use client';
+import { LockClosedIcon } from '@heroicons/react/24/outline';
 
 import { useEffect, useMemo, useState } from 'react';
 
@@ -110,7 +111,7 @@ export default function SeguridadPage() {
         <div className="max-w-4xl mx-auto flex items-start justify-between flex-wrap gap-4">
           <div>
             <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-widest mb-3" style={{ background: 'rgba(255,255,255,0.15)', color: 'rgba(219,234,254,0.9)', border: '1px solid rgba(255,255,255,0.2)' }}>
-              🔒 Seguridad
+              <LockClosedIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Seguridad
             </div>
             <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Seguridad</h1>
             <p className="text-blue-200/70 mt-1.5 text-sm">Registro de actividad y exportación de datos</p>

@@ -1,4 +1,5 @@
 'use client';
+import { BoltIcon, CalendarIcon } from '@heroicons/react/24/outline';
 
 import { useEffect, useState } from 'react';
 
@@ -29,9 +30,9 @@ const EVENT_TYPE_LABELS: Record<EventType, string> = {
 };
 
 const EVENT_TYPE_ICONS: Record<EventType, string> = {
-  double_points: '⚡',
-  first_N: '🏆',
-  min_amount_boost: '💰',
+  double_points: '',
+  first_N: '',
+  min_amount_boost: '',
 };
 
 function eventStatus(ev: RestaurantEvent): 'active' | 'scheduled' | 'ended' {
@@ -172,7 +173,7 @@ export default function EventosPage() {
         <div className="max-w-4xl mx-auto flex items-start justify-between flex-wrap gap-4">
           <div>
             <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-widest mb-3" style={{ background: 'rgba(255,255,255,0.15)', color: 'rgba(219,234,254,0.9)', border: '1px solid rgba(255,255,255,0.2)' }}>
-              📅 Eventos
+              <CalendarIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Eventos
             </div>
             <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Eventos</h1>
             <p className="text-blue-200/70 mt-1.5 text-sm">Crea eventos especiales para impulsar la participación de tus clientes</p>
@@ -342,7 +343,7 @@ export default function EventosPage() {
         <div className="text-center py-16 text-stone-400 text-sm">Cargando eventos...</div>
       ) : events.length === 0 ? (
         <div className="text-center py-20">
-          <div className="text-5xl mb-4">⚡</div>
+          <div className="text-5xl mb-4"><BoltIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
           <p className="text-stone-500 text-sm">No hay eventos creados aún.</p>
           <p className="text-stone-400 text-xs mt-1">Crea un evento para motivar a tus clientes.</p>
         </div>

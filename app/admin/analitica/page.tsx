@@ -1,5 +1,6 @@
 'use client';
 
+import { ArrowPathIcon, ArrowTrendingDownIcon, ArrowTrendingUpIcon, BanknotesIcon, BoltIcon, ExclamationTriangleIcon, PlusCircleIcon } from '@heroicons/react/24/outline';
 import { useEffect, useState } from 'react';
 
 type AnalyticsOverview = {
@@ -70,7 +71,7 @@ export default function AnaliticaPage() {
         <div className="hero-blobs" aria-hidden="true"><span key="b1" /><span key="b2" /><span key="b3" /></div>
         <div className="max-w-5xl mx-auto">
           <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-widest mb-3" style={{ background: 'rgba(255,255,255,0.15)', color: 'rgba(219,234,254,0.9)', border: '1px solid rgba(255,255,255,0.2)' }}>
-            📈 Analítica Avanzada
+            <ArrowTrendingUpIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Analítica Avanzada
           </div>
           <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Analítica Avanzada</h1>
           <p className="text-blue-200/70 mt-1.5 text-sm">Valor de cliente (LTV), retención y rendimiento de campañas</p>
@@ -94,22 +95,22 @@ export default function AnaliticaPage() {
           {/* KPI Cards */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
             <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4">
-              <div className="text-2xl mb-1">💰</div>
+              <div className="text-2xl mb-1"><BanknotesIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
               <div className="text-2xl font-extrabold tabular-nums text-emerald-700">{formatCurrency(data.ltv.avgLifetimeValue)}</div>
               <div className="text-xs text-stone-500 mt-1 leading-tight">LTV promedio por cliente</div>
             </div>
             <div className="rounded-2xl border border-blue-200 bg-blue-50 p-4">
-              <div className="text-2xl mb-1">🔁</div>
+              <div className="text-2xl mb-1"><ArrowPathIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
               <div className="text-2xl font-extrabold tabular-nums text-blue-700">{data.retention.retentionRate.toFixed(1)}%</div>
               <div className="text-xs text-stone-500 mt-1 leading-tight">Tasa de retencion (2+ visitas)</div>
             </div>
             <div className="rounded-2xl border border-cyan-200 bg-cyan-50 p-4">
-              <div className="text-2xl mb-1">🆕</div>
+              <div className="text-2xl mb-1"><PlusCircleIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
               <div className="text-2xl font-extrabold tabular-nums text-cyan-700">{data.retention.newCustomers30d}</div>
               <div className="text-xs text-stone-500 mt-1 leading-tight">Clientes nuevos (30 dias)</div>
             </div>
             <div className="rounded-2xl border border-violet-200 bg-violet-50 p-4">
-              <div className="text-2xl mb-1">⚡</div>
+              <div className="text-2xl mb-1"><BoltIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
               <div className="text-2xl font-extrabold tabular-nums text-violet-700">{data.retention.activeCustomers30d}</div>
               <div className="text-xs text-stone-500 mt-1 leading-tight">Clientes activos (30 dias)</div>
             </div>
@@ -176,7 +177,7 @@ export default function AnaliticaPage() {
           {(data.winback.at_risk > 0 || data.winback.dormant > 0) && (
             <div className="rounded-2xl border border-amber-200 bg-amber-50 overflow-hidden mb-8">
               <div className="px-5 py-4 border-b border-amber-200 flex items-center gap-2">
-                <span className="text-lg">⚠️</span>
+                <span className="text-lg"><ExclamationTriangleIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></span>
                 <h2 className="text-sm font-extrabold text-amber-900 uppercase tracking-widest">Clientes en Riesgo</h2>
               </div>
               <div className="grid grid-cols-2 divide-x divide-amber-200">

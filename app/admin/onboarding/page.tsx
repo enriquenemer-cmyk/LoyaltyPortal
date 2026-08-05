@@ -66,9 +66,9 @@ function Step1({ onNext }: { onNext: () => void }) {
       </div>
       <ul className="text-left flex flex-col gap-3 w-full max-w-sm">
         {[
-          { icon: '🏪', text: 'Administra tus restaurantes y sucursales' },
-          { icon: '🎁', text: 'Genera premios con QR únicos para tus clientes' },
-          { icon: '📊', text: 'Monitorea cobros y métricas en el dashboard' },
+          { icon: '', text: 'Administra tus restaurantes y sucursales' },
+          { icon: '', text: 'Genera premios con QR únicos para tus clientes' },
+          { icon: '', text: 'Monitorea cobros y métricas en el dashboard' },
         ].map(({ icon, text }) => (
           <li key={text} className="flex items-center gap-3 text-sm text-[#57534e]">
             <span className="text-xl shrink-0">{icon}</span>

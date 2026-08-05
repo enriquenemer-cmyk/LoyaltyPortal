@@ -1,4 +1,5 @@
 'use client';
+import { ArrowTrendingUpIcon, BanknotesIcon, CalendarDaysIcon, CalendarIcon, ChartBarIcon } from '@heroicons/react/24/outline';
 
 import { useEffect, useMemo, useState } from 'react';
 import ActivityChart from '@/app/components/ActivityChart';
@@ -92,9 +93,9 @@ function PaymentMethodCards({ breakdown }: { breakdown?: { cash: number; card: n
   const total = cash + card + other;
 
   const methods = [
-    { label: 'Efectivo', value: cash, icon: '💵', color: '#059669', bg: '#d1fae5' },
-    { label: 'Tarjeta', value: card, icon: '💳', color: '#2563EB', bg: '#dbeafe' },
-    { label: 'Otros', value: other, icon: '🧾', color: '#7c3aed', bg: '#ede9fe' },
+    { label: 'Efectivo', value: cash, icon: '', color: '#059669', bg: '#d1fae5' },
+    { label: 'Tarjeta', value: card, icon: '', color: '#2563EB', bg: '#dbeafe' },
+    { label: 'Otros', value: other, icon: '', color: '#7c3aed', bg: '#ede9fe' },
   ];
 
   return (
@@ -129,7 +130,7 @@ function BestDayInsight({ bestDay }: { bestDay?: { name: string; average: number
       style={{ boxShadow: '0 1px 2px rgba(37,99,235,0.04), 0 4px 12px rgba(37,99,235,0.08)' }}
     >
       <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 text-xl" style={{ background: '#dbeafe' }}>
-        📈
+        <ArrowTrendingUpIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" />
       </div>
       <div className="min-w-0">
         <p className="text-xs font-bold text-blue-700 uppercase tracking-widest mb-0.5">Mejor día de la semana</p>
@@ -430,7 +431,7 @@ export default function VentasPage() {
         <div className="max-w-7xl mx-auto flex items-start justify-between flex-wrap gap-4">
           <div>
             <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-widest mb-3" style={{ background: 'rgba(255,255,255,0.15)', color: 'rgba(219,234,254,0.9)', border: '1px solid rgba(255,255,255,0.2)' }}>
-              💰 Control de Caja
+              <BanknotesIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Control de Caja
             </div>
             <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Ventas Diarias</h1>
             <p className="text-blue-200/70 mt-1.5 text-sm">Control y registro de ventas por sucursal</p>
@@ -461,7 +462,7 @@ export default function VentasPage() {
               className="bg-white rounded-2xl border border-[#E8E3DC] border-l-4 p-5 flex items-center gap-4"
               style={{ borderLeftColor: '#2563EB', boxShadow: '0 1px 2px rgba(28,25,23,0.04), 0 4px 16px rgba(28,25,23,0.06)' }}
             >
-              <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 text-xl" style={{ backgroundColor: '#dbeafe' }}>📅</div>
+              <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 text-xl" style={{ backgroundColor: '#dbeafe' }}><CalendarIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
               <div>
                 <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest mb-0.5">Hoy</p>
                 <p className="text-2xl font-extrabold" style={{ color: '#2563EB' }}>{formatCurrency(summary?.today ?? 0)}</p>
@@ -472,7 +473,7 @@ export default function VentasPage() {
               className="bg-white rounded-2xl border border-[#E8E3DC] border-l-4 p-5 flex items-center gap-4"
               style={{ borderLeftColor: '#0EA5E9', boxShadow: '0 1px 2px rgba(28,25,23,0.04), 0 4px 16px rgba(28,25,23,0.06)' }}
             >
-              <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 text-xl" style={{ backgroundColor: '#e0f2fe' }}>📊</div>
+              <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 text-xl" style={{ backgroundColor: '#e0f2fe' }}><ChartBarIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
               <div className="flex-1">
                 <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest mb-0.5">Esta semana</p>
                 <p className="text-2xl font-extrabold" style={{ color: '#0EA5E9' }}>{formatCurrency(summary?.week ?? 0)}</p>
@@ -484,7 +485,7 @@ export default function VentasPage() {
               className="bg-white rounded-2xl border border-[#E8E3DC] border-l-4 p-5 flex items-center gap-4"
               style={{ borderLeftColor: '#7c3aed', boxShadow: '0 1px 2px rgba(28,25,23,0.04), 0 4px 16px rgba(28,25,23,0.06)' }}
             >
-              <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 text-xl" style={{ backgroundColor: '#ede9fe' }}>🗓️</div>
+              <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 text-xl" style={{ backgroundColor: '#ede9fe' }}><CalendarDaysIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
               <div className="flex-1">
                 <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest mb-0.5">Este mes</p>
                 <p className="text-2xl font-extrabold" style={{ color: '#7c3aed' }}>{formatCurrency(summary?.month ?? 0)}</p>

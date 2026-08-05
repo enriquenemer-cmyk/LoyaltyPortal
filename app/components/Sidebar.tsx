@@ -563,8 +563,8 @@ function GlobalSearch({ onSelect }: { onSelect?: (item: SearchResult) => void })
   }
 
   const typeIcon: Record<SearchResult['type'], string> = {
-    premio: '🎁', cliente: '👤', cobro: '📋',
-    claim: '📋', prize: '🎁', restaurant: '🏠', user: '👤',
+    premio: '', cliente: '', cobro: '',
+    claim: '', prize: '', restaurant: '', user: '',
   };
   const typeLabel: Record<SearchResult['type'], string> = {
     claim: 'Cobro', prize: 'Premio', restaurant: 'Restaurante', user: 'Usuario',

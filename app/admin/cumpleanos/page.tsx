@@ -1,4 +1,5 @@
 'use client';
+import { CakeIcon } from '@heroicons/react/24/outline';
 
 import { useState, useEffect } from 'react';
 
@@ -123,7 +124,7 @@ export default function CumpleanosPage() {
         <div className="hero-blobs" aria-hidden="true"><span key="b1" /><span key="b2" /><span key="b3" /></div>
         <div className="max-w-[700px] mx-auto">
           <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-widest mb-3" style={{ background: 'rgba(255,255,255,0.15)', color: 'rgba(219,234,254,0.9)', border: '1px solid rgba(255,255,255,0.2)' }}>
-            🎂 Puntos y Sellos
+            <CakeIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Puntos y Sellos
           </div>
           <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Premios de Cumpleaños</h1>
           <p className="text-blue-200/70 mt-1.5 text-sm">Genera premios especiales — manual o automático</p>
@@ -258,7 +259,7 @@ export default function CumpleanosPage() {
                 marginTop: 4,
               }}
             >
-              {loading ? 'Generando...' : '🎁 Generar premio de cumpleaños'}
+              {loading ? 'Generando...' : ' Generar premio de cumpleaños'}
             </button>
           </form>
         </div>
@@ -285,7 +286,7 @@ export default function CumpleanosPage() {
                   }}
                 >
                   <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'rgba(249,115,22,0.18)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18, flexShrink: 0 }}>
-                    🎂
+                    <CakeIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" />
                   </div>
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <p style={{ color: 'white', fontSize: 14, fontWeight: 700, margin: 0, marginBottom: 2 }}>{item.full_name}</p>

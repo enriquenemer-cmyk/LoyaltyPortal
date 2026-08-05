@@ -1,4 +1,5 @@
 'use client';
+import { ArchiveBoxIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 
 import { useEffect, useState, useMemo, useCallback } from 'react';
 import { EmptyState } from '@/app/components/EmptyState';
@@ -98,7 +99,7 @@ function LowStockBanner({ products }: { products: InventoryProduct[] }) {
       style={{ boxShadow: '0 1px 2px rgba(220,38,38,0.05), 0 4px 12px rgba(220,38,38,0.08)' }}
     >
       <div className="flex items-start gap-3 min-w-0">
-        <span className="text-lg leading-none shrink-0">⚠️</span>
+        <span className="text-lg leading-none shrink-0"><ExclamationTriangleIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></span>
         <div className="min-w-0">
           <p className="font-bold text-red-800 text-sm mb-1.5">
             {lowStockProducts.length === 1
@@ -447,7 +448,7 @@ export default function InventarioPage() {
               className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-widest mb-3"
               style={{ background: 'rgba(255,255,255,0.15)', color: 'rgba(219,234,254,0.9)', border: '1px solid rgba(255,255,255,0.2)' }}
             >
-              📦 Control de Stock
+              <ArchiveBoxIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Control de Stock
             </div>
             <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Inventario</h1>
             <p className="text-blue-200/70 mt-1.5 text-sm">Control de productos: entradas y consumo</p>
@@ -469,9 +470,9 @@ export default function InventarioPage() {
         {/* KPI cards */}
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-8">
           {[
-            { label: 'Productos activos', value: activeProducts.length, icon: '📦', borderColor: '#2563EB', bgColor: '#dbeafe', numColor: '#2563EB' },
-            { label: 'Stock bajo', value: lowStockCount, icon: '⚠️', borderColor: '#dc2626', bgColor: '#fee2e2', numColor: '#dc2626' },
-            { label: 'Movimientos hoy', value: movementsToday, icon: '🔄', borderColor: '#0d9488', bgColor: '#ccfbf1', numColor: '#0d9488' },
+            { label: 'Productos activos', value: activeProducts.length, icon: '', borderColor: '#2563EB', bgColor: '#dbeafe', numColor: '#2563EB' },
+            { label: 'Stock bajo', value: lowStockCount, icon: '', borderColor: '#dc2626', bgColor: '#fee2e2', numColor: '#dc2626' },
+            { label: 'Movimientos hoy', value: movementsToday, icon: '', borderColor: '#0d9488', bgColor: '#ccfbf1', numColor: '#0d9488' },
           ].map(({ label, value, icon, borderColor, bgColor, numColor }) => (
             <div
               key={label}

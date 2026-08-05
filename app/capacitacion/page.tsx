@@ -1,4 +1,5 @@
 'use client';
+import { AcademicCapIcon, BookOpenIcon, TrophyIcon } from '@heroicons/react/24/outline';
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -263,7 +264,7 @@ export default function CapacitacionPage() {
         <div className="max-w-xl w-full">
           <div className="bg-white rounded-2xl border border-[#E8E3DC] shadow-sm p-8 text-center">
             <div className="text-6xl mb-4" style={{ animation: 'bounce 1s ease infinite' }}>
-              {pct >= 80 ? '🎉' : pct >= 50 ? '👍' : '💪'}
+              {pct >= 80 ? '' : pct >= 50 ? '' : ''}
             </div>
             <h1 className="text-2xl font-black text-[#1C1917] mb-1">¡Módulo completado!</h1>
             <p className="text-stone-500 text-sm mb-6">
@@ -271,7 +272,7 @@ export default function CapacitacionPage() {
             </p>
 
             <div className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl mb-6" style={{ background: 'linear-gradient(135deg,#fbbf24,#f59e0b)' }}>
-              <span className="text-2xl">🏆</span>
+              <span className="text-2xl"><TrophyIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></span>
               <span className="text-white font-black text-xl">+{finalResult.total_points} pts</span>
             </div>
 
@@ -283,7 +284,7 @@ export default function CapacitacionPage() {
                     d.correct ? 'bg-emerald-50 border-emerald-200' : 'bg-red-50 border-red-200'
                   }`}
                 >
-                  <span className="shrink-0">{d.correct ? '✅' : '❌'}</span>
+                  <span className="shrink-0">{d.correct ? '' : ''}</span>
                   <div className="flex-1">
                     <p className="font-semibold text-[#1C1917]">
                       {i + 1}. {d.question}
@@ -321,13 +322,13 @@ export default function CapacitacionPage() {
               className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-widest mb-3"
               style={{ background: 'rgba(255,255,255,0.15)', color: 'rgba(219,234,254,0.9)', border: '1px solid rgba(255,255,255,0.2)' }}
             >
-              🎓 Capacitación
+              <AcademicCapIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Capacitación
             </div>
             <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Hola, {employee.full_name.split(' ')[0]}</h1>
             <p className="text-blue-200/70 mt-1.5 text-sm">Completa los módulos y gana puntos</p>
           </div>
           <div className="flex items-center gap-2 px-5 py-3 rounded-2xl" style={{ background: 'linear-gradient(135deg,#fbbf24,#f59e0b)', boxShadow: '0 4px 16px rgba(0,0,0,0.15)' }}>
-            <span className="text-2xl">🏆</span>
+            <span className="text-2xl"><TrophyIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></span>
             <div>
               <p className="text-white font-black text-xl leading-none">{totalPoints.toLocaleString('es-MX')}</p>
               <p className="text-amber-50 text-[10px] font-bold uppercase tracking-wider">puntos totales</p>
@@ -343,7 +344,7 @@ export default function CapacitacionPage() {
 
         {modules.length === 0 ? (
           <div className="bg-white rounded-2xl border border-[#E8E3DC] p-12 text-center">
-            <p className="text-4xl mb-3">📚</p>
+            <p className="text-4xl mb-3"><BookOpenIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></p>
             <p className="font-bold text-[#1C1917]">Aún no hay módulos disponibles</p>
             <p className="text-stone-400 text-sm mt-1">Pronto tu administrador agregará capacitaciones.</p>
           </div>
@@ -360,7 +361,7 @@ export default function CapacitacionPage() {
                   style={{ background: color.bg, boxShadow: '0 8px 24px rgba(0,0,0,0.12)' }}
                 >
                   <div className="flex items-start justify-between">
-                    <span className="text-5xl">{mod.icon || '📚'}</span>
+                    <span className="text-5xl">{mod.icon || ''}</span>
                     {mod.completed && (
                       <span className="text-[10px] font-extrabold bg-white/20 text-white px-2.5 py-1 rounded-full uppercase tracking-wide">
                         Completado

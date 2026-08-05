@@ -1,4 +1,5 @@
 'use client';
+import { DevicePhoneMobileIcon } from '@heroicons/react/24/outline';
 
 import { useState } from 'react';
 import Link from 'next/link';
@@ -134,7 +135,7 @@ export default function MisMensajesPage() {
           <form onSubmit={handleSearch} className="space-y-3">
             <div>
               <label className="flex items-center gap-1.5 text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">
-                <span>📱</span> Tu numero de celular
+                <span><DevicePhoneMobileIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></span> Tu numero de celular
               </label>
               <input
                 type="tel"

@@ -1,4 +1,5 @@
 'use client';
+import { SparklesIcon } from '@heroicons/react/24/outline';
 
 import { useState, useEffect } from 'react';
 
@@ -113,7 +114,7 @@ export default function ClaimForm({ prizeId, prizeName }: Props) {
     const cajeroUrl = typeof window !== 'undefined'
       ? `${window.location.origin}/cajero/${claimId}`
       : '';
-    const waMsg = `🎁 Mi premio en 3E\n\nPremio: ${prizeName}\nFolio: #${folio}\n\n${cajeroUrl}`;
+    const waMsg = ` Mi premio en 3E\n\nPremio: ${prizeName}\nFolio: #${folio}\n\n${cajeroUrl}`;
 
     return (
       <div className="text-center space-y-5">
@@ -204,7 +205,7 @@ export default function ClaimForm({ prizeId, prizeName }: Props) {
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
                 </svg>
               ) : (
-                <span>✨</span>
+                <span><SparklesIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></span>
               )}
               {captionLoading ? 'Generando...' : 'Generar caption para compartir'}
             </button>

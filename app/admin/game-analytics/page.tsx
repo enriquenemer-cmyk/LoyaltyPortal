@@ -1,4 +1,5 @@
 'use client';
+import { PlayCircleIcon } from '@heroicons/react/24/outline';
 
 import { useEffect, useState } from 'react';
 import HourHeatmap from '@/app/components/HourHeatmap';
@@ -21,9 +22,9 @@ type AnalyticsData = {
 };
 
 const GAME_LABELS: Record<string, string> = {
-  slots: '🎰 Tragamonedas',
-  roulette: '🎡 Ruleta',
-  penalty: '⚽ Penales',
+  slots: ' Tragamonedas',
+  roulette: ' Ruleta',
+  penalty: ' Penales',
   scratch: '🃏 Rasca y Gana',
 };
 
@@ -178,7 +179,7 @@ export default function GameAnalyticsPage() {
         <div className="hero-blobs" aria-hidden="true"><span key="b1" /><span key="b2" /><span key="b3" /></div>
         <div className="max-w-5xl mx-auto">
           <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-widest mb-3" style={{ background: 'rgba(255,255,255,0.15)', color: 'rgba(219,234,254,0.9)', border: '1px solid rgba(255,255,255,0.2)' }}>
-            🎮 Analítica de Juegos
+            <PlayCircleIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Analítica de Juegos
           </div>
           <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Analítica de Juegos</h1>
           <p className="text-blue-200/70 mt-1.5 text-sm">Métricas de rendimiento de los juegos interactivos</p>

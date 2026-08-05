@@ -1,4 +1,5 @@
 'use client';
+import { BookOpenIcon } from '@heroicons/react/24/outline';
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -52,7 +53,7 @@ export default function CapacitacionListPage() {
           >
             ← Volver
           </button>
-          <div className="text-2xl">📚</div>
+          <div className="text-2xl"><BookOpenIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
           <h1 className="text-3xl sm:text-4xl font-black text-white tracking-tight mt-1">Capacitación</h1>
           <p className="text-blue-200/70 mt-1.5 text-sm">Completa los módulos y gana puntos</p>
         </div>
@@ -79,7 +80,7 @@ export default function CapacitacionListPage() {
                     Completado ✓
                   </span>
                 )}
-                <div className="text-3xl">{mod.icon || '📚'}</div>
+                <div className="text-3xl">{mod.icon || ''}</div>
                 <div className="text-base font-bold text-[#1C1917]">{mod.title}</div>
                 {mod.description && (
                   <p className="text-sm text-stone-500 leading-snug flex-1">{mod.description}</p>

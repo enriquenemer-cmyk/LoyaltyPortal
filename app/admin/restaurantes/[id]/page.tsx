@@ -1,4 +1,5 @@
 'use client';
+import { MapPinIcon } from '@heroicons/react/24/outline';
 
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
@@ -63,11 +64,11 @@ function timeAgo(dateStr: string) {
 }
 
 function activityIcon(action: string) {
-  if (action === 'prize_created') return '🎁';
-  if (action === 'prize_cancelled') return '⛔';
-  if (action === 'claim_registered') return '👤';
-  if (action === 'prize_delivered') return '✅';
-  return '📋';
+  if (action === 'prize_created') return '';
+  if (action === 'prize_cancelled') return '';
+  if (action === 'claim_registered') return '';
+  if (action === 'prize_delivered') return '';
+  return '';
 }
 
 function Avatar({ name }: { name: string }) {
@@ -341,7 +342,7 @@ export default function RestaurantProfilePage() {
                     rel="noopener noreferrer"
                     className="text-xs font-semibold text-blue-600 hover:underline whitespace-nowrap"
                   >
-                    📍 Buscar en Google Maps
+                    <MapPinIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Buscar en Google Maps
                   </a>
                 )}
               </div>

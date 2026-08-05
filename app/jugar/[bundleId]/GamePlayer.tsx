@@ -1,4 +1,5 @@
 'use client';
+import { CurrencyDollarIcon, GiftIcon, SparklesIcon } from '@heroicons/react/24/outline';
 
 import { useState, useEffect, useRef } from 'react';
 import type { GameBundle, GamePrize } from '@/lib/db';
@@ -280,12 +281,12 @@ function ScratchGame({
             >
               {isScratched ? (
                 isWinner ? (
-                  <><span className="text-lg mb-1">✨</span><span>{prize.name}</span></>
+                  <><span className="text-lg mb-1"><SparklesIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></span><span>{prize.name}</span></>
                 ) : (
                   <span className="text-[#a8a29e]">No premiado</span>
                 )
               ) : (
-                <span className="text-[#fafaf9] text-lg">🪙</span>
+                <span className="text-[#fafaf9] text-lg"><CurrencyDollarIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></span>
               )}
             </button>
           );
@@ -387,9 +388,9 @@ export default function GamePlayer({
     'focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20 focus:border-[#2563EB] transition-all',
   ].join(' ');
 
-  const gameLabel = bundle.game_type === 'roulette' ? '🎡 Ruleta'
-    : bundle.game_type === 'slots' ? '🎰 Tragamonedas'
-    : bundle.game_type === 'penalty' ? '⚽ Penalti'
+  const gameLabel = bundle.game_type === 'roulette' ? ' Ruleta'
+    : bundle.game_type === 'slots' ? ' Tragamonedas'
+    : bundle.game_type === 'penalty' ? ' Penalti'
     : '🃏 Rasca y Gana';
 
   // ── READY ──
@@ -485,7 +486,7 @@ export default function GamePlayer({
               className="w-28 h-28 rounded-full flex items-center justify-center mx-auto mb-5"
               style={{ background: 'linear-gradient(135deg,#2563EB,#0891B2)', boxShadow: '0 12px 40px rgba(37,99,235,0.45)' }}
             >
-              <span className="text-5xl">🎁</span>
+              <span className="text-5xl"><GiftIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></span>
             </div>
             <p className="text-[10px] font-bold text-[#2563EB] uppercase tracking-widest mb-2">¡Felicidades!</p>
             <h1 className="text-3xl font-black text-[#1C1917] mb-2 leading-tight">{winnerPrize?.name}</h1>
@@ -593,7 +594,7 @@ export default function GamePlayer({
                 <p className="text-[10px] font-bold text-[#2563EB] uppercase tracking-widest">3E</p>
                 <p className="text-[#1C1917] font-extrabold text-base mt-0.5">{bundle.name}</p>
               </div>
-              <span className="text-3xl">🎁</span>
+              <span className="text-3xl"><GiftIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></span>
             </div>
           </div>
           <div className="px-5 py-4 space-y-3">

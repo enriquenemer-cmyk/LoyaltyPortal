@@ -35,7 +35,7 @@ export default function NPSSurvey({ claimId, onSkip }: Props) {
   if (submitted) {
     return (
       <div className="bg-white border border-[#E8E3DC] rounded-2xl p-5 text-center">
-        <p className="text-2xl mb-1">🧡</p>
+        <p className="text-2xl mb-1"></p>
         <p className="font-bold text-[#1C1917]">¡Gracias por tu opinión!</p>
       </div>
     );

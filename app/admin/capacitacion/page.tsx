@@ -1,4 +1,5 @@
 'use client';
+import { AcademicCapIcon } from '@heroicons/react/24/outline';
 
 import { useEffect, useState } from 'react';
 import { EmptyState } from '@/app/components/EmptyState';
@@ -35,14 +36,14 @@ type LeaderboardRow = {
   last_attempt_at: string | null;
 };
 
-const ICONS = ['📚', '🍔', '🧼', '💳', '🛎️', '🔥', '🧑‍🍳', '📦'];
+const ICONS = ['', '', '', '', '️', '', '‍🍳', ''];
 
 const inputClass =
   'w-full bg-white border border-[#E8E3DC] rounded-lg px-3 py-2.5 text-sm text-[#1C1917] placeholder-[#a8a29e] focus:outline-none focus:ring-1 focus:ring-[#2563EB]/30 focus:border-[#2563EB] transition-colors';
 
 const labelClass = 'block text-[10px] font-semibold text-[#78716c] uppercase tracking-widest mb-1.5';
 
-const MEDALS = ['🥇', '🥈', '🥉'];
+const MEDALS = ['', '', ''];
 
 function CompletionBar({ completed, total }: { completed: number; total: number }) {
   const pct = total > 0 ? Math.round((completed / total) * 100) : 0;
@@ -110,7 +111,7 @@ function ModuleCard({
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div className="flex items-start gap-3 flex-1 min-w-0">
           <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 text-2xl bg-blue-50">
-            {mod.icon || '📚'}
+            {mod.icon || ''}
           </div>
           <div className="min-w-0">
             <div className="flex items-center gap-2 flex-wrap">
@@ -476,7 +477,7 @@ export default function CapacitacionAdminPage() {
               className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-widest mb-3"
               style={{ background: 'rgba(255,255,255,0.15)', color: 'rgba(219,234,254,0.9)', border: '1px solid rgba(255,255,255,0.2)' }}
             >
-              🎓 Capacitación
+              <AcademicCapIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Capacitación
             </div>
             <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Capacitación</h1>
             <p className="text-blue-200/70 mt-1.5 text-sm">Entrena a tu equipo con quizzes gamificados</p>

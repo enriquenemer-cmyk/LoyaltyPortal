@@ -36,9 +36,9 @@ function formatDate(iso: string) {
 
 // ── Tier configuration ──────────────────────────────────────────────────────
 const TIER = {
-  bronze: { label: 'Bronce', emoji: '🥉', gradient: 'linear-gradient(135deg,#1E40AF,#1D4ED8)', bar: '#38BDF8', next: 'Plata', min: 0, max: 100 },
-  silver: { label: 'Plata',  emoji: '🥈', gradient: 'linear-gradient(135deg,#374151,#6b7280)', bar: '#94a3b8', next: 'Oro',   min: 100, max: 300 },
-  gold:   { label: 'Oro',    emoji: '🥇', gradient: 'linear-gradient(135deg,#1E40AF,#ca8a04)', bar: '#fde047', next: '',      min: 300, max: 300 },
+  bronze: { label: 'Bronce', emoji: '', gradient: 'linear-gradient(135deg,#1E40AF,#1D4ED8)', bar: '#38BDF8', next: 'Plata', min: 0, max: 100 },
+  silver: { label: 'Plata',  emoji: '', gradient: 'linear-gradient(135deg,#374151,#6b7280)', bar: '#94a3b8', next: 'Oro',   min: 100, max: 300 },
+  gold:   { label: 'Oro',    emoji: '', gradient: 'linear-gradient(135deg,#1E40AF,#ca8a04)', bar: '#fde047', next: '',      min: 300, max: 300 },
 };
 
 // ── Points card ─────────────────────────────────────────────────────────────
@@ -87,7 +87,7 @@ function PointsCard({ points }: { points: CustomerPoints }) {
           </div>
           <p className="text-white/70 text-xs font-semibold">
             {points.tier === 'gold'
-              ? '⭐ Nivel máximo alcanzado'
+              ? ' Nivel máximo alcanzado'
               : `${cfg.max - points.total_points} puntos para nivel ${cfg.next}`}
           </p>
         </div>
@@ -272,7 +272,7 @@ export default function MisPremiosPage() {
           </div>
 
           <h1 className="text-white font-black leading-tight mb-1" style={{ fontSize: 30 }}>
-            {searched && firstName ? `Hola, ${firstName} 👋` : 'Mis Premios'}
+            {searched && firstName ? `Hola, ${firstName} ` : 'Mis Premios'}
           </h1>
           <p className="text-white/70 text-sm">
             {searched && firstName

@@ -8,7 +8,7 @@ export default function NotFound() {
         {/* Brand icon */}
         <div style={{ marginBottom: 16, display: 'flex', justifyContent: 'center' }}>
           <div style={{ width: 64, height: 64, borderRadius: 16, background: 'linear-gradient(135deg,#2563EB,#0891B2)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 8px 24px rgba(37,99,235,0.25)' }}>
-            <span style={{ fontSize: 32 }}>🌯</span>
+            <span style={{ fontSize: 32 }}></span>
           </div>
         </div>
 

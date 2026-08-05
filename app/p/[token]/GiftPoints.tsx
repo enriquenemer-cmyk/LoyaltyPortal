@@ -1,4 +1,5 @@
 'use client';
+import { GiftIcon, SparklesIcon } from '@heroicons/react/24/outline';
 
 import { useEffect, useState, useCallback } from 'react';
 
@@ -96,7 +97,7 @@ export default function GiftPoints({ token, initialBalance }: { token: string; i
 
   return (
     <div style={{ background: '#fff', borderRadius: 16, border: '1px solid #E8E3DC', padding: 16, marginBottom: 16 }}>
-      <p style={{ fontSize: 12, fontWeight: 700, color: '#1C1917', margin: '0 0 12px' }}>🎁 Regalar puntos</p>
+      <p style={{ fontSize: 12, fontWeight: 700, color: '#1C1917', margin: '0 0 12px' }}><GiftIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Regalar puntos</p>
 
       {success ? (
         <div className="gift-success" style={{ position: 'relative', textAlign: 'center', padding: '16px 8px', overflow: 'hidden' }}>
@@ -105,7 +106,7 @@ export default function GiftPoints({ token, initialBalance }: { token: string; i
               <span key={i} className={`confetti-piece c${i % 6}`} style={{ left: `${(i * 5.5) % 100}%`, animationDelay: `${(i % 8) * 0.12}s` }} />
             ))}
           </div>
-          <div style={{ fontSize: 32, marginBottom: 6, position: 'relative', zIndex: 1 }}>🎉</div>
+          <div style={{ fontSize: 32, marginBottom: 6, position: 'relative', zIndex: 1 }}><SparklesIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
           <p style={{ fontSize: 13, fontWeight: 700, color: '#1C1917', margin: '0 0 4px', position: 'relative', zIndex: 1 }}>
             ¡Listo! Le regalaste {success.points} puntos a {success.phone}
           </p>

@@ -1,4 +1,5 @@
 'use client';
+import { CheckCircleIcon, ExclamationCircleIcon, HomeIcon, PhoneIcon } from '@heroicons/react/24/outline';
 
 import { useState, useEffect, useCallback } from 'react';
 
@@ -16,10 +17,10 @@ type FraudAlert = {
 };
 
 const TYPE_ICON: Record<string, string> = {
-  velocity_abuse: '⚡',
-  shared_ip: '🌐',
-  anomalous_spike: '📈',
-  bot_claim_speed: '🤖',
+  velocity_abuse: '',
+  shared_ip: '',
+  anomalous_spike: '',
+  bot_claim_speed: '',
 };
 
 const SEVERITY_STYLES: Record<string, { border: string; bg: string; badge: string; label: string }> = {
@@ -83,7 +84,7 @@ export default function FraudePage() {
         <div className="hero-blobs" aria-hidden="true"><span key="b1" /><span key="b2" /><span key="b3" /></div>
         <div className="max-w-3xl mx-auto">
           <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-widest mb-3" style={{ background: 'rgba(255,255,255,0.15)', color: 'rgba(219,234,254,0.9)', border: '1px solid rgba(255,255,255,0.2)' }}>
-            🚨 Seguridad
+            <ExclamationCircleIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Seguridad
           </div>
           <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Detector de Fraude</h1>
           <p className="text-blue-200/70 mt-1.5 text-sm">
@@ -117,14 +118,14 @@ export default function FraudePage() {
           <div className="py-16 text-center text-slate-500 text-sm">Cargando alertas...</div>
         ) : alerts.length === 0 ? (
           <div className="bg-[#1A1A1A] rounded-2xl border border-white/10 py-16 px-6 text-center">
-            <p className="text-2xl mb-2">✅</p>
+            <p className="text-2xl mb-2"><CheckCircleIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></p>
             <p className="text-white font-bold text-base">Todo en orden, sin actividad sospechosa detectada</p>
           </div>
         ) : (
           <div className="space-y-3">
             {alerts.map((alert) => {
               const sev = SEVERITY_STYLES[alert.severity] ?? SEVERITY_STYLES.low;
-              const icon = TYPE_ICON[alert.type] ?? '⚠️';
+              const icon = TYPE_ICON[alert.type] ?? '';
               return (
                 <div
                   key={alert.id}
@@ -139,10 +140,10 @@ export default function FraudePage() {
                           {sev.label}
                         </span>
                         {alert.phone && (
-                          <span className="text-xs text-slate-400">📞 {alert.phone}</span>
+                          <span className="text-xs text-slate-400"><PhoneIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> {alert.phone}</span>
                         )}
                         {alert.restaurant_name && (
-                          <span className="text-xs text-slate-400">🏠 {alert.restaurant_name}</span>
+                          <span className="text-xs text-slate-400"><HomeIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> {alert.restaurant_name}</span>
                         )}
                         <span className="text-xs text-slate-500 ml-auto">{timeAgo(alert.created_at)}</span>
                       </div>

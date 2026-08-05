@@ -1,4 +1,5 @@
 'use client';
+import { ChartBarIcon } from '@heroicons/react/24/outline';
 
 import { useEffect, useMemo, useState } from 'react';
 import { SkeletonCard, SkeletonTable } from '@/app/components/Skeleton';
@@ -107,7 +108,7 @@ export default function SegmentacionPage() {
               className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-widest mb-3"
               style={{ background: 'rgba(255,255,255,0.15)', color: 'rgba(219,234,254,0.9)', border: '1px solid rgba(255,255,255,0.2)' }}
             >
-              📊 Segmentación RFM
+              <ChartBarIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Segmentación RFM
             </div>
             <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Segmentación RFM</h1>
             <p className="text-blue-200/70 mt-1.5 text-sm">Clasificación automática de clientes por valor y comportamiento</p>

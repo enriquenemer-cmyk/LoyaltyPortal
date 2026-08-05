@@ -1,4 +1,5 @@
 'use client';
+import { RectangleGroupIcon, SparklesIcon, StarIcon } from '@heroicons/react/24/outline';
 
 import { useState, useRef, useEffect, useCallback } from 'react';
 
@@ -56,7 +57,7 @@ function FoodConfetti({ active }: { active: boolean }) {
     const canvas = ref.current;
     const ctx = canvas.getContext('2d')!;
     canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-    const emojis = ['🌯','🎁','⭐','🏆','🎉','🌶️','🍹','✨'];
+    const emojis = ['','','','','','','',''];
     const ps = Array.from({length: 28}, () => ({
       x: Math.random() * canvas.width, y: -30,
       vy: 2 + Math.random() * 4, vx: (Math.random() - 0.5) * 3,
@@ -110,7 +111,7 @@ function MuteButton() {
         zIndex: 10,
       }}
     >
-      {muted ? '🔇' : '🔊'}
+      {muted ? '' : ''}
     </button>
   );
 }
@@ -186,8 +187,8 @@ function InstructionOverlay({
    SLOTS GAME
 ───────────────────────────────────────────── */
 function SlotsGame({ prizeName, onWin }: { prizeName: string; onWin: () => void }) {
-  const SYMBOLS = ['🌯', '🎁', '⭐', '🏆', '💰', '🎰'];
-  const WIN_SYMBOL = '🌯';
+  const SYMBOLS = ['', '', '', '', '', ''];
+  const WIN_SYMBOL = '';
   const WIN_IDX = SYMBOLS.indexOf(WIN_SYMBOL);
 
   type SlotState = 'instructing' | 'idle' | 'spinning' | 'won';
@@ -279,7 +280,7 @@ function SlotsGame({ prizeName, onWin }: { prizeName: string; onWin: () => void 
       }}>
         {state === 'instructing' && (
           <InstructionOverlay
-            icon="🎰"
+            icon=""
             text="Toca el botón para girar los rodillos"
             extra={
               <div style={{ fontSize: 28, animation: 'bounceDown 0.8s ease-in-out infinite' }}>
@@ -292,7 +293,7 @@ function SlotsGame({ prizeName, onWin }: { prizeName: string; onWin: () => void 
         )}
         <MuteButton />
         <div style={{ fontSize: 14, fontWeight: 800, color: '#2563EB', letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: 16 }}>
-          🎰 Tragamonedas
+          <RectangleGroupIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Tragamonedas
         </div>
 
         <div style={{
@@ -359,7 +360,7 @@ function SlotsGame({ prizeName, onWin }: { prizeName: string; onWin: () => void 
             <div style={{ fontSize: 28, fontWeight: 900, color: '#2563EB', letterSpacing: '0.05em' }}>
               ¡¡GANASTE!!
             </div>
-            <div style={{ fontSize: 24 }}>🎉🎊🎉</div>
+            <div style={{ fontSize: 24 }}><SparklesIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /><SparklesIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /><SparklesIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
           </div>
         )}
 
@@ -383,7 +384,7 @@ function SlotsGame({ prizeName, onWin }: { prizeName: string; onWin: () => void 
               transition: 'background 0.2s',
             }}
           >
-            {state === 'spinning' ? '⏳ Girando...' : '🎰 JALAR'}
+            {state === 'spinning' ? '⏳ Girando...' : ' JALAR'}
           </button>
         )}
 
@@ -506,14 +507,14 @@ function RouletteGame({ prizeName, onWin }: { prizeName: string; onWin: () => vo
       }}>
         {state === 'instructing' && (
           <InstructionOverlay
-            icon="🎡"
+            icon=""
             text="Toca GIRAR para hacer girar la ruleta"
             onDismiss={() => setState('idle')}
           />
         )}
         <MuteButton />
         <div style={{ fontSize: 14, fontWeight: 800, color: '#2563EB', letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: 16 }}>
-          🎡 Ruleta de la Suerte
+          <RectangleGroupIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Ruleta de la Suerte
         </div>
 
         <div style={{ position: 'relative', display: 'inline-block' }}>
@@ -550,7 +551,7 @@ function RouletteGame({ prizeName, onWin }: { prizeName: string; onWin: () => vo
                     transform={`rotate(${(i + 0.5) * segAngle}, ${textPos(i).x}, ${textPos(i).y})`}
                     style={{ userSelect: 'none' }}
                   >
-                    {i === 0 ? '⭐' : ''}{LABELS[i].split('\n').map((line, li) => (
+                    {i === 0 ? '' : ''}{LABELS[i].split('\n').map((line, li) => (
                       <tspan key={li} x={textPos(i).x} dy={li === 0 ? (LABELS[i].includes('\n') ? '-5' : '0') : '12'}>{line}</tspan>
                     ))}
                   </text>
@@ -563,7 +564,7 @@ function RouletteGame({ prizeName, onWin }: { prizeName: string; onWin: () => vo
 
         {state === 'won' && (
           <div style={{ animation: 'winPop 0.5s ease-out', marginTop: 16 }}>
-            <div style={{ fontSize: 26, fontWeight: 900, color: '#38BDF8' }}>⭐ ¡PREMIO! ⭐</div>
+            <div style={{ fontSize: 26, fontWeight: 900, color: '#38BDF8' }}><StarIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> ¡PREMIO! <StarIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
             <div style={{ color: 'rgba(255,255,255,0.7)', fontSize: 13, marginTop: 4 }}>¡Caíste en el segmento dorado!</div>
           </div>
         )}
@@ -587,7 +588,7 @@ function RouletteGame({ prizeName, onWin }: { prizeName: string; onWin: () => vo
               transition: 'background 0.2s',
             }}
           >
-            {state === 'spinning' ? '⏳ Girando...' : '🎡 GIRAR'}
+            {state === 'spinning' ? '⏳ Girando...' : ' GIRAR'}
           </button>
         )}
 
@@ -691,7 +692,7 @@ function PenaltyGame({ prizeName, onWin }: { prizeName: string; onWin: () => voi
       }}>
         {state === 'instructing' && (
           <InstructionOverlay
-            icon="⚽"
+            icon=""
             text="Elige una zona de la portería para patear"
             extra={
               <div style={{ display: 'flex', gap: 6, justifyContent: 'center', flexWrap: 'wrap', marginTop: 4 }}>
@@ -710,7 +711,7 @@ function PenaltyGame({ prizeName, onWin }: { prizeName: string; onWin: () => voi
         )}
         <MuteButton />
         <div style={{ fontSize: 14, fontWeight: 800, color: '#2563EB', letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: 16 }}>
-          ⚽ Penales
+           Penales
         </div>
 
         {(state === 'idle' || state === 'instructing') && (
@@ -758,7 +759,7 @@ function PenaltyGame({ prizeName, onWin }: { prizeName: string; onWin: () => voi
               zIndex: 3,
               transition: 'left 0.35s cubic-bezier(0.22,1,0.36,1)',
               filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.5))',
-            }}>🧤</div>
+            }}></div>
 
             <div style={{
               position: 'absolute',
@@ -768,7 +769,7 @@ function PenaltyGame({ prizeName, onWin }: { prizeName: string; onWin: () => voi
               zIndex: 4,
               transition: state === 'kicking' || state === 'goal' ? 'left 0.5s ease-in, top 0.5s ease-in' : 'none',
               filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.6))',
-            }}>⚽</div>
+            }}></div>
 
             {state === 'goal' && (
               <div style={{
@@ -816,7 +817,7 @@ function PenaltyGame({ prizeName, onWin }: { prizeName: string; onWin: () => voi
 
         {state === 'goal' && (
           <div style={{ animation: 'goalPop 0.5s ease-out', marginTop: 16 }}>
-            <div style={{ fontSize: 26, fontWeight: 900, color: '#2563EB' }}>⚽ ¡GOOOOOL!</div>
+            <div style={{ fontSize: 26, fontWeight: 900, color: '#2563EB' }}> ¡GOOOOOL!</div>
             <div style={{ color: '#38BDF8', fontSize: 18, fontWeight: 900 }}>¡GANASTE!</div>
           </div>
         )}
@@ -995,7 +996,7 @@ function ScratchGame({ prizeName, onWin }: { prizeName: string; onWin: () => voi
       }}>
         {instructing && (
           <InstructionOverlay
-            icon="🎫"
+            icon=""
             text="Rasca la tarjeta con el dedo para revelar tu premio"
             extra={
               <div style={{ marginTop: 4 }}>
@@ -1006,7 +1007,7 @@ function ScratchGame({ prizeName, onWin }: { prizeName: string; onWin: () => voi
                     100%{transform:translate(0,0) rotate(-20deg)}
                   }
                 `}</style>
-                <span style={{ fontSize: 32, display: 'inline-block', animation: 'scratchFinger 1s ease-in-out infinite' }}>👆</span>
+                <span style={{ fontSize: 32, display: 'inline-block', animation: 'scratchFinger 1s ease-in-out infinite' }}></span>
               </div>
             }
             onDismiss={() => setInstructing(false)}
@@ -1034,7 +1035,7 @@ function ScratchGame({ prizeName, onWin }: { prizeName: string; onWin: () => voi
             gap: 6,
             animation: revealed ? 'prizeReveal 0.5s ease-out' : 'none',
           }}>
-            <div style={{ fontSize: 28 }}>🎉</div>
+            <div style={{ fontSize: 28 }}><SparklesIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
             <div style={{
               fontSize: 15,
               fontWeight: 900,

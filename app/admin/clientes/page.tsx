@@ -1,4 +1,5 @@
 'use client';
+import { UsersIcon } from '@heroicons/react/24/outline';
 
 import { useEffect, useState, useMemo } from 'react';
 import { Avatar } from '@/app/components/Avatar';
@@ -103,11 +104,11 @@ function isBirthdayThisMonth(claims: Claim[]): boolean {
 
 
 const SEGMENTS: { key: Segment; label: string; icon: string }[] = [
-  { key: 'todos', label: 'Todos', icon: '👥' },
-  { key: 'frecuentes', label: 'Frecuentes', icon: '⭐' },
-  { key: 'cumpleanos', label: 'Cumpleaños este mes', icon: '🎂' },
+  { key: 'todos', label: 'Todos', icon: '' },
+  { key: 'frecuentes', label: 'Frecuentes', icon: '' },
+  { key: 'cumpleanos', label: 'Cumpleaños este mes', icon: '' },
   { key: 'sin_canjear', label: 'Sin canjear', icon: '⏳' },
-  { key: 'nuevos', label: 'Nuevos', icon: '✨' },
+  { key: 'nuevos', label: 'Nuevos', icon: '' },
 ];
 
 function SegmentButton({
@@ -437,7 +438,7 @@ export default function ClientesPage() {
         <div className="max-w-7xl mx-auto flex items-start justify-between flex-wrap gap-4">
           <div>
             <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-widest mb-3" style={{ background: 'rgba(255,255,255,0.15)', color: 'rgba(219,234,254,0.9)', border: '1px solid rgba(255,255,255,0.2)' }}>
-              👥 Base de Clientes
+              <UsersIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Base de Clientes
             </div>
             <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Mis Clientes</h1>
             <p className="text-blue-200/70 mt-1.5 text-sm">Perfiles de todos los clientes que han canjeado premios</p>
@@ -489,10 +490,10 @@ export default function ClientesPage() {
         ) : (
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
           {[
-            { label: 'Clientes únicos', value: customers.length, icon: '👥', borderColor: '#2563EB', bgColor: '#fde8e0', numColor: '#2563EB' },
-            { label: 'Frecuentes', value: segmentCounts.frecuentes, icon: '⭐', borderColor: '#0284C7', bgColor: '#fef3c7', numColor: '#0EA5E9' },
+            { label: 'Clientes únicos', value: customers.length, icon: '', borderColor: '#2563EB', bgColor: '#fde8e0', numColor: '#2563EB' },
+            { label: 'Frecuentes', value: segmentCounts.frecuentes, icon: '', borderColor: '#0284C7', bgColor: '#fef3c7', numColor: '#0EA5E9' },
             { label: 'Sin canjear', value: segmentCounts.sin_canjear, icon: '⏳', borderColor: '#0284C7', bgColor: '#fef9c3', numColor: '#1D4ED8' },
-            { label: 'Nuevos (30d)', value: segmentCounts.nuevos, icon: '✨', borderColor: '#8b5cf6', bgColor: '#ede9fe', numColor: '#7c3aed' },
+            { label: 'Nuevos (30d)', value: segmentCounts.nuevos, icon: '', borderColor: '#8b5cf6', bgColor: '#ede9fe', numColor: '#7c3aed' },
           ].map(({ label, value, icon, borderColor, bgColor, numColor }) => (
             <div
               key={label}

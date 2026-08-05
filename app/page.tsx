@@ -1,4 +1,5 @@
 'use client';
+import { BoltIcon, BuildingStorefrontIcon, CameraIcon, ChatBubbleLeftRightIcon, ClipboardDocumentListIcon, EnvelopeOpenIcon, ExclamationTriangleIcon, FireIcon, HeartIcon, MapPinIcon, ShoppingCartIcon, SparklesIcon, StarIcon } from '@heroicons/react/24/outline';
 
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
@@ -429,7 +430,7 @@ function MenuItemCard({ name, desc, price, gradient, delay, onPhotoClick, popula
           <PhotoBlock gradient={gradient} onClick={onPhotoClick} style={{ aspectRatio: '4 / 3', borderRadius: 0 }} />
           {popular && (
             <div style={{ position: 'absolute', top: 12, left: 12, background: C.lime, color: C.greenDark, fontSize: 10, fontWeight: 900, letterSpacing: '0.1em', padding: '5px 12px', borderRadius: 999 }}>
-              🔥 MÁS POPULAR
+              <FireIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> MÁS POPULAR
             </div>
           )}
           {badge && !popular && (
@@ -452,7 +453,7 @@ function MenuItemCard({ name, desc, price, gradient, delay, onPhotoClick, popula
                 </div>
                 {details.allergens.length > 0 && (
                   <div style={{ fontSize: 12, color: 'rgba(26,26,26,0.5)' }}>
-                    ⚠️ {details.allergens.join(', ')}
+                    <ExclamationTriangleIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> {details.allergens.join(', ')}
                   </div>
                 )}
               </div>
@@ -625,38 +626,38 @@ const MODOS = [
 const BOWL_STEPS = [
   {
     n: '01', label: 'Escoge tu base', options: [
-      { name: 'Arroz integral', kcal: 215, protein: 5, emoji: '🍚', price: 5000 },
-      { name: 'Quinoa', kcal: 222, protein: 8, emoji: '🌾', price: 7000 },
-      { name: 'Mix de hojas verdes', kcal: 15, protein: 1, emoji: '🥬', price: 4000 },
-      { name: 'Fideos de calabacín', kcal: 20, protein: 1, emoji: '🥒', price: 6000 },
+      { name: 'Arroz integral', kcal: 215, protein: 5, emoji: '', price: 5000 },
+      { name: 'Quinoa', kcal: 222, protein: 8, emoji: '', price: 7000 },
+      { name: 'Mix de hojas verdes', kcal: 15, protein: 1, emoji: '', price: 4000 },
+      { name: 'Fideos de calabacín', kcal: 20, protein: 1, emoji: '', price: 6000 },
     ],
   },
   {
     n: '02', label: 'Escoge tu proteína', options: [
-      { name: 'Pollo a la plancha', kcal: 165, protein: 31, emoji: '🍗', price: 8000 },
-      { name: 'Carne de res', kcal: 250, protein: 26, emoji: '🥩', price: 10000 },
-      { name: 'Salmón', kcal: 208, protein: 20, emoji: '🐟', price: 12000 },
+      { name: 'Pollo a la plancha', kcal: 165, protein: 31, emoji: '', price: 8000 },
+      { name: 'Carne de res', kcal: 250, protein: 26, emoji: '', price: 10000 },
+      { name: 'Salmón', kcal: 208, protein: 20, emoji: '', price: 12000 },
       { name: 'Tofu marinado', kcal: 144, protein: 15, emoji: '🫘', price: 7000 },
       { name: 'Garbanzos', kcal: 164, protein: 9, emoji: '🫛', price: 6000 },
     ],
   },
   {
     n: '03', label: 'Vegetales frescos', options: [
-      { name: 'Aguacate', kcal: 160, protein: 2, emoji: '🥑', price: 4000 },
-      { name: 'Tomate cherry', kcal: 18, protein: 1, emoji: '🍅', price: 2000 },
-      { name: 'Kale', kcal: 33, protein: 3, emoji: '🥦', price: 2000 },
+      { name: 'Aguacate', kcal: 160, protein: 2, emoji: '', price: 4000 },
+      { name: 'Tomate cherry', kcal: 18, protein: 1, emoji: '', price: 2000 },
+      { name: 'Kale', kcal: 33, protein: 3, emoji: '', price: 2000 },
       { name: 'Edamame', kcal: 121, protein: 11, emoji: '🫛', price: 3000 },
-      { name: 'Pico de gallo', kcal: 20, protein: 1, emoji: '🌶️', price: 2000 },
-      { name: 'Maíz', kcal: 96, protein: 3, emoji: '🌽', price: 2000 },
+      { name: 'Pico de gallo', kcal: 20, protein: 1, emoji: '', price: 2000 },
+      { name: 'Maíz', kcal: 96, protein: 3, emoji: '', price: 2000 },
     ],
   },
   {
     n: '04', label: 'Salsas y toppings', options: [
-      { name: 'Tahini', kcal: 89, protein: 3, emoji: '🥜', price: 2000 },
-      { name: 'Chipotle', kcal: 35, protein: 0, emoji: '🌶️', price: 1000 },
-      { name: 'Vinagreta cítrica', kcal: 45, protein: 0, emoji: '🍋', price: 1000 },
-      { name: 'Queso feta', kcal: 75, protein: 4, emoji: '🧀', price: 3000 },
-      { name: 'Semillas tostadas', kcal: 52, protein: 2, emoji: '✨', price: 2000 },
+      { name: 'Tahini', kcal: 89, protein: 3, emoji: '', price: 2000 },
+      { name: 'Chipotle', kcal: 35, protein: 0, emoji: '', price: 1000 },
+      { name: 'Vinagreta cítrica', kcal: 45, protein: 0, emoji: '', price: 1000 },
+      { name: 'Queso feta', kcal: 75, protein: 4, emoji: '', price: 3000 },
+      { name: 'Semillas tostadas', kcal: 52, protein: 2, emoji: '', price: 2000 },
     ],
   },
 ];
@@ -675,7 +676,7 @@ const MENU = [
     items: [
       { name: 'Burrito Clásico', desc: 'Arroz, frijoles, carne de res, queso fundido y pico de gallo.', price: '$26.000', popular: true },
       { name: 'Burrito Veggie', desc: 'Arroz, frijoles negros, guacamole y vegetales asados.', price: '$24.000' },
-      { name: 'Burrito Pollo Picante', desc: 'Pollo al chipotle, arroz, maíz y salsa habanero.', price: '$27.000', badge: '🔥 PICANTE' },
+      { name: 'Burrito Pollo Picante', desc: 'Pollo al chipotle, arroz, maíz y salsa habanero.', price: '$27.000', badge: ' PICANTE' },
     ],
   },
   {
@@ -947,7 +948,7 @@ function JobApplicationForm() {
   if (submitted) {
     return (
       <div style={{ textAlign: 'center', padding: '32px 16px' }}>
-        <div style={{ fontSize: 56, marginBottom: 16 }}>🎉</div>
+        <div style={{ fontSize: 56, marginBottom: 16 }}><SparklesIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
         <h4 style={{ fontSize: 20, fontWeight: 900, color: '#fff', margin: 0, marginBottom: 10 }}>¡Recibimos tu CV!</h4>
         <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.55)', lineHeight: 1.6, margin: 0 }}>
           El equipo de talento MODO lo revisará y te escribirá en menos de 48 horas a <strong style={{ color: C.lime }}>{form.email}</strong>.
@@ -993,7 +994,7 @@ function JobApplicationForm() {
         <label style={{ fontSize: 11, fontWeight: 800, color: 'rgba(255,255,255,0.45)', letterSpacing: '0.1em', display: 'block', marginBottom: 6 }}>HOJA DE VIDA / CV *</label>
         <input ref={fileRef} type="file" accept=".pdf,.doc,.docx" required style={{ display: 'none' }} onChange={(e) => setFileName(e.target.files?.[0]?.name ?? '')} />
         <button type="button" onClick={() => fileRef.current?.click()} style={{ width: '100%', background: fileName ? 'rgba(168,198,58,0.1)' : 'rgba(255,255,255,0.04)', border: `1px dashed ${fileName ? C.lime : 'rgba(255,255,255,0.2)'}`, borderRadius: 12, padding: '18px 20px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 12, color: fileName ? C.lime : 'rgba(255,255,255,0.4)', fontSize: 13, fontWeight: 700, transition: 'all 0.2s ease' }}>
-          <span style={{ fontSize: 22 }}>{fileName ? '📄' : '📎'}</span>
+          <span style={{ fontSize: 22 }}>{fileName ? '' : '📎'}</span>
           <span style={{ flex: 1, textAlign: 'left', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
             {fileName || 'Adjuntar CV (PDF, DOC, DOCX — máx 5 MB)'}
           </span>
@@ -1018,7 +1019,7 @@ function PromoHeroCard({ goTo }: { goTo: (v: 'menu') => void }) {
         <div style={{ position: 'absolute', right: -60, top: -60, width: 360, height: 360, borderRadius: '50%', border: '1px solid rgba(168,198,58,0.1)' }} />
         <div style={{ position: 'absolute', right: 0, top: 0, width: 180, height: 180, borderRadius: '50%', border: '1px solid rgba(168,198,58,0.07)' }} />
         <div style={{ position: 'relative', zIndex: 1 }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(168,198,58,0.2)', border: '1px solid rgba(168,198,58,0.4)', borderRadius: 999, padding: '6px 18px', fontSize: 11, fontWeight: 900, letterSpacing: '0.14em', color: C.lime, marginBottom: 24 }}>⭐ PROMO ESTRELLA DE LA SEMANA</div>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(168,198,58,0.2)', border: '1px solid rgba(168,198,58,0.4)', borderRadius: 999, padding: '6px 18px', fontSize: 11, fontWeight: 900, letterSpacing: '0.14em', color: C.lime, marginBottom: 24 }}><StarIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> PROMO ESTRELLA DE LA SEMANA</div>
           <h2 style={{ fontSize: 'clamp(32px, 4vw, 56px)', fontWeight: 900, color: '#fff', margin: 0, marginBottom: 16, lineHeight: 1.05, letterSpacing: '-0.02em' }}>2×1 en Burritos<br /><span style={{ color: C.lime }}>todos los martes</span></h2>
           <p style={{ fontSize: 15, color: 'rgba(255,255,255,0.65)', margin: 0, marginBottom: 32, maxWidth: 440, lineHeight: 1.65 }}>Lleva 2 burritos por el precio de 1 en cualquier local de Colombia. Sin límite de pedidos. Solo los martes.</p>
           <div style={{ display: 'flex', gap: 14 }}>
@@ -1027,7 +1028,7 @@ function PromoHeroCard({ goTo }: { goTo: (v: 'menu') => void }) {
           </div>
         </div>
         <div className="float-badge" style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }}>
-          <div style={{ fontSize: 100, filter: 'drop-shadow(0 16px 32px rgba(0,0,0,0.35))' }}>🌯</div>
+          <div style={{ fontSize: 100, filter: 'drop-shadow(0 16px 32px rgba(0,0,0,0.35))' }}></div>
           <div style={{ background: 'rgba(168,198,58,0.25)', border: '1px solid rgba(168,198,58,0.4)', borderRadius: 16, padding: '12px 22px', textAlign: 'center' }}>
             <div style={{ fontSize: 28, fontWeight: 900, color: C.lime }}>2×1</div>
             <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.6)', fontWeight: 700, letterSpacing: '0.08em', marginTop: 2 }}>SOLO MARTES</div>
@@ -1327,7 +1328,7 @@ export default function HomePage() {
       <CustomCursor />
       {/* ============ PROMO BAR ============ */}
       <div style={{ background: C.lime, color: C.greenDark, textAlign: 'center', padding: '10px 16px', fontSize: 13, fontWeight: 800, letterSpacing: '0.04em' }}>
-        🔥 20% DE DESCUENTO EN TU PRIMER PEDIDO — usa el código <span style={{ textDecoration: 'underline' }}>MODO20</span> · Envío gratis desde $50.000
+        <FireIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> 20% DE DESCUENTO EN TU PRIMER PEDIDO — usa el código <span style={{ textDecoration: 'underline' }}>MODO20</span> · Envío gratis desde $50.000
         {timeLeft && <span style={{ marginLeft: 10, fontVariantNumeric: 'tabular-nums' }}>· Termina en {timeLeft}</span>}
       </div>
 
@@ -1457,9 +1458,9 @@ export default function HomePage() {
           {/* Floating food chips — desktop only */}
           <div className="hero-chips" style={{ position: 'absolute', right: 80, top: '50%', transform: 'translateY(-50%)', display: 'flex', flexDirection: 'column', gap: 16, zIndex: 3 }}>
             {[
-              { emoji: '🥗', name: 'Bowl Fresh Greens', sub: '410 kcal · $28.000', delay: '0s' },
-              { emoji: '🌯', name: 'Burrito Clásico', sub: '620 kcal · $26.000', delay: '0.12s' },
-              { emoji: '🥑', name: 'Bowl Tex-Mex', sub: '590 kcal · $30.000', delay: '0.24s' },
+              { emoji: '', name: 'Bowl Fresh Greens', sub: '410 kcal · $28.000', delay: '0s' },
+              { emoji: '', name: 'Burrito Clásico', sub: '620 kcal · $26.000', delay: '0.12s' },
+              { emoji: '', name: 'Bowl Tex-Mex', sub: '590 kcal · $30.000', delay: '0.24s' },
             ].map((chip) => (
               <button
                 key={chip.name}
@@ -2126,7 +2127,7 @@ export default function HomePage() {
           )}
           {geoStatus === 'done' && nearestCity && (
             <p style={{ fontSize: 13, color: C.green, marginBottom: 16, marginTop: -8, fontWeight: 700 }}>
-              📍 Tu local más cercano es {nearestCity}.
+              <MapPinIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Tu local más cercano es {nearestCity}.
             </p>
           )}
         </Reveal>
@@ -2326,7 +2327,7 @@ export default function HomePage() {
       <section style={{ padding: '80px 48px', maxWidth: 1400, margin: '0 auto' }}>
         <Reveal>
           <div style={{ textAlign: 'center', marginBottom: 64 }}>
-            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(240,122,39,0.1)', border: `1px solid ${C.orange}`, borderRadius: 999, padding: '6px 18px', fontSize: 12, fontWeight: 800, letterSpacing: '0.12em', color: C.orange, marginBottom: 16 }}>🔥 OFERTAS ACTIVAS</div>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(240,122,39,0.1)', border: `1px solid ${C.orange}`, borderRadius: 999, padding: '6px 18px', fontSize: 12, fontWeight: 800, letterSpacing: '0.12em', color: C.orange, marginBottom: 16 }}><FireIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> OFERTAS ACTIVAS</div>
             <h2 style={{ fontSize: 'clamp(36px, 5vw, 64px)', fontWeight: 900, color: C.green, margin: 0, letterSpacing: '-0.02em' }}>PROMOS<br /><span style={{ color: C.orange }}>DE LA SEMANA</span></h2>
             <p style={{ fontSize: 16, color: 'rgba(26,26,26,0.5)', marginTop: 16, maxWidth: 480, margin: '16px auto 0' }}>Aprovecha antes de que se acaben — se renuevan cada lunes a las 8 am.</p>
           </div>
@@ -2341,12 +2342,12 @@ export default function HomePage() {
         {/* ── PROMO CARDS GRID ── */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20, marginBottom: 56 }}>
           {[
-            { emoji: '🥗', tag: 'BIENVENIDA', title: 'MODO20 — 20% OFF', desc: 'Tu primer pedido con 20% de descuento y envío gratis. Solo para nuevos usuarios.', color: C.orange, bg: 'linear-gradient(135deg,#FFF5EC,#FFF)', border: `2px solid ${C.orange}22`, cta: 'USAR CÓDIGO' },
-            { emoji: '📱', tag: 'APP EXCLUSIVO', title: 'Doble puntos', desc: 'Descarga la app y gana 2× puntos en todos tus pedidos hasta el domingo.', color: C.green, bg: 'linear-gradient(135deg,#EAF2EC,#FFF)', border: '2px solid #1F3D2E22', cta: 'DESCARGAR APP' },
-            { emoji: '🥤', tag: 'LIMITADO ⚡', title: 'Smoothie gratis', desc: 'Smoothie de mango-maracuyá gratis en pedidos superiores a $45.000.', color: '#0C7C59', bg: 'linear-gradient(135deg,#E6F5F0,#FFF)', border: '2px solid #0C7C5922', cta: 'PEDIR AHORA' },
-            { emoji: '👫', tag: 'REFERIDOS', title: 'Invita y gana $10k', desc: 'Cada amigo que invites y pida, ambos reciben $10.000 de saldo en la app.', color: '#7B5EA7', bg: 'linear-gradient(135deg,#F4EFF9,#FFF)', border: '2px solid #7B5EA722', cta: 'OBTENER CÓDIGO' },
-            { emoji: '🌱', tag: 'VEGANO VIERNES', title: 'Bowl verde $20.000', desc: 'Todos los viernes, cualquier bowl 100% vegano a precio especial.', color: '#2E8B57', bg: 'linear-gradient(135deg,#E8F5EE,#FFF)', border: '2px solid #2E8B5722', cta: 'VER BOWLS' },
-            { emoji: '🏋️', tag: 'MODO PRO', title: 'Proteína extra gratis', desc: 'Sube a MODO PRO y recibe proteína extra gratis en cada pedido siempre.', color: C.green, bg: 'linear-gradient(135deg,#EAF2EC,#FFF)', border: '2px solid #1F3D2E22', cta: 'SER MODO PRO' },
+            { emoji: '', tag: 'BIENVENIDA', title: 'MODO20 — 20% OFF', desc: 'Tu primer pedido con 20% de descuento y envío gratis. Solo para nuevos usuarios.', color: C.orange, bg: 'linear-gradient(135deg,#FFF5EC,#FFF)', border: `2px solid ${C.orange}22`, cta: 'USAR CÓDIGO' },
+            { emoji: '', tag: 'APP EXCLUSIVO', title: 'Doble puntos', desc: 'Descarga la app y gana 2× puntos en todos tus pedidos hasta el domingo.', color: C.green, bg: 'linear-gradient(135deg,#EAF2EC,#FFF)', border: '2px solid #1F3D2E22', cta: 'DESCARGAR APP' },
+            { emoji: '', tag: 'LIMITADO ', title: 'Smoothie gratis', desc: 'Smoothie de mango-maracuyá gratis en pedidos superiores a $45.000.', color: '#0C7C59', bg: 'linear-gradient(135deg,#E6F5F0,#FFF)', border: '2px solid #0C7C5922', cta: 'PEDIR AHORA' },
+            { emoji: '', tag: 'REFERIDOS', title: 'Invita y gana $10k', desc: 'Cada amigo que invites y pida, ambos reciben $10.000 de saldo en la app.', color: '#7B5EA7', bg: 'linear-gradient(135deg,#F4EFF9,#FFF)', border: '2px solid #7B5EA722', cta: 'OBTENER CÓDIGO' },
+            { emoji: '', tag: 'VEGANO VIERNES', title: 'Bowl verde $20.000', desc: 'Todos los viernes, cualquier bowl 100% vegano a precio especial.', color: '#2E8B57', bg: 'linear-gradient(135deg,#E8F5EE,#FFF)', border: '2px solid #2E8B5722', cta: 'VER BOWLS' },
+            { emoji: '', tag: 'MODO PRO', title: 'Proteína extra gratis', desc: 'Sube a MODO PRO y recibe proteína extra gratis en cada pedido siempre.', color: C.green, bg: 'linear-gradient(135deg,#EAF2EC,#FFF)', border: '2px solid #1F3D2E22', cta: 'SER MODO PRO' },
           ].map((p, i) => (
             <Reveal key={p.title} delay={i * 60}>
               <div className="promo-card-v2" style={{ background: p.bg, border: p.border, borderRadius: 22, padding: '32px 28px 26px', display: 'flex', flexDirection: 'column', gap: 14, height: '100%', cursor: 'pointer' }}>
@@ -2365,9 +2366,9 @@ export default function HomePage() {
           <div style={{ background: C.green, borderRadius: 24, padding: '48px 56px', display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 0, marginBottom: 56, overflow: 'hidden', position: 'relative' }}>
             <div style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(circle at 80% 50%, rgba(168,198,58,0.15) 0%, transparent 60%)' }} />
             {[
-              { value: '$2.3M', label: 'Ahorrados por la comunidad este mes', icon: '💰' },
-              { value: '8.400', label: 'Promos canjeadas esta semana', icon: '🎫' },
-              { value: '4.2×', label: 'Pedidos promedio por cliente activo', icon: '🔄' },
+              { value: '$2.3M', label: 'Ahorrados por la comunidad este mes', icon: '' },
+              { value: '8.400', label: 'Promos canjeadas esta semana', icon: '' },
+              { value: '4.2×', label: 'Pedidos promedio por cliente activo', icon: '' },
             ].map((stat, i) => (
               <div key={stat.label} style={{ textAlign: 'center', padding: '24px 32px', borderRight: i < 2 ? '1px solid rgba(255,255,255,0.1)' : 'none', position: 'relative', zIndex: 1 }}>
                 <div style={{ fontSize: 32, marginBottom: 8 }}>{stat.icon}</div>
@@ -2383,7 +2384,7 @@ export default function HomePage() {
           <div style={{ background: `linear-gradient(135deg, ${C.greenDark} 0%, #0B1F16 100%)`, borderRadius: 24, padding: '44px 56px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 32, flexWrap: 'wrap', position: 'relative', overflow: 'hidden' }}>
             <div style={{ position: 'absolute', right: -60, bottom: -60, width: 240, height: 240, borderRadius: '50%', background: 'rgba(168,198,58,0.07)' }} />
             <div style={{ position: 'relative', zIndex: 1 }}>
-              <div style={{ fontSize: 11, fontWeight: 900, letterSpacing: '0.14em', color: C.lime, marginBottom: 10 }}>📬 NEWSLETTER MODO</div>
+              <div style={{ fontSize: 11, fontWeight: 900, letterSpacing: '0.14em', color: C.lime, marginBottom: 10 }}><EnvelopeOpenIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> NEWSLETTER MODO</div>
               <h3 style={{ fontSize: 22, fontWeight: 900, color: '#fff', margin: 0, marginBottom: 8 }}>Promos antes que nadie</h3>
               <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.55)', margin: 0 }}>Cada lunes a las 8 am, las nuevas ofertas directo a tu correo.</p>
             </div>
@@ -2430,10 +2431,10 @@ export default function HomePage() {
           <Reveal delay={100}>
             <div style={{ display: 'flex', gap: 48, marginTop: 48, flexWrap: 'wrap' }}>
               {[
-                { val: '50.234', label: 'Miembros', icon: '👥' },
-                { val: '4.8★', label: 'Calificación promedio', icon: '⭐' },
-                { val: '380K', label: 'Posts con #MiModoReal', icon: '📸' },
-                { val: '12', label: 'Ciudades de Colombia', icon: '📍' },
+                { val: '50.234', label: 'Miembros', icon: '' },
+                { val: '4.8★', label: 'Calificación promedio', icon: '' },
+                { val: '380K', label: 'Posts con #MiModoReal', icon: '' },
+                { val: '12', label: 'Ciudades de Colombia', icon: '' },
               ].map((s) => (
                 <div key={s.label} style={{ display: 'flex', flexDirection: 'column' }}>
                   <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.45)', fontWeight: 700, letterSpacing: '0.1em' }}>{s.icon} {s.label.toUpperCase()}</span>
@@ -2471,9 +2472,9 @@ export default function HomePage() {
                 </div>
                 <div style={{ position: 'absolute', bottom: 14, left: 14, right: 14, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <div style={{ display: 'flex', gap: 6 }}>
-                    <div style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', borderRadius: 999, padding: '4px 10px', fontSize: 11, color: '#fff', fontWeight: 700 }}>❤️ {120 + i * 37}</div>
+                    <div style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', borderRadius: 999, padding: '4px 10px', fontSize: 11, color: '#fff', fontWeight: 700 }}><HeartIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> {120 + i * 37}</div>
                   </div>
-                  <div style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', borderRadius: 999, padding: '4px 10px', fontSize: 11, color: '#fff', fontWeight: 700 }}>💬 {8 + i * 5}</div>
+                  <div style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', borderRadius: 999, padding: '4px 10px', fontSize: 11, color: '#fff', fontWeight: 700 }}><ChatBubbleLeftRightIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> {8 + i * 5}</div>
                 </div>
               </div>
             </Reveal>
@@ -2519,7 +2520,7 @@ export default function HomePage() {
             <div style={{ position: 'absolute', right: -100, top: -100, width: 500, height: 500, borderRadius: '50%', border: '1px solid rgba(168,198,58,0.1)' }} />
             <div style={{ position: 'absolute', right: -30, top: -30, width: 300, height: 300, borderRadius: '50%', border: '1px solid rgba(168,198,58,0.07)' }} />
             <div style={{ position: 'relative', zIndex: 1 }}>
-              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(168,198,58,0.15)', border: '1px solid rgba(168,198,58,0.25)', borderRadius: 999, padding: '6px 18px', fontSize: 11, fontWeight: 900, letterSpacing: '0.14em', color: C.lime, marginBottom: 24 }}>📸 RETO SEMANAL ACTIVO</div>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(168,198,58,0.15)', border: '1px solid rgba(168,198,58,0.25)', borderRadius: 999, padding: '6px 18px', fontSize: 11, fontWeight: 900, letterSpacing: '0.14em', color: C.lime, marginBottom: 24 }}><CameraIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> RETO SEMANAL ACTIVO</div>
               <h2 style={{ fontSize: 'clamp(28px, 3.5vw, 48px)', fontWeight: 900, color: '#fff', margin: 0, marginBottom: 16, lineHeight: 1.1 }}>Comparte tu MODO<br /><span style={{ color: C.lime }}>y gana $30.000</span></h2>
               <p style={{ fontSize: 15, color: 'rgba(255,255,255,0.65)', margin: 0, marginBottom: 32, maxWidth: 460, lineHeight: 1.65 }}>Sube una foto de tu bowl con <strong style={{ color: C.lime }}>#MiModoReal</strong>, etiqueta a @modo en Instagram y participa. Elegimos un ganador cada domingo a las 6 pm.</p>
               <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap' }}>
@@ -2528,7 +2529,7 @@ export default function HomePage() {
               </div>
             </div>
             <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16 }}>
-              <div style={{ fontSize: 90, filter: 'drop-shadow(0 12px 24px rgba(0,0,0,0.3))' }}>📸</div>
+              <div style={{ fontSize: 90, filter: 'drop-shadow(0 12px 24px rgba(0,0,0,0.3))' }}><CameraIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
               <div style={{ background: 'rgba(168,198,58,0.2)', border: '1px solid rgba(168,198,58,0.35)', borderRadius: 16, padding: '14px 24px', textAlign: 'center' }}>
                 <div style={{ fontSize: 22, fontWeight: 900, color: C.lime }}>380K+</div>
                 <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.6)', fontWeight: 700, letterSpacing: '0.08em' }}>POSTS CREADOS</div>
@@ -2562,7 +2563,7 @@ export default function HomePage() {
         ))}
         <div style={{ maxWidth: 1400, margin: '0 auto', position: 'relative', zIndex: 1, display: 'grid', gridTemplateColumns: '1fr auto', gap: 48, alignItems: 'center' }}>
           <Reveal>
-            <div style={{ fontSize: 11, fontWeight: 900, letterSpacing: '0.16em', color: C.lime, marginBottom: 16 }}>⚡ PROGRAMA DE LEALTAD</div>
+            <div style={{ fontSize: 11, fontWeight: 900, letterSpacing: '0.16em', color: C.lime, marginBottom: 16 }}><BoltIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> PROGRAMA DE LEALTAD</div>
             <h1 style={{ fontSize: 'clamp(40px, 5.5vw, 72px)', fontWeight: 900, color: '#fff', margin: 0, lineHeight: 1.05, letterSpacing: '-0.03em' }}>TUS<br /><span style={{ color: C.lime }}>PUNTOS</span><br />MODO</h1>
             <p style={{ fontSize: 16, color: 'rgba(255,255,255,0.6)', marginTop: 20, maxWidth: 460, lineHeight: 1.65 }}>Cada peso que gastas en MODO se convierte en puntos. Acumula, sube de nivel y canjea por recompensas reales.</p>
             <div style={{ display: 'flex', gap: 14, marginTop: 32 }}>
@@ -2583,7 +2584,7 @@ export default function HomePage() {
                 <span>500</span><span>742 pts</span><span>2.000</span>
               </div>
               <div style={{ marginTop: 20, padding: '12px 16px', background: 'rgba(168,198,58,0.12)', borderRadius: 12, fontSize: 12, color: C.lime, fontWeight: 700 }}>
-                Te faltan 1.258 pts para ELITE 👑
+                Te faltan 1.258 pts para ELITE <StarIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" />
               </div>
             </div>
           </Reveal>
@@ -2600,10 +2601,10 @@ export default function HomePage() {
         </Reveal>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 0, marginBottom: 80, background: '#fff', borderRadius: 24, overflow: 'hidden', border: '1px solid rgba(26,26,26,0.08)', boxShadow: '0 4px 32px rgba(31,61,46,0.06)' }}>
           {[
-            { step: '01', icon: '🛒', title: 'Pide', desc: '$1.000 gastados = 1 punto. En la app, web o local.', color: C.orange },
-            { step: '02', icon: '⚡', title: 'Acumula', desc: 'Tus puntos aparecen en la app en segundos tras pagar.', color: C.lime },
+            { step: '01', icon: '', title: 'Pide', desc: '$1.000 gastados = 1 punto. En la app, web o local.', color: C.orange },
+            { step: '02', icon: '', title: 'Acumula', desc: 'Tus puntos aparecen en la app en segundos tras pagar.', color: C.lime },
             { step: '03', icon: '✕2', title: 'Multiplica', desc: 'Martes y app = doble de puntos. Automáticamente.', color: C.green },
-            { step: '04', icon: '🎁', title: 'Canjea', desc: 'Bowls, bebidas, descuentos y más desde la app.', color: '#7B5EA7' },
+            { step: '04', icon: '', title: 'Canjea', desc: 'Bowls, bebidas, descuentos y más desde la app.', color: '#7B5EA7' },
           ].map((s, i) => (
             <Reveal key={s.step} delay={i * 80}>
               <div style={{ padding: '40px 32px', borderRight: i < 3 ? '1px solid rgba(26,26,26,0.07)' : 'none', position: 'relative' }}>
@@ -2627,18 +2628,18 @@ export default function HomePage() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20, marginBottom: 72 }}>
           {[
             {
-              tier: 'STARTER', icon: '🌱', pts: '0 – 499', mult: '1×',
+              tier: 'STARTER', icon: '', pts: '0 – 499', mult: '1×',
               bg: '#fff', border: '1px solid rgba(26,26,26,0.1)', textColor: C.black, accent: C.green,
               perks: ['1 pto / $1.000 gastado', 'Bowl gratis en tu cumpleaños', 'Acceso a promos semanales', 'Historial de pedidos en app'],
             },
             {
-              tier: 'PRO', icon: '⚡', pts: '500 – 1.999', mult: '1.5×',
+              tier: 'PRO', icon: '', pts: '500 – 1.999', mult: '1.5×',
               bg: C.green, border: `2px solid ${C.lime}`, textColor: '#fff', accent: C.lime,
               badge: 'MÁS POPULAR',
               perks: ['1.5 pts / $1.000 gastado', 'Proteína extra siempre gratis', 'Envío gratis en todos los pedidos', 'Acceso anticipado a productos', 'Línea de atención prioritaria'],
             },
             {
-              tier: 'ELITE', icon: '👑', pts: '2.000+', mult: '2×',
+              tier: 'ELITE', icon: '', pts: '2.000+', mult: '2×',
               bg: C.greenDark, border: '1px solid rgba(168,198,58,0.2)', textColor: '#fff', accent: C.lime,
               perks: ['2 pts / $1.000 gastado', 'Mesa reservada en locales', 'Degustaciones exclusivas', 'Bowl mensual de cortesía', 'Concierge personal MODO'],
             },
@@ -2682,12 +2683,12 @@ export default function HomePage() {
         <Reveal delay={60}>
           <div style={{ background: '#fff', borderRadius: 24, overflow: 'hidden', border: '1px solid rgba(26,26,26,0.08)', boxShadow: '0 4px 32px rgba(31,61,46,0.06)', marginBottom: 64 }}>
             {[
-              { pts: 100, reward: 'Bebida gratis', detail: 'Smoothie o limonada natural de cualquier sabor', emoji: '🥤', tier: 'STARTER' },
-              { pts: 250, reward: 'Topping premium', detail: 'Aguacate, salmón ahumado o queso feta', emoji: '🥑', tier: 'STARTER' },
-              { pts: 500, reward: '$10.000 de descuento', detail: 'Aplica en cualquier pedido, sin mínimo', emoji: '💰', tier: 'PRO' },
-              { pts: 800, reward: 'Bowl completo gratis', detail: 'Cualquier combinación del menú sin costo', emoji: '🥗', tier: 'PRO' },
-              { pts: 1200, reward: 'Combo para 2 personas', detail: '2 bowls + 2 bebidas, ideal para compartir', emoji: '👫', tier: 'ELITE' },
-              { pts: 2000, reward: 'Caja sorpresa MODO', detail: 'Productos premium, merch exclusivo y $30.000 en saldo', emoji: '🎁', tier: 'ELITE' },
+              { pts: 100, reward: 'Bebida gratis', detail: 'Smoothie o limonada natural de cualquier sabor', emoji: '', tier: 'STARTER' },
+              { pts: 250, reward: 'Topping premium', detail: 'Aguacate, salmón ahumado o queso feta', emoji: '', tier: 'STARTER' },
+              { pts: 500, reward: '$10.000 de descuento', detail: 'Aplica en cualquier pedido, sin mínimo', emoji: '', tier: 'PRO' },
+              { pts: 800, reward: 'Bowl completo gratis', detail: 'Cualquier combinación del menú sin costo', emoji: '', tier: 'PRO' },
+              { pts: 1200, reward: 'Combo para 2 personas', detail: '2 bowls + 2 bebidas, ideal para compartir', emoji: '', tier: 'ELITE' },
+              { pts: 2000, reward: 'Caja sorpresa MODO', detail: 'Productos premium, merch exclusivo y $30.000 en saldo', emoji: '', tier: 'ELITE' },
             ].map((r, i) => (
               <div key={r.reward} className="reward-row" style={{ display: 'grid', gridTemplateColumns: '56px 1fr auto auto', gap: 20, alignItems: 'center', padding: '20px 32px', borderBottom: i < 5 ? '1px solid rgba(26,26,26,0.05)' : 'none' }}>
                 <div style={{ width: 48, height: 48, borderRadius: 14, background: `rgba(168,198,58,0.1)`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24 }}>{r.emoji}</div>
@@ -2710,7 +2711,7 @@ export default function HomePage() {
           <div style={{ background: C.lime, borderRadius: 28, padding: '56px 64px', display: 'grid', gridTemplateColumns: '1fr auto', gap: 48, alignItems: 'center', position: 'relative', overflow: 'hidden' }}>
             <div style={{ position: 'absolute', right: -80, bottom: -80, width: 320, height: 320, borderRadius: '50%', background: 'rgba(31,61,46,0.06)' }} />
             <div style={{ position: 'relative', zIndex: 1 }}>
-              <div style={{ fontSize: 11, fontWeight: 900, letterSpacing: '0.16em', color: C.green, opacity: 0.7, marginBottom: 12 }}>🎉 REGALO DE BIENVENIDA</div>
+              <div style={{ fontSize: 11, fontWeight: 900, letterSpacing: '0.16em', color: C.green, opacity: 0.7, marginBottom: 12 }}><SparklesIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> REGALO DE BIENVENIDA</div>
               <h2 style={{ fontSize: 'clamp(28px, 3.5vw, 48px)', fontWeight: 900, color: C.greenDark, margin: 0, marginBottom: 14, lineHeight: 1.1 }}>Empieza con<br /><span style={{ fontSize: '1.15em' }}>200 puntos gratis</span></h2>
               <p style={{ fontSize: 15, color: C.green, margin: 0, maxWidth: 460, lineHeight: 1.65 }}>Descarga la app, crea tu cuenta y tu primer pedido te da <strong>200 puntos de bienvenida</strong> automáticamente. Suficientes para una bebida gratis.</p>
             </div>
@@ -2755,11 +2756,11 @@ export default function HomePage() {
           <Reveal delay={80}>
             <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 32 }}>
               {[
-                { role: 'Chef de línea', dept: 'Cocina', icon: '👨‍🍳' },
-                { role: 'Cajero/a', dept: 'Servicio', icon: '🧾' },
-                { role: 'Repartidor', dept: 'Logística', icon: '🛵' },
-                { role: 'Community Manager', dept: 'Marketing', icon: '📱' },
-                { role: 'Asesor de punto de venta', dept: 'Ventas', icon: '🤝' },
+                { role: 'Chef de línea', dept: 'Cocina', icon: '‍🍳' },
+                { role: 'Cajero/a', dept: 'Servicio', icon: '' },
+                { role: 'Repartidor', dept: 'Logística', icon: '' },
+                { role: 'Community Manager', dept: 'Marketing', icon: '' },
+                { role: 'Asesor de punto de venta', dept: 'Ventas', icon: '' },
               ].map((v) => (
                 <div key={v.role} style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 12, padding: '10px 18px', display: 'flex', alignItems: 'center', gap: 8 }}>
                   <span style={{ fontSize: 18 }}>{v.icon}</span>
@@ -2779,10 +2780,10 @@ export default function HomePage() {
         <Reveal>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16, marginBottom: 64 }}>
             {[
-              { icon: '🥗', title: 'Comida gratis', desc: 'Bowl de cortesía en cada turno de trabajo.' },
-              { icon: '📈', title: 'Crece rápido', desc: 'Ascensos internos cada 6 meses para quienes destacan.' },
-              { icon: '💚', title: 'Equipo joven', desc: 'Ambiente sano, diverso y con propósito.' },
-              { icon: '🎓', title: 'Capacitación', desc: 'Entrenamiento pagado desde el primer día.' },
+              { icon: '', title: 'Comida gratis', desc: 'Bowl de cortesía en cada turno de trabajo.' },
+              { icon: '', title: 'Crece rápido', desc: 'Ascensos internos cada 6 meses para quienes destacan.' },
+              { icon: '', title: 'Equipo joven', desc: 'Ambiente sano, diverso y con propósito.' },
+              { icon: '', title: 'Capacitación', desc: 'Entrenamiento pagado desde el primer día.' },
             ].map((p, i) => (
               <Reveal key={p.title} delay={i * 60}>
                 <div style={{ background: '#fff', border: '1px solid rgba(26,26,26,0.07)', borderRadius: 18, padding: '28px 24px', textAlign: 'center' }}>
@@ -2802,7 +2803,7 @@ export default function HomePage() {
             <div style={{ background: C.greenDark, border: '1px solid rgba(255,255,255,0.08)', borderRadius: 28, padding: '44px 44px', height: '100%', position: 'relative', overflow: 'hidden' }}>
               <div style={{ position: 'absolute', bottom: -60, right: -60, width: 240, height: 240, borderRadius: '50%', background: 'rgba(168,198,58,0.06)' }} />
               <div style={{ position: 'relative', zIndex: 1 }}>
-                <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, background: 'rgba(168,198,58,0.12)', border: '1px solid rgba(168,198,58,0.22)', borderRadius: 999, padding: '5px 14px', fontSize: 11, fontWeight: 900, letterSpacing: '0.12em', color: C.lime, marginBottom: 20 }}>📋 ENVÍA TU CV</div>
+                <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, background: 'rgba(168,198,58,0.12)', border: '1px solid rgba(168,198,58,0.22)', borderRadius: 999, padding: '5px 14px', fontSize: 11, fontWeight: 900, letterSpacing: '0.12em', color: C.lime, marginBottom: 20 }}><ClipboardDocumentListIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> ENVÍA TU CV</div>
                 <h3 style={{ fontSize: 'clamp(20px, 2.5vw, 28px)', fontWeight: 900, color: '#fff', margin: 0, marginBottom: 10, lineHeight: 1.2 }}>
                   Tu próxima oportunidad<br />empieza aquí
                 </h3>
@@ -2828,7 +2829,7 @@ export default function HomePage() {
               </div>
               {/* Testimonial empleado */}
               <div style={{ background: C.cream, borderRadius: 20, padding: '28px 32px', flex: 1 }}>
-                <div style={{ fontSize: 28, marginBottom: 16 }}>💬</div>
+                <div style={{ fontSize: 28, marginBottom: 16 }}><ChatBubbleLeftRightIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
                 <p style={{ fontSize: 15, color: 'rgba(26,26,26,0.75)', lineHeight: 1.7, margin: 0, fontStyle: 'italic', marginBottom: 20 }}>
                   "Entré como cajera hace un año y ya soy supervisora de turno. En MODO te ven crecer y te impulsan a hacerlo más rápido."
                 </p>
@@ -2842,7 +2843,7 @@ export default function HomePage() {
               </div>
               {/* Franquicias mini card */}
               <div style={{ background: C.lime, borderRadius: 20, padding: '28px 32px' }}>
-                <div style={{ fontSize: 11, fontWeight: 900, letterSpacing: '0.14em', color: C.greenDark, opacity: 0.7, marginBottom: 10 }}>🏪 FRANQUICIAS</div>
+                <div style={{ fontSize: 11, fontWeight: 900, letterSpacing: '0.14em', color: C.greenDark, opacity: 0.7, marginBottom: 10 }}><BuildingStorefrontIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> FRANQUICIAS</div>
                 <h4 style={{ fontSize: 20, fontWeight: 900, color: C.greenDark, margin: 0, marginBottom: 10 }}>¿Quieres abrir un MODO?</h4>
                 <p style={{ fontSize: 13.5, color: 'rgba(20,40,32,0.65)', lineHeight: 1.6, margin: 0, marginBottom: 20 }}>Lleva el modelo a tu ciudad. ROI en 18 meses, soporte completo desde el día 1.</p>
                 <button style={{ background: C.greenDark, color: '#fff', fontWeight: 900, fontSize: 12, letterSpacing: '0.06em', padding: '12px 24px', borderRadius: 999, border: 'none', cursor: 'pointer' }}>QUIERO SER FRANQUICIADO →</button>
@@ -3051,7 +3052,7 @@ export default function HomePage() {
             gap: 10,
           }}
         >
-          🛒 PEDIR AHORA
+          <ShoppingCartIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> PEDIR AHORA
         </Link>
       )}
 

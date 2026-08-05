@@ -1,9 +1,10 @@
+import { BoltIcon, DevicePhoneMobileIcon, FireIcon, LockClosedIcon, MagnifyingGlassIcon, SparklesIcon, TrophyIcon } from '@heroicons/react/24/outline';
 import { notFound } from 'next/navigation';
 import GiftPoints from './GiftPoints';
 
 const TIER_LABEL: Record<string, string> = { bronze: 'Bronce', silver: 'Plata', gold: 'Oro' };
 const TIER_COLOR: Record<string, string> = { bronze: '#CD7F32', silver: '#94A3B8', gold: '#F59E0B' };
-const TIER_EMOJI: Record<string, string> = { bronze: '🥉', silver: '🥈', gold: '🥇' };
+const TIER_EMOJI: Record<string, string> = { bronze: '', silver: '', gold: '' };
 const TIER_THRESHOLDS: Record<'silver' | 'gold', number> = { silver: 100, gold: 300 };
 
 type Profile = {
@@ -79,7 +80,7 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
     return (
       <div style={{ minHeight: '100vh', width: '100%', overflowX: 'hidden', background: '#FAFAF9', fontFamily: 'system-ui, sans-serif', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px 16px' }}>
         <div style={{ textAlign: 'center', maxWidth: 360 }}>
-          <div style={{ fontSize: 48, marginBottom: 16 }}>🔍</div>
+          <div style={{ fontSize: 48, marginBottom: 16 }}><MagnifyingGlassIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
           <h1 style={{ fontSize: 20, fontWeight: 700, color: '#1C1917', margin: '0 0 8px' }}>Perfil no encontrado</h1>
           <p style={{ fontSize: 14, color: '#78716C', margin: '0 0 20px' }}>
             El enlace que intentas abrir no es válido o ha expirado.
@@ -107,7 +108,7 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
       <div style={{ background: 'linear-gradient(135deg,#1D4ED8,#2563EB,#3B82F6)', padding: '32px 16px 40px', textAlign: 'center' }}>
         <div style={{ maxWidth: 420, margin: '0 auto' }}>
           <div style={{ width: 76, height: 76, borderRadius: '50%', background: 'rgba(255,255,255,0.15)', border: `3px solid ${tierColor}`, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 14px', fontSize: 34 }}>
-            {tierEmoji || '🏅'}
+            {tierEmoji || ''}
           </div>
           <h1 style={{ fontSize: 22, fontWeight: 800, color: '#fff', margin: '0 0 6px' }}>
             {profile.full_name ?? 'Cliente 3E'}
@@ -152,7 +153,7 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
             </>
           ) : (
             <p style={{ fontSize: 12, fontWeight: 700, color: '#F59E0B', margin: 0, textAlign: 'center' }}>
-              🏆 ¡Has alcanzado el nivel máximo!
+              <TrophyIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> ¡Has alcanzado el nivel máximo!
             </p>
           )}
         </div>
@@ -164,13 +165,13 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 16 }}>
           {profile.streak_days > 0 && (
             <div style={{ background: '#fff', borderRadius: 16, border: '1px solid #E8E3DC', padding: '14px 16px' }}>
-              <p style={{ fontSize: 22, fontWeight: 800, color: '#F59E0B', margin: '0 0 2px' }}>🔥 {profile.streak_days}</p>
+              <p style={{ fontSize: 22, fontWeight: 800, color: '#F59E0B', margin: '0 0 2px' }}><FireIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> {profile.streak_days}</p>
               <p style={{ fontSize: 11, color: '#78716C', margin: 0 }}>Días de racha</p>
             </div>
           )}
           <div style={{ background: profile.boost_active ? '#EAF3DE' : '#fff', borderRadius: 16, border: `1px solid ${profile.boost_active ? '#C0DD97' : '#E8E3DC'}`, padding: '14px 16px' }}>
             <p style={{ fontSize: 22, fontWeight: 800, color: profile.boost_active ? '#3B6D11' : '#78716C', margin: '0 0 2px' }}>
-              {profile.boost_active ? `⚡ ${profile.point_multiplier}×` : '—'}
+              {profile.boost_active ? ` ${profile.point_multiplier}×` : '—'}
             </p>
             <p style={{ fontSize: 11, color: '#78716C', margin: 0 }}>{profile.boost_active ? 'Boost activo' : 'Sin boost'}</p>
           </div>
@@ -242,7 +243,7 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
               gap: 8,
             }}
           >
-            📲 Agregar a Wallet
+            <DevicePhoneMobileIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Agregar a Wallet
             <span style={{ fontSize: 10, fontWeight: 600, background: '#E8E3DC', color: '#78716C', padding: '2px 8px', borderRadius: 10 }}>
               Próximamente
             </span>
@@ -297,7 +298,7 @@ function BattlePassTrack({ seasonData }: { seasonData: NonNullable<SeasonData> }
 
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
         <p style={{ fontSize: 12, fontWeight: 800, color: '#1C1917', margin: 0, display: 'flex', alignItems: 'center', gap: 6 }}>
-          🏆 {season.name}
+          <TrophyIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> {season.name}
         </p>
         <span style={{ fontSize: 10, fontWeight: 700, color: '#7C3AED', background: 'rgba(124,58,237,0.1)', padding: '2px 8px', borderRadius: 20 }}>
           Battle Pass
@@ -393,7 +394,7 @@ function BattlePassTrack({ seasonData }: { seasonData: NonNullable<SeasonData> }
       <p style={{ fontSize: 11, color: '#78716C', margin: '8px 0 0', textAlign: 'center' }}>
         {nextTier
           ? <>{pointsToNext.toLocaleString()} / {(nextThreshold - prevThreshold).toLocaleString()} puntos para el siguiente nivel</>
-          : <span style={{ color: '#F59E0B', fontWeight: 700 }}>🏆 ¡Completaste el battle pass de esta temporada!</span>}
+          : <span style={{ color: '#F59E0B', fontWeight: 700 }}><TrophyIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> ¡Completaste el battle pass de esta temporada!</span>}
       </p>
     </div>
   );
@@ -418,7 +419,7 @@ function CollectibleCard({
   return (
     <div style={{ marginBottom: 16 }}>
       <p style={{ fontSize: 12, fontWeight: 800, color: '#1C1917', margin: '0 0 8px', display: 'flex', alignItems: 'center', gap: 6 }}>
-        ✨ Tu tarjeta coleccionable
+        <SparklesIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Tu tarjeta coleccionable
       </p>
 
       {card ? (
@@ -494,7 +495,7 @@ function CollectibleCard({
           }}
         >
           <div>
-            <div style={{ fontSize: 36, marginBottom: 10 }}>🔒</div>
+            <div style={{ fontSize: 36, marginBottom: 10 }}><LockClosedIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
             <p style={{ fontSize: 13, fontWeight: 700, color: '#1C1917', margin: '0 0 4px' }}>
               Tarjeta coleccionable bloqueada
             </p>

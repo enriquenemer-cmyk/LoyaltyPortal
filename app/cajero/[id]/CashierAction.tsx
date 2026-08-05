@@ -1,4 +1,5 @@
 'use client';
+import { SparklesIcon } from '@heroicons/react/24/outline';
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
@@ -65,8 +66,8 @@ export default function CashierAction({ claimId, prizeName, defaultCajero = '', 
 
   const googleMapsLink = googleMapsUrl || `https://www.google.com/maps/search/Burrito+Bar`;
   const feedbackText = googleMapsUrl
-    ? `Hola ${fullName}, esperamos que hayas disfrutado tu premio. ¿Nos dejas una reseña en Google Maps? Tu opinión nos ayuda mucho. 🧡 ${googleMapsLink}`
-    : `Hola ${fullName}, esperamos que hayas disfrutado tu premio. ¿Nos dejas una reseña? 🧡 ${googleMapsLink}`;
+    ? `Hola ${fullName}, esperamos que hayas disfrutado tu premio. ¿Nos dejas una reseña en Google Maps? Tu opinión nos ayuda mucho.  ${googleMapsLink}`
+    : `Hola ${fullName}, esperamos que hayas disfrutado tu premio. ¿Nos dejas una reseña?  ${googleMapsLink}`;
   const digits = phone.replace(/\D/g, '');
   const waPhone = digits.startsWith('34') ? digits : `34${digits}`;
   const waUrl = `https://wa.me/${waPhone}?text=${encodeURIComponent(feedbackText)}`;
@@ -123,7 +124,7 @@ export default function CashierAction({ claimId, prizeName, defaultCajero = '', 
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <h3 className="text-2xl font-black text-[#1C1917] mb-2">¡Premio Entregado! 🎉</h3>
+          <h3 className="text-2xl font-black text-[#1C1917] mb-2">¡Premio Entregado! <SparklesIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></h3>
           <p className="text-stone-500 text-sm">
             Entrega de <strong className="text-[#1C1917]">{prizeName}</strong> registrada exitosamente.
           </p>
@@ -135,7 +136,7 @@ export default function CashierAction({ claimId, prizeName, defaultCajero = '', 
           const waPhoneSelf = rawDigits.startsWith('34') ? rawDigits : `34${rawDigits}`;
           const folio = claimId.slice(-8).toUpperCase();
           const cajeroUrl = `${typeof window !== 'undefined' ? window.location.origin : ''}/cajero/${claimId}`;
-          const selfMsg = `🎁 Tu premio en 3E está listo!\n\nPremio: ${prizeName}\nFolio: #${folio}\n\nMuestra este mensaje al cajero cuando llegues:\n${cajeroUrl}`;
+          const selfMsg = ` Tu premio en 3E está listo!\n\nPremio: ${prizeName}\nFolio: #${folio}\n\nMuestra este mensaje al cajero cuando llegues:\n${cajeroUrl}`;
           const waSelfUrl = `https://wa.me/${waPhoneSelf}?text=${encodeURIComponent(selfMsg)}`;
           return (
             <a

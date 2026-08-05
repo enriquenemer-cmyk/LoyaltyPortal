@@ -1,5 +1,6 @@
 'use client';
 
+import { ChartBarIcon, CpuChipIcon, SparklesIcon } from '@heroicons/react/24/outline';
 import { useEffect, useRef, useState } from 'react';
 
 type ChatRole = 'user' | 'assistant';
@@ -113,7 +114,7 @@ export default function AsistentePage() {
     <div className="max-w-3xl mx-auto px-4 py-6 flex flex-col gap-6">
       {/* Hero banner */}
       <div className="rounded-2xl bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white px-6 py-8 shadow-lg">
-        <div className="text-4xl mb-2">🤖</div>
+        <div className="text-4xl mb-2"><CpuChipIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
         <h1 className="text-2xl font-bold">Asistente de Datos</h1>
         <p className="text-white/90 mt-1">Pregúntale lo que quieras sobre tu negocio</p>
       </div>
@@ -155,7 +156,7 @@ export default function AsistentePage() {
                 {m.usedTools && m.usedTools.length > 0 && (
                   <div className="flex flex-wrap gap-1 px-1">
                     <span className="text-[11px] text-gray-400">
-                      📊 Consultó: {m.usedTools.map((t) => TOOL_LABELS[t] ?? t).join(', ')}
+                      <ChartBarIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Consultó: {m.usedTools.map((t) => TOOL_LABELS[t] ?? t).join(', ')}
                     </span>
                   </div>
                 )}

@@ -63,7 +63,7 @@ export default function TimeWindowGuard({ validHours, validDays, children }: Pro
         maxWidth: 360, width: '100%', boxShadow: '0 8px 40px rgba(0,0,0,0.08)',
         margin: '0 auto',
       }}>
-        <div style={{ fontSize: 52, marginBottom: 16 }}>🕐</div>
+        <div style={{ fontSize: 52, marginBottom: 16 }}></div>
         <h2 style={{ fontSize: 20, fontWeight: 900, color: '#111', marginBottom: 8 }}>
           Fuera de horario
         </h2>

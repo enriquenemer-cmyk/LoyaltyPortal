@@ -1,4 +1,5 @@
 'use client';
+import { Cog6ToothIcon, LinkIcon } from '@heroicons/react/24/outline';
 
 import { useState, useEffect } from 'react';
 
@@ -85,7 +86,7 @@ export default function WebhooksPage() {
         <div className="hero-blobs" aria-hidden="true"><span key="b1" /><span key="b2" /><span key="b3" /></div>
         <div className="max-w-2xl mx-auto">
           <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-widest mb-3" style={{ background: 'rgba(255,255,255,0.15)', color: 'rgba(219,234,254,0.9)', border: '1px solid rgba(255,255,255,0.2)' }}>
-            🔗 Webhooks
+            <LinkIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Webhooks
           </div>
           <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Integración con Zapier / Make / n8n</h1>
           <p className="text-blue-200/70 mt-1.5 text-sm">Conecta 3E con tus flujos de automatización</p>
@@ -117,7 +118,7 @@ export default function WebhooksPage() {
         {/* Env var setup */}
         <div className="bg-blue-50 border border-blue-200 rounded-2xl p-5 mb-5">
           <div className="flex gap-3">
-            <span className="text-xl shrink-0">⚙️</span>
+            <span className="text-xl shrink-0"><Cog6ToothIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></span>
             <div>
               <p className="font-bold text-blue-800 text-sm mb-1">Configura la variable de entorno</p>
               <p className="text-blue-700 text-sm mb-2">
@@ -174,7 +175,7 @@ export default function WebhooksPage() {
           </button>
           {testResult && (
             <div className={`mt-3 rounded-xl px-4 py-3 text-sm flex gap-2 items-center ${testResult.ok ? 'bg-green-50 border border-green-200 text-green-700' : 'bg-red-50 border border-red-200 text-red-600'}`}>
-              <span>{testResult.ok ? '✅' : '❌'}</span>
+              <span>{testResult.ok ? '' : ''}</span>
               {testResult.message}
             </div>
           )}

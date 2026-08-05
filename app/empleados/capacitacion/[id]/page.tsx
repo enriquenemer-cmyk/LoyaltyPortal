@@ -157,7 +157,7 @@ export default function QuizPage() {
               ))}
             </div>
           )}
-          <div className="text-5xl mb-2 relative z-10">{passed ? '🎉' : '💪'}</div>
+          <div className="text-5xl mb-2 relative z-10">{passed ? '' : ''}</div>
           <h2 className="text-2xl font-black text-[#1C1917] relative z-10">
             {passed ? '¡Felicidades!' : '¡Casi lo logras!'}
           </h2>

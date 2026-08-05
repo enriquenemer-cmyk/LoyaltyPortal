@@ -1,11 +1,12 @@
 'use client';
+import { LightBulbIcon, RectangleGroupIcon } from '@heroicons/react/24/outline';
 
 import Link from 'next/link';
 
 const GAMES = [
   {
     id: 'slots',
-    emoji: '🎰',
+    emoji: '',
     name: 'Tragamonedas',
     desc: 'Tres carretes que giran al tocar la pantalla. Si coinciden los símbolos, el cliente gana el premio.',
     badge: 'Clásico',
@@ -14,7 +15,7 @@ const GAMES = [
   },
   {
     id: 'roulette',
-    emoji: '🎡',
+    emoji: '',
     name: 'Ruleta de la Suerte',
     desc: 'Ruleta con 8 segmentos. El cliente gira y donde caiga la flecha, ese es su premio.',
     badge: 'Popular',
@@ -23,7 +24,7 @@ const GAMES = [
   },
   {
     id: 'penalty',
-    emoji: '⚽',
+    emoji: '',
     name: 'Tiro de Penalti',
     desc: 'El cliente elige un ángulo y lanza el balón. Si entra, gana el premio instantáneamente.',
     badge: 'Deportivo',
@@ -49,7 +50,7 @@ export default function GameBundlesPage() {
         <div className="hero-blobs" aria-hidden="true"><span key="b1" /><span key="b2" /><span key="b3" /></div>
         <div className="max-w-4xl mx-auto">
           <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-widest mb-3" style={{ background: 'rgba(255,255,255,0.15)', color: 'rgba(219,234,254,0.9)', border: '1px solid rgba(255,255,255,0.2)' }}>
-            🎲 Juegos con Premios
+            <RectangleGroupIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Juegos con Premios
           </div>
           <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Premios Gamificados</h1>
           <p className="text-blue-200/70 mt-1.5 text-sm max-w-xl">
@@ -62,7 +63,7 @@ export default function GameBundlesPage() {
 
         {/* How it works banner */}
         <div className="bg-white border border-[#E8E3DC] rounded-2xl p-5 mb-8 flex gap-4 items-start">
-          <div className="text-2xl shrink-0">💡</div>
+          <div className="text-2xl shrink-0"><LightBulbIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
           <div>
             <p className="text-sm font-bold text-[#1C1917] mb-1">¿Cómo funciona?</p>
             <ol className="text-sm text-[#78716c] space-y-0.5 list-decimal list-inside">

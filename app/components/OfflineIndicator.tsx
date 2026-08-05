@@ -1,4 +1,5 @@
 'use client';
+import { SignalIcon } from '@heroicons/react/24/outline';
 
 import { useEffect, useState } from 'react';
 
@@ -86,7 +87,7 @@ export default function OfflineIndicator() {
         color: '#1E40AF',
       }}
     >
-      <span>📡 Sin conexión — Los datos mostrados pueden no estar actualizados</span>
+      <span><SignalIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Sin conexión — Los datos mostrados pueden no estar actualizados</span>
     </div>
   );
 }

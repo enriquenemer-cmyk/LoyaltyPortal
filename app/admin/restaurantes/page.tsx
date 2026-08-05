@@ -401,7 +401,7 @@ export default function RestaurantesPage() {
         <div className="max-w-7xl mx-auto flex items-start justify-between flex-wrap gap-4">
           <div>
             <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-widest mb-3" style={{ background: 'rgba(255,255,255,0.15)', color: 'rgba(219,234,254,0.9)', border: '1px solid rgba(255,255,255,0.2)' }}>
-              🍽️ Restaurantes
+              ️ Restaurantes
             </div>
             <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Mis Restaurantes</h1>
             <p className="text-blue-200/70 mt-1.5 text-sm">Configura cada sucursal y comparte su link de cajero</p>

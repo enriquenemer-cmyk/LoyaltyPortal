@@ -1,3 +1,4 @@
+import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 import { getClaimById, getRecentClaimsByContact, getRestaurantById } from '@/lib/db';
 import { notFound } from 'next/navigation';
 import CashierAction from './CashierAction';
@@ -79,7 +80,7 @@ export default async function CajeroPage({ params, searchParams }: Props) {
         {/* Expiry warning */}
         {isExpired && !alreadyDelivered && (
           <div className="bg-blue-50 border border-blue-200 rounded-2xl px-5 py-4 flex items-start gap-3">
-            <span className="text-xl shrink-0">⚠️</span>
+            <span className="text-xl shrink-0"><ExclamationTriangleIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></span>
             <p className="text-blue-800 font-semibold text-sm leading-snug">
               Este cobro expiró — el cliente tardó más de 2 horas. Puedes entregarlo de todas formas.
             </p>
@@ -89,7 +90,7 @@ export default async function CajeroPage({ params, searchParams }: Props) {
         {/* Duplicate warning */}
         {recentOtherClaimsCount > 0 && (
           <div className="bg-blue-50 border border-blue-200 rounded-2xl px-5 py-4 flex items-start gap-3 slide-up-sm">
-            <span className="text-xl shrink-0">⚠️</span>
+            <span className="text-xl shrink-0"><ExclamationTriangleIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></span>
             <p className="text-blue-800 font-semibold text-sm leading-snug">
               Este cliente tiene {recentOtherClaimsCount} {recentOtherClaimsCount === 1 ? 'premio reclamado recientemente' : 'premios reclamados recientemente'}
             </p>

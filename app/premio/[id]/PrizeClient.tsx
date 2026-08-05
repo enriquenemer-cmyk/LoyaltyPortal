@@ -1,4 +1,5 @@
 'use client';
+import { GiftIcon, SparklesIcon, TrophyIcon } from '@heroicons/react/24/outline';
 
 import { useState } from 'react';
 import GameGateway from './GameGateway';
@@ -109,7 +110,7 @@ export default function PrizeClient({ prize, claimCount, weeklyCount, daysLeft }
             {/* Weekly social proof */}
             {weeklyCount > 0 && (
               <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, background: 'rgba(255,255,255,0.12)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 99, padding: '5px 14px' }}>
-                <span style={{ fontSize: 13 }}>🎉</span>
+                <span style={{ fontSize: 13 }}><SparklesIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></span>
                 <span style={{ color: 'rgba(255,255,255,0.9)', fontSize: 12, fontWeight: 600 }}>{weeklyCount} canjeados esta semana</span>
               </div>
             )}
@@ -134,7 +135,7 @@ export default function PrizeClient({ prize, claimCount, weeklyCount, daysLeft }
 
             {prize.reason && (
               <div style={{ padding: '18px 20px', borderBottom: '1px solid #F0EDE8', display: 'flex', alignItems: 'flex-start', gap: 14 }}>
-                <div style={{ width: 42, height: 42, borderRadius: 14, background: '#EFF6FF', border: '1px solid #BAE6FD', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, flexShrink: 0 }}>🏆</div>
+                <div style={{ width: 42, height: 42, borderRadius: 14, background: '#EFF6FF', border: '1px solid #BAE6FD', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, flexShrink: 0 }}><TrophyIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
                 <div>
                   <p style={{ color: '#2563EB', fontSize: 10, fontWeight: 800, letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: 4 }}>Por qué lo ganaste</p>
                   <p style={{ color: '#1C1917', fontSize: 14, fontWeight: 600, lineHeight: 1.5, margin: 0 }}>{prize.reason}</p>
@@ -144,7 +145,7 @@ export default function PrizeClient({ prize, claimCount, weeklyCount, daysLeft }
 
             {prize.description && (
               <div style={{ padding: '18px 20px', borderBottom: '1px solid #F0EDE8', display: 'flex', alignItems: 'flex-start', gap: 14 }}>
-                <div style={{ width: 42, height: 42, borderRadius: 14, background: '#EFF6FF', border: '1px solid #BAE6FD', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, flexShrink: 0 }}>🎁</div>
+                <div style={{ width: 42, height: 42, borderRadius: 14, background: '#EFF6FF', border: '1px solid #BAE6FD', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, flexShrink: 0 }}><GiftIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
                 <div style={{ flex: 1 }}>
                   <p style={{ color: '#2563EB', fontSize: 10, fontWeight: 800, letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: 4 }}>En qué consiste</p>
                   <p style={{ color: '#44403c', fontSize: 14, lineHeight: 1.6, margin: 0 }}>{prize.description}</p>
@@ -159,8 +160,8 @@ export default function PrizeClient({ prize, claimCount, weeklyCount, daysLeft }
             {/* Validity dates */}
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
               {[
-                { icon: '📅', label: 'Válido desde', val: formatDate(prize.start_date) },
-                { icon: '📆', label: 'Válido hasta', val: formatDate(prize.end_date) },
+                { icon: '', label: 'Válido desde', val: formatDate(prize.start_date) },
+                { icon: '', label: 'Válido hasta', val: formatDate(prize.end_date) },
               ].map(({ icon, label, val }, i) => (
                 <div key={label} style={{ padding: '16px 18px', textAlign: 'center', borderRight: i === 0 ? '1px solid #F0EDE8' : 'none' }}>
                   <span style={{ fontSize: 20 }}>{icon}</span>

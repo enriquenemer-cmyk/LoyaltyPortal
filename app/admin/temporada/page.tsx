@@ -1,4 +1,5 @@
 'use client';
+import { TrophyIcon } from '@heroicons/react/24/outline';
 
 import { useEffect, useState } from 'react';
 
@@ -149,7 +150,7 @@ export default function TemporadaPage() {
         <div className="hero-blobs" aria-hidden="true"><span key="b1" /><span key="b2" /><span key="b3" /></div>
         <div className="max-w-[820px] mx-auto">
           <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-widest mb-3" style={{ background: 'rgba(255,255,255,0.15)', color: 'rgba(219,234,254,0.9)', border: '1px solid rgba(255,255,255,0.2)' }}>
-            🏆 Battle Pass
+            <TrophyIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Battle Pass
           </div>
           <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Temporada / Battle Pass</h1>
           <p className="text-blue-200/70 mt-1.5 text-sm">
@@ -295,7 +296,7 @@ function SeasonCard({ season, onToggleActive }: { season: Season; onToggleActive
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 12, flexWrap: 'wrap' }}>
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
-            <span style={{ fontSize: 15, fontWeight: 800, color: '#1C1917' }}>🏆 {season.name}</span>
+            <span style={{ fontSize: 15, fontWeight: 800, color: '#1C1917' }}><TrophyIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> {season.name}</span>
             <span style={{
               fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 20,
               background: season.active ? '#EAF3DE' : '#F5F3F0',
@@ -321,7 +322,7 @@ function SeasonCard({ season, onToggleActive }: { season: Season; onToggleActive
             {leaderboard.slice(0, 3).map((l, i) => (
               <div key={l.phone} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <span style={{ fontSize: 13, color: '#1C1917' }}>
-                  {['🥇', '🥈', '🥉'][i] ?? ''} {l.full_name ?? l.phone}
+                  {['', '', ''][i] ?? ''} {l.full_name ?? l.phone}
                 </span>
                 <span style={{ fontSize: 13, fontWeight: 700, color: '#F59E0B' }}>{l.season_points} pts</span>
               </div>

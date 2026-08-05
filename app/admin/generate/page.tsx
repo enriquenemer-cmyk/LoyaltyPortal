@@ -1,4 +1,5 @@
 'use client';
+import { LightBulbIcon, PencilIcon } from '@heroicons/react/24/outline';
 
 import { useState, useRef, useEffect, useCallback, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
@@ -28,12 +29,12 @@ const helperClass = 'text-xs text-stone-400 mt-1 leading-relaxed';
 type Template = { name: string; reason: string; description: string; short: string; emoji: string };
 
 const TEMPLATES: Template[] = [
-  { name: '2x1 en principales', reason: 'Por tu visita especial', description: 'Disfruta dos principales al precio de uno en cualquier opción del menú.', short: 'Dos platillos al precio de uno', emoji: '🍽️' },
-  { name: 'Bebida gratis', reason: 'Premio de fidelidad', description: 'Una bebida de tu elección completamente gratis con la compra de cualquier principal.', short: 'Con cualquier compra', emoji: '🥤' },
-  { name: '10% de descuento', reason: 'Cliente frecuente', description: '10% de descuento en tu consumo total del día.', short: 'En el consumo total', emoji: '💰' },
-  { name: 'Postre gratis', reason: 'Por tu cumpleaños', description: 'Un postre de temporada gratis para celebrar tu cumpleaños.', short: 'El día de tu cumpleaños', emoji: '🎂' },
-  { name: 'Burrito gratis', reason: 'Concurso ganador', description: 'Un burrito de tu elección completamente gratis, del tamaño que prefieras.', short: 'Del tamaño que prefieras', emoji: '🌯' },
-  { name: 'Combo especial', reason: 'Premio especial', description: 'Combo especial: principal + bebida + postre a precio especial.', short: 'Principal + bebida + postre', emoji: '🎁' },
+  { name: '2x1 en principales', reason: 'Por tu visita especial', description: 'Disfruta dos principales al precio de uno en cualquier opción del menú.', short: 'Dos platillos al precio de uno', emoji: '️' },
+  { name: 'Bebida gratis', reason: 'Premio de fidelidad', description: 'Una bebida de tu elección completamente gratis con la compra de cualquier principal.', short: 'Con cualquier compra', emoji: '' },
+  { name: '10% de descuento', reason: 'Cliente frecuente', description: '10% de descuento en tu consumo total del día.', short: 'En el consumo total', emoji: '' },
+  { name: 'Postre gratis', reason: 'Por tu cumpleaños', description: 'Un postre de temporada gratis para celebrar tu cumpleaños.', short: 'El día de tu cumpleaños', emoji: '' },
+  { name: 'Burrito gratis', reason: 'Concurso ganador', description: 'Un burrito de tu elección completamente gratis, del tamaño que prefieras.', short: 'Del tamaño que prefieras', emoji: '' },
+  { name: 'Combo especial', reason: 'Premio especial', description: 'Combo especial: principal + bebida + postre a precio especial.', short: 'Principal + bebida + postre', emoji: '' },
 ];
 
 const DRAFT_KEY = 'premia-draft';
@@ -286,7 +287,7 @@ function ExplainerCard() {
         className="w-full flex items-center justify-between px-4 py-3 bg-[#FAFAF9] hover:bg-[#F5F5F4] transition-colors text-left"
       >
         <div className="flex items-center gap-2">
-          <span className="text-base">💡</span>
+          <span className="text-base"><LightBulbIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></span>
           <span className="text-sm font-semibold text-[#1C1917]">¿Para qué sirve esto?</span>
         </div>
         <svg
@@ -792,7 +793,7 @@ function GenerateForm() {
                           </svg>
                         </span>
                       )}
-                      <div className="text-3xl mb-2">✏️</div>
+                      <div className="text-3xl mb-2"><PencilIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
                       <p className="text-sm font-bold text-[#1C1917] leading-tight mb-0.5">Personalizado</p>
                       <p className="text-[11px] text-[#a8a29e] leading-snug">Crea desde cero</p>
                     </button>
@@ -1087,10 +1088,10 @@ function GenerateForm() {
                     <p className={helperClass + ' mb-2'}>Opcional. Si seleccionas un juego, el cliente tendrá que jugar antes de ver el premio</p>
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                       {[
-                        { value: '', emoji: '🚫', label: 'Sin juego', desc: 'Acceso directo' },
-                        { value: 'slots', emoji: '🎰', label: 'Tragamonedas', desc: '3 carretes' },
-                        { value: 'roulette', emoji: '🎡', label: 'Ruleta', desc: '8 segmentos' },
-                        { value: 'penalty', emoji: '⚽', label: 'Penales', desc: 'Tiro de penalti' },
+                        { value: '', emoji: '', label: 'Sin juego', desc: 'Acceso directo' },
+                        { value: 'slots', emoji: '', label: 'Tragamonedas', desc: '3 carretes' },
+                        { value: 'roulette', emoji: '', label: 'Ruleta', desc: '8 segmentos' },
+                        { value: 'penalty', emoji: '', label: 'Penales', desc: 'Tiro de penalti' },
                         { value: 'scratch', emoji: '🃏', label: 'Rasca y Gana', desc: 'Tarjeta dorada' },
                       ].map((opt) => {
                         const active = gameType === opt.value;

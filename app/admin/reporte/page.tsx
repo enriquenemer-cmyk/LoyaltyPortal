@@ -1,4 +1,5 @@
 'use client';
+import { ChartBarIcon, CheckCircleIcon, DocumentIcon, PrinterIcon } from '@heroicons/react/24/outline';
 
 import { useEffect, useRef, useState, useMemo } from 'react';
 
@@ -30,12 +31,12 @@ function getWeekRange() {
 
 function buildMessage(stats: WeeklyStats) {
   return (
-    `📊 Reporte Semanal · 3E\n\n` +
-    `✅ Premios generados: ${stats.generados}\n` +
-    `🎁 Cobros realizados: ${stats.cobrados}\n` +
+    ` Reporte Semanal · 3E\n\n` +
+    ` Premios generados: ${stats.generados}\n` +
+    ` Cobros realizados: ${stats.cobrados}\n` +
     `⏳ Pendientes de cobro: ${stats.pendientes}\n` +
-    `⚠️ Por vencer (7 días): ${stats.porVencer}\n\n` +
-    `📅 Semana del ${stats.weekStart} al ${stats.weekEnd}`
+    ` Por vencer (7 días): ${stats.porVencer}\n\n` +
+    ` Semana del ${stats.weekStart} al ${stats.weekEnd}`
   );
 }
 
@@ -73,7 +74,7 @@ function WhatsAppAlertsSection() {
   function handleTest() {
     const n = number.replace(/\D/g, '');
     if (!n) { alert('Ingresa un número primero'); return; }
-    const msg = encodeURIComponent('🧪 Prueba de alerta 3E — configuración correcta ✅');
+    const msg = encodeURIComponent(' Prueba de alerta 3E — configuración correcta <CheckCircleIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" />');
     window.open(`https://wa.me/${n}?text=${msg}`, '_blank');
   }
 
@@ -733,10 +734,10 @@ export default function ReportePage() {
 
   const statCards = stats
     ? [
-        { label: 'Premios generados esta semana', value: stats.generados, icon: '✅', color: 'text-emerald-700', bg: 'bg-emerald-50', border: 'border-emerald-200' },
-        { label: 'Cobros realizados esta semana', value: stats.cobrados, icon: '🎁', color: 'text-blue-700', bg: 'bg-blue-50', border: 'border-blue-200' },
+        { label: 'Premios generados esta semana', value: stats.generados, icon: '', color: 'text-emerald-700', bg: 'bg-emerald-50', border: 'border-emerald-200' },
+        { label: 'Cobros realizados esta semana', value: stats.cobrados, icon: '', color: 'text-blue-700', bg: 'bg-blue-50', border: 'border-blue-200' },
         { label: 'Premios pendientes de cobro', value: stats.pendientes, icon: '⏳', color: 'text-blue-700', bg: 'bg-blue-50', border: 'border-blue-200' },
-        { label: 'Por vencer (próximos 7 días)', value: stats.porVencer, icon: '⚠️', color: 'text-red-700', bg: 'bg-red-50', border: 'border-red-200' },
+        { label: 'Por vencer (próximos 7 días)', value: stats.porVencer, icon: '', color: 'text-red-700', bg: 'bg-red-50', border: 'border-red-200' },
       ]
     : [];
 
@@ -748,7 +749,7 @@ export default function ReportePage() {
         <div className="max-w-xl mx-auto flex items-start justify-between flex-wrap gap-4">
           <div>
             <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-widest mb-3" style={{ background: 'rgba(255,255,255,0.15)', color: 'rgba(219,234,254,0.9)', border: '1px solid rgba(255,255,255,0.2)' }}>
-              📊 Reportes
+              <ChartBarIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Reportes
             </div>
             <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Reporte Semanal</h1>
             {stats && (
@@ -763,7 +764,7 @@ export default function ReportePage() {
                 style={{ background: 'rgba(255,255,255,0.15)', color: 'white', border: '1px solid rgba(255,255,255,0.25)' }}
                 title="Exportar CSV compatible con Excel"
               >
-                📊 Exportar CSV
+                <ChartBarIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Exportar CSV
               </button>
               <button
                 onClick={handleDownloadPdf}
@@ -781,7 +782,7 @@ export default function ReportePage() {
                     Generando...
                   </>
                 ) : (
-                  <>📄 Descargar PDF</>
+                  <><DocumentIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Descargar PDF</>
                 )}
               </button>
               <button
@@ -790,7 +791,7 @@ export default function ReportePage() {
                 style={{ background: 'rgba(255,255,255,0.15)', color: 'white', border: '1px solid rgba(255,255,255,0.25)' }}
                 title="Imprimir como PDF"
               >
-                🖨️ Imprimir
+                <PrinterIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Imprimir
               </button>
             </div>
           )}
@@ -811,7 +812,7 @@ export default function ReportePage() {
             style={{ boxShadow: '0 2px 16px rgba(0,0,0,0.06)' }}>
             <div className="p-4 text-center" style={{ background: 'linear-gradient(135deg, #2563EB, #0891B2)' }}>
               <p className="text-white/70 text-xs font-bold uppercase tracking-widest mb-0.5">3E</p>
-              <p className="text-white font-extrabold text-lg">📊 Reporte Semanal</p>
+              <p className="text-white font-extrabold text-lg"><ChartBarIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Reporte Semanal</p>
             </div>
             <div className="divide-y divide-[#F3EFE9]">
               {statCards.map((s) => (

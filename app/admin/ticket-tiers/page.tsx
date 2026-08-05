@@ -1,4 +1,5 @@
 'use client';
+import { DevicePhoneMobileIcon, GiftIcon, StarIcon, TicketIcon } from '@heroicons/react/24/outline';
 
 import { useEffect, useRef, useState } from 'react';
 
@@ -216,7 +217,7 @@ export default function TicketTiersPage() {
         <div className="hero-blobs" aria-hidden="true"><span key="b1" /><span key="b2" /><span key="b3" /></div>
         <div className="max-w-[820px] mx-auto">
           <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-widest mb-3" style={{ background: 'rgba(255,255,255,0.15)', color: 'rgba(219,234,254,0.9)', border: '1px solid rgba(255,255,255,0.2)' }}>
-            🎟️ Premio por Consumo
+            <TicketIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Premio por Consumo
           </div>
           <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Ticket Scanner — Niveles de Premio</h1>
           <p className="text-blue-200/70 mt-1.5 text-sm">
@@ -354,7 +355,7 @@ export default function TicketTiersPage() {
             {/* Consolation Prize Config */}
             <div style={{ background: 'white', border: '1px solid #E8E3DC', borderRadius: 14, padding: 20, marginBottom: 20 }}>
               <h2 style={{ fontSize: 15, fontWeight: 700, color: '#1C1917', margin: '0 0 4px' }}>
-                🎁 Premio de Consolación
+                <GiftIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Premio de Consolación
               </h2>
               <p style={{ color: '#78716C', fontSize: 13, marginBottom: 16 }}>
                 Se entrega automáticamente cuando el monto del cliente no alcanza ningún nivel de premio.
@@ -401,7 +402,7 @@ export default function TicketTiersPage() {
                   <p style={{ fontSize: 11, color: '#1E40AF', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 4 }}>
                     Vista previa del cliente
                   </p>
-                  <p style={{ fontSize: 14, fontWeight: 700, color: '#1C1917', marginBottom: 2 }}>🎁 {consolationName}</p>
+                  <p style={{ fontSize: 14, fontWeight: 700, color: '#1C1917', marginBottom: 2 }}><GiftIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> {consolationName}</p>
                   <p style={{ fontSize: 12, color: '#78716C', margin: 0 }}>{consolationDesc}</p>
                   <p style={{ fontSize: 11, color: '#0284C7', fontWeight: 700, marginTop: 6, fontFamily: 'monospace' }}>Código: CONS-XXXXXX</p>
                 </div>
@@ -499,7 +500,7 @@ export default function TicketTiersPage() {
                   <div>
                     <div style={{ display: 'flex', gap: 4, marginBottom: 4 }}>
                       {[1,2,3,4,5].map((s) => (
-                        <span key={s} style={{ fontSize: 20, filter: avgRating.avg_rating >= s ? 'none' : 'grayscale(1) opacity(0.4)' }}>⭐</span>
+                        <span key={s} style={{ fontSize: 20, filter: avgRating.avg_rating >= s ? 'none' : 'grayscale(1) opacity(0.4)' }}><StarIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></span>
                       ))}
                     </div>
                     <p style={{ fontSize: 13, color: '#78716C', margin: 0 }}>
@@ -526,7 +527,7 @@ export default function TicketTiersPage() {
                   onClick={() => setKioskModal(true)}
                   style={{ ...primaryBtn, background: '#1C1917', whiteSpace: 'nowrap' }}
                 >
-                  📱 Ver QR de Kiosk
+                  <DevicePhoneMobileIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Ver QR de Kiosk
                 </button>
               </div>
               <div style={{ display: 'flex', gap: 20, alignItems: 'flex-start', flexWrap: 'wrap' }}>

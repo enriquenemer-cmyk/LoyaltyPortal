@@ -1,4 +1,5 @@
 'use client';
+import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
@@ -60,7 +61,7 @@ function AnomalyWarnings({ anomalies }: { anomalies: Anomaly[] }) {
       style={{ boxShadow: '0 1px 2px rgba(217,119,6,0.05), 0 4px 12px rgba(217,119,6,0.08)' }}
     >
       <div className="flex items-center gap-2 mb-3">
-        <span className="text-lg leading-none">⚠️</span>
+        <span className="text-lg leading-none"><ExclamationTriangleIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></span>
         <span className="font-bold text-amber-800 text-sm">
           {anomalies.length === 1 ? '1 anomalía detectada en fichajes' : `${anomalies.length} anomalías detectadas en fichajes`}
         </span>

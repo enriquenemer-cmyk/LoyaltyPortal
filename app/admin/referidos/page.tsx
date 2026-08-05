@@ -1,3 +1,4 @@
+import { ChartBarIcon, ClipboardDocumentListIcon, FireIcon, LinkIcon, TrophyIcon, UsersIcon } from '@heroicons/react/24/outline';
 import { getReferralStats } from '@/lib/db';
 
 export const dynamic = 'force-dynamic';
@@ -51,7 +52,7 @@ export default async function ReferidosAdminPage() {
             Volver al panel
           </a>
           <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-widest mb-3" style={{ background: 'rgba(255,255,255,0.15)', color: 'rgba(219,234,254,0.9)', border: '1px solid rgba(255,255,255,0.2)' }}>
-            🤝 Programa de Referidos
+            <UsersIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Programa de Referidos
           </div>
           <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Referidos</h1>
           <p className="text-blue-200/70 mt-1.5 text-sm">Rastrea quién está trayendo nuevos clientes</p>
@@ -104,7 +105,7 @@ export default async function ReferidosAdminPage() {
         {/* ── WEEKLY BAR CHART ── */}
         <div style={{ ...card, marginBottom: 20 }}>
           <h2 style={{ fontSize: 15, fontWeight: 800, color: '#1E293B', marginBottom: 20, display: 'flex', alignItems: 'center', gap: 8 }}>
-            <span>📊</span> Referidos por semana (últimas 8 semanas)
+            <span><ChartBarIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></span> Referidos por semana (últimas 8 semanas)
           </h2>
           <div style={{ display: 'flex', alignItems: 'flex-end', gap: 8, height: 120 }}>
             {weeklyData.map((w) => {
@@ -133,7 +134,7 @@ export default async function ReferidosAdminPage() {
           {/* TOP REFERRERS */}
           <div style={card}>
             <h2 style={{ fontSize: 15, fontWeight: 800, color: '#1E293B', marginBottom: 16, display: 'flex', alignItems: 'center', gap: 8 }}>
-              <span>🏆</span> Top Referidores
+              <span><TrophyIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></span> Top Referidores
             </h2>
             {stats.top_referrers.length === 0 ? (
               <p style={{ color: '#94A3B8', fontSize: 14, textAlign: 'center', padding: '24px 0' }}>
@@ -165,7 +166,7 @@ export default async function ReferidosAdminPage() {
                           </p>
                           {i === 0 && (
                             <span style={{ background: '#FEF3C7', color: '#D97706', borderRadius: 20, padding: '1px 7px', fontSize: 10, fontWeight: 700, whiteSpace: 'nowrap' }}>
-                              🔥 Top referidor
+                              <FireIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Top referidor
                             </span>
                           )}
                         </div>
@@ -198,7 +199,7 @@ export default async function ReferidosAdminPage() {
           {/* RECENT CHAINS */}
           <div style={card}>
             <h2 style={{ fontSize: 15, fontWeight: 800, color: '#1E293B', marginBottom: 16, display: 'flex', alignItems: 'center', gap: 8 }}>
-              <span>🔗</span> Cadenas recientes
+              <span><LinkIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></span> Cadenas recientes
             </h2>
             {stats.chains.length === 0 ? (
               <p style={{ color: '#94A3B8', fontSize: 14, textAlign: 'center', padding: '24px 0' }}>
@@ -236,7 +237,7 @@ export default async function ReferidosAdminPage() {
         {/* ── FULL TABLE ── */}
         <div style={card}>
           <h2 style={{ fontSize: 15, fontWeight: 800, color: '#1E293B', marginBottom: 16, display: 'flex', alignItems: 'center', gap: 8 }}>
-            <span>📋</span> Registro completo ({stats.chains.length})
+            <span><ClipboardDocumentListIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></span> Registro completo ({stats.chains.length})
           </h2>
           {stats.chains.length === 0 ? (
             <p style={{ color: '#94A3B8', fontSize: 14, textAlign: 'center', padding: '24px 0' }}>No hay registros aún</p>

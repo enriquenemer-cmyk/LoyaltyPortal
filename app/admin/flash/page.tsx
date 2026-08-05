@@ -1,4 +1,5 @@
 'use client';
+import { BoltIcon } from '@heroicons/react/24/outline';
 
 import { useEffect, useState, useRef, useCallback } from 'react';
 
@@ -113,7 +114,7 @@ export default function FlashPage() {
   const restaurantName = restaurants.find((r) => r.id === restaurantId)?.name ?? '';
 
   const defaultMessage = selectedTemplate
-    ? `⚡ CAMPAÑA FLASH - ${selectedTemplate.name.toUpperCase()}\n\nPor tiempo limitado (${durationHours}h) en ${restaurantName || 'el restaurante'}:\n\n${selectedTemplate.description}\n\n¡Escanea tu QR exclusivo y canjea hoy mismo!`
+    ? ` CAMPAÑA FLASH - ${selectedTemplate.name.toUpperCase()}\n\nPor tiempo limitado (${durationHours}h) en ${restaurantName || 'el restaurante'}:\n\n${selectedTemplate.description}\n\n¡Escanea tu QR exclusivo y canjea hoy mismo!`
     : '';
 
   async function handleLaunch() {
@@ -185,7 +186,7 @@ export default function FlashPage() {
         <div className="hero-blobs" aria-hidden="true"><span key="b1" /><span key="b2" /><span key="b3" /></div>
         <div className="max-w-3xl mx-auto">
           <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-widest mb-3" style={{ background: 'rgba(255,255,255,0.15)', color: 'rgba(219,234,254,0.9)', border: '1px solid rgba(255,255,255,0.2)' }}>
-            ⚡ Campaña Flash
+            <BoltIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Campaña Flash
           </div>
           <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">CAMPAÑA FLASH</h1>
           <p className="text-blue-200/70 mt-1.5 text-sm">
@@ -373,7 +374,7 @@ export default function FlashPage() {
                 Lanzando campaña...
               </>
             ) : (
-              <>⚡ Lanzar Campaña Flash</>
+              <><BoltIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Lanzar Campaña Flash</>
             )}
           </button>
         )}
@@ -386,7 +387,7 @@ export default function FlashPage() {
               className="rounded-2xl px-6 py-8 text-center"
               style={{ background: 'linear-gradient(135deg, #14532d 0%, #166534 100%)', border: '1px solid rgba(34,197,94,0.3)' }}
             >
-              <div className="text-5xl mb-3">⚡</div>
+              <div className="text-5xl mb-3"><BoltIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
               <h2 className="text-3xl font-black text-white mb-1">¡Campaña activa!</h2>
               <p className="text-green-200 text-sm mb-5">
                 {generated.length} QRs generados exitosamente

@@ -1,4 +1,5 @@
 'use client';
+import { ChatBubbleLeftRightIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 
 import { useEffect, useState } from 'react';
 
@@ -55,7 +56,7 @@ export default function FeedbackPage() {
         <div className="max-w-4xl mx-auto flex items-start justify-between flex-wrap gap-4">
           <div>
             <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-widest mb-3" style={{ background: 'rgba(255,255,255,0.15)', color: 'rgba(219,234,254,0.9)', border: '1px solid rgba(255,255,255,0.2)' }}>
-              💬 Feedback
+              <ChatBubbleLeftRightIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Feedback
             </div>
             <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Feedback</h1>
             <p className="text-blue-200/70 mt-1.5 text-sm">Calificaciones y comentarios post-visita de los tickets escaneados</p>
@@ -125,7 +126,7 @@ export default function FeedbackPage() {
         {/* Low-rating alerts */}
         {withStars.filter(e => (e.metadata?.stars ?? 5) <= 2).length > 0 && (
           <div className="bg-red-50 rounded-2xl border border-red-200 p-5">
-            <h2 className="text-sm font-bold text-red-800 mb-3">⚠️ Visitas con calificación baja (1–2 ★)</h2>
+            <h2 className="text-sm font-bold text-red-800 mb-3"><ExclamationTriangleIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Visitas con calificación baja (1–2 ★)</h2>
             <div className="space-y-2">
               {withStars.filter(e => (e.metadata?.stars ?? 5) <= 2).slice(0, 10).map(e => (
                 <div key={e.id} className="flex items-start gap-3">

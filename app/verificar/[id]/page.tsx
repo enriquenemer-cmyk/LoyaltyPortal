@@ -1,3 +1,4 @@
+import { CalendarIcon, GiftIcon, TrophyIcon } from '@heroicons/react/24/outline';
 import { getPrizeById, getPrizeClaimCount } from '@/lib/db';
 import { notFound } from 'next/navigation';
 
@@ -83,7 +84,7 @@ export default async function VerificarPage({ params }: Props) {
 
           {/* Why */}
           <div style={{ padding: '20px 22px', borderBottom: '1px solid #F3F4F6', display: 'flex', gap: 14 }}>
-            <div style={{ width: 44, height: 44, borderRadius: 12, background: 'linear-gradient(135deg,#fef3c7,#E0F2FE)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, flexShrink: 0 }}>🏆</div>
+            <div style={{ width: 44, height: 44, borderRadius: 12, background: 'linear-gradient(135deg,#fef3c7,#E0F2FE)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, flexShrink: 0 }}><TrophyIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
             <div>
               <p style={{ color: '#2563EB', fontSize: 10, fontWeight: 800, letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 4, margin: '0 0 4px' }}>Por qué lo ganó</p>
               <p style={{ color: '#111', fontSize: 14, fontWeight: 600, lineHeight: 1.55, margin: 0 }}>{prize.reason}</p>
@@ -92,7 +93,7 @@ export default async function VerificarPage({ params }: Props) {
 
           {/* What */}
           <div style={{ padding: '20px 22px', borderBottom: '1px solid #F3F4F6', display: 'flex', gap: 14 }}>
-            <div style={{ width: 44, height: 44, borderRadius: 12, background: 'linear-gradient(135deg,#BAE6FD,#7DD3FC)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, flexShrink: 0 }}>🎁</div>
+            <div style={{ width: 44, height: 44, borderRadius: 12, background: 'linear-gradient(135deg,#BAE6FD,#7DD3FC)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, flexShrink: 0 }}><GiftIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
             <div>
               <p style={{ color: '#2563EB', fontSize: 10, fontWeight: 800, letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 4, margin: '0 0 4px' }}>En qué consiste</p>
               <p style={{ color: '#444', fontSize: 14, lineHeight: 1.6, margin: 0 }}>{prize.description}</p>
@@ -102,7 +103,7 @@ export default async function VerificarPage({ params }: Props) {
           {/* Dates */}
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
             {[
-              { emoji: '📅', label: 'Válido desde', val: formatDate(prize.start_date) },
+              { emoji: '', label: 'Válido desde', val: formatDate(prize.start_date) },
               { emoji: '⏳', label: 'Válido hasta', val: formatDate(prize.end_date) },
             ].map(({ emoji, label, val }, i) => (
               <div key={label} style={{ padding: '16px 18px', textAlign: 'center', borderRight: i === 0 ? '1px solid #F3F4F6' : 'none' }}>

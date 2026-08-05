@@ -19,7 +19,7 @@ export default function AdminError({
       <span className="text-8xl font-black bg-gradient-to-r from-blue-500 to-blue-300 bg-clip-text text-transparent leading-none">
         500
       </span>
-      <span className="text-5xl">🌯</span>
+      <span className="text-5xl"></span>
       <h1 className="text-2xl font-bold text-stone-800">Algo salió mal</h1>
       {error.message && (
         <p className="text-sm text-stone-400 max-w-sm break-words">{error.message}</p>

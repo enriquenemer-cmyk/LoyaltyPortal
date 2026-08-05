@@ -1,4 +1,5 @@
 'use client';
+import { CpuChipIcon, SparklesIcon } from '@heroicons/react/24/outline';
 
 import { useState } from 'react';
 
@@ -31,7 +32,7 @@ export function PrizeRecommendation({ phone }: { phone: string }) {
 
   return (
     <div className="bg-white rounded-2xl border border-[#E8E3DC] shadow-[0_1px_2px_rgba(28,25,23,0.04),_0_4px_16px_rgba(28,25,23,0.06)] p-5">
-      <h2 className="text-sm font-extrabold text-[#1C1917] uppercase tracking-wider mb-3">🤖 Recomendación IA</h2>
+      <h2 className="text-sm font-extrabold text-[#1C1917] uppercase tracking-wider mb-3"><CpuChipIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Recomendación IA</h2>
 
       {!recommendation && (
         <button
@@ -42,7 +43,7 @@ export function PrizeRecommendation({ phone }: { phone: string }) {
           {loading ? (
             <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
           ) : (
-            <span>✨</span>
+            <span><SparklesIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></span>
           )}
           {loading ? 'Generando...' : 'Generar recomendación'}
         </button>

@@ -1,4 +1,5 @@
 'use client';
+import { HandRaisedIcon, MagnifyingGlassIcon, SparklesIcon, UsersIcon } from '@heroicons/react/24/outline';
 
 import { useEffect, useState, useCallback, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
@@ -156,7 +157,7 @@ function ReferidosContent() {
     return (
       <div style={{ minHeight: '100vh', background: '#F8FAFC', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}>
         <div style={{ textAlign: 'center', maxWidth: 360 }}>
-          <div style={{ fontSize: 64, marginBottom: 16 }}>🔍</div>
+          <div style={{ fontSize: 64, marginBottom: 16 }}><MagnifyingGlassIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
           <h1 style={{ fontSize: 22, fontWeight: 800, color: '#1E293B', marginBottom: 8 }}>No encontramos tu perfil</h1>
           <p style={{ color: '#64748B', fontSize: 15, lineHeight: 1.6, marginBottom: 24 }}>
             Accede con tu código de referido o número de teléfono:
@@ -198,7 +199,7 @@ function ReferidosContent() {
 
           {data?.full_name && (
             <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: 15, marginBottom: 6, animation: 'fadeUp 0.5s ease 0.05s both' }}>
-              Hola, <strong style={{ color: 'white' }}>{data.full_name}</strong> 👋
+              Hola, <strong style={{ color: 'white' }}>{data.full_name}</strong> <HandRaisedIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" />
             </p>
           )}
           <h1 style={{ fontSize: 'clamp(26px,6vw,40px)', fontWeight: 900, color: 'white', lineHeight: 1.15, marginBottom: 12, animation: 'fadeUp 0.5s ease 0.1s both' }}>
@@ -289,7 +290,7 @@ function ReferidosContent() {
           </div>
           {data && data.count > 0 && data.count % REWARD_STEP === 0 && (
             <p style={{ fontSize: 12, color: '#16A34A', fontWeight: 700, marginTop: 10, display: 'flex', alignItems: 'center', gap: 6 }}>
-              🎉 ¡Completaste un grupo! Revisa tus mensajes para tu premio extra.
+              <SparklesIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> ¡Completaste un grupo! Revisa tus mensajes para tu premio extra.
             </p>
           )}
         </div>
@@ -297,11 +298,11 @@ function ReferidosContent() {
         {/* ── FRIENDS LIST ── */}
         <div style={{ background: 'white', borderRadius: 20, padding: 24, boxShadow: '0 2px 16px rgba(0,0,0,0.05)', marginBottom: 16, animation: 'fadeUp 0.5s ease 0.35s both' }}>
           <h2 style={{ fontSize: 16, fontWeight: 800, color: '#1E293B', marginBottom: 16, display: 'flex', alignItems: 'center', gap: 8 }}>
-            <span>👥</span> Amigos que has invitado
+            <span><UsersIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></span> Amigos que has invitado
           </h2>
           {!data?.friends.length ? (
             <div style={{ textAlign: 'center', padding: '32px 16px' }}>
-              <div style={{ fontSize: 48, marginBottom: 12 }}>🤝</div>
+              <div style={{ fontSize: 48, marginBottom: 12 }}><UsersIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
               <p style={{ color: '#94A3B8', fontSize: 14, lineHeight: 1.6 }}>
                 Aún no tienes amigos registrados.<br />¡Comparte tu link y empieza a ganar!
               </p>
@@ -336,9 +337,9 @@ function ReferidosContent() {
           <h2 style={{ fontSize: 17, fontWeight: 800, color: '#1E293B', marginBottom: 14, textAlign: 'center' }}>¿Cómo funciona?</h2>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             {[
-              { icon: '🔗', title: 'Comparte tu link', desc: 'Envía tu link único a amigos por WhatsApp, SMS o redes sociales.' },
-              { icon: '📱', title: 'Tu amigo se registra', desc: 'Cuando usan tu link para registrar un premio, se cuenta como referido tuyo.' },
-              { icon: '🎁', title: 'Ambos ganan', desc: `Cada ${REWARD_STEP} amigos registrados te dan un premio extra automáticamente.` },
+              { icon: '', title: 'Comparte tu link', desc: 'Envía tu link único a amigos por WhatsApp, SMS o redes sociales.' },
+              { icon: '', title: 'Tu amigo se registra', desc: 'Cuando usan tu link para registrar un premio, se cuenta como referido tuyo.' },
+              { icon: '', title: 'Ambos ganan', desc: `Cada ${REWARD_STEP} amigos registrados te dan un premio extra automáticamente.` },
             ].map((item, i) => (
               <div key={i} className="step-card" style={{
                 background: 'white', borderRadius: 16, padding: '18px 20px',

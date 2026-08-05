@@ -1,4 +1,5 @@
 'use client';
+import { BoltIcon, ExclamationTriangleIcon, HandRaisedIcon, RocketLaunchIcon, SparklesIcon } from '@heroicons/react/24/outline';
 
 import { useEffect, useRef, useState, useCallback } from 'react';
 import Link from 'next/link';
@@ -827,7 +828,7 @@ function ExpiringAlert({ prizes }: { prizes: ExpiringPrize[] }) {
     >
       <div className="flex items-center justify-between flex-wrap gap-2">
         <div className="flex items-center gap-2">
-          <span className="text-lg leading-none">⚠️</span>
+          <span className="text-lg leading-none"><ExclamationTriangleIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></span>
           <span className="font-bold text-blue-800 text-sm">
             {prizes.length === 1
               ? '1 premio vence en los próximos 3 días'
@@ -890,7 +891,7 @@ function buildSmartAlerts(
   if (expiringTomorrow.length > 0) {
     alerts.push({
       id: `expiring-tomorrow-${tomorrowIso}`,
-      icon: '⚠️',
+      icon: '',
       message: expiringTomorrow.length === 1
         ? '1 premio vence mañana'
         : `${expiringTomorrow.length} premios vencen mañana`,
@@ -905,7 +906,7 @@ function buildSmartAlerts(
     if (dropPct > 30) {
       alerts.push({
         id: `perf-drop-${now.getFullYear()}-${now.getMonth()}-${Math.floor(now.getDate() / 7)}`,
-        icon: '📊',
+        icon: '',
         message: `Los cobros bajaron ${dropPct}% vs la semana anterior — Considera crear una campaña`,
         ctaLabel: 'Crear campaña',
         ctaHref: '/admin/campanas',
@@ -931,7 +932,7 @@ function buildSmartAlerts(
   if (prizes.length > 0 && prizesThisWeek.length === 0) {
     alerts.push({
       id: `no-prizes-week-${now.getFullYear()}-${now.getMonth()}-${Math.floor(now.getDate() / 7)}`,
-      icon: '💡',
+      icon: '',
       message: 'No has generado premios esta semana — ¿Crear uno?',
       ctaLabel: 'Generar premio',
       ctaHref: '/admin/generate',
@@ -1193,7 +1194,7 @@ function AtRiskWidget({ clients }: { clients: AtRiskClient[] }) {
       <div className="bg-white rounded-2xl border border-[#E8E3DC] p-6" style={{ boxShadow: '0 1px 2px rgba(28,25,23,0.04), 0 4px 16px rgba(28,25,23,0.06)' }}>
         <h2 className="text-sm font-bold text-[#1C1917] mb-1">Clientes en riesgo de perderse</h2>
         <p className="text-xs text-[#a8a29e] mb-4">Sin cobro en más de 30 días</p>
-        <p className="text-sm text-[#78716c]">🎉 Todos tus clientes han visitado recientemente</p>
+        <p className="text-sm text-[#78716c]"><SparklesIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Todos tus clientes han visitado recientemente</p>
       </div>
     );
   }
@@ -1238,7 +1239,7 @@ function AtRiskWidget({ clients }: { clients: AtRiskClient[] }) {
                       <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
                     </svg>
                   ) : (
-                    <span>✨ IA</span>
+                    <span><SparklesIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> IA</span>
                   )}
                 </button>
                 <a
@@ -1362,7 +1363,7 @@ function SetupChecklist({
         style={{ boxShadow: cardShadow }}
       >
         <div className="flex items-center gap-4">
-          <span className="text-3xl shrink-0">🎉</span>
+          <span className="text-3xl shrink-0"><SparklesIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></span>
           <div>
             <p className="font-bold text-blue-900 text-base">¡Configuracion completa!</p>
             <p className="text-sm text-blue-700 mt-0.5">Tu plataforma 3E esta lista para usarse.</p>
@@ -1390,7 +1391,7 @@ function SetupChecklist({
       <div className="px-6 pt-6 pb-4">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
-            <span className="text-xl leading-none">🚀</span>
+            <span className="text-xl leading-none"><RocketLaunchIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></span>
             <h2 className="text-base font-bold text-[#1C1917]">Empieza aqui</h2>
           </div>
           <button
@@ -1809,7 +1810,7 @@ export default function AdminDashboard() {
             style={{ background: 'linear-gradient(135deg, #FEF3C7 0%, #FDE8E0 100%)', boxShadow: '0 1px 2px rgba(217,119,6,0.06), 0 4px 12px rgba(217,119,6,0.1)' }}
           >
             <div className="flex items-center gap-2 mb-3">
-              <span className="text-xl">⚡</span>
+              <span className="text-xl"><BoltIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></span>
               <h2 className="font-bold text-[#1C1917] text-base">Eventos activos hoy</h2>
             </div>
             <div className="flex flex-wrap gap-3">
@@ -1840,7 +1841,7 @@ export default function AdminDashboard() {
             style={{ background: 'linear-gradient(135deg, #FDE8E0 0%, #FEF3C7 100%)', boxShadow: '0 1px 2px rgba(37,99,235,0.06), 0 4px 12px rgba(37,99,235,0.1)' }}
           >
             <div className="flex items-center gap-4">
-              <span className="text-3xl shrink-0">👋</span>
+              <span className="text-3xl shrink-0"><HandRaisedIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></span>
               <div>
                 <p className="font-bold text-[#1C1917] text-base">¡Bienvenido! Comienza configurando tu primer restaurante.</p>
                 <p className="text-sm text-[#78716c] mt-0.5">Sigue el asistente de configuración para poner en marcha 3E.</p>

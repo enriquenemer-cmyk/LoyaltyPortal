@@ -1,3 +1,4 @@
+import { LockClosedIcon } from '@heroicons/react/24/outline';
 type Role = 'admin' | 'manager' | 'cajero';
 
 type PermissionRow = {
@@ -59,7 +60,7 @@ export default function PermisosPage() {
         <div className="hero-blobs" aria-hidden="true"><span key="b1" /><span key="b2" /><span key="b3" /></div>
         <div className="max-w-4xl mx-auto">
           <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-widest mb-3" style={{ background: 'rgba(255,255,255,0.15)', color: 'rgba(219,234,254,0.9)', border: '1px solid rgba(255,255,255,0.2)' }}>
-            🔐 Permisos
+            <LockClosedIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Permisos
           </div>
           <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Permisos y Roles</h1>
           <p className="text-blue-200/70 mt-1.5 text-sm">Qué puede ver y hacer cada rol</p>

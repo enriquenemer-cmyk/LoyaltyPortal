@@ -1,3 +1,4 @@
+import { CheckCircleIcon, GiftIcon, ReceiptPercentIcon, RectangleGroupIcon } from '@heroicons/react/24/outline';;
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { SendMessageForm } from './SendMessageForm';
@@ -224,10 +225,10 @@ function eventIconBg(type: TimelineEvent['type']) {
 }
 
 function eventEmoji(type: TimelineEvent['type']) {
-  if (type === 'delivered') return '✅';
-  if (type === 'ticket') return '🧾';
-  if (type === 'game') return '🎰';
-  return '🎁';
+  if (type === 'delivered') return '';
+  if (type === 'ticket') return '';
+  if (type === 'game') return '';
+  return '';
 }
 
 // ── Page ──────────────────────────────────────────────────────────────────────

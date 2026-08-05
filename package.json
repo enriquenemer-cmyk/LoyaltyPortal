@@ -8,6 +8,7 @@
     "start": "node node_modules/next/dist/bin/next start"
   },
   "dependencies": {
+    "@heroicons/react": "^2.2.0",
     "@types/bcryptjs": "^2.4.6",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/pg": "^8.20.0",
@@ -21,6 +22,7 @@
     "jsonwebtoken": "^9.0.3",
     "jspdf": "^4.2.1",
     "jszip": "^3.10.1",
+    "lucide-react": "^1.28.0",
     "next": "16.2.7",
     "openai": "^6.42.0",
     "pg": "^8.21.0",

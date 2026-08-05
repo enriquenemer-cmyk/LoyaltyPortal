@@ -1,4 +1,5 @@
 'use client';
+import { BookOpenIcon } from '@heroicons/react/24/outline';
 
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
@@ -165,7 +166,7 @@ export default function EmpleadosPanelPage() {
           className="w-full flex items-center gap-4 bg-white border border-[#E8E3DC] rounded-2xl px-5 shadow-sm hover:border-[#2563EB] transition-colors"
           style={{ minHeight: 64 }}
         >
-          <span className="text-2xl">📚</span>
+          <span className="text-2xl"><BookOpenIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></span>
           <span className="text-base font-bold text-[#1C1917]">Capacitación</span>
           <svg className="w-5 h-5 text-stone-400 ml-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />

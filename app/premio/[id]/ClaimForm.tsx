@@ -140,7 +140,7 @@ export default function ClaimForm({ prizeId, prizeName }: Props) {
               ? <img src={qrDataUrl} alt="QR de cobro" style={{ display: 'block', width: 220, height: 220, borderRadius: 12 }} />
               : (
                 <div className="w-[220px] h-[220px] flex items-center justify-center">
-                  <svg className="animate-spin w-10 h-10 text-blue-400" fill="none" viewBox="0 0 24 24">
+                  <svg className="animate-spin w-10 h-10 text-[#1a6b3c]" fill="none" viewBox="0 0 24 24">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
                   </svg>

@@ -87,7 +87,7 @@ export default function FraudePage() {
             <ExclamationCircleIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Seguridad
           </div>
           <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Detector de Fraude</h1>
-          <p className="text-blue-200/70 mt-1.5 text-sm">
+          <p className="text-orange-200/70 mt-1.5 text-sm">
             Alertas automáticas de actividad sospechosa
           </p>
         </div>
@@ -99,7 +99,7 @@ export default function FraudePage() {
           <button
             onClick={() => setFilter('unresolved')}
             className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
-              filter === 'unresolved' ? 'bg-blue-500/20 text-blue-300 border border-blue-500/40' : 'bg-white/5 text-slate-400 border border-white/10 hover:bg-white/8'
+              filter === 'unresolved' ? 'bg-orange-500/20 text-orange-300 border border-orange-500/40' : 'bg-white/5 text-slate-400 border border-white/10 hover:bg-white/8'
             }`}
           >
             Sin resolver
@@ -107,7 +107,7 @@ export default function FraudePage() {
           <button
             onClick={() => setFilter('all')}
             className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
-              filter === 'all' ? 'bg-blue-500/20 text-blue-300 border border-blue-500/40' : 'bg-white/5 text-slate-400 border border-white/10 hover:bg-white/8'
+              filter === 'all' ? 'bg-orange-500/20 text-orange-300 border border-orange-500/40' : 'bg-white/5 text-slate-400 border border-white/10 hover:bg-white/8'
             }`}
           >
             Todas

@@ -58,7 +58,7 @@ function CountdownBadge({ endDate }: { endDate: string }) {
   const urgent = diff < 3 * 3600000;
 
   return (
-    <span className={`text-xs font-mono font-bold px-2 py-0.5 rounded-full ${urgent ? 'bg-red-100 text-red-600' : 'bg-blue-100 text-blue-700'}`}>
+    <span className={`text-xs font-mono font-bold px-2 py-0.5 rounded-full ${urgent ? 'bg-red-100 text-red-600' : 'bg-orange-100 text-orange-700'}`}>
       {remaining}
     </span>
   );
@@ -189,7 +189,7 @@ export default function FlashPage() {
             <BoltIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Campaña Flash
           </div>
           <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">CAMPAÑA FLASH</h1>
-          <p className="text-blue-200/70 mt-1.5 text-sm">
+          <p className="text-orange-200/70 mt-1.5 text-sm">
             Genera decenas de QRs en segundos. Activa una campaña de tiempo limitado ahora mismo.
           </p>
         </div>
@@ -203,7 +203,7 @@ export default function FlashPage() {
 
             {/* 1. Premio */}
             <div className="px-6 pt-6 pb-5 border-b border-white/10">
-              <label className="block text-[10px] font-bold tracking-[0.2em] text-blue-400 uppercase mb-3">
+              <label className="block text-[10px] font-bold tracking-[0.2em] text-[#1a6b3c] uppercase mb-3">
                 1. Tipo de Premio
               </label>
               <div className="rounded-xl overflow-hidden border border-white/10">
@@ -216,7 +216,7 @@ export default function FlashPage() {
                       onClick={() => setTemplateIdx(i)}
                       className={`w-full flex items-center gap-4 px-4 py-3 text-left transition-all ${
                         i < TEMPLATES.length - 1 ? 'border-b border-white/10' : ''
-                      } ${active ? 'bg-blue-500/15' : 'hover:bg-white/5'}`}
+                      } ${active ? 'bg-orange-500/15' : 'hover:bg-white/5'}`}
                     >
                       <div
                         className="w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 transition-all"
@@ -237,7 +237,7 @@ export default function FlashPage() {
 
             {/* 2. Cantidad */}
             <div className="px-6 py-5 border-b border-white/10">
-              <label className="block text-[10px] font-bold tracking-[0.2em] text-blue-400 uppercase mb-3">
+              <label className="block text-[10px] font-bold tracking-[0.2em] text-[#1a6b3c] uppercase mb-3">
                 2. Cantidad de QRs <span className="text-white/50 normal-case font-normal">(10–500)</span>
               </label>
               <div className="flex items-center gap-4">
@@ -256,7 +256,7 @@ export default function FlashPage() {
                   max={500}
                   value={quantity}
                   onChange={(e) => setQuantity(Math.min(500, Math.max(10, parseInt(e.target.value) || 10)))}
-                  className="w-20 bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-sm text-white text-center focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-20 bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-sm text-white text-center focus:outline-none focus:ring-1 focus:ring-orange-500 focus:border-orange-500"
                 />
               </div>
               <p className="text-xs text-white/40 mt-2">{quantity} códigos únicos de un solo uso</p>
@@ -264,7 +264,7 @@ export default function FlashPage() {
 
             {/* 3. Duración */}
             <div className="px-6 py-5 border-b border-white/10">
-              <label className="block text-[10px] font-bold tracking-[0.2em] text-blue-400 uppercase mb-3">
+              <label className="block text-[10px] font-bold tracking-[0.2em] text-[#1a6b3c] uppercase mb-3">
                 3. Duración
               </label>
               <div className="flex gap-2 flex-wrap">
@@ -275,7 +275,7 @@ export default function FlashPage() {
                     onClick={() => setDurationHours(d.hours)}
                     className={`px-4 py-2 rounded-full text-sm font-semibold transition-all border ${
                       durationHours === d.hours
-                        ? 'bg-blue-500 border-blue-500 text-white shadow-lg shadow-blue-500/30'
+                        ? 'bg-orange-500 border-orange-500 text-white shadow-lg shadow-blue-500/30'
                         : 'bg-transparent border-white/20 text-white/60 hover:border-white/40 hover:text-white'
                     }`}
                   >
@@ -287,7 +287,7 @@ export default function FlashPage() {
 
             {/* 4. Restaurante */}
             <div className="px-6 py-5 border-b border-white/10">
-              <label className="block text-[10px] font-bold tracking-[0.2em] text-blue-400 uppercase mb-3">
+              <label className="block text-[10px] font-bold tracking-[0.2em] text-[#1a6b3c] uppercase mb-3">
                 4. Restaurante
               </label>
               {loadingRestaurants ? (
@@ -296,7 +296,7 @@ export default function FlashPage() {
                 <select
                   value={restaurantId}
                   onChange={(e) => setRestaurantId(e.target.value)}
-                  className="w-full bg-white/10 border border-white/20 rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full bg-white/10 border border-white/20 rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-1 focus:ring-orange-500 focus:border-orange-500"
                 >
                   <option value="" className="bg-[#1A1A1A]">Sin restaurante específico</option>
                   {restaurants.map((r) => (
@@ -308,7 +308,7 @@ export default function FlashPage() {
 
             {/* 5. Mensaje personalizado */}
             <div className="px-6 py-5">
-              <label className="block text-[10px] font-bold tracking-[0.2em] text-blue-400 uppercase mb-1">
+              <label className="block text-[10px] font-bold tracking-[0.2em] text-[#1a6b3c] uppercase mb-1">
                 5. Mensaje para WhatsApp <span className="text-white/40 normal-case font-normal">(opcional)</span>
               </label>
               <p className="text-xs text-white/40 mb-3">Se pre-completará con los datos del premio si lo dejas vacío.</p>
@@ -317,7 +317,7 @@ export default function FlashPage() {
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 placeholder={defaultMessage || 'Escribe el mensaje que enviarás...'}
-                className="w-full bg-white/10 border border-white/20 rounded-lg px-3 py-2.5 text-sm text-white placeholder-white/25 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 resize-none"
+                className="w-full bg-white/10 border border-white/20 rounded-lg px-3 py-2.5 text-sm text-white placeholder-white/25 focus:outline-none focus:ring-1 focus:ring-orange-500 focus:border-orange-500 resize-none"
               />
             </div>
           </div>
@@ -337,7 +337,7 @@ export default function FlashPage() {
               <p className="text-base font-bold text-white">
                 Generando {progress}/{quantity}...
               </p>
-              <span className="text-blue-400 font-bold text-sm">{progressPct}%</span>
+              <span className="text-[#1a6b3c] font-bold text-sm">{progressPct}%</span>
             </div>
             <div className="w-full bg-white/10 rounded-full h-3 overflow-hidden">
               <div
@@ -408,7 +408,7 @@ export default function FlashPage() {
                 { label: 'Premio', value: selectedTemplate?.name ?? '—' },
               ].map((stat) => (
                 <div key={stat.label} className="bg-[#1A1A1A] border border-white/10 rounded-xl px-4 py-4 text-center">
-                  <p className="text-xl font-black text-blue-400 truncate">{stat.value}</p>
+                  <p className="text-xl font-black text-[#1a6b3c] truncate">{stat.value}</p>
                   <p className="text-[10px] text-white/40 mt-1 uppercase tracking-widest">{stat.label}</p>
                 </div>
               ))}
@@ -434,7 +434,7 @@ export default function FlashPage() {
                 {generated.slice(0, 20).map((p, i) => (
                   <div key={p.id} className="flex items-center gap-2 text-xs">
                     <span className="text-white/30 w-6 text-right shrink-0">#{i + 1}</span>
-                    <a href={p.url} target="_blank" rel="noreferrer" className="text-blue-400 hover:text-blue-300 font-mono truncate transition-colors">
+                    <a href={p.url} target="_blank" rel="noreferrer" className="text-[#1a6b3c] hover:text-orange-300 font-mono truncate transition-colors">
                       {p.url}
                     </a>
                   </div>
@@ -493,7 +493,7 @@ export default function FlashPage() {
         <div className="bg-[#1A1A1A] rounded-2xl border border-white/10 overflow-hidden">
           <div className="px-6 py-4 border-b border-white/10 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
+              <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
               <h3 className="font-bold text-white text-sm">Campanas activas</h3>
               <span className="text-[10px] text-white/40 uppercase tracking-wider">(expiran en 48h)</span>
             </div>

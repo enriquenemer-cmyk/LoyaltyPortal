@@ -175,7 +175,7 @@ export default function NotificationBell() {
         ref={buttonRef}
         onClick={() => setOpen((v) => !v)}
         aria-label="Notificaciones"
-        className="relative p-1.5 rounded-lg text-stone-400 hover:text-blue-500 hover:bg-blue-50 transition-colors"
+        className="relative p-1.5 rounded-lg text-stone-400 hover:text-orange-500 hover:bg-orange-50 transition-colors"
       >
         <svg className={`w-4 h-4 ${ringing ? 'bell-ringing' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
@@ -201,7 +201,7 @@ export default function NotificationBell() {
               <button
                 onClick={markAllRead}
                 disabled={marking}
-                className="text-[10px] font-semibold text-blue-500 hover:text-blue-700 transition-colors disabled:opacity-50"
+                className="text-[10px] font-semibold text-orange-500 hover:text-orange-700 transition-colors disabled:opacity-50"
               >
                 {marking ? 'Marcando...' : 'Marcar todo como leido'}
               </button>
@@ -245,7 +245,7 @@ export default function NotificationBell() {
               <Link
                 href="/admin/registros"
                 onClick={() => setOpen(false)}
-                className="text-[11px] font-semibold text-blue-500 hover:text-blue-700 transition-colors"
+                className="text-[11px] font-semibold text-orange-500 hover:text-orange-700 transition-colors"
               >
                 Ver todos ({count}) &rarr;
               </Link>

@@ -81,7 +81,7 @@ export default function WebhooksSalientesPage() {
             <PaperAirplaneIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Webhooks Zapier
           </div>
           <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Webhooks Salientes</h1>
-          <p className="text-blue-200/70 mt-1.5 text-sm">Envía eventos a Zapier, Make, o cualquier URL cuando algo ocurre</p>
+          <p className="text-orange-200/70 mt-1.5 text-sm">Envía eventos a Zapier, Make, o cualquier URL cuando algo ocurre</p>
         </div>
       </div>
 
@@ -152,7 +152,7 @@ export default function WebhooksSalientesPage() {
                       <p className="text-xs text-stone-400 font-mono truncate">{wh.url}</p>
                       <div className="flex flex-wrap gap-1 mt-2">
                         {wh.events.map(ev => (
-                          <span key={ev} className="text-[10px] bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full font-semibold">{ev}</span>
+                          <span key={ev} className="text-[10px] bg-orange-50 text-orange-700 px-2 py-0.5 rounded-full font-semibold">{ev}</span>
                         ))}
                       </div>
                       {wh.last_triggered_at && (
@@ -179,9 +179,9 @@ export default function WebhooksSalientesPage() {
         </div>
 
         {/* Zapier instructions */}
-        <div className="bg-blue-50 border border-blue-200 rounded-2xl p-5 mt-6">
+        <div className="bg-orange-50 border border-orange-200 rounded-2xl p-5 mt-6">
           <p className="text-sm font-bold text-blue-800 mb-2">Cómo conectar con Zapier</p>
-          <ol className="text-xs text-blue-700 space-y-1 list-decimal list-inside">
+          <ol className="text-xs text-orange-700 space-y-1 list-decimal list-inside">
             <li>En Zapier, crea un Zap con trigger "Webhooks by Zapier → Catch Hook"</li>
             <li>Copia la URL de webhook que te da Zapier</li>
             <li>Pégala aquí y selecciona los eventos que quieres escuchar</li>

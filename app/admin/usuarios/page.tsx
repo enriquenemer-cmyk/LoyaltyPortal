@@ -106,7 +106,7 @@ export default function UsuariosPage() {
               <UserIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Usuarios
             </div>
             <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Usuarios del Sistema</h1>
-            <p className="text-blue-200/70 mt-1.5 text-sm">Gestiona los managers por restaurante</p>
+            <p className="text-orange-200/70 mt-1.5 text-sm">Gestiona los managers por restaurante</p>
           </div>
           <button
             onClick={() => { setShowForm((v) => !v); setError(null); }}
@@ -243,7 +243,7 @@ export default function UsuariosPage() {
                   {users.map((user, i) => (
                     <tr
                       key={user.id}
-                      className={`border-b border-[#E8E3DC] last:border-0 ${i % 2 === 0 ? 'bg-white' : 'bg-[#FAFAF9]/50'} hover:bg-blue-50/30 transition-colors`}
+                      className={`border-b border-[#E8E3DC] last:border-0 ${i % 2 === 0 ? 'bg-white' : 'bg-[#FAFAF9]/50'} hover:bg-orange-50/30 transition-colors`}
                     >
                       <td className="px-5 py-3.5">
                         <div className="flex items-center gap-2.5">
@@ -259,9 +259,9 @@ export default function UsuariosPage() {
                         <span
                           className={`inline-flex items-center text-xs font-semibold rounded-full px-2.5 py-1 capitalize ${
                             user.role === 'admin'
-                              ? 'bg-blue-100 text-blue-700'
+                              ? 'bg-orange-100 text-orange-700'
                               : user.role === 'cajero'
-                              ? 'bg-blue-50 text-blue-700'
+                              ? 'bg-orange-50 text-orange-700'
                               : 'bg-stone-100 text-stone-600'
                           }`}
                         >

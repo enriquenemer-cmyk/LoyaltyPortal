@@ -121,7 +121,7 @@ export default function EmpleadosPanelPage() {
     <div className="min-h-screen bg-[#FAFAF9]" style={{ minHeight: '100vh' }}>
       <div className="hero-gradient px-4 pt-8 pb-10">
         <div className="max-w-md mx-auto text-center">
-          <p className="text-blue-200/80 text-sm font-semibold uppercase tracking-widest mb-1">Bienvenido/a</p>
+          <p className="text-orange-200/80 text-sm font-semibold uppercase tracking-widest mb-1">Bienvenido/a</p>
           <h1 className="text-3xl sm:text-4xl font-black text-white tracking-tight">{employee.full_name}</h1>
           {employee.position && <p className="text-blue-100/80 text-sm mt-1">{employee.position}</p>}
 
@@ -129,7 +129,7 @@ export default function EmpleadosPanelPage() {
             <div className="text-4xl sm:text-5xl font-black tabular-nums tracking-tight">
               {now.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
             </div>
-            <div className="text-blue-200/70 text-sm mt-1 capitalize">
+            <div className="text-orange-200/70 text-sm mt-1 capitalize">
               {now.toLocaleDateString('es-MX', { weekday: 'long', day: 'numeric', month: 'long' })}
             </div>
           </div>

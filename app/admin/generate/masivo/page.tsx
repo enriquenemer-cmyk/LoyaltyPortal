@@ -53,7 +53,7 @@ async function addLogoToQR(qrDataUrl: string): Promise<string> {
 type Restaurant = { id: string; name: string };
 type QRResult = { id: string; url: string; qrDataUrl: string; index: number };
 
-const inputClass = 'w-full bg-white border border-[#E8E3DC] rounded-xl px-4 py-3 text-sm text-[#1C1917] placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all hover:border-stone-300 shadow-sm';
+const inputClass = 'w-full bg-white border border-[#E8E3DC] rounded-xl px-4 py-3 text-sm text-[#1C1917] placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all hover:border-stone-300 shadow-sm';
 const labelClass = 'block text-sm font-semibold text-stone-700 mb-1.5';
 
 export default function MasivoPage() {
@@ -382,7 +382,7 @@ ${pagesHtml}
               <RocketLaunchIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Generación Masiva
             </div>
             <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Generación Masiva</h1>
-            <p className="text-blue-200/70 mt-1.5 text-sm">Crea hasta 100 QRs únicos del mismo premio en un solo clic.</p>
+            <p className="text-orange-200/70 mt-1.5 text-sm">Crea hasta 100 QRs únicos del mismo premio en un solo clic.</p>
           </div>
           <Link href="/admin/generate" className="flex items-center gap-2 font-bold px-5 py-3 rounded-xl text-sm" style={{ background: 'white', color: '#1d4ed8', boxShadow: '0 4px 16px rgba(0,0,0,0.15)' }}>
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -405,23 +405,23 @@ ${pagesHtml}
 
             <div className="p-5 space-y-4">
               {/* Quantity — prominente */}
-              <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
+              <div className="bg-orange-50 border border-orange-200 rounded-xl p-4">
                 <label className="block text-sm font-bold text-blue-800 mb-2">
                   ¿Cuántos QRs generar?
                 </label>
                 <div className="flex items-center gap-3">
                   <button type="button" onClick={() => setForm(p => ({ ...p, quantity: Math.max(1, Number(p.quantity) - 1) }))}
-                    className="w-10 h-10 rounded-xl bg-white border border-blue-200 text-blue-700 font-black text-lg flex items-center justify-center hover:bg-blue-100 transition-colors shadow-sm">−</button>
+                    className="w-10 h-10 rounded-xl bg-white border border-orange-200 text-orange-700 font-black text-lg flex items-center justify-center hover:bg-orange-100 transition-colors shadow-sm">−</button>
                   <input
                     name="quantity" type="number" min={1} max={100}
                     value={form.quantity}
                     onChange={handleChange}
-                    className="flex-1 text-center bg-white border border-blue-200 rounded-xl py-2.5 text-2xl font-black text-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-400/40"
+                    className="flex-1 text-center bg-white border border-orange-200 rounded-xl py-2.5 text-2xl font-black text-blue-800 focus:outline-none focus:ring-2 focus:ring-orange-400/40"
                   />
                   <button type="button" onClick={() => setForm(p => ({ ...p, quantity: Math.min(100, Number(p.quantity) + 1) }))}
-                    className="w-10 h-10 rounded-xl bg-white border border-blue-200 text-blue-700 font-black text-lg flex items-center justify-center hover:bg-blue-100 transition-colors shadow-sm">+</button>
+                    className="w-10 h-10 rounded-xl bg-white border border-orange-200 text-orange-700 font-black text-lg flex items-center justify-center hover:bg-orange-100 transition-colors shadow-sm">+</button>
                 </div>
-                <p className="text-blue-600 text-xs mt-2 text-center font-medium">Máximo 100 QRs por lote</p>
+                <p className="text-orange-600 text-xs mt-2 text-center font-medium">Máximo 100 QRs por lote</p>
               </div>
 
               <div>
@@ -524,7 +524,7 @@ ${pagesHtml}
             {results.length > 0 && (
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                 {results.map(r => (
-                  <div key={r.id} className="bg-white rounded-2xl border border-[#E8E3DC] shadow-sm overflow-hidden group hover:shadow-md hover:border-blue-200 transition-all">
+                  <div key={r.id} className="bg-white rounded-2xl border border-[#E8E3DC] shadow-sm overflow-hidden group hover:shadow-md hover:border-orange-200 transition-all">
                     <div className="py-2 px-3 flex items-center justify-between border-b border-[#E8E3DC] bg-[#FAFAF9]">
                       <span className="text-[#2563EB] text-xs font-bold">#{r.index} de {qty}</span>
                     </div>
@@ -534,7 +534,7 @@ ${pagesHtml}
                       </div>
                       <p className="text-stone-600 text-xs font-semibold truncate w-full text-center mb-2">{form.name}</p>
                       <button onClick={() => downloadOne(r)}
-                        className="w-full flex items-center justify-center gap-1.5 text-xs font-bold text-[#2563EB] bg-blue-50 hover:bg-blue-100 border border-blue-200 py-1.5 rounded-lg transition-colors">
+                        className="w-full flex items-center justify-center gap-1.5 text-xs font-bold text-[#2563EB] bg-orange-50 hover:bg-orange-100 border border-orange-200 py-1.5 rounded-lg transition-colors">
                         <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                         </svg>

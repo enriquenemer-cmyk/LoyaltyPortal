@@ -74,7 +74,7 @@ export default function MisionesPage() {
               <BoltIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Misiones
             </div>
             <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Misiones</h1>
-            <p className="text-blue-200/70 mt-1.5 text-sm">Los clientes ganan puntos al completar misiones activas esta semana</p>
+            <p className="text-orange-200/70 mt-1.5 text-sm">Los clientes ganan puntos al completar misiones activas esta semana</p>
           </div>
         </div>
       </div>

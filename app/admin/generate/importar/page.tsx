@@ -253,7 +253,7 @@ export default function ImportarPage() {
               <InboxArrowDownIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Importar Premios
             </div>
             <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Importar Premios</h1>
-            <p className="text-blue-200/70 mt-1.5 text-sm">Sube un archivo con multiples premios y genéralos en un solo paso.</p>
+            <p className="text-orange-200/70 mt-1.5 text-sm">Sube un archivo con multiples premios y genéralos en un solo paso.</p>
           </div>
           <Link href="/admin/generate" className="flex items-center gap-2 font-bold px-5 py-3 rounded-xl text-sm" style={{ background: 'white', color: '#1d4ed8', boxShadow: '0 4px 16px rgba(0,0,0,0.15)' }}>
             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -275,7 +275,7 @@ export default function ImportarPage() {
             </div>
             <button
               onClick={() => downloadCSV(TEMPLATE_CSV, 'plantilla-premios.csv')}
-              className="flex items-center gap-2 text-sm font-bold text-[#2563EB] bg-blue-50 border border-blue-200 hover:bg-blue-100 transition-colors px-4 py-2 rounded-xl"
+              className="flex items-center gap-2 text-sm font-bold text-[#2563EB] bg-orange-50 border border-orange-200 hover:bg-orange-100 transition-colors px-4 py-2 rounded-xl"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -292,8 +292,8 @@ export default function ImportarPage() {
             onClick={() => fileInputRef.current?.click()}
             className={`rounded-2xl border-2 border-dashed cursor-pointer transition-all flex flex-col items-center justify-center py-12 px-6 text-center ${
               dragOver
-                ? 'border-[#2563EB] bg-blue-50'
-                : 'border-[#E8E3DC] bg-white hover:border-blue-300 hover:bg-blue-50/40'
+                ? 'border-[#2563EB] bg-orange-50'
+                : 'border-[#E8E3DC] bg-white hover:border-blue-300 hover:bg-orange-50/40'
             }`}
           >
             <input
@@ -426,7 +426,7 @@ export default function ImportarPage() {
                       {importTotal > 0 ? Math.round((importProgress / importTotal) * 100) : 0}%
                     </span>
                   </div>
-                  <div className="w-full bg-blue-100 rounded-full h-2 overflow-hidden border border-blue-200">
+                  <div className="w-full bg-orange-100 rounded-full h-2 overflow-hidden border border-orange-200">
                     <div
                       className="h-2 rounded-full transition-all duration-300"
                       style={{
@@ -480,7 +480,7 @@ export default function ImportarPage() {
                 </div>
                 <button
                   onClick={downloadResults}
-                  className="flex items-center gap-2 text-xs font-bold text-[#2563EB] bg-blue-50 border border-blue-200 hover:bg-blue-100 transition-colors px-3 py-1.5 rounded-xl"
+                  className="flex items-center gap-2 text-xs font-bold text-[#2563EB] bg-orange-50 border border-orange-200 hover:bg-orange-100 transition-colors px-3 py-1.5 rounded-xl"
                 >
                   <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />

@@ -55,7 +55,7 @@ export default function CapacitacionListPage() {
           </button>
           <div className="text-2xl"><BookOpenIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
           <h1 className="text-3xl sm:text-4xl font-black text-white tracking-tight mt-1">Capacitación</h1>
-          <p className="text-blue-200/70 mt-1.5 text-sm">Completa los módulos y gana puntos</p>
+          <p className="text-orange-200/70 mt-1.5 text-sm">Completa los módulos y gana puntos</p>
         </div>
       </div>
 

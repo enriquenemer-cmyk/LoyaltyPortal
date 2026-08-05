@@ -823,7 +823,7 @@ function ExpiringAlert({ prizes }: { prizes: ExpiringPrize[] }) {
 
   return (
     <div
-      className="rounded-2xl border border-blue-300 bg-blue-50 p-5 flex flex-col gap-3"
+      className="rounded-2xl border border-blue-300 bg-orange-50 p-5 flex flex-col gap-3"
       style={{ boxShadow: '0 1px 2px rgba(180,130,0,0.06), 0 4px 12px rgba(180,130,0,0.08)' }}
     >
       <div className="flex items-center justify-between flex-wrap gap-2">
@@ -837,7 +837,7 @@ function ExpiringAlert({ prizes }: { prizes: ExpiringPrize[] }) {
         </div>
         <Link
           href="/admin/premios"
-          className="text-xs font-bold text-blue-700 hover:text-blue-900 transition-colors"
+          className="text-xs font-bold text-orange-700 hover:text-blue-900 transition-colors"
         >
           Ver todos →
         </Link>
@@ -852,7 +852,7 @@ function ExpiringAlert({ prizes }: { prizes: ExpiringPrize[] }) {
           return (
             <li key={p.id} className="flex items-center justify-between text-xs text-blue-900">
               <span className="font-semibold truncate max-w-[260px]">{p.name}</span>
-              <span className="text-blue-600 shrink-0 ml-2">Vence {date}</span>
+              <span className="text-orange-600 shrink-0 ml-2">Vence {date}</span>
             </li>
           );
         })}
@@ -977,7 +977,7 @@ function SmartAlerts({
       {alerts.map((alert) => (
         <div
           key={alert.id}
-          className="flex items-center justify-between gap-3 rounded-2xl border border-blue-200 bg-blue-50 px-4 py-3"
+          className="flex items-center justify-between gap-3 rounded-2xl border border-orange-200 bg-orange-50 px-4 py-3"
           style={{ boxShadow: '0 1px 2px rgba(37,99,235,0.04), 0 4px 12px rgba(37,99,235,0.07)' }}
         >
           <div className="flex items-center gap-2.5 min-w-0">
@@ -994,7 +994,7 @@ function SmartAlerts({
             </Link>
             <button
               onClick={() => dismiss(alert.id)}
-              className="text-blue-400 hover:text-blue-600 transition-colors text-sm font-bold leading-none"
+              className="text-[#1a6b3c] hover:text-orange-600 transition-colors text-sm font-bold leading-none"
               aria-label="Descartar alerta"
             >
               ✕
@@ -1029,20 +1029,20 @@ function ROIEstimateCard({ claims }: { claims: Claim[] }) {
 
   return (
     <div
-      className="rounded-2xl border border-blue-200 bg-blue-50 p-5 flex items-center gap-4"
+      className="rounded-2xl border border-orange-200 bg-orange-50 p-5 flex items-center gap-4"
       style={{ boxShadow: '0 1px 2px rgba(5,150,105,0.04), 0 4px 12px rgba(5,150,105,0.08)' }}
     >
       <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0" style={{ background: '#d1fae5' }}>
-        <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg className="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
       </div>
       <div className="min-w-0">
-        <p className="text-xs font-bold text-blue-700 uppercase tracking-widest mb-0.5">Impacto estimado este mes</p>
+        <p className="text-xs font-bold text-orange-700 uppercase tracking-widest mb-0.5">Impacto estimado este mes</p>
         <p className="text-base font-black text-blue-900 leading-snug">
           Este mes generaste aprox. <span style={{ color: '#059669' }}>{formatted}</span> adicionales gracias a los premios
         </p>
-        <p className="text-[11px] text-blue-600 mt-0.5">
+        <p className="text-[11px] text-orange-600 mt-0.5">
           Aproximación: {thisMonthDelivered} premios entregados este mes × $180 MXN ticket promedio
         </p>
       </div>
@@ -1359,19 +1359,19 @@ function SetupChecklist({
   if (allDone) {
     return (
       <div
-        className="rounded-2xl border border-blue-200 bg-blue-50 p-6 flex items-center justify-between gap-4"
+        className="rounded-2xl border border-orange-200 bg-orange-50 p-6 flex items-center justify-between gap-4"
         style={{ boxShadow: cardShadow }}
       >
         <div className="flex items-center gap-4">
           <span className="text-3xl shrink-0"><SparklesIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></span>
           <div>
             <p className="font-bold text-blue-900 text-base">¡Configuracion completa!</p>
-            <p className="text-sm text-blue-700 mt-0.5">Tu plataforma 3E esta lista para usarse.</p>
+            <p className="text-sm text-orange-700 mt-0.5">Tu plataforma 3E esta lista para usarse.</p>
           </div>
         </div>
         <button
           onClick={dismiss}
-          className="text-blue-400 hover:text-blue-600 transition-colors text-lg font-bold leading-none shrink-0"
+          className="text-[#1a6b3c] hover:text-orange-600 transition-colors text-lg font-bold leading-none shrink-0"
           aria-label="Cerrar"
         >
           ✕
@@ -1423,7 +1423,7 @@ function SetupChecklist({
             key={step.number}
             className={`flex items-start gap-4 p-4 rounded-xl border transition-all ${
               step.done
-                ? 'border-blue-100 bg-blue-50/50'
+                ? 'border-orange-100 bg-orange-50/50'
                 : 'border-[#E8E3DC] bg-[#FAFAF9]'
             }`}
           >
@@ -1681,8 +1681,8 @@ export default function AdminDashboard() {
   if (dashboardError) {
     return (
       <div className="min-h-screen bg-[#FAFAF9] flex flex-col items-center justify-center gap-6 px-4 text-center p-10">
-        <div className="w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center">
-          <svg className="w-7 h-7 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="w-16 h-16 rounded-full bg-orange-50 flex items-center justify-center">
+          <svg className="w-7 h-7 text-[#1a6b3c]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
           </svg>
         </div>
@@ -1716,13 +1716,13 @@ export default function AdminDashboard() {
           <div className="flex items-start justify-between flex-wrap gap-6">
             <div>
               {greeting && (
-                <p className="text-sm font-semibold text-blue-200/80 mb-1 uppercase tracking-widest">{greeting}</p>
+                <p className="text-sm font-semibold text-orange-200/80 mb-1 uppercase tracking-widest">{greeting}</p>
               )}
               <h1 className="text-3xl md:text-4xl font-black text-white leading-tight tracking-tight">
                 Panel Principal
               </h1>
               {todayLabel && (
-                <p className="text-sm text-blue-200/70 mt-1.5 capitalize">{todayLabel}</p>
+                <p className="text-sm text-orange-200/70 mt-1.5 capitalize">{todayLabel}</p>
               )}
             </div>
             <div className="flex flex-col items-end gap-3">
@@ -1748,7 +1748,7 @@ export default function AdminDashboard() {
               </div>
               <div className="flex items-center gap-2">
                 {dataCachedAt && (
-                  <span className="text-xs text-blue-200/60">
+                  <span className="text-xs text-orange-200/60">
                     Actualizado hace {Math.round((Date.now() - dataCachedAt) / 60000)} min
                   </span>
                 )}
@@ -1837,7 +1837,7 @@ export default function AdminDashboard() {
         {/* Onboarding banner — shown when no restaurants and onboarding not complete */}
         {!loading && showOnboardingBanner && (
           <div
-            className="rounded-2xl border border-blue-200 p-5 flex items-center justify-between flex-wrap gap-4"
+            className="rounded-2xl border border-orange-200 p-5 flex items-center justify-between flex-wrap gap-4"
             style={{ background: 'linear-gradient(135deg, #FDE8E0 0%, #FEF3C7 100%)', boxShadow: '0 1px 2px rgba(37,99,235,0.06), 0 4px 12px rgba(37,99,235,0.1)' }}
           >
             <div className="flex items-center gap-4">
@@ -2014,7 +2014,7 @@ export default function AdminDashboard() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <Link
               href="/admin/generate"
-              className="group flex items-center gap-4 p-5 rounded-2xl border border-[#E8E3DC] bg-white hover:border-blue-300 hover:bg-blue-50 transition-all stagger-item card-hover"
+              className="group flex items-center gap-4 p-5 rounded-2xl border border-[#E8E3DC] bg-white hover:border-blue-300 hover:bg-orange-50 transition-all stagger-item card-hover"
               style={{ boxShadow: cardShadow }}
             >
               <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0" style={{ backgroundColor: '#fde8e0' }}>
@@ -2046,16 +2046,16 @@ export default function AdminDashboard() {
 
             <Link
               href="/admin/registros"
-              className="group flex items-center gap-4 p-5 rounded-2xl border border-[#E8E3DC] bg-white hover:border-blue-200 hover:bg-blue-50 transition-all stagger-item card-hover"
+              className="group flex items-center gap-4 p-5 rounded-2xl border border-[#E8E3DC] bg-white hover:border-orange-200 hover:bg-orange-50 transition-all stagger-item card-hover"
               style={{ boxShadow: cardShadow }}
             >
-              <div className="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center shrink-0">
+              <div className="w-12 h-12 rounded-xl bg-orange-50 flex items-center justify-center shrink-0">
                 <svg width="24" height="24" fill="none" stroke="#3b82f6" strokeWidth="2" viewBox="0 0 24 24">
                   <path d="M4 6h16M4 10h16M4 14h16M4 18h16" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </div>
               <div>
-                <p className="font-bold text-[#1C1917] group-hover:text-blue-600 transition-colors">Ver Registros</p>
+                <p className="font-bold text-[#1C1917] group-hover:text-orange-600 transition-colors">Ver Registros</p>
                 <p className="text-xs text-[#a8a29e] mt-0.5">Historial completo de cobros</p>
               </div>
             </Link>
@@ -2216,7 +2216,7 @@ export default function AdminDashboard() {
                       </div>
                       <span
                         className={`text-xs font-semibold px-2 py-0.5 rounded-full shrink-0 ${
-                          isPending ? 'bg-blue-100 text-blue-700' : 'bg-blue-100 text-blue-700'
+                          isPending ? 'bg-orange-100 text-orange-700' : 'bg-orange-100 text-orange-700'
                         }`}
                       >
                         {isPending ? 'Pendiente' : 'Entregado'}
@@ -2299,7 +2299,7 @@ export default function AdminDashboard() {
               {/* Most popular prize */}
               <div className="bg-white rounded-2xl border border-[#E8E3DC] p-5 flex items-center gap-4" style={{ boxShadow: cardShadow }}>
                 <div className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0" style={{ background: '#fef3c7' }}>
-                  <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
                   </svg>
                 </div>

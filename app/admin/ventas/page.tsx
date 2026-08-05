@@ -126,14 +126,14 @@ function BestDayInsight({ bestDay }: { bestDay?: { name: string; average: number
   if (!bestDay) return null;
   return (
     <div
-      className="rounded-2xl border border-blue-200 bg-blue-50 p-5 flex items-center gap-4"
+      className="rounded-2xl border border-orange-200 bg-orange-50 p-5 flex items-center gap-4"
       style={{ boxShadow: '0 1px 2px rgba(37,99,235,0.04), 0 4px 12px rgba(37,99,235,0.08)' }}
     >
       <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 text-xl" style={{ background: '#dbeafe' }}>
         <ArrowTrendingUpIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" />
       </div>
       <div className="min-w-0">
-        <p className="text-xs font-bold text-blue-700 uppercase tracking-widest mb-0.5">Mejor día de la semana</p>
+        <p className="text-xs font-bold text-orange-700 uppercase tracking-widest mb-0.5">Mejor día de la semana</p>
         <p className="text-base font-black text-blue-900 leading-snug">
           <span style={{ color: '#2563EB' }}>{bestDay.name}</span> es tu día más fuerte, con un promedio de {formatCurrency(bestDay.average)} en ventas
         </p>
@@ -246,7 +246,7 @@ function RegistrarVentaModal({
             <select
               value={restaurantId}
               onChange={(e) => setRestaurantId(e.target.value)}
-              className="w-full px-3.5 py-2.5 bg-white border border-[#E8E3DC] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 transition-all"
+              className="w-full px-3.5 py-2.5 bg-white border border-[#E8E3DC] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-orange-400 transition-all"
             >
               <option value="">Selecciona un restaurante</option>
               {restaurants.map((r) => (
@@ -261,7 +261,7 @@ function RegistrarVentaModal({
               type="date"
               value={saleDate}
               onChange={(e) => setSaleDate(e.target.value)}
-              className="w-full px-3.5 py-2.5 bg-white border border-[#E8E3DC] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 transition-all"
+              className="w-full px-3.5 py-2.5 bg-white border border-[#E8E3DC] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-orange-400 transition-all"
             />
           </div>
 
@@ -275,7 +275,7 @@ function RegistrarVentaModal({
                 value={cash}
                 onChange={(e) => setCash(e.target.value)}
                 placeholder="0.00"
-                className="w-full px-3 py-2.5 bg-white border border-[#E8E3DC] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 transition-all"
+                className="w-full px-3 py-2.5 bg-white border border-[#E8E3DC] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-orange-400 transition-all"
               />
             </div>
             <div>
@@ -287,7 +287,7 @@ function RegistrarVentaModal({
                 value={card}
                 onChange={(e) => setCard(e.target.value)}
                 placeholder="0.00"
-                className="w-full px-3 py-2.5 bg-white border border-[#E8E3DC] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 transition-all"
+                className="w-full px-3 py-2.5 bg-white border border-[#E8E3DC] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-orange-400 transition-all"
               />
             </div>
             <div>
@@ -299,7 +299,7 @@ function RegistrarVentaModal({
                 value={other}
                 onChange={(e) => setOther(e.target.value)}
                 placeholder="0.00"
-                className="w-full px-3 py-2.5 bg-white border border-[#E8E3DC] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 transition-all"
+                className="w-full px-3 py-2.5 bg-white border border-[#E8E3DC] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-orange-400 transition-all"
               />
             </div>
           </div>
@@ -313,7 +313,7 @@ function RegistrarVentaModal({
               value={tickets}
               onChange={(e) => setTickets(e.target.value)}
               placeholder="0"
-              className="w-full px-3.5 py-2.5 bg-white border border-[#E8E3DC] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 transition-all"
+              className="w-full px-3.5 py-2.5 bg-white border border-[#E8E3DC] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-orange-400 transition-all"
             />
           </div>
 
@@ -324,13 +324,13 @@ function RegistrarVentaModal({
               onChange={(e) => setNotes(e.target.value)}
               rows={2}
               placeholder="Notas opcionales..."
-              className="w-full px-3.5 py-2.5 bg-white border border-[#E8E3DC] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 transition-all resize-none"
+              className="w-full px-3.5 py-2.5 bg-white border border-[#E8E3DC] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-orange-400 transition-all resize-none"
             />
           </div>
 
-          <div className="flex items-center justify-between bg-blue-50 border border-blue-200 rounded-xl px-4 py-3">
-            <span className="text-xs font-bold text-blue-700 uppercase tracking-wide">Total</span>
-            <span className="text-lg font-black text-blue-700">{formatCurrency(total)}</span>
+          <div className="flex items-center justify-between bg-orange-50 border border-orange-200 rounded-xl px-4 py-3">
+            <span className="text-xs font-bold text-orange-700 uppercase tracking-wide">Total</span>
+            <span className="text-lg font-black text-orange-700">{formatCurrency(total)}</span>
           </div>
 
           <button
@@ -434,7 +434,7 @@ export default function VentasPage() {
               <BanknotesIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Control de Caja
             </div>
             <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Ventas Diarias</h1>
-            <p className="text-blue-200/70 mt-1.5 text-sm">Control y registro de ventas por sucursal</p>
+            <p className="text-orange-200/70 mt-1.5 text-sm">Control y registro de ventas por sucursal</p>
           </div>
           <button
             onClick={() => setShowModal(true)}
@@ -567,7 +567,7 @@ export default function VentasPage() {
                       <td className="px-5 py-4 text-stone-500 text-xs">{formatCurrency(Number(s.cash_amount))}</td>
                       <td className="px-5 py-4 text-stone-500 text-xs">{formatCurrency(Number(s.card_amount))}</td>
                       <td className="px-5 py-4 text-stone-500 text-xs">{formatCurrency(Number(s.other_amount))}</td>
-                      <td className="px-5 py-4 text-blue-700 text-xs font-bold">{formatCurrency(Number(s.total_amount))}</td>
+                      <td className="px-5 py-4 text-orange-700 text-xs font-bold">{formatCurrency(Number(s.total_amount))}</td>
                       <td className="px-5 py-4 text-stone-500 text-xs">{s.ticket_count}</td>
                       <td className="px-5 py-4 text-stone-400 text-xs">{s.created_by || '—'}</td>
                     </tr>
@@ -591,7 +591,7 @@ export default function VentasPage() {
                     .filter((p) => Math.abs(p - page) <= 1)
                     .map((p) => (
                       <button key={p} onClick={() => setPage(p)}
-                        className={`w-8 h-8 text-xs font-bold rounded-lg border transition-colors ${p === page ? 'bg-blue-500 text-white border-blue-500' : 'hover:bg-slate-50'}`}>
+                        className={`w-8 h-8 text-xs font-bold rounded-lg border transition-colors ${p === page ? 'bg-orange-500 text-white border-orange-500' : 'hover:bg-slate-50'}`}>
                         {p}
                       </button>
                     ))}

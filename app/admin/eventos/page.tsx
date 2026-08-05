@@ -46,7 +46,7 @@ function eventStatus(ev: RestaurantEvent): 'active' | 'scheduled' | 'ended' {
 
 const STATUS_CONFIG = {
   active: { label: 'Activo', dot: 'bg-emerald-500 animate-pulse', badge: 'bg-emerald-50 text-emerald-700 border-emerald-200' },
-  scheduled: { label: 'Programado', dot: 'bg-blue-400', badge: 'bg-blue-50 text-blue-700 border-blue-200' },
+  scheduled: { label: 'Programado', dot: 'bg-orange-400', badge: 'bg-orange-50 text-orange-700 border-orange-200' },
   ended: { label: 'Terminado', dot: 'bg-stone-400', badge: 'bg-stone-50 text-stone-500 border-stone-200' },
 };
 
@@ -176,7 +176,7 @@ export default function EventosPage() {
               <CalendarIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Eventos
             </div>
             <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Eventos</h1>
-            <p className="text-blue-200/70 mt-1.5 text-sm">Crea eventos especiales para impulsar la participación de tus clientes</p>
+            <p className="text-orange-200/70 mt-1.5 text-sm">Crea eventos especiales para impulsar la participación de tus clientes</p>
           </div>
           <button
             onClick={() => setShowForm((v) => !v)}
@@ -204,7 +204,7 @@ export default function EventosPage() {
                 <select
                   value={form.restaurant_id}
                   onChange={(e) => setForm((p) => ({ ...p, restaurant_id: e.target.value }))}
-                  className="w-full px-3 py-2 text-sm border border-[#E8E3DC] rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-400/30 focus:border-blue-400"
+                  className="w-full px-3 py-2 text-sm border border-[#E8E3DC] rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-orange-400/30 focus:border-orange-400"
                   required
                 >
                   <option value="">Seleccionar restaurante</option>
@@ -220,7 +220,7 @@ export default function EventosPage() {
                   value={form.name}
                   onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))}
                   placeholder="Ej: Noche de Martes, Happy Hour..."
-                  className="w-full px-3 py-2 text-sm border border-[#E8E3DC] rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400/30 focus:border-blue-400"
+                  className="w-full px-3 py-2 text-sm border border-[#E8E3DC] rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400/30 focus:border-orange-400"
                   required
                 />
               </div>
@@ -233,7 +233,7 @@ export default function EventosPage() {
                 value={form.description}
                 onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))}
                 placeholder="Descripción breve (opcional)"
-                className="w-full px-3 py-2 text-sm border border-[#E8E3DC] rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400/30 focus:border-blue-400"
+                className="w-full px-3 py-2 text-sm border border-[#E8E3DC] rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400/30 focus:border-orange-400"
               />
             </div>
 
@@ -243,7 +243,7 @@ export default function EventosPage() {
                 <select
                   value={form.event_type}
                   onChange={(e) => setForm((p) => ({ ...p, event_type: e.target.value as EventType }))}
-                  className="w-full px-3 py-2 text-sm border border-[#E8E3DC] rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-400/30 focus:border-blue-400"
+                  className="w-full px-3 py-2 text-sm border border-[#E8E3DC] rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-orange-400/30 focus:border-orange-400"
                 >
                   {(Object.entries(EVENT_TYPE_LABELS) as [EventType, string][]).map(([k, v]) => (
                     <option key={k} value={k}>{EVENT_TYPE_ICONS[k]} {v}</option>
@@ -259,7 +259,7 @@ export default function EventosPage() {
                   value={form.multiplier}
                   onChange={(e) => setForm((p) => ({ ...p, multiplier: e.target.value }))}
                   placeholder={multiplierPlaceholder[form.event_type]}
-                  className="w-full px-3 py-2 text-sm border border-[#E8E3DC] rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400/30 focus:border-blue-400"
+                  className="w-full px-3 py-2 text-sm border border-[#E8E3DC] rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400/30 focus:border-orange-400"
                 />
               </div>
             </div>
@@ -273,7 +273,7 @@ export default function EventosPage() {
                   value={form.max_participants}
                   onChange={(e) => setForm((p) => ({ ...p, max_participants: e.target.value }))}
                   placeholder="Ej: 20"
-                  className="w-full px-3 py-2 text-sm border border-[#E8E3DC] rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400/30 focus:border-blue-400"
+                  className="w-full px-3 py-2 text-sm border border-[#E8E3DC] rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400/30 focus:border-orange-400"
                 />
               </div>
             )}
@@ -285,7 +285,7 @@ export default function EventosPage() {
                   type="datetime-local"
                   value={form.starts_at}
                   onChange={(e) => setForm((p) => ({ ...p, starts_at: e.target.value }))}
-                  className="w-full px-3 py-2 text-sm border border-[#E8E3DC] rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400/30 focus:border-blue-400"
+                  className="w-full px-3 py-2 text-sm border border-[#E8E3DC] rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400/30 focus:border-orange-400"
                   required
                 />
               </div>
@@ -295,7 +295,7 @@ export default function EventosPage() {
                   type="datetime-local"
                   value={form.ends_at}
                   onChange={(e) => setForm((p) => ({ ...p, ends_at: e.target.value }))}
-                  className="w-full px-3 py-2 text-sm border border-[#E8E3DC] rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400/30 focus:border-blue-400"
+                  className="w-full px-3 py-2 text-sm border border-[#E8E3DC] rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400/30 focus:border-orange-400"
                   required
                 />
               </div>
@@ -329,7 +329,7 @@ export default function EventosPage() {
               <button
                 type="submit"
                 disabled={submitting}
-                className="flex-2 px-6 py-2 text-sm font-bold text-white bg-[#2563EB] rounded-xl hover:bg-blue-600 transition-colors disabled:opacity-60"
+                className="flex-2 px-6 py-2 text-sm font-bold text-white bg-[#2563EB] rounded-xl hover:bg-orange-500 transition-colors disabled:opacity-60"
               >
                 {submitting ? 'Creando...' : 'Crear evento'}
               </button>
@@ -358,7 +358,7 @@ export default function EventosPage() {
                 className="bg-white border border-[#E8E3DC] rounded-2xl p-5 shadow-sm flex flex-col sm:flex-row sm:items-center gap-4"
               >
                 <div className="flex items-start gap-3 flex-1 min-w-0">
-                  <div className="w-10 h-10 rounded-xl bg-blue-50 border border-blue-200 flex items-center justify-center text-xl shrink-0">
+                  <div className="w-10 h-10 rounded-xl bg-orange-50 border border-orange-200 flex items-center justify-center text-xl shrink-0">
                     {EVENT_TYPE_ICONS[ev.event_type]}
                   </div>
                   <div className="min-w-0">
@@ -376,15 +376,15 @@ export default function EventosPage() {
                       <span className="text-xs text-stone-400">{ev.restaurant_name ?? ev.restaurant_id}</span>
                       <span className="text-xs text-stone-400">{EVENT_TYPE_LABELS[ev.event_type]}</span>
                       {ev.event_type === 'double_points' && (
-                        <span className="text-xs text-blue-600 font-semibold">x{ev.multiplier} puntos</span>
+                        <span className="text-xs text-orange-600 font-semibold">x{ev.multiplier} puntos</span>
                       )}
                       {ev.event_type === 'first_N' && (
-                        <span className="text-xs text-blue-600 font-semibold">
+                        <span className="text-xs text-orange-600 font-semibold">
                           {ev.participants_count} / {ev.max_participants ?? '∞'} participantes
                         </span>
                       )}
                       {ev.event_type === 'min_amount_boost' && (
-                        <span className="text-xs text-blue-600 font-semibold">{ev.multiplier}% de reducción</span>
+                        <span className="text-xs text-orange-600 font-semibold">{ev.multiplier}% de reducción</span>
                       )}
                     </div>
                     <p className="text-[10px] text-stone-400 mt-1">

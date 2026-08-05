@@ -109,13 +109,13 @@ export default function CorporativoPage() {
 
   const kpiCards = data
     ? [
-        { label: 'Cobros hoy', value: data.global.cobros_hoy, icon: '', color: 'text-blue-700', bg: 'bg-blue-50', border: 'border-blue-200' },
-        { label: 'Cobros esta semana', value: data.global.cobros_semana, icon: '', color: 'text-cyan-700', bg: 'bg-cyan-50', border: 'border-cyan-200' },
-        { label: 'Clientes únicos', value: data.global.clientes_unicos, icon: '', color: 'text-blue-700', bg: 'bg-blue-50', border: 'border-blue-200' },
+        { label: 'Cobros hoy', value: data.global.cobros_hoy, icon: '', color: 'text-orange-700', bg: 'bg-orange-50', border: 'border-orange-200' },
+        { label: 'Cobros esta semana', value: data.global.cobros_semana, icon: '', color: 'text-orange-700', bg: 'bg-orange-50', border: 'border-orange-200' },
+        { label: 'Clientes únicos', value: data.global.clientes_unicos, icon: '', color: 'text-orange-700', bg: 'bg-orange-50', border: 'border-orange-200' },
         {
           label: 'Ticket promedio',
           value: `$${data.global.ticket_promedio.toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
-          icon: '', color: 'text-cyan-700', bg: 'bg-cyan-50', border: 'border-cyan-200',
+          icon: '', color: 'text-orange-700', bg: 'bg-orange-50', border: 'border-orange-200',
         },
       ]
     : [];
@@ -131,7 +131,7 @@ export default function CorporativoPage() {
               <BuildingOfficeIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Vista Corporativa
             </div>
             <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Vista Corporativa</h1>
-            <p className="text-blue-200/70 mt-1.5 text-sm">
+            <p className="text-orange-200/70 mt-1.5 text-sm">
               {new Date().toLocaleDateString('es-MX', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
             </p>
           </div>
@@ -185,7 +185,7 @@ export default function CorporativoPage() {
 
       {loading ? (
         <div className="flex items-center justify-center h-48">
-          <svg className="animate-spin w-8 h-8 text-blue-400" fill="none" viewBox="0 0 24 24">
+          <svg className="animate-spin w-8 h-8 text-[#1a6b3c]" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
           </svg>
@@ -214,9 +214,9 @@ export default function CorporativoPage() {
                     <div key={s.restaurant_id}>
                       <div className="flex items-center justify-between mb-1">
                         <span className="text-xs font-semibold text-[#1C1917] truncate max-w-[60%]">{s.restaurant_name}</span>
-                        <span className="text-xs font-bold text-blue-700 tabular-nums">{s.cobros_semana}</span>
+                        <span className="text-xs font-bold text-orange-700 tabular-nums">{s.cobros_semana}</span>
                       </div>
-                      <div className="h-2.5 bg-blue-50 rounded-full overflow-hidden border border-blue-100">
+                      <div className="h-2.5 bg-orange-50 rounded-full overflow-hidden border border-orange-100">
                         <div
                           className="h-full rounded-full transition-all duration-500"
                           style={{ width: `${pct}%`, background: 'linear-gradient(90deg,#2563EB,#0891B2)' }}
@@ -252,10 +252,10 @@ export default function CorporativoPage() {
                     {data.sucursales.map((s) => {
                       const active = isActive(s.ultimo_cobro);
                       return (
-                        <tr key={s.restaurant_id} className="hover:bg-blue-50/30 transition-colors">
+                        <tr key={s.restaurant_id} className="hover:bg-orange-50/30 transition-colors">
                           <td className="px-4 py-3 font-semibold text-[#1C1917] text-sm">{s.restaurant_name}</td>
-                          <td className="px-4 py-3 tabular-nums font-bold text-blue-700">{s.cobros_hoy}</td>
-                          <td className="px-4 py-3 tabular-nums font-bold text-cyan-700">{s.cobros_semana}</td>
+                          <td className="px-4 py-3 tabular-nums font-bold text-orange-700">{s.cobros_hoy}</td>
+                          <td className="px-4 py-3 tabular-nums font-bold text-orange-700">{s.cobros_semana}</td>
                           <td className="px-4 py-3 tabular-nums text-stone-600">{s.clientes_unicos}</td>
                           <td className="px-4 py-3 text-stone-500 text-xs whitespace-nowrap">{formatDateTime(s.ultimo_cobro)}</td>
                           <td className="px-4 py-3">

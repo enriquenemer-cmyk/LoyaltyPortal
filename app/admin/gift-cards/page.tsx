@@ -66,7 +66,7 @@ export default function GiftCardsPage() {
               <GiftIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Gift Cards
             </div>
             <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Gift Cards</h1>
-            <p className="text-blue-200/70 mt-1.5 text-sm">Genera códigos que los clientes canjean por puntos</p>
+            <p className="text-orange-200/70 mt-1.5 text-sm">Genera códigos que los clientes canjean por puntos</p>
           </div>
         </div>
       </div>
@@ -164,7 +164,7 @@ export default function GiftCardsPage() {
                     <tr key={c.id} className="hover:bg-stone-50/50">
                       <td className="px-6 py-3 font-mono font-bold text-xs tracking-widest">{c.code}</td>
                       <td className="px-6 py-3 tabular-nums">${c.amount_mxn}</td>
-                      <td className="px-6 py-3 tabular-nums text-blue-700 font-semibold">{c.points} pts</td>
+                      <td className="px-6 py-3 tabular-nums text-orange-700 font-semibold">{c.points} pts</td>
                       <td className="px-6 py-3">
                         {c.redeemed_at ? (
                           <span className="text-xs bg-stone-100 text-stone-600 px-2 py-0.5 rounded-full font-semibold">Canjeada</span>

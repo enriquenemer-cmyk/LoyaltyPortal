@@ -79,7 +79,7 @@ export default async function CajeroPage({ params, searchParams }: Props) {
 
         {/* Expiry warning */}
         {isExpired && !alreadyDelivered && (
-          <div className="bg-blue-50 border border-blue-200 rounded-2xl px-5 py-4 flex items-start gap-3">
+          <div className="bg-orange-50 border border-orange-200 rounded-2xl px-5 py-4 flex items-start gap-3">
             <span className="text-xl shrink-0"><ExclamationTriangleIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></span>
             <p className="text-blue-800 font-semibold text-sm leading-snug">
               Este cobro expiró — el cliente tardó más de 2 horas. Puedes entregarlo de todas formas.
@@ -89,7 +89,7 @@ export default async function CajeroPage({ params, searchParams }: Props) {
 
         {/* Duplicate warning */}
         {recentOtherClaimsCount > 0 && (
-          <div className="bg-blue-50 border border-blue-200 rounded-2xl px-5 py-4 flex items-start gap-3 slide-up-sm">
+          <div className="bg-orange-50 border border-orange-200 rounded-2xl px-5 py-4 flex items-start gap-3 slide-up-sm">
             <span className="text-xl shrink-0"><ExclamationTriangleIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></span>
             <p className="text-blue-800 font-semibold text-sm leading-snug">
               Este cliente tiene {recentOtherClaimsCount} {recentOtherClaimsCount === 1 ? 'premio reclamado recientemente' : 'premios reclamados recientemente'}
@@ -172,14 +172,14 @@ export default async function CajeroPage({ params, searchParams }: Props) {
               className="rounded-xl px-4 py-3.5 flex items-center gap-3"
               style={{ background: 'linear-gradient(135deg,#FEF3C7,#FEF9C3)', border: '1px solid #FCD34D' }}
             >
-              <div className="w-9 h-9 bg-blue-400/20 rounded-xl flex items-center justify-center shrink-0 pulse-glow">
-                <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-9 h-9 bg-orange-400/20 rounded-xl flex items-center justify-center shrink-0 pulse-glow">
+                <svg className="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
               </div>
               <div>
-                <p className="text-blue-600 text-[10px] font-bold uppercase tracking-widest mb-0.5">Sucursal elegida</p>
+                <p className="text-orange-600 text-[10px] font-bold uppercase tracking-widest mb-0.5">Sucursal elegida</p>
                 <p className="text-blue-900 font-extrabold text-sm">{claim.location ?? claim.prize_location}</p>
               </div>
             </div>

@@ -148,13 +148,13 @@ function QRLinkModal({ restaurant, onClose }: { restaurant: Restaurant; onClose:
 
         {/* QR */}
         <div className="p-6 flex flex-col items-center gap-4">
-          <div className="bg-blue-100 rounded-xl p-3">
+          <div className="bg-orange-100 rounded-xl p-3">
             {qrDataUrl ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img src={qrDataUrl} alt="QR Code" width={200} height={200} className="rounded-lg" />
             ) : (
               <div className="w-[200px] h-[200px] flex items-center justify-center">
-                <svg className="animate-spin w-8 h-8 text-blue-400" fill="none" viewBox="0 0 24 24">
+                <svg className="animate-spin w-8 h-8 text-[#1a6b3c]" fill="none" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
                 </svg>
@@ -391,7 +391,7 @@ export default function RestaurantesPage() {
   }
 
   const inputClass =
-    'w-full bg-white border border-[#E8E3DC] rounded-xl px-4 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all hover:border-stone-300 shadow-sm';
+    'w-full bg-white border border-[#E8E3DC] rounded-xl px-4 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all hover:border-stone-300 shadow-sm';
   const labelClass = 'block text-sm font-semibold text-gray-700 mb-1.5';
 
   return (
@@ -404,7 +404,7 @@ export default function RestaurantesPage() {
               ️ Restaurantes
             </div>
             <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Mis Restaurantes</h1>
-            <p className="text-blue-200/70 mt-1.5 text-sm">Configura cada sucursal y comparte su link de cajero</p>
+            <p className="text-orange-200/70 mt-1.5 text-sm">Configura cada sucursal y comparte su link de cajero</p>
           </div>
           <button
             onClick={() => setShowForm((v) => !v)}

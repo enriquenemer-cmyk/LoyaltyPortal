@@ -92,7 +92,7 @@ export default function LoginPage() {
       {/* LEFT COLUMN — orange brand side, hidden on mobile */}
       <div
         className="hidden md:flex md:w-[40%] flex-col justify-between p-12 relative overflow-hidden"
-        style={{ background: 'linear-gradient(160deg,#2563EB 0%,#0891B2 60%,#1E3A8A 100%)' }}
+        style={{ background: 'linear-gradient(160deg,#0a2218 0%,#1a6b3c 60%,#0a2218 100%)' }}
       >
         {/* Animated particles */}
         <Particles />
@@ -234,7 +234,7 @@ export default function LoginPage() {
                   onChange={(e) => setForm((p) => ({ ...p, username: e.target.value }))}
                   required
                   placeholder="admin"
-                  className="w-full bg-[#FAFAF9] border border-[#E8E3DC] rounded-xl pl-10 pr-4 py-3.5 text-sm text-[#1C1917] placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-blue-500/25 focus:border-blue-500 focus:bg-white transition-all"
+                  className="w-full bg-[#FAFAF9] border border-[#E8E3DC] rounded-xl pl-10 pr-4 py-3.5 text-sm text-[#1C1917] placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-orange-500/25 focus:border-orange-500 focus:bg-white transition-all"
                 />
               </div>
             </div>
@@ -261,7 +261,7 @@ export default function LoginPage() {
                   onChange={(e) => setForm((p) => ({ ...p, password: e.target.value }))}
                   required
                   placeholder="••••••••"
-                  className="w-full bg-[#FAFAF9] border border-[#E8E3DC] rounded-xl pl-10 pr-4 py-3.5 text-sm text-[#1C1917] placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-blue-500/25 focus:border-blue-500 focus:bg-white transition-all"
+                  className="w-full bg-[#FAFAF9] border border-[#E8E3DC] rounded-xl pl-10 pr-4 py-3.5 text-sm text-[#1C1917] placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-orange-500/25 focus:border-orange-500 focus:bg-white transition-all"
                 />
               </div>
             </div>
@@ -272,7 +272,7 @@ export default function LoginPage() {
                 id="rememberMe"
                 checked={rememberMe}
                 onChange={(e) => setRememberMe(e.target.checked)}
-                className="w-4 h-4 accent-[#2563EB] cursor-pointer"
+                className="w-4 h-4 accent-[#F97316] cursor-pointer"
               />
               <label htmlFor="rememberMe" className="text-sm text-[#1C1917] cursor-pointer select-none">
                 Recordarme por 30 días
@@ -297,7 +297,7 @@ export default function LoginPage() {
               disabled={loading}
               className="w-full text-white font-bold py-4 rounded-xl transition-all text-base disabled:opacity-60 mt-2"
               style={{
-                background: 'linear-gradient(135deg,#2563EB,#0891B2)',
+                background: 'linear-gradient(135deg,#F97316,#ea6a0a)',
                 boxShadow: loading ? 'none' : '0 8px 24px rgba(37,99,235,0.40)',
               }}
             >
@@ -317,7 +317,7 @@ export default function LoginPage() {
             <div className="text-center">
               <Link
                 href="/admin/forgot-password"
-                className="text-sm text-[#78716c] hover:text-[#2563EB] transition-colors"
+                className="text-sm text-[#78716c] hover:text-[#F97316] transition-colors"
               >
                 ¿Olvidaste tu contraseña?
               </Link>

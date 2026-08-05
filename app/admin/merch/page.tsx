@@ -94,7 +94,7 @@ export default function MerchPage() {
                Merchandise
             </div>
             <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Merchandise</h1>
-            <p className="text-blue-200/70 mt-1.5 text-sm">Productos físicos que los clientes canjean con puntos</p>
+            <p className="text-orange-200/70 mt-1.5 text-sm">Productos físicos que los clientes canjean con puntos</p>
           </div>
         </div>
       </div>
@@ -162,7 +162,7 @@ export default function MerchPage() {
                     <p className="text-sm font-semibold text-[#1C1917]">{item.name}</p>
                     {item.description && <p className="text-xs text-stone-400">{item.description}</p>}
                     <div className="flex gap-2 mt-1">
-                      <span className="text-xs bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full font-semibold">{item.points_cost} pts</span>
+                      <span className="text-xs bg-orange-50 text-orange-700 px-2 py-0.5 rounded-full font-semibold">{item.points_cost} pts</span>
                       {item.stock !== null && <span className="text-xs bg-stone-100 text-stone-600 px-2 py-0.5 rounded-full font-semibold">Stock: {item.stock}</span>}
                     </div>
                   </div>

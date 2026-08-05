@@ -152,7 +152,7 @@ export default function CompetenciaPage() {
               <FlagIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Competencia
             </div>
             <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Competencia entre Sucursales</h1>
-            <p className="text-blue-200/70 mt-1.5 text-sm">Ranking en vivo de tus restaurantes</p>
+            <p className="text-orange-200/70 mt-1.5 text-sm">Ranking en vivo de tus restaurantes</p>
           </div>
           <div
             className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold transition-all ${pulse ? 'scale-110' : 'scale-100'}`}
@@ -188,7 +188,7 @@ export default function CompetenciaPage() {
 
         {loading ? (
           <div className="flex items-center justify-center h-48">
-            <svg className="animate-spin w-8 h-8 text-blue-400" fill="none" viewBox="0 0 24 24">
+            <svg className="animate-spin w-8 h-8 text-[#1a6b3c]" fill="none" viewBox="0 0 24 24">
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
             </svg>
@@ -211,7 +211,7 @@ export default function CompetenciaPage() {
                 return (
                   <div
                     key={r.id}
-                    className={`rounded-2xl border-2 ${top.border} ${top.card} p-6 transition-all ${isChanged ? 'ring-2 ring-blue-400' : ''} ${isMine ? 'outline outline-2 outline-offset-2 outline-blue-500' : ''}`}
+                    className={`rounded-2xl border-2 ${top.border} ${top.card} p-6 transition-all ${isChanged ? 'ring-2 ring-orange-400' : ''} ${isMine ? 'outline outline-2 outline-offset-2 outline-blue-500' : ''}`}
                     style={{ boxShadow: '0 4px 20px rgba(0,0,0,0.08)' }}
                   >
                     <div className="flex items-center justify-between flex-wrap gap-3">
@@ -221,7 +221,7 @@ export default function CompetenciaPage() {
                           <div className="flex items-center gap-2">
                             <h3 className="text-xl font-black text-[#1C1917]">{r.name}</h3>
                             {isMine && (
-                              <span className="text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 border border-blue-300">
+                              <span className="text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full bg-orange-100 text-orange-700 border border-blue-300">
                                 Tu sucursal
                               </span>
                             )}
@@ -248,7 +248,7 @@ export default function CompetenciaPage() {
               return (
                 <div
                   key={r.id}
-                  className={`rounded-xl border border-[#E8E3DC] bg-white p-4 flex items-center justify-between flex-wrap gap-3 transition-all ${isChanged ? 'ring-2 ring-blue-400' : ''} ${isMine ? 'outline outline-2 outline-offset-2 outline-blue-500 bg-blue-50/30' : ''}`}
+                  className={`rounded-xl border border-[#E8E3DC] bg-white p-4 flex items-center justify-between flex-wrap gap-3 transition-all ${isChanged ? 'ring-2 ring-orange-400' : ''} ${isMine ? 'outline outline-2 outline-offset-2 outline-blue-500 bg-orange-50/30' : ''}`}
                 >
                   <div className="flex items-center gap-4">
                     <span className="text-lg font-bold text-stone-400 w-6 text-center">{r.rank}</span>
@@ -256,7 +256,7 @@ export default function CompetenciaPage() {
                       <div className="flex items-center gap-2">
                         <h4 className="font-semibold text-[#1C1917] text-sm">{r.name}</h4>
                         {isMine && (
-                          <span className="text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 border border-blue-300">
+                          <span className="text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full bg-orange-100 text-orange-700 border border-blue-300">
                             Tu sucursal
                           </span>
                         )}

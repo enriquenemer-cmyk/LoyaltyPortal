@@ -113,7 +113,7 @@ export default function AsistentePage() {
   return (
     <div className="max-w-3xl mx-auto px-4 py-6 flex flex-col gap-6">
       {/* Hero banner */}
-      <div className="rounded-2xl bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white px-6 py-8 shadow-lg">
+      <div className="rounded-2xl bg-gradient-to-r from-[#1a6b3c] via-[#155a32] to-orange-500 text-white px-6 py-8 shadow-lg">
         <div className="text-4xl mb-2"><CpuChipIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
         <h1 className="text-2xl font-bold">Asistente de Datos</h1>
         <p className="text-white/90 mt-1">Pregúntale lo que quieras sobre tu negocio</p>
@@ -130,7 +130,7 @@ export default function AsistentePage() {
                   <button
                     key={q}
                     onClick={() => sendMessage(q)}
-                    className="px-3 py-1.5 rounded-full bg-indigo-50 text-indigo-700 text-sm font-medium hover:bg-indigo-100 transition-colors border border-indigo-100"
+                    className="px-3 py-1.5 rounded-full bg-emerald-50 text-[#1a6b3c] text-sm font-medium hover:bg-emerald-100 transition-colors border border-emerald-200"
                   >
                     {q}
                   </button>
@@ -145,7 +145,7 @@ export default function AsistentePage() {
                 <div
                   className={`rounded-2xl px-4 py-2.5 text-sm whitespace-pre-wrap ${
                     m.role === 'user'
-                      ? 'bg-blue-600 text-white rounded-br-sm'
+                      ? 'bg-orange-500 text-white rounded-br-sm'
                       : m.isError
                         ? 'bg-red-50 text-red-700 border border-red-100 rounded-bl-sm'
                         : 'bg-gray-100 text-gray-800 rounded-bl-sm'
@@ -187,7 +187,7 @@ export default function AsistentePage() {
           <button
             type="submit"
             disabled={loading || !input.trim()}
-            className="rounded-full bg-indigo-600 text-white px-5 py-2.5 text-sm font-semibold hover:bg-indigo-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="rounded-full bg-[#1a6b3c] text-white px-5 py-2.5 text-sm font-semibold hover:bg-[#155a32] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Enviar
           </button>

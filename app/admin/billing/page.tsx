@@ -61,7 +61,7 @@ export default function BillingPage() {
               <CreditCardIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Facturación
             </div>
             <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Facturación</h1>
-            <p className="text-blue-200/70 mt-1.5 text-sm">Cobra $299–$599/mes por restaurante usando Stripe</p>
+            <p className="text-orange-200/70 mt-1.5 text-sm">Cobra $299–$599/mes por restaurante usando Stripe</p>
           </div>
         </div>
       </div>
@@ -127,13 +127,13 @@ export default function BillingPage() {
                       <button
                         onClick={() => generateLink(r.id)}
                         disabled={generating === r.id}
-                        className="px-3 py-1.5 rounded-lg text-xs font-bold border border-blue-200 text-blue-700 bg-blue-50 hover:bg-blue-100 disabled:opacity-50"
+                        className="px-3 py-1.5 rounded-lg text-xs font-bold border border-orange-200 text-orange-700 bg-orange-50 hover:bg-orange-100 disabled:opacity-50"
                       >
                         {generating === r.id ? 'Generando...' : 'Generar link Stripe →'}
                       </button>
                       {links[r.id] && (
                         <div className="flex gap-1 items-center">
-                          <a href={links[r.id]} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-600 underline">Abrir link</a>
+                          <a href={links[r.id]} target="_blank" rel="noopener noreferrer" className="text-xs text-orange-600 underline">Abrir link</a>
                           <button onClick={() => navigator.clipboard.writeText(links[r.id])} className="text-xs text-stone-400 hover:text-stone-700">Copiar</button>
                         </div>
                       )}

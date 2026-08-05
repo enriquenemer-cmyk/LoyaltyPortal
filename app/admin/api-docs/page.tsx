@@ -75,7 +75,7 @@ export default function ApiDocsPage() {
                 {section.items.map((ep, i) => (
                   <div key={i} className="bg-white border border-[#E8E3DC] rounded-xl overflow-hidden" style={{ boxShadow: '0 1px 4px rgba(28,25,23,0.05)' }}>
                     <div className="flex items-center gap-3 px-4 py-3 border-b border-[#E8E3DC]">
-                      <span className={`text-xs font-bold px-2.5 py-1 rounded-full shrink-0 ${ep.method === 'GET' ? 'bg-emerald-100 text-emerald-700' : 'bg-blue-100 text-blue-700'}`}>
+                      <span className={`text-xs font-bold px-2.5 py-1 rounded-full shrink-0 ${ep.method === 'GET' ? 'bg-emerald-100 text-emerald-700' : 'bg-orange-100 text-orange-700'}`}>
                         {ep.method}
                       </span>
                       <code className="text-sm font-mono text-[#1C1917] font-semibold">{ep.path}</code>
@@ -90,7 +90,7 @@ export default function ApiDocsPage() {
                       )}
                       <div>
                         <p className="text-xs font-semibold text-[#a8a29e] uppercase tracking-widest mb-1">Response</p>
-                        <pre className="bg-[#1C1917] text-blue-300 text-xs rounded-lg px-4 py-3 overflow-x-auto font-mono">{ep.response}</pre>
+                        <pre className="bg-[#1C1917] text-orange-300 text-xs rounded-lg px-4 py-3 overflow-x-auto font-mono">{ep.response}</pre>
                       </div>
                     </div>
                   </div>

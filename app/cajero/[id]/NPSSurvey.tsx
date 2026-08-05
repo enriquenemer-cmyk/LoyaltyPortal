@@ -71,7 +71,7 @@ export default function NPSSurvey({ claimId, onSkip }: Props) {
         onChange={(e) => setComment(e.target.value)}
         placeholder="Comentario opcional..."
         rows={2}
-        className="w-full bg-stone-50 border border-[#E8E3DC] rounded-xl px-4 py-3 text-[#1C1917] placeholder-stone-400 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all"
+        className="w-full bg-stone-50 border border-[#E8E3DC] rounded-xl px-4 py-3 text-[#1C1917] placeholder-stone-400 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-orange-400 transition-all"
       />
 
       <div className="flex items-center gap-3">

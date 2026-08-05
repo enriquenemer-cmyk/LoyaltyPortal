@@ -290,8 +290,8 @@ export default function QuizPage() {
                   onClick={() => handleSelect(idx)}
                   className={`flex items-center gap-3 text-left rounded-2xl border-2 px-4 py-4 transition-all ${
                     isSelected
-                      ? 'border-[#2563EB] bg-blue-50'
-                      : 'border-[#E8E3DC] bg-white hover:border-blue-200'
+                      ? 'border-[#2563EB] bg-orange-50'
+                      : 'border-[#E8E3DC] bg-white hover:border-orange-200'
                   }`}
                   style={{ minHeight: 56 }}
                 >

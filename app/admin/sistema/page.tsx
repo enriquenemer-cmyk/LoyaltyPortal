@@ -49,14 +49,14 @@ function fmtDate(iso: string): string {
 function latencyColor(ms: number): string {
   if (ms < 0) return 'text-red-600';
   if (ms < 100) return 'text-emerald-600';
-  if (ms < 500) return 'text-blue-500';
+  if (ms < 500) return 'text-orange-500';
   return 'text-red-600';
 }
 
 function latencyBg(ms: number): string {
   if (ms < 0) return 'bg-red-50 border-red-200';
   if (ms < 100) return 'bg-emerald-50 border-emerald-200';
-  if (ms < 500) return 'bg-blue-50 border-blue-200';
+  if (ms < 500) return 'bg-orange-50 border-orange-200';
   return 'bg-red-50 border-red-200';
 }
 
@@ -110,7 +110,7 @@ function CleanupButton({ action, label }: { action: string; label: string }) {
             ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
             : status === 'error'
             ? 'bg-red-50 text-red-700 border-red-200'
-            : 'bg-white text-stone-600 border-stone-200 hover:border-blue-300 hover:text-blue-600 hover:bg-blue-50'
+            : 'bg-white text-stone-600 border-stone-200 hover:border-blue-300 hover:text-orange-600 hover:bg-orange-50'
         }`}
       >
         {status === 'loading' ? 'Ejecutando...' : status === 'done' ? 'Listo' : status === 'error' ? 'Error' : 'Ejecutar'}
@@ -177,7 +177,7 @@ export default function SistemaPage() {
               <WrenchScrewdriverIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Sistema
             </div>
             <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Sistema</h1>
-            <p className="text-blue-200/70 mt-1.5 text-sm">
+            <p className="text-orange-200/70 mt-1.5 text-sm">
               {lastChecked
                 ? `Ultima verificacion: ${lastChecked.toLocaleTimeString('es-MX')}`
                 : 'Estado del sistema y diagnóstico'}
@@ -214,7 +214,7 @@ export default function SistemaPage() {
           className={`flex items-center gap-3 px-5 py-4 rounded-2xl border font-semibold text-sm ${
             isHealthy
               ? 'bg-emerald-50 border-emerald-200 text-emerald-800'
-              : 'bg-blue-50 border-blue-200 text-blue-800'
+              : 'bg-orange-50 border-orange-200 text-blue-800'
           }`}
         >
           <span className="text-xl">{isHealthy ? '' : ''}</span>
@@ -340,7 +340,7 @@ export default function SistemaPage() {
                     entry.action === 'error'
                       ? 'bg-red-100 text-red-600'
                       : entry.action === 'login' || entry.action === 'logout'
-                      ? 'bg-blue-50 text-blue-600'
+                      ? 'bg-orange-50 text-orange-600'
                       : entry.action === 'deliver'
                       ? 'bg-emerald-50 text-emerald-600'
                       : 'bg-stone-100 text-stone-500'

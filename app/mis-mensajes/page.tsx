@@ -142,7 +142,7 @@ export default function MisMensajesPage() {
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="Ej: 5512345678"
-                className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3.5 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:border-blue-500 transition-all"
+                className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3.5 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:border-orange-500 transition-all"
                 style={{ '--tw-ring-color': 'rgba(37,99,235,0.2)' } as React.CSSProperties}
                 required
                 autoComplete="tel"

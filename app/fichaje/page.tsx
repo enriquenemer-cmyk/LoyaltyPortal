@@ -191,7 +191,7 @@ export default function FichajePage() {
                   type="button"
                   onClick={() => handleDigit(d)}
                   disabled={loading}
-                  className="aspect-square rounded-2xl text-2xl font-bold text-[#1C1917] bg-stone-100 hover:bg-blue-50 active:scale-95 transition-all disabled:opacity-50"
+                  className="aspect-square rounded-2xl text-2xl font-bold text-[#1C1917] bg-stone-100 hover:bg-orange-50 active:scale-95 transition-all disabled:opacity-50"
                 >
                   {d}
                 </button>
@@ -208,7 +208,7 @@ export default function FichajePage() {
                 type="button"
                 onClick={() => handleDigit('0')}
                 disabled={loading}
-                className="aspect-square rounded-2xl text-2xl font-bold text-[#1C1917] bg-stone-100 hover:bg-blue-50 active:scale-95 transition-all disabled:opacity-50"
+                className="aspect-square rounded-2xl text-2xl font-bold text-[#1C1917] bg-stone-100 hover:bg-orange-50 active:scale-95 transition-all disabled:opacity-50"
               >
                 0
               </button>

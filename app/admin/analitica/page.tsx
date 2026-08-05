@@ -74,7 +74,7 @@ export default function AnaliticaPage() {
             <ArrowTrendingUpIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Analítica Avanzada
           </div>
           <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Analítica Avanzada</h1>
-          <p className="text-blue-200/70 mt-1.5 text-sm">Valor de cliente (LTV), retención y rendimiento de campañas</p>
+          <p className="text-orange-200/70 mt-1.5 text-sm">Valor de cliente (LTV), retención y rendimiento de campañas</p>
         </div>
       </div>
 
@@ -85,7 +85,7 @@ export default function AnaliticaPage() {
 
       {loading ? (
         <div className="flex items-center justify-center h-48">
-          <svg className="animate-spin w-8 h-8 text-blue-400" fill="none" viewBox="0 0 24 24">
+          <svg className="animate-spin w-8 h-8 text-[#1a6b3c]" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
           </svg>
@@ -99,14 +99,14 @@ export default function AnaliticaPage() {
               <div className="text-2xl font-extrabold tabular-nums text-emerald-700">{formatCurrency(data.ltv.avgLifetimeValue)}</div>
               <div className="text-xs text-stone-500 mt-1 leading-tight">LTV promedio por cliente</div>
             </div>
-            <div className="rounded-2xl border border-blue-200 bg-blue-50 p-4">
+            <div className="rounded-2xl border border-orange-200 bg-orange-50 p-4">
               <div className="text-2xl mb-1"><ArrowPathIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
-              <div className="text-2xl font-extrabold tabular-nums text-blue-700">{data.retention.retentionRate.toFixed(1)}%</div>
+              <div className="text-2xl font-extrabold tabular-nums text-orange-700">{data.retention.retentionRate.toFixed(1)}%</div>
               <div className="text-xs text-stone-500 mt-1 leading-tight">Tasa de retencion (2+ visitas)</div>
             </div>
-            <div className="rounded-2xl border border-cyan-200 bg-cyan-50 p-4">
+            <div className="rounded-2xl border border-orange-200 bg-orange-50 p-4">
               <div className="text-2xl mb-1"><PlusCircleIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
-              <div className="text-2xl font-extrabold tabular-nums text-cyan-700">{data.retention.newCustomers30d}</div>
+              <div className="text-2xl font-extrabold tabular-nums text-orange-700">{data.retention.newCustomers30d}</div>
               <div className="text-xs text-stone-500 mt-1 leading-tight">Clientes nuevos (30 dias)</div>
             </div>
             <div className="rounded-2xl border border-violet-200 bg-violet-50 p-4">
@@ -164,11 +164,11 @@ export default function AnaliticaPage() {
               </div>
               <div className="p-5">
                 <p className="text-xs text-stone-500 mb-1">Clientes recurrentes</p>
-                <p className="text-2xl font-extrabold text-blue-700 tabular-nums">{data.retention.returningCustomers}</p>
+                <p className="text-2xl font-extrabold text-orange-700 tabular-nums">{data.retention.returningCustomers}</p>
               </div>
               <div className="p-5">
                 <p className="text-xs text-stone-500 mb-1">Tasa de retencion</p>
-                <p className="text-2xl font-extrabold text-blue-700 tabular-nums">{data.retention.retentionRate.toFixed(1)}%</p>
+                <p className="text-2xl font-extrabold text-orange-700 tabular-nums">{data.retention.retentionRate.toFixed(1)}%</p>
               </div>
             </div>
           </div>
@@ -215,10 +215,10 @@ export default function AnaliticaPage() {
                   </thead>
                   <tbody className="divide-y divide-[#F3EFE9]">
                     {data.campaigns.map((c) => (
-                      <tr key={c.id} className="hover:bg-blue-50/30 transition-colors">
+                      <tr key={c.id} className="hover:bg-orange-50/30 transition-colors">
                         <td className="px-4 py-3 font-semibold text-[#1C1917]">{c.name}</td>
-                        <td className="px-4 py-3 tabular-nums font-bold text-blue-700">{c.claims}</td>
-                        <td className="px-4 py-3 tabular-nums font-bold text-cyan-700">{c.conversionRate.toFixed(1)}%</td>
+                        <td className="px-4 py-3 tabular-nums font-bold text-orange-700">{c.claims}</td>
+                        <td className="px-4 py-3 tabular-nums font-bold text-orange-700">{c.conversionRate.toFixed(1)}%</td>
                         <td className="px-4 py-3 tabular-nums text-stone-600">
                           {c.prizeCost != null ? formatCurrency(c.prizeCost) : <span className="text-stone-300 text-xs">—</span>}
                         </td>

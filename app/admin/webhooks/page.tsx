@@ -89,7 +89,7 @@ export default function WebhooksPage() {
             <LinkIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Webhooks
           </div>
           <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Integración con Zapier / Make / n8n</h1>
-          <p className="text-blue-200/70 mt-1.5 text-sm">Conecta 3E con tus flujos de automatización</p>
+          <p className="text-orange-200/70 mt-1.5 text-sm">Conecta 3E con tus flujos de automatización</p>
         </div>
       </div>
 
@@ -102,7 +102,7 @@ export default function WebhooksPage() {
             Configura esta URL como destino en Zapier, Make o n8n para recibir eventos en tiempo real.
           </p>
           <div className="flex items-center gap-2">
-            <div className="flex-1 bg-blue-50 border border-blue-200 rounded-xl px-4 py-3 font-mono text-sm text-blue-900 break-all">
+            <div className="flex-1 bg-orange-50 border border-orange-200 rounded-xl px-4 py-3 font-mono text-sm text-blue-900 break-all">
               {webhookEndpoint}
             </div>
             <button
@@ -116,18 +116,18 @@ export default function WebhooksPage() {
         </div>
 
         {/* Env var setup */}
-        <div className="bg-blue-50 border border-blue-200 rounded-2xl p-5 mb-5">
+        <div className="bg-orange-50 border border-orange-200 rounded-2xl p-5 mb-5">
           <div className="flex gap-3">
             <span className="text-xl shrink-0"><Cog6ToothIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></span>
             <div>
               <p className="font-bold text-blue-800 text-sm mb-1">Configura la variable de entorno</p>
-              <p className="text-blue-700 text-sm mb-2">
+              <p className="text-orange-700 text-sm mb-2">
                 Para que 3E envíe eventos a tu plataforma, agrega esta variable en Vercel (Settings → Environment Variables):
               </p>
-              <code className="block bg-blue-100 border border-blue-300 rounded-lg px-3 py-2 text-xs font-mono text-blue-900">
+              <code className="block bg-orange-100 border border-blue-300 rounded-lg px-3 py-2 text-xs font-mono text-blue-900">
                 WEBHOOK_URL=https://hooks.zapier.com/hooks/catch/...
               </code>
-              <p className="text-blue-600 text-xs mt-2">Reemplaza el valor con la URL que te da Zapier, Make o n8n al crear el trigger.</p>
+              <p className="text-orange-600 text-xs mt-2">Reemplaza el valor con la URL que te da Zapier, Make o n8n al crear el trigger.</p>
             </div>
           </div>
         </div>
@@ -138,7 +138,7 @@ export default function WebhooksPage() {
           <div className="space-y-3">
             {EVENTS.map(e => (
               <div key={e.event} className="flex items-center gap-3 p-3 rounded-xl bg-[#FAFAF9] border border-[#E8E3DC]">
-                <div className="w-2 h-2 rounded-full bg-blue-500 shrink-0" />
+                <div className="w-2 h-2 rounded-full bg-orange-500 shrink-0" />
                 <div>
                   <p className="font-bold text-[#1C1917] text-sm font-mono">{e.event}</p>
                   <p className="text-stone-500 text-xs">{e.description}</p>
@@ -190,11 +190,11 @@ export default function WebhooksPage() {
             <div className="space-y-2">
               {recentEvents.map(ev => (
                 <div key={ev.id} className="flex items-start gap-3 p-3 rounded-xl bg-[#FAFAF9] border border-[#E8E3DC]">
-                  <div className="w-2 h-2 rounded-full bg-blue-400 shrink-0 mt-1.5" />
+                  <div className="w-2 h-2 rounded-full bg-orange-400 shrink-0 mt-1.5" />
                   <div className="flex-1 min-w-0">
                     <p className="text-[#1C1917] text-sm font-semibold truncate">{ev.description}</p>
                     <div className="flex items-center gap-2 mt-0.5">
-                      <span className="text-blue-600 text-xs font-mono">{ev.action}</span>
+                      <span className="text-orange-600 text-xs font-mono">{ev.action}</span>
                       <span className="text-gray-300 text-xs">·</span>
                       <span className="text-stone-400 text-xs">
                         {new Date(ev.created_at).toLocaleString('es-MX', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}

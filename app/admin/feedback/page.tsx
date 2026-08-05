@@ -59,7 +59,7 @@ export default function FeedbackPage() {
               <ChatBubbleLeftRightIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Feedback
             </div>
             <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Feedback</h1>
-            <p className="text-blue-200/70 mt-1.5 text-sm">Calificaciones y comentarios post-visita de los tickets escaneados</p>
+            <p className="text-orange-200/70 mt-1.5 text-sm">Calificaciones y comentarios post-visita de los tickets escaneados</p>
           </div>
         </div>
       </div>

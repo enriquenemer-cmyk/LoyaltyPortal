@@ -71,7 +71,7 @@ function SuscripcionesContent() {
               <DevicePhoneMobileIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Suscripciones
             </div>
             <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Suscripciones</h1>
-            <p className="text-blue-200/70 mt-1.5 text-sm">Clientes VIP pagan $99/mes por puntos dobles y acceso exclusivo</p>
+            <p className="text-orange-200/70 mt-1.5 text-sm">Clientes VIP pagan $99/mes por puntos dobles y acceso exclusivo</p>
           </div>
         </div>
       </div>
@@ -141,13 +141,13 @@ function SuscripcionesContent() {
             </button>
           </form>
           {link && (
-            <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-xl">
-              <p className="text-xs font-semibold text-blue-700 mb-1">Link de pago (válido 24h):</p>
+            <div className="mt-4 p-3 bg-orange-50 border border-orange-200 rounded-xl">
+              <p className="text-xs font-semibold text-orange-700 mb-1">Link de pago (válido 24h):</p>
               <div className="flex items-center gap-2">
-                <a href={link} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-600 underline break-all">{link}</a>
+                <a href={link} target="_blank" rel="noopener noreferrer" className="text-xs text-orange-600 underline break-all">{link}</a>
                 <button
                   onClick={() => navigator.clipboard.writeText(link)}
-                  className="shrink-0 text-xs bg-white border border-blue-200 px-2 py-1 rounded-lg text-blue-700 hover:bg-blue-50"
+                  className="shrink-0 text-xs bg-white border border-orange-200 px-2 py-1 rounded-lg text-orange-700 hover:bg-orange-50"
                 >
                   Copiar
                 </button>

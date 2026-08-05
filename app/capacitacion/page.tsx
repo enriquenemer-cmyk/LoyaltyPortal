@@ -178,7 +178,7 @@ export default function CapacitacionPage() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <svg className="w-7 h-7 text-blue-400 animate-spin" fill="none" viewBox="0 0 24 24">
+        <svg className="w-7 h-7 text-[#1a6b3c] animate-spin" fill="none" viewBox="0 0 24 24">
           <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
         </svg>
@@ -216,10 +216,10 @@ export default function CapacitacionPage() {
 
           <div className="space-y-3">
             {q.options.map((opt, i) => {
-              let style = 'bg-white border-[#E8E3DC] text-[#1C1917] hover:border-[#2563EB] hover:bg-blue-50/40';
+              let style = 'bg-white border-[#E8E3DC] text-[#1C1917] hover:border-[#2563EB] hover:bg-orange-50/40';
               if (revealed) {
                 if (i === selected) {
-                  style = 'bg-blue-50 border-[#2563EB] text-[#1C1917]';
+                  style = 'bg-orange-50 border-[#2563EB] text-[#1C1917]';
                 } else {
                   style = 'bg-white border-[#E8E3DC] text-stone-400 opacity-60';
                 }
@@ -239,7 +239,7 @@ export default function CapacitacionPage() {
 
           {revealed && (
             <div className="mt-5 animate-[fadeInUp_0.3s_ease_both]">
-              <div className="rounded-xl px-5 py-4 bg-blue-50 border border-blue-200 text-sm font-semibold text-[#1C1917]">
+              <div className="rounded-xl px-5 py-4 bg-orange-50 border border-orange-200 text-sm font-semibold text-[#1C1917]">
                 Respuesta registrada. Conocerás tu resultado al terminar el módulo.
               </div>
               <button
@@ -325,7 +325,7 @@ export default function CapacitacionPage() {
               <AcademicCapIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Capacitación
             </div>
             <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Hola, {employee.full_name.split(' ')[0]}</h1>
-            <p className="text-blue-200/70 mt-1.5 text-sm">Completa los módulos y gana puntos</p>
+            <p className="text-orange-200/70 mt-1.5 text-sm">Completa los módulos y gana puntos</p>
           </div>
           <div className="flex items-center gap-2 px-5 py-3 rounded-2xl" style={{ background: 'linear-gradient(135deg,#fbbf24,#f59e0b)', boxShadow: '0 4px 16px rgba(0,0,0,0.15)' }}>
             <span className="text-2xl"><TrophyIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></span>

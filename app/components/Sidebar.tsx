@@ -571,9 +571,9 @@ function GlobalSearch({ onSelect }: { onSelect?: (item: SearchResult) => void })
     premio: 'Premio', cliente: 'Cliente', cobro: 'Cobro',
   };
   const typeColor: Record<SearchResult['type'], string> = {
-    claim: 'bg-blue-50 text-blue-600', prize: 'bg-blue-50 text-blue-600',
+    claim: 'bg-orange-50 text-orange-600', prize: 'bg-orange-50 text-orange-600',
     restaurant: 'bg-emerald-50 text-emerald-600', user: 'bg-purple-50 text-purple-600',
-    premio: 'bg-yellow-900/40 text-yellow-300', cliente: 'bg-blue-900/40 text-blue-300',
+    premio: 'bg-yellow-900/40 text-yellow-300', cliente: 'bg-blue-900/40 text-orange-300',
     cobro: 'bg-stone-200/60 text-stone-600',
   };
 
@@ -601,7 +601,7 @@ function GlobalSearch({ onSelect }: { onSelect?: (item: SearchResult) => void })
             onBlur={() => setTimeout(() => setFocused(false), 150)}
             onKeyDown={handleKeyDown}
             placeholder="Buscar datos..."
-            className="sidebar-search-input w-full pl-8 pr-3 py-1.5 text-xs rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400/30 transition-all"
+            className="sidebar-search-input w-full pl-8 pr-3 py-1.5 text-xs rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400/30 transition-all"
             style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)', color: '#e2e8f0' }}
           />
         </div>
@@ -628,7 +628,7 @@ function GlobalSearch({ onSelect }: { onSelect?: (item: SearchResult) => void })
                 <p className="px-3 pt-2.5 pb-1 text-[9px] font-bold tracking-widest text-stone-500 uppercase">Resultados</p>
                 {results.map((item, idx) => (
                   <button key={item.id + item.type} onMouseDown={() => selectResult(item)}
-                    className={`w-full flex items-start gap-2.5 px-3 py-2 text-left transition-colors ${idx === activeIdx ? 'bg-blue-500/20' : 'hover:bg-black/8'}`}>
+                    className={`w-full flex items-start gap-2.5 px-3 py-2 text-left transition-colors ${idx === activeIdx ? 'bg-orange-500/20' : 'hover:bg-black/8'}`}>
                     <span className="mt-0.5 text-sm shrink-0">{typeIcon[item.type]}</span>
                     <div className="min-w-0 flex-1">
                       <p className="text-xs font-semibold text-black truncate">{item.title}</p>
@@ -669,7 +669,7 @@ function NavLink({
       href={href}
       className={`group/navlink flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm transition-all border-l-2 ${
         isActive
-          ? 'font-semibold border-blue-400 pl-[10px]'
+          ? 'font-semibold border-orange-400 pl-[10px]'
           : 'border-transparent pl-[10px]'
       } ${highlighted ? 'sidebar-link-pulse' : ''}`}
       style={isActive

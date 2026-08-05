@@ -175,7 +175,7 @@ export default function VerificarCodigoPage() {
                 onChange={e => handleCodeChange(e.target.value)}
                 onKeyDown={e => e.key === 'Enter' && handleVerify()}
                 placeholder="CONS-XXXXXX"
-                className="flex-1 bg-[#FAFAF9] border border-[#E8E3DC] rounded-2xl px-4 py-3.5 text-[#1C1917] placeholder-stone-400 font-mono text-lg uppercase focus:outline-none focus:ring-2 focus:border-blue-500 transition-all tracking-widest"
+                className="flex-1 bg-[#FAFAF9] border border-[#E8E3DC] rounded-2xl px-4 py-3.5 text-[#1C1917] placeholder-stone-400 font-mono text-lg uppercase focus:outline-none focus:ring-2 focus:border-orange-500 transition-all tracking-widest"
                 style={{ '--tw-ring-color': `${accentColor}40` } as React.CSSProperties}
                 autoCapitalize="characters"
                 autoComplete="off"
@@ -284,7 +284,7 @@ export default function VerificarCodigoPage() {
               </div>
 
               {result.claim.expires_at && (
-                <p className="text-blue-600 text-xs font-bold flex items-center gap-1.5">
+                <p className="text-orange-600 text-xs font-bold flex items-center gap-1.5">
                   <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
@@ -299,7 +299,7 @@ export default function VerificarCodigoPage() {
                   value={cashierName}
                   onChange={e => setCashierName(e.target.value)}
                   placeholder="Ej: Maria Garcia"
-                  className="w-full bg-[#FAFAF9] border border-[#E8E3DC] rounded-xl px-4 py-3 text-[#1C1917] placeholder-stone-400 text-sm focus:outline-none focus:ring-2 focus:border-blue-500 transition-all"
+                  className="w-full bg-[#FAFAF9] border border-[#E8E3DC] rounded-xl px-4 py-3 text-[#1C1917] placeholder-stone-400 text-sm focus:outline-none focus:ring-2 focus:border-orange-500 transition-all"
                   style={{ '--tw-ring-color': '#2563EB40' } as React.CSSProperties}
                 />
               </div>
@@ -357,16 +357,16 @@ export default function VerificarCodigoPage() {
 
         {/* EXPIRED */}
         {result?.status === 'expired' && (
-          <div className="bg-white rounded-3xl border border-blue-200 overflow-hidden" style={{ boxShadow: '0 8px 32px rgba(37,99,235,0.10)' }}>
-            <div className="px-5 py-4 bg-blue-50 border-b border-blue-200 flex items-center gap-3">
-              <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center shrink-0">
-                <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="bg-white rounded-3xl border border-orange-200 overflow-hidden" style={{ boxShadow: '0 8px 32px rgba(37,99,235,0.10)' }}>
+            <div className="px-5 py-4 bg-orange-50 border-b border-orange-200 flex items-center gap-3">
+              <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center shrink-0">
+                <svg className="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
                 </svg>
               </div>
               <div>
                 <p className="text-blue-800 font-extrabold text-base">Codigo expirado</p>
-                <p className="text-blue-600 text-xs">Este codigo ya no es valido</p>
+                <p className="text-orange-600 text-xs">Este codigo ya no es valido</p>
               </div>
             </div>
             <div className="p-5">

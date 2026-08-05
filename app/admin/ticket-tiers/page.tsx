@@ -220,7 +220,7 @@ export default function TicketTiersPage() {
             <TicketIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Premio por Consumo
           </div>
           <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Ticket Scanner — Niveles de Premio</h1>
-          <p className="text-blue-200/70 mt-1.5 text-sm">
+          <p className="text-orange-200/70 mt-1.5 text-sm">
             Configura qué premios se asignan según el monto del ticket del cliente.
           </p>
         </div>

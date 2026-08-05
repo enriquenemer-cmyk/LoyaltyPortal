@@ -451,7 +451,7 @@ export default function InventarioPage() {
               <ArchiveBoxIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Control de Stock
             </div>
             <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Inventario</h1>
-            <p className="text-blue-200/70 mt-1.5 text-sm">Control de productos: entradas y consumo</p>
+            <p className="text-orange-200/70 mt-1.5 text-sm">Control de productos: entradas y consumo</p>
           </div>
           <button
             onClick={() => setShowNewProduct(true)}
@@ -559,7 +559,7 @@ export default function InventarioPage() {
                   </thead>
                   <tbody className="divide-y divide-slate-50">
                     {activeProducts.map((p) => (
-                      <tr key={p.id} className="hover:bg-blue-50/40 transition-colors">
+                      <tr key={p.id} className="hover:bg-orange-50/40 transition-colors">
                         <td className="px-5 py-4 font-medium text-slate-900">{p.name}</td>
                         <td className="px-5 py-4 text-slate-500">{p.unit}</td>
                         <td className="px-5 py-4">
@@ -612,7 +612,7 @@ export default function InventarioPage() {
                 </thead>
                 <tbody className="divide-y divide-slate-50">
                   {movements.map((m) => (
-                    <tr key={m.id} className="hover:bg-blue-50/40 transition-colors">
+                    <tr key={m.id} className="hover:bg-orange-50/40 transition-colors">
                       <td className="px-5 py-4"><MovementTypeBadge type={m.type} /></td>
                       <td className="px-5 py-4 font-medium text-slate-900">{m.product_name}</td>
                       <td className="px-5 py-4 text-slate-600">{m.quantity}</td>

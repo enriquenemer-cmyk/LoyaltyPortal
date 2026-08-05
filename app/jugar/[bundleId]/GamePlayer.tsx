@@ -618,7 +618,7 @@ export default function GamePlayer({
           </div>
           {/* Dashed divider */}
           <div className="border-t border-dashed border-[#E8E3DC] mx-5" />
-          <div className="px-5 py-4 bg-blue-50">
+          <div className="px-5 py-4 bg-orange-50">
             <p className="text-[#2563EB] text-xs font-bold text-center">
               Presenta este comprobante al cajero para recibir tu premio
             </p>

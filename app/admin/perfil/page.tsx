@@ -42,7 +42,7 @@ export default function PerfilPage() {
     }
   }
 
-  const inputClass = 'w-full bg-white border border-[#E8E3DC] rounded-xl px-4 py-3 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all shadow-sm';
+  const inputClass = 'w-full bg-white border border-[#E8E3DC] rounded-xl px-4 py-3 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all shadow-sm';
 
   return (
     <div className="min-h-screen">
@@ -54,7 +54,7 @@ export default function PerfilPage() {
               <Cog6ToothIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Mi Perfil
             </div>
             <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Mi Perfil</h1>
-            <p className="text-blue-200/70 mt-1.5 text-sm">Actualiza la contraseña de tu cuenta.</p>
+            <p className="text-orange-200/70 mt-1.5 text-sm">Actualiza la contraseña de tu cuenta.</p>
           </div>
         </div>
       </div>
@@ -106,7 +106,7 @@ export default function PerfilPage() {
             {message && (
               <div className={`rounded-xl px-4 py-3 text-sm flex items-start gap-2 ${
                 message.type === 'success' ? 'bg-emerald-50 border border-emerald-200 text-emerald-700' :
-                message.type === 'info' ? 'bg-blue-50 border border-blue-200 text-blue-800' :
+                message.type === 'info' ? 'bg-orange-50 border border-orange-200 text-blue-800' :
                 'bg-red-50 border border-red-200 text-red-700'
               }`}>
                 <svg className="w-4 h-4 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

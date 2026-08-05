@@ -153,7 +153,7 @@ export default function TemporadaPage() {
             <TrophyIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Battle Pass
           </div>
           <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Temporada / Battle Pass</h1>
-          <p className="text-blue-200/70 mt-1.5 text-sm">
+          <p className="text-orange-200/70 mt-1.5 text-sm">
             Programa de niveles por temporada
           </p>
         </div>

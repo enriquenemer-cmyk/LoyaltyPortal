@@ -36,7 +36,7 @@ const SEGMENT_LABELS: Record<RfmSegment, string> = {
 
 const SEGMENT_BADGE_CLASS: Record<RfmSegment, string> = {
   champions: 'bg-amber-50 text-amber-700 border-amber-300',
-  leales: 'bg-blue-50 text-blue-700 border-blue-300',
+  leales: 'bg-orange-50 text-orange-700 border-blue-300',
   nuevos_prometedores: 'bg-emerald-50 text-emerald-700 border-emerald-300',
   en_riesgo: 'bg-orange-50 text-orange-700 border-orange-300',
   perdidos: 'bg-red-50 text-red-700 border-red-300',
@@ -111,7 +111,7 @@ export default function SegmentacionPage() {
               <ChartBarIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Segmentación RFM
             </div>
             <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Segmentación RFM</h1>
-            <p className="text-blue-200/70 mt-1.5 text-sm">Clasificación automática de clientes por valor y comportamiento</p>
+            <p className="text-orange-200/70 mt-1.5 text-sm">Clasificación automática de clientes por valor y comportamiento</p>
           </div>
         </div>
       </div>
@@ -197,7 +197,7 @@ export default function SegmentacionPage() {
                   {filtered.map((c) => {
                     const waLink = `https://wa.me/52${c.phone.replace(/\D/g, '')}?text=Hola%20${encodeURIComponent(c.full_name)}%2C%20te%20extra%C3%B1amos%20en%20Burrito%20Bar...`;
                     return (
-                      <tr key={c.phone} className="hover:bg-blue-50/40 transition-colors group">
+                      <tr key={c.phone} className="hover:bg-orange-50/40 transition-colors group">
                         <td className="px-5 py-4">
                           <div>
                             <span className="font-medium text-slate-900 group-hover:text-[#2563EB] transition-colors text-sm">
@@ -216,7 +216,7 @@ export default function SegmentacionPage() {
                           </div>
                         </td>
                         <td className="px-5 py-4">
-                          <span className="inline-flex items-center gap-1.5 bg-blue-50 text-[#2563EB] text-xs font-bold px-2.5 py-1 rounded-full border border-blue-200">
+                          <span className="inline-flex items-center gap-1.5 bg-orange-50 text-[#2563EB] text-xs font-bold px-2.5 py-1 rounded-full border border-orange-200">
                             {c.frequency} {c.frequency === 1 ? 'canje' : 'canjes'}
                           </span>
                         </td>

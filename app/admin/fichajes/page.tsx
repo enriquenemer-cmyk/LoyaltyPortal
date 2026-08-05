@@ -276,7 +276,7 @@ export default function FichajesPage() {
               ⏰ Fichajes
             </div>
             <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Fichajes</h1>
-            <p className="text-blue-200/70 mt-1.5 text-sm">Control de horarios y asistencia del personal</p>
+            <p className="text-orange-200/70 mt-1.5 text-sm">Control de horarios y asistencia del personal</p>
           </div>
           <div className="flex items-center gap-3">
             <Link
@@ -438,7 +438,7 @@ export default function FichajesPage() {
                   {employees.map((emp, i) => (
                     <tr
                       key={emp.id}
-                      className={`border-b border-[#E8E3DC] last:border-0 ${i % 2 === 0 ? 'bg-white' : 'bg-[#FAFAF9]/50'} hover:bg-blue-50/30 transition-colors`}
+                      className={`border-b border-[#E8E3DC] last:border-0 ${i % 2 === 0 ? 'bg-white' : 'bg-[#FAFAF9]/50'} hover:bg-orange-50/30 transition-colors`}
                     >
                       <td className="px-5 py-3.5 font-medium text-[#1C1917]">{emp.full_name}</td>
                       <td className="px-5 py-3.5 text-stone-600">{emp.position ?? '—'}</td>
@@ -531,7 +531,7 @@ export default function FichajesPage() {
                   {entries.map((entry, i) => (
                     <tr
                       key={entry.id}
-                      className={`border-b border-[#E8E3DC] last:border-0 ${i % 2 === 0 ? 'bg-white' : 'bg-[#FAFAF9]/50'} hover:bg-blue-50/30 transition-colors`}
+                      className={`border-b border-[#E8E3DC] last:border-0 ${i % 2 === 0 ? 'bg-white' : 'bg-[#FAFAF9]/50'} hover:bg-orange-50/30 transition-colors`}
                     >
                       <td className="px-5 py-3.5">
                         <div className="font-medium text-[#1C1917]">{entry.full_name}</div>

@@ -164,7 +164,7 @@ export default function CampanasPage() {
               <MegaphoneIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Marketing
             </div>
             <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Mis Campañas</h1>
-            <p className="text-blue-200/70 mt-1.5 text-sm">Agrupa premios por campaña y personaliza sus códigos QR</p>
+            <p className="text-orange-200/70 mt-1.5 text-sm">Agrupa premios por campaña y personaliza sus códigos QR</p>
           </div>
           <button
             onClick={openNew}
@@ -285,7 +285,7 @@ export default function CampanasPage() {
                           onClick={() => setForm(p => ({ ...p, qr_dot_style: s.value }))}
                           className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all ${
                             form.qr_dot_style === s.value
-                              ? 'border-[#2563EB] bg-blue-50 text-[#2563EB]'
+                              ? 'border-[#2563EB] bg-orange-50 text-[#2563EB]'
                               : 'border-[#E8E3DC] text-[#78716c] hover:border-[#2563EB]/40'
                           }`}
                         >
@@ -305,7 +305,7 @@ export default function CampanasPage() {
                           onClick={() => setForm(p => ({ ...p, qr_corner_style: s.value }))}
                           className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all ${
                             form.qr_corner_style === s.value
-                              ? 'border-[#2563EB] bg-blue-50 text-[#2563EB]'
+                              ? 'border-[#2563EB] bg-orange-50 text-[#2563EB]'
                               : 'border-[#E8E3DC] text-[#78716c] hover:border-[#2563EB]/40'
                           }`}
                         >
@@ -369,7 +369,7 @@ export default function CampanasPage() {
           </div>
         ) : campaigns.length === 0 ? (
           <div className="bg-white border border-[#E8E3DC] rounded-2xl p-12 text-center">
-            <div className="w-16 h-16 rounded-2xl bg-blue-50 flex items-center justify-center mx-auto mb-4">
+            <div className="w-16 h-16 rounded-2xl bg-orange-50 flex items-center justify-center mx-auto mb-4">
               <svg className="w-8 h-8 text-[#2563EB]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
               </svg>
@@ -400,7 +400,7 @@ export default function CampanasPage() {
                         <p className="text-xs text-[#78716c] mt-0.5 leading-relaxed line-clamp-2">{campaign.description}</p>
                       )}
                       {campaign.restaurant_id && (
-                        <span className="inline-flex items-center gap-1 text-xs font-semibold text-[#2563EB] bg-blue-50 px-2 py-0.5 rounded-full mt-2">
+                        <span className="inline-flex items-center gap-1 text-xs font-semibold text-[#2563EB] bg-orange-50 px-2 py-0.5 rounded-full mt-2">
                           {restaurants.find(r => r.id === campaign.restaurant_id)?.name ?? 'Restaurante'}
                         </span>
                       )}

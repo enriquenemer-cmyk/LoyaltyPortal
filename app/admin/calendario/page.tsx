@@ -132,7 +132,7 @@ export default function CalendarioPage() {
               <CalendarIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Calendario
             </div>
             <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Calendario</h1>
-            <p className="text-blue-200/70 mt-1.5 text-sm">Visualiza los premios activos, por vencer y expirados por día.</p>
+            <p className="text-orange-200/70 mt-1.5 text-sm">Visualiza los premios activos, por vencer y expirados por día.</p>
           </div>
         </div>
       </div>
@@ -150,7 +150,7 @@ export default function CalendarioPage() {
             <div className="flex items-center justify-between mb-6">
               <button
                 onClick={goToPrevMonth}
-                className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#78716c] border border-[#E8E3DC] bg-white rounded-full px-4 py-2 hover:border-blue-200 hover:text-[#2563EB] transition-all"
+                className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#78716c] border border-[#E8E3DC] bg-white rounded-full px-4 py-2 hover:border-orange-200 hover:text-[#2563EB] transition-all"
                 aria-label="Mes anterior"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -163,7 +163,7 @@ export default function CalendarioPage() {
               </h2>
               <button
                 onClick={goToNextMonth}
-                className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#78716c] border border-[#E8E3DC] bg-white rounded-full px-4 py-2 hover:border-blue-200 hover:text-[#2563EB] transition-all"
+                className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#78716c] border border-[#E8E3DC] bg-white rounded-full px-4 py-2 hover:border-orange-200 hover:text-[#2563EB] transition-all"
                 aria-label="Mes siguiente"
               >
                 Siguiente
@@ -208,8 +208,8 @@ export default function CalendarioPage() {
                         ${todayCell
                           ? 'bg-[#2563EB] border-[#2563EB] shadow-md shadow-blue-200'
                           : isSelected
-                            ? 'ring-2 ring-[#2563EB] bg-blue-50 border-blue-200'
-                            : 'border-transparent hover:bg-blue-50 hover:border-blue-100'
+                            ? 'ring-2 ring-[#2563EB] bg-orange-50 border-orange-200'
+                            : 'border-transparent hover:bg-orange-50 hover:border-orange-100'
                         }
                       `}
                     >
@@ -246,7 +246,7 @@ export default function CalendarioPage() {
                 <span className="w-2 h-2 rounded-full bg-green-500 inline-block animate-pulse" />
                 Activo
               </span>
-              <span className="inline-flex items-center gap-1.5 bg-blue-50 border border-blue-200 rounded-full px-2.5 py-1 text-xs font-semibold text-[#2563EB]">
+              <span className="inline-flex items-center gap-1.5 bg-orange-50 border border-orange-200 rounded-full px-2.5 py-1 text-xs font-semibold text-[#2563EB]">
                 <span className="w-2 h-2 rounded-full bg-[#2563EB] inline-block" />
                 Por vencer (3 días)
               </span>
@@ -318,7 +318,7 @@ export default function CalendarioPage() {
                             <div className="pt-2 space-y-1.5">
                               <div className="flex items-center gap-1.5">
                                 <span className="text-[10px] font-bold text-[#a8a29e] uppercase tracking-widest">Estado</span>
-                                <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${status === 'active' ? 'bg-green-100 text-green-700' : status === 'expiring' ? 'bg-blue-100 text-[#2563EB]' : 'bg-stone-100 text-stone-500'}`}>
+                                <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${status === 'active' ? 'bg-green-100 text-green-700' : status === 'expiring' ? 'bg-orange-100 text-[#2563EB]' : 'bg-stone-100 text-stone-500'}`}>
                                   {statusLabel[status]}
                                 </span>
                               </div>

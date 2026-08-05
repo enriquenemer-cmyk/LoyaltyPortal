@@ -111,7 +111,7 @@ export default function EmpleadosLoginPage() {
               type="button"
               onClick={() => handleDigit(k)}
               disabled={submitting}
-              className="rounded-2xl bg-[#FAFAF9] hover:bg-blue-50 active:bg-blue-100 border border-[#E8E3DC] text-2xl font-bold text-[#1C1917] transition-colors disabled:opacity-50"
+              className="rounded-2xl bg-[#FAFAF9] hover:bg-orange-50 active:bg-orange-100 border border-[#E8E3DC] text-2xl font-bold text-[#1C1917] transition-colors disabled:opacity-50"
               style={{ minHeight: 64 }}
             >
               {k}
@@ -130,7 +130,7 @@ export default function EmpleadosLoginPage() {
             type="button"
             onClick={() => handleDigit('0')}
             disabled={submitting}
-            className="rounded-2xl bg-[#FAFAF9] hover:bg-blue-50 active:bg-blue-100 border border-[#E8E3DC] text-2xl font-bold text-[#1C1917] transition-colors disabled:opacity-50"
+            className="rounded-2xl bg-[#FAFAF9] hover:bg-orange-50 active:bg-orange-100 border border-[#E8E3DC] text-2xl font-bold text-[#1C1917] transition-colors disabled:opacity-50"
             style={{ minHeight: 64 }}
           >
             0

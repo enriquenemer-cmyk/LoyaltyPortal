@@ -108,7 +108,7 @@ export default function AuditoriaPage() {
               <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight" style={{ textShadow: '0 2px 12px rgba(0,0,0,0.2)' }}>
                 <MagnifyingGlassIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Auditoría
               </h1>
-              <p className="text-blue-200/70 mt-1.5 text-sm">Registro completo de acciones del sistema</p>
+              <p className="text-orange-200/70 mt-1.5 text-sm">Registro completo de acciones del sistema</p>
             </div>
           </div>
         </div>
@@ -122,7 +122,7 @@ export default function AuditoriaPage() {
             value={actionFilter}
             onChange={(e) => { setActionFilter(e.target.value); setPage(1); }}
             placeholder="Filtrar por acción (ej. prize_created)..."
-            className="w-full max-w-sm px-4 py-2 text-sm rounded-xl border border-[#E8E3DC] focus:outline-none focus:ring-2 focus:ring-blue-400/30"
+            className="w-full max-w-sm px-4 py-2 text-sm rounded-xl border border-[#E8E3DC] focus:outline-none focus:ring-2 focus:ring-orange-400/30"
           />
         </div>
 
@@ -172,7 +172,7 @@ export default function AuditoriaPage() {
                     .filter((p) => Math.abs(p - page) <= 1)
                     .map((p) => (
                       <button key={p} onClick={() => setPage(p)}
-                        className={`w-8 h-8 text-xs font-bold rounded-lg border transition-colors ${p === page ? 'bg-blue-500 text-white border-blue-500' : 'hover:bg-slate-50'}`}>
+                        className={`w-8 h-8 text-xs font-bold rounded-lg border transition-colors ${p === page ? 'bg-orange-500 text-white border-orange-500' : 'hover:bg-slate-50'}`}>
                         {p}
                       </button>
                     ))}

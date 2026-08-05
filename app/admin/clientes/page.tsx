@@ -46,7 +46,7 @@ type CustomerProfile = {
 const TIER_LABELS: Record<CustomerTier, string> = { bronze: 'Bronce', silver: 'Plata', gold: 'Oro' };
 
 const TIER_BADGE_CLASS: Record<CustomerTier, string> = {
-  bronze: 'bg-blue-50 text-blue-700 border-blue-200',
+  bronze: 'bg-orange-50 text-orange-700 border-orange-200',
   silver: 'bg-slate-100 text-slate-700 border-slate-300',
   gold: 'bg-yellow-50 text-yellow-700 border-yellow-300',
 };
@@ -183,7 +183,7 @@ function HistorialRow({ claim }: { claim: Claim }) {
         {claim.status === 'delivered' ? (
           <span className="text-[10px] font-bold text-emerald-600">Entregado</span>
         ) : (
-          <span className="text-[10px] font-bold text-blue-500">Pendiente</span>
+          <span className="text-[10px] font-bold text-orange-500">Pendiente</span>
         )}
       </div>
     </div>
@@ -195,7 +195,7 @@ function CustomerRow({ customer }: { customer: CustomerProfile }) {
 
   return (
     <>
-      <tr className="hover:bg-blue-50/40 transition-colors group">
+      <tr className="hover:bg-orange-50/40 transition-colors group">
         {/* Cliente */}
         <td className="px-5 py-4">
           <div className="flex items-center gap-3">
@@ -211,7 +211,7 @@ function CustomerRow({ customer }: { customer: CustomerProfile }) {
                   </span>
                 )}
                 {customer.isFrequent && (
-                  <span className="text-[9px] font-extrabold bg-blue-100 text-blue-600 border border-blue-200 rounded-full px-1.5 py-0.5 uppercase tracking-wide">
+                  <span className="text-[9px] font-extrabold bg-orange-100 text-orange-600 border border-orange-200 rounded-full px-1.5 py-0.5 uppercase tracking-wide">
                     Frecuente
                   </span>
                 )}
@@ -225,7 +225,7 @@ function CustomerRow({ customer }: { customer: CustomerProfile }) {
         <td className="px-5 py-4">
           <a
             href={`mailto:${customer.email}`}
-            className="text-[#2563EB] hover:text-blue-700 hover:underline text-xs"
+            className="text-[#2563EB] hover:text-orange-700 hover:underline text-xs"
           >
             {customer.email}
           </a>
@@ -241,7 +241,7 @@ function CustomerRow({ customer }: { customer: CustomerProfile }) {
 
         {/* Total canjes */}
         <td className="px-5 py-4">
-          <span className="inline-flex items-center gap-1.5 bg-blue-50 text-[#2563EB] text-xs font-bold px-2.5 py-1 rounded-full border border-blue-200">
+          <span className="inline-flex items-center gap-1.5 bg-orange-50 text-[#2563EB] text-xs font-bold px-2.5 py-1 rounded-full border border-orange-200">
             <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
             </svg>
@@ -269,7 +269,7 @@ function CustomerRow({ customer }: { customer: CustomerProfile }) {
               Entregado
             </span>
           ) : (
-            <span className="inline-flex items-center gap-1.5 bg-blue-50 text-blue-700 text-xs font-bold px-2.5 py-1 rounded-full border border-blue-200">
+            <span className="inline-flex items-center gap-1.5 bg-orange-50 text-orange-700 text-xs font-bold px-2.5 py-1 rounded-full border border-orange-200">
               <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
@@ -304,7 +304,7 @@ function CustomerRow({ customer }: { customer: CustomerProfile }) {
       {/* Expandable historial */}
       {expanded && (
         <tr>
-          <td colSpan={7} className="px-5 pb-4 pt-0 bg-blue-50/30">
+          <td colSpan={7} className="px-5 pb-4 pt-0 bg-orange-50/30">
             <div className="ml-13 pl-3 border-l-2 border-[#2563EB]/20 ml-[52px]">
               <p className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest mb-2 mt-1">
                 Historial de canjes — {customer.totalClaims} en total
@@ -441,7 +441,7 @@ export default function ClientesPage() {
               <UsersIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Base de Clientes
             </div>
             <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Mis Clientes</h1>
-            <p className="text-blue-200/70 mt-1.5 text-sm">Perfiles de todos los clientes que han canjeado premios</p>
+            <p className="text-orange-200/70 mt-1.5 text-sm">Perfiles de todos los clientes que han canjeado premios</p>
             {!loading && customers.length > 0 && (
               <div className="flex items-center mt-3 gap-2">
                 <div className="flex -space-x-2">
@@ -450,7 +450,7 @@ export default function ClientesPage() {
                   ))}
                   {customers.length > 4 && <div className="w-7 h-7 rounded-full border-2 flex items-center justify-center text-[9px] font-black" style={{ borderColor: 'rgba(255,255,255,0.4)', background: 'rgba(255,255,255,0.2)', color: 'white' }}>+{customers.length - 4}</div>}
                 </div>
-                <span className="text-blue-200/70 text-xs font-semibold">{customers.length} clientes activos</span>
+                <span className="text-orange-200/70 text-xs font-semibold">{customers.length} clientes activos</span>
               </div>
             )}
           </div>

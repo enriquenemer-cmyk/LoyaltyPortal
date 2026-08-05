@@ -23,7 +23,7 @@ function DaysChip({ days }: { days: number }) {
   const color = days >= 90
     ? 'bg-red-50 text-red-700 border-red-200'
     : days >= 60
-    ? 'bg-blue-50 text-blue-700 border-blue-200'
+    ? 'bg-orange-50 text-orange-700 border-orange-200'
     : 'bg-yellow-50 text-yellow-700 border-yellow-200';
   return (
     <span className={`inline-flex items-center text-xs font-bold px-2 py-0.5 rounded-full border ${color}`}>
@@ -87,7 +87,7 @@ export default function AutomatizacionPage() {
               <CpuChipIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Automatización
             </div>
             <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Automatización</h1>
-            <p className="text-blue-200/70 mt-1.5 text-sm">Gestiona campañas de reactivación y mensajes automáticos.</p>
+            <p className="text-orange-200/70 mt-1.5 text-sm">Gestiona campañas de reactivación y mensajes automáticos.</p>
           </div>
         </div>
       </div>
@@ -111,7 +111,7 @@ export default function AutomatizacionPage() {
                 <select
                   value={pendingDays}
                   onChange={(e) => setPendingDays(Number(e.target.value))}
-                  className="text-sm border border-[#E8E3DC] rounded-lg px-2.5 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+                  className="text-sm border border-[#E8E3DC] rounded-lg px-2.5 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500"
                 >
                   <option value={14}>14 días</option>
                   <option value={30}>30 días</option>
@@ -143,7 +143,7 @@ export default function AutomatizacionPage() {
 
           {loading && (
             <div className="flex items-center justify-center py-16 text-stone-400 gap-3">
-              <div className="w-5 h-5 border-2 border-blue-400 border-t-transparent rounded-full animate-spin" />
+              <div className="w-5 h-5 border-2 border-orange-400 border-t-transparent rounded-full animate-spin" />
               Cargando clientes inactivos…
             </div>
           )}
@@ -163,7 +163,7 @@ export default function AutomatizacionPage() {
               {customers.map((c) => (
                 <div key={c.phone} className="flex items-center gap-4 px-6 py-4 hover:bg-[#faf7f5] transition-colors">
                   {/* Avatar */}
-                  <div className="w-9 h-9 rounded-full bg-blue-100 flex items-center justify-center shrink-0 text-sm font-bold text-blue-600">
+                  <div className="w-9 h-9 rounded-full bg-orange-100 flex items-center justify-center shrink-0 text-sm font-bold text-orange-600">
                     {c.full_name.charAt(0).toUpperCase()}
                   </div>
                   {/* Info */}
@@ -207,7 +207,7 @@ export default function AutomatizacionPage() {
           <div className="px-6 py-5">
             <Link
               href="/admin/reglas"
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold text-[#2563EB] border border-blue-200 bg-blue-50 hover:bg-blue-100 transition-colors"
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold text-[#2563EB] border border-orange-200 bg-orange-50 hover:bg-orange-100 transition-colors"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />

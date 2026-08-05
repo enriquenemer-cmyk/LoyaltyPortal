@@ -45,7 +45,7 @@ export default async function ReferidosAdminPage() {
       <div className="hero-gradient px-4 md:px-10 pt-6 pb-8">
         <div className="hero-blobs" aria-hidden="true"><span key="b1" /><span key="b2" /><span key="b3" /></div>
         <div className="max-w-[960px] mx-auto">
-          <a href="/admin" className="inline-flex items-center gap-1.5 text-blue-200/70 text-xs font-semibold mb-4 hover:text-white transition-colors">
+          <a href="/admin" className="inline-flex items-center gap-1.5 text-orange-200/70 text-xs font-semibold mb-4 hover:text-white transition-colors">
             <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
@@ -55,7 +55,7 @@ export default async function ReferidosAdminPage() {
             <UsersIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Programa de Referidos
           </div>
           <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Referidos</h1>
-          <p className="text-blue-200/70 mt-1.5 text-sm">Rastrea quién está trayendo nuevos clientes</p>
+          <p className="text-orange-200/70 mt-1.5 text-sm">Rastrea quién está trayendo nuevos clientes</p>
         </div>
       </div>
 

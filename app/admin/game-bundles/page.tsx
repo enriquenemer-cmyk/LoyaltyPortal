@@ -53,7 +53,7 @@ export default function GameBundlesPage() {
             <RectangleGroupIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Juegos con Premios
           </div>
           <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Premios Gamificados</h1>
-          <p className="text-blue-200/70 mt-1.5 text-sm max-w-xl">
+          <p className="text-orange-200/70 mt-1.5 text-sm max-w-xl">
             Convierte cada premio en una experiencia. El cliente escanea el QR y antes de ver su premio, juega un mini-juego. Más emoción, más recuerdo de marca.
           </p>
         </div>
@@ -114,7 +114,7 @@ export default function GameBundlesPage() {
           </div>
           <Link
             href="/admin/generate"
-            className="shrink-0 bg-white text-[#2563EB] font-bold text-sm px-5 py-2.5 rounded-xl hover:bg-blue-50 transition-colors text-center"
+            className="shrink-0 bg-white text-[#2563EB] font-bold text-sm px-5 py-2.5 rounded-xl hover:bg-orange-50 transition-colors text-center"
           >
             Generar Premio →
           </Link>

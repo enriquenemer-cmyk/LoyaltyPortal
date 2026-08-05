@@ -20,7 +20,7 @@ function DefaultErrorFallback({ error, onReset }: { error?: Error; onReset: () =
         <div className="flex gap-3 justify-center">
           <button
             onClick={onReset}
-            className="px-4 py-2 text-sm font-bold rounded-xl bg-blue-500 text-white hover:bg-blue-600 transition-colors"
+            className="px-4 py-2 text-sm font-bold rounded-xl bg-orange-500 text-white hover:bg-orange-500 transition-colors"
           >
             Intentar de nuevo
           </button>

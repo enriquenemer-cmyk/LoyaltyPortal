@@ -40,7 +40,7 @@ export function SendMessageForm({ phone, name }: { phone: string; name: string }
         onChange={(e) => setMessage(e.target.value)}
         placeholder={`Escribe un mensaje interno sobre ${name}...`}
         rows={3}
-        className="w-full px-3 py-2.5 text-sm bg-[#FAFAF9] border border-[#E8E3DC] rounded-xl text-[#1C1917] placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-blue-400/30 focus:border-blue-400 transition-all resize-none"
+        className="w-full px-3 py-2.5 text-sm bg-[#FAFAF9] border border-[#E8E3DC] rounded-xl text-[#1C1917] placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-orange-400/30 focus:border-orange-400 transition-all resize-none"
       />
       {error && <p className="text-xs text-red-600">{error}</p>}
       <div className="flex items-center gap-3">

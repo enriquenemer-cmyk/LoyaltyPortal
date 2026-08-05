@@ -167,12 +167,12 @@ function AdvancedFilters({
   );
 
   return (
-    <div className="rounded-2xl border border-blue-200 bg-blue-50 p-4 mb-4">
+    <div className="rounded-2xl border border-orange-200 bg-orange-50 p-4 mb-4">
       <div className="flex items-center justify-between mb-3">
-        <span className="text-xs font-bold text-blue-700 uppercase tracking-widest">Filtros avanzados</span>
+        <span className="text-xs font-bold text-orange-700 uppercase tracking-widest">Filtros avanzados</span>
         <button
           onClick={() => setFilters(EMPTY_FILTERS)}
-          className="text-xs text-blue-500 hover:text-blue-700 font-semibold underline underline-offset-2 transition-colors"
+          className="text-xs text-orange-500 hover:text-orange-700 font-semibold underline underline-offset-2 transition-colors"
         >
           Limpiar filtros
         </button>
@@ -180,11 +180,11 @@ function AdvancedFilters({
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {/* Sucursal */}
         <div>
-          <label className="block text-[10px] font-bold text-blue-700 uppercase tracking-widest mb-1">Sucursal</label>
+          <label className="block text-[10px] font-bold text-orange-700 uppercase tracking-widest mb-1">Sucursal</label>
           <select
             value={filters.sucursal}
             onChange={(e) => setFilters({ ...filters, sucursal: e.target.value })}
-            className="w-full border border-blue-200 rounded-xl px-3 py-2 text-sm bg-white text-[#1C1917] focus:outline-none focus:border-[#2563EB]"
+            className="w-full border border-orange-200 rounded-xl px-3 py-2 text-sm bg-white text-[#1C1917] focus:outline-none focus:border-[#2563EB]"
           >
             <option value="">Todas las sucursales</option>
             {sucursales.map((s) => <option key={s} value={s}>{s}</option>)}
@@ -193,11 +193,11 @@ function AdvancedFilters({
 
         {/* Estado */}
         <div>
-          <label className="block text-[10px] font-bold text-blue-700 uppercase tracking-widest mb-1">Estado del cobro</label>
+          <label className="block text-[10px] font-bold text-orange-700 uppercase tracking-widest mb-1">Estado del cobro</label>
           <select
             value={filters.status}
             onChange={(e) => setFilters({ ...filters, status: e.target.value as Filters['status'] })}
-            className="w-full border border-blue-200 rounded-xl px-3 py-2 text-sm bg-white text-[#1C1917] focus:outline-none focus:border-[#2563EB]"
+            className="w-full border border-orange-200 rounded-xl px-3 py-2 text-sm bg-white text-[#1C1917] focus:outline-none focus:border-[#2563EB]"
           >
             <option value="">Todos los estados</option>
             <option value="pending">Pendiente</option>
@@ -208,33 +208,33 @@ function AdvancedFilters({
 
         {/* Desde */}
         <div>
-          <label className="block text-[10px] font-bold text-blue-700 uppercase tracking-widest mb-1">Desde</label>
+          <label className="block text-[10px] font-bold text-orange-700 uppercase tracking-widest mb-1">Desde</label>
           <input
             type="date"
             value={filters.from}
             onChange={(e) => setFilters({ ...filters, from: e.target.value })}
-            className="w-full border border-blue-200 rounded-xl px-3 py-2 text-sm bg-white text-[#1C1917] focus:outline-none focus:border-[#2563EB]"
+            className="w-full border border-orange-200 rounded-xl px-3 py-2 text-sm bg-white text-[#1C1917] focus:outline-none focus:border-[#2563EB]"
           />
         </div>
 
         {/* Hasta */}
         <div>
-          <label className="block text-[10px] font-bold text-blue-700 uppercase tracking-widest mb-1">Hasta</label>
+          <label className="block text-[10px] font-bold text-orange-700 uppercase tracking-widest mb-1">Hasta</label>
           <input
             type="date"
             value={filters.to}
             onChange={(e) => setFilters({ ...filters, to: e.target.value })}
-            className="w-full border border-blue-200 rounded-xl px-3 py-2 text-sm bg-white text-[#1C1917] focus:outline-none focus:border-[#2563EB]"
+            className="w-full border border-orange-200 rounded-xl px-3 py-2 text-sm bg-white text-[#1C1917] focus:outline-none focus:border-[#2563EB]"
           />
         </div>
 
         {/* Tipo de premio */}
         <div className="sm:col-span-2">
-          <label className="block text-[10px] font-bold text-blue-700 uppercase tracking-widest mb-1">Tipo de premio</label>
+          <label className="block text-[10px] font-bold text-orange-700 uppercase tracking-widest mb-1">Tipo de premio</label>
           <select
             value={filters.premio}
             onChange={(e) => setFilters({ ...filters, premio: e.target.value })}
-            className="w-full border border-blue-200 rounded-xl px-3 py-2 text-sm bg-white text-[#1C1917] focus:outline-none focus:border-[#2563EB]"
+            className="w-full border border-orange-200 rounded-xl px-3 py-2 text-sm bg-white text-[#1C1917] focus:outline-none focus:border-[#2563EB]"
           >
             <option value="">Todos los premios</option>
             {premios.map((p) => <option key={p} value={p}>{p}</option>)}
@@ -735,8 +735,8 @@ export default function ReportePage() {
   const statCards = stats
     ? [
         { label: 'Premios generados esta semana', value: stats.generados, icon: '', color: 'text-emerald-700', bg: 'bg-emerald-50', border: 'border-emerald-200' },
-        { label: 'Cobros realizados esta semana', value: stats.cobrados, icon: '', color: 'text-blue-700', bg: 'bg-blue-50', border: 'border-blue-200' },
-        { label: 'Premios pendientes de cobro', value: stats.pendientes, icon: '⏳', color: 'text-blue-700', bg: 'bg-blue-50', border: 'border-blue-200' },
+        { label: 'Cobros realizados esta semana', value: stats.cobrados, icon: '', color: 'text-orange-700', bg: 'bg-orange-50', border: 'border-orange-200' },
+        { label: 'Premios pendientes de cobro', value: stats.pendientes, icon: '⏳', color: 'text-orange-700', bg: 'bg-orange-50', border: 'border-orange-200' },
         { label: 'Por vencer (próximos 7 días)', value: stats.porVencer, icon: '', color: 'text-red-700', bg: 'bg-red-50', border: 'border-red-200' },
       ]
     : [];
@@ -753,7 +753,7 @@ export default function ReportePage() {
             </div>
             <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Reporte Semanal</h1>
             {stats && (
-              <p className="text-blue-200/70 mt-1.5 text-sm">Semana del {stats.weekStart} al {stats.weekEnd}</p>
+              <p className="text-orange-200/70 mt-1.5 text-sm">Semana del {stats.weekStart} al {stats.weekEnd}</p>
             )}
           </div>
           {!loading && allClaims.length > 0 && (
@@ -801,7 +801,7 @@ export default function ReportePage() {
     <div className="max-w-xl mx-auto px-4 py-8">
       {loading ? (
         <div className="flex items-center justify-center h-48">
-          <svg className="animate-spin w-8 h-8 text-blue-400" fill="none" viewBox="0 0 24 24">
+          <svg className="animate-spin w-8 h-8 text-[#1a6b3c]" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
           </svg>
@@ -847,7 +847,7 @@ export default function ReportePage() {
                 {' '}cobros
               </span>
               {hasActiveFilter && (
-                <span className="text-[10px] font-bold uppercase tracking-widest text-[#0891B2] bg-blue-50 border border-blue-200 px-2 py-0.5 rounded-full">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-[#0891B2] bg-orange-50 border border-orange-200 px-2 py-0.5 rounded-full">
                   Filtros activos
                 </span>
               )}

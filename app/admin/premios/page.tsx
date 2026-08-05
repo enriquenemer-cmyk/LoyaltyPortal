@@ -35,7 +35,7 @@ const PAGE_SIZE = 20;
 
 function getPrizeStatus(p: Prize): StatusInfo {
   if (p.cancelled) return { label: 'Cancelado', bg: 'bg-red-50', text: 'text-red-700', dotColor: 'bg-red-500', animate: false };
-  if (p.claim_count > 0) return { label: 'Canjeado', bg: 'bg-blue-50', text: 'text-blue-700', dotColor: 'bg-blue-500', animate: false };
+  if (p.claim_count > 0) return { label: 'Canjeado', bg: 'bg-orange-50', text: 'text-orange-700', dotColor: 'bg-orange-500', animate: false };
   const today = new Date().toISOString().split('T')[0];
   if (today > p.end_date) return { label: 'Expirado', bg: 'bg-stone-100', text: 'text-stone-500', dotColor: 'bg-stone-400', animate: false };
   return { label: 'Activo', bg: 'bg-green-50', text: 'text-green-700', dotColor: 'bg-green-500', animate: true };
@@ -148,7 +148,7 @@ function QRModal({ prize, onClose }: { prize: Prize; onClose: () => void }) {
             </div>
           ) : (
             <div className="flex items-center justify-center w-[280px] h-[280px] rounded-xl border border-[#E8E3DC] bg-stone-50">
-              <svg className="animate-spin w-8 h-8 text-blue-400" fill="none" viewBox="0 0 24 24">
+              <svg className="animate-spin w-8 h-8 text-[#1a6b3c]" fill="none" viewBox="0 0 24 24">
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
               </svg>
@@ -163,7 +163,7 @@ function QRModal({ prize, onClose }: { prize: Prize; onClose: () => void }) {
             <button
               onClick={handleDownload}
               disabled={!qrDataUrl}
-              className="flex-1 flex items-center justify-center gap-2 bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 font-bold text-sm px-4 py-2.5 rounded-xl transition-colors disabled:opacity-40"
+              className="flex-1 flex items-center justify-center gap-2 bg-orange-50 hover:bg-orange-100 text-orange-700 border border-orange-200 font-bold text-sm px-4 py-2.5 rounded-xl transition-colors disabled:opacity-40"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -229,7 +229,7 @@ function ExpandedDetail({ prize }: { prize: Prize }) {
   return (
     <tr>
       <td colSpan={8} className="px-0 py-0">
-        <div className="bg-blue-50/20 border-t border-[#E8E3DC] px-6 py-4">
+        <div className="bg-orange-50/20 border-t border-[#E8E3DC] px-6 py-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div>
               <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest mb-1">Creado</p>
@@ -273,8 +273,8 @@ function ExpandedDetail({ prize }: { prize: Prize }) {
               {/* Canjeado */}
               {prize.claim_count > 0 && (
                 <div className="flex items-start gap-2.5">
-                  <span className="mt-0.5 flex-shrink-0 w-5 h-5 rounded-full bg-blue-100 flex items-center justify-center">
-                    <span className="w-2 h-2 rounded-full bg-blue-500" />
+                  <span className="mt-0.5 flex-shrink-0 w-5 h-5 rounded-full bg-orange-100 flex items-center justify-center">
+                    <span className="w-2 h-2 rounded-full bg-orange-500" />
                   </span>
                   <div>
                     <span className="text-xs font-semibold text-[#1C1917]">Canjeado</span>
@@ -542,7 +542,7 @@ export default function PremiosPage() {
               <GiftIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Premios QR
             </div>
             <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Mis Premios</h1>
-            <p className="text-blue-200/70 mt-1.5 text-sm">Historial completo de premios generados</p>
+            <p className="text-orange-200/70 mt-1.5 text-sm">Historial completo de premios generados</p>
           </div>
           <Link
             href="/admin/generate"
@@ -564,7 +564,7 @@ export default function PremiosPage() {
           {[
             { label: 'Total', value: total, border: 'border-l-stone-400', num: 'text-[#1C1917]', bg: 'bg-stone-50', dot: '#78716c' },
             { label: 'Activos', value: activos, border: 'border-l-emerald-500', num: 'text-emerald-600', bg: 'bg-emerald-50', dot: '#059669' },
-            { label: 'Canjeados', value: canjeados, border: 'border-l-blue-500', num: 'text-blue-600', bg: 'bg-blue-50', dot: '#2563eb' },
+            { label: 'Canjeados', value: canjeados, border: 'border-l-blue-500', num: 'text-orange-600', bg: 'bg-orange-50', dot: '#2563eb' },
             { label: 'Expirados', value: expirados, border: 'border-l-stone-300', num: 'text-stone-500', bg: 'bg-stone-50', dot: '#a8a29e' },
             { label: 'Cancelados', value: cancelados, border: 'border-l-red-400', num: 'text-red-500', bg: 'bg-red-50', dot: '#ef4444' },
           ].map(({ label, value, border, num, bg, dot }) => (
@@ -586,7 +586,7 @@ export default function PremiosPage() {
               onClick={() => { setStatusFilter(key); setPage(1); }}
               className={`px-4 py-2 rounded-xl text-sm font-bold transition-all border ${
                 statusFilter === key
-                  ? 'bg-blue-500 text-white border-blue-500 shadow-sm'
+                  ? 'bg-orange-500 text-white border-orange-500 shadow-sm'
                   : 'bg-stone-50 text-stone-600 border-[#E8E3DC] hover:bg-stone-100'
               }`}
             >
@@ -606,14 +606,14 @@ export default function PremiosPage() {
               placeholder="Buscar por nombre o restaurante..."
               value={search}
               onChange={(e) => { setSearch(e.target.value); setPage(1); }}
-              className="w-full pl-10 pr-4 py-2.5 bg-white border border-[#E8E3DC] rounded-xl text-sm text-[#1C1917] placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 transition-all shadow-sm"
+              className="w-full pl-10 pr-4 py-2.5 bg-white border border-[#E8E3DC] rounded-xl text-sm text-[#1C1917] placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-orange-400 transition-all shadow-sm"
             />
           </div>
           {restaurants.length > 0 && (
             <select
               value={restaurantFilter}
               onChange={(e) => { setRestaurantFilter(e.target.value); setPage(1); }}
-              className="text-sm border border-[#E8E3DC] rounded-xl px-3 py-2.5 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 transition-all shadow-sm"
+              className="text-sm border border-[#E8E3DC] rounded-xl px-3 py-2.5 bg-white focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-orange-400 transition-all shadow-sm"
               style={restaurantFilter ? { borderColor: '#2563EB', color: '#2563EB', fontWeight: 700 } : {}}
             >
               <option value="">Todos los restaurantes</option>
@@ -689,7 +689,7 @@ export default function PremiosPage() {
                       <>
                         <tr
                           key={p.id}
-                          className={`hover:bg-[#faf7f5] transition-colors cursor-pointer ${isSelected ? 'bg-blue-50/60' : ''} ${isExpanded ? 'bg-blue-50/30' : ''}`}
+                          className={`hover:bg-[#faf7f5] transition-colors cursor-pointer ${isSelected ? 'bg-orange-50/60' : ''} ${isExpanded ? 'bg-orange-50/30' : ''}`}
                           onClick={(e) => handleToggleExpand(p.id, e)}
                         >
                           <td className="px-4 py-4 w-10">
@@ -714,7 +714,7 @@ export default function PremiosPage() {
                             </div>
                             <div className="flex flex-wrap gap-1 mt-1 pl-5">
                               {p.restaurant_name && (
-                                <span className="inline-block text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200">{p.restaurant_name}</span>
+                                <span className="inline-block text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-orange-50 text-orange-700 border border-orange-200">{p.restaurant_name}</span>
                               )}
                               {p.generated_by && (
                                 <span className="inline-block text-[10px] font-medium px-1.5 py-0.5 rounded-full bg-stone-100 text-stone-500">por {p.generated_by}</span>
@@ -733,7 +733,7 @@ export default function PremiosPage() {
                               {/* Ver QR */}
                               <button
                                 onClick={() => setQrPrize(p)}
-                                className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-700 border border-blue-200 bg-blue-50 hover:bg-blue-100 px-2.5 py-1.5 rounded-lg transition-colors"
+                                className="inline-flex items-center gap-1.5 text-xs font-semibold text-orange-700 border border-orange-200 bg-orange-50 hover:bg-orange-100 px-2.5 py-1.5 rounded-lg transition-colors"
                               >
                                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4h.01M8 8h.01M16 8h.01M4 12h.01M20 12h.01M8 16h.01M16 16h.01M12 20h.01M4 4h4v4H4zm12 0h4v4h-4zM4 16h4v4H4zm12 0h4v4h-4z" />
@@ -805,7 +805,7 @@ export default function PremiosPage() {
                     .filter(p => Math.abs(p - page) <= 1)
                     .map(p => (
                       <button key={p} onClick={() => setPage(p)}
-                        className={`w-8 h-8 text-xs font-bold rounded-lg border transition-colors ${p === page ? 'bg-blue-500 text-white border-blue-500' : 'hover:bg-slate-50'}`}>
+                        className={`w-8 h-8 text-xs font-bold rounded-lg border transition-colors ${p === page ? 'bg-orange-500 text-white border-orange-500' : 'hover:bg-slate-50'}`}>
                         {p}
                       </button>
                     ))}

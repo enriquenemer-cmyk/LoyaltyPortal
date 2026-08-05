@@ -42,16 +42,16 @@ function DeliveryTimeBadge({ hours }: { hours: number | null }) {
   }
   if (hours < 2) {
     return (
-      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200">
-        <span className="w-1.5 h-1.5 rounded-full bg-blue-500 inline-block" />
+      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-orange-50 text-orange-700 border border-orange-200">
+        <span className="w-1.5 h-1.5 rounded-full bg-orange-500 inline-block" />
         {formatTime(hours)}
       </span>
     );
   }
   if (hours <= 24) {
     return (
-      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200">
-        <span className="w-1.5 h-1.5 rounded-full bg-blue-500 inline-block" />
+      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-orange-50 text-orange-700 border border-orange-200">
+        <span className="w-1.5 h-1.5 rounded-full bg-orange-500 inline-block" />
         {formatTime(hours)}
       </span>
     );
@@ -109,7 +109,7 @@ export default function RendimientoPage() {
               <ChartBarIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Rendimiento
             </div>
             <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Rendimiento</h1>
-            <p className="text-blue-200/70 mt-1.5 text-sm">Premios entregados y tiempos promedio por cajero</p>
+            <p className="text-orange-200/70 mt-1.5 text-sm">Premios entregados y tiempos promedio por cajero</p>
           </div>
         </div>
       </div>
@@ -125,7 +125,7 @@ export default function RendimientoPage() {
             <select
               value={restaurantId}
               onChange={(e) => setRestaurantId(e.target.value)}
-              className="w-full bg-[#FAFAF9] border border-[#E8E3DC] rounded-xl px-3 py-2.5 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+              className="w-full bg-[#FAFAF9] border border-[#E8E3DC] rounded-xl px-3 py-2.5 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all"
             >
               {restaurants.map((r) => (
                 <option key={r.id} value={r.id}>{r.name}</option>
@@ -159,11 +159,11 @@ export default function RendimientoPage() {
         {/* Legend */}
         <div className="flex flex-wrap gap-3 mb-4 text-xs">
           <div className="flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-blue-500 inline-block" />
+            <span className="w-2 h-2 rounded-full bg-orange-500 inline-block" />
             <span className="text-stone-500">Rapido (&lt; 2 hrs)</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-blue-500 inline-block" />
+            <span className="w-2 h-2 rounded-full bg-orange-500 inline-block" />
             <span className="text-stone-500">Medio (2–24 hrs)</span>
           </div>
           <div className="flex items-center gap-1.5">

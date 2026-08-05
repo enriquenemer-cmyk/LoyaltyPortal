@@ -14,11 +14,11 @@ type LogEntry = {
 };
 
 const actionColor: Record<string, string> = {
-  admin_login: 'bg-blue-50 text-blue-700',
-  prize_created: 'bg-blue-50 text-blue-700',
+  admin_login: 'bg-orange-50 text-orange-700',
+  prize_created: 'bg-orange-50 text-orange-700',
   claim_registered: 'bg-emerald-50 text-emerald-700',
   claim_delivered: 'bg-green-50 text-green-700',
-  password_reset_requested: 'bg-blue-50 text-blue-700',
+  password_reset_requested: 'bg-orange-50 text-orange-700',
   password_reset_completed: 'bg-purple-50 text-purple-700',
   rate_limit_exceeded: 'bg-red-50 text-red-700',
 };
@@ -114,7 +114,7 @@ export default function SeguridadPage() {
               <LockClosedIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Seguridad
             </div>
             <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Seguridad</h1>
-            <p className="text-blue-200/70 mt-1.5 text-sm">Registro de actividad y exportación de datos</p>
+            <p className="text-orange-200/70 mt-1.5 text-sm">Registro de actividad y exportación de datos</p>
           </div>
           <button
             onClick={handleExport}

@@ -39,7 +39,7 @@ function tierLabel(tier: string) {
 function tierBadgeClass(tier: string) {
   if (tier === 'gold') return 'bg-yellow-50 text-yellow-700 border-yellow-300';
   if (tier === 'silver') return 'bg-slate-100 text-slate-700 border-slate-300';
-  return 'bg-blue-50 text-blue-700 border-blue-200';
+  return 'bg-orange-50 text-orange-700 border-orange-200';
 }
 
 function formatDate(dateStr: string) {
@@ -219,9 +219,9 @@ function EventIcon({ icon }: { icon: string }) {
 
 function eventIconBg(type: TimelineEvent['type']) {
   if (type === 'delivered') return 'bg-green-100 text-green-600';
-  if (type === 'ticket') return 'bg-blue-100 text-blue-600';
+  if (type === 'ticket') return 'bg-orange-100 text-orange-600';
   if (type === 'game') return 'bg-purple-100 text-purple-600';
-  return 'bg-blue-100 text-blue-600';
+  return 'bg-orange-100 text-orange-600';
 }
 
 function eventEmoji(type: TimelineEvent['type']) {
@@ -405,8 +405,8 @@ export default async function CustomerProfilePage({
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
           {[
             { label: 'Visitas totales', value: stats.totalVisits.toString(), color: 'bg-stone-50 border-stone-200 text-stone-700' },
-            { label: 'Total gastado', value: stats.totalSpent > 0 ? `$${stats.totalSpent.toLocaleString('es-MX')}` : '—', color: 'bg-blue-50 border-blue-200 text-blue-700' },
-            { label: 'Premio favorito', value: stats.favPrize ?? '—', color: 'bg-blue-50 border-blue-200 text-blue-700' },
+            { label: 'Total gastado', value: stats.totalSpent > 0 ? `$${stats.totalSpent.toLocaleString('es-MX')}` : '—', color: 'bg-orange-50 border-orange-200 text-orange-700' },
+            { label: 'Premio favorito', value: stats.favPrize ?? '—', color: 'bg-orange-50 border-orange-200 text-orange-700' },
             { label: 'Días entre visitas', value: stats.avgDaysBetween != null ? `~${stats.avgDaysBetween}d` : '—', color: 'bg-emerald-50 border-emerald-200 text-emerald-700' },
           ].map((s) => (
             <div key={s.label} className={`rounded-2xl border p-4 ${s.color}`}>

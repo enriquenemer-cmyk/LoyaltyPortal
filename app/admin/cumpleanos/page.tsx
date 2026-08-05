@@ -127,7 +127,7 @@ export default function CumpleanosPage() {
             <CakeIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Puntos y Sellos
           </div>
           <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Premios de Cumpleaños</h1>
-          <p className="text-blue-200/70 mt-1.5 text-sm">Genera premios especiales — manual o automático</p>
+          <p className="text-orange-200/70 mt-1.5 text-sm">Genera premios especiales — manual o automático</p>
         </div>
       </div>
 

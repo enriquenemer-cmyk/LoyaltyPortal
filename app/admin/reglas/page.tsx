@@ -151,7 +151,7 @@ export default function ReglasPrizePage() {
               <BoltIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Automatización
             </div>
             <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Reglas de Premios</h1>
-            <p className="text-blue-200/70 mt-1.5 text-sm">Automatiza la entrega de premios según el comportamiento del cliente</p>
+            <p className="text-orange-200/70 mt-1.5 text-sm">Automatiza la entrega de premios según el comportamiento del cliente</p>
           </div>
           <button
             onClick={() => { setShowForm(v => !v); setError(''); setSuccess(''); }}
@@ -230,7 +230,7 @@ export default function ReglasPrizePage() {
 
               {/* Preview sentence */}
               {form.trigger_type in TRIGGER_DESCRIPTIONS && (
-                <div className="bg-blue-50 border border-blue-200 rounded-xl px-4 py-3 text-sm text-[#92400E]">
+                <div className="bg-orange-50 border border-orange-200 rounded-xl px-4 py-3 text-sm text-[#92400E]">
                   <span className="font-semibold">Cuando activar: </span>
                   {TRIGGER_DESCRIPTIONS[form.trigger_type]?.(form.trigger_value)}, generar automaticamente:{' '}
                   <span className="font-semibold">{form.prize_template}</span>
@@ -318,7 +318,7 @@ export default function ReglasPrizePage() {
         {/* Rules list */}
         {loading ? (
           <div className="flex items-center justify-center py-16">
-            <svg className="w-6 h-6 text-blue-400 animate-spin" fill="none" viewBox="0 0 24 24">
+            <svg className="w-6 h-6 text-[#1a6b3c] animate-spin" fill="none" viewBox="0 0 24 24">
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
             </svg>
@@ -338,7 +338,7 @@ export default function ReglasPrizePage() {
               return (
                 <div
                   key={rule.id}
-                  className={`bg-white border rounded-2xl p-5 shadow-sm transition-all ${rule.active ? 'border-blue-200' : 'border-[#E8E3DC] opacity-60'}`}
+                  className={`bg-white border rounded-2xl p-5 shadow-sm transition-all ${rule.active ? 'border-orange-200' : 'border-[#E8E3DC] opacity-60'}`}
                   style={rule.active ? { borderLeft: '4px solid #2563EB' } : { borderLeft: '4px solid #D6D3D1' }}
                 >
                   <div className="flex items-start justify-between gap-4">
@@ -348,7 +348,7 @@ export default function ReglasPrizePage() {
                         <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${rule.active ? 'bg-emerald-50 text-emerald-700' : 'bg-stone-100 text-stone-500'}`}>
                           {rule.active ? 'Activa' : 'Inactiva'}
                         </span>
-                        <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-blue-50 text-blue-700">
+                        <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-orange-50 text-orange-700">
                           {TRIGGER_LABELS[rule.trigger_type]}
                         </span>
                       </div>

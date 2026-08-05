@@ -63,7 +63,7 @@ export default function PermisosPage() {
             <LockClosedIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Permisos
           </div>
           <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Permisos y Roles</h1>
-          <p className="text-blue-200/70 mt-1.5 text-sm">Qué puede ver y hacer cada rol</p>
+          <p className="text-orange-200/70 mt-1.5 text-sm">Qué puede ver y hacer cada rol</p>
         </div>
       </div>
       <div className="max-w-4xl mx-auto px-4 md:px-10 py-6">

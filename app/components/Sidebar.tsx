@@ -301,7 +301,7 @@ const ALL_SECTIONS: SectionDef[] = [
     label: 'Principal',
     roles: ['admin', 'manager', 'cajero'],
     groupIcon: GroupIcons.principal,
-    accent: '#60a5fa',
+    accent: '#F97316',
     links: [
       { href: '/admin', label: 'Dashboard', exact: true, icon: Icons.dashboard },
       { href: '/admin/generate', label: 'Generar Premio', icon: Icons.generate },
@@ -312,7 +312,7 @@ const ALL_SECTIONS: SectionDef[] = [
     label: 'Premios',
     roles: ['admin', 'manager'],
     groupIcon: GroupIcons.premios,
-    accent: '#f59e0b',
+    accent: '#F97316',
     links: [
       { href: '/admin/premios', label: 'Mis Premios', icon: Icons.premios },
       { href: '/admin/registros', label: 'Registros de Cobro', icon: Icons.registros },
@@ -325,7 +325,7 @@ const ALL_SECTIONS: SectionDef[] = [
     label: 'Clientes',
     roles: ['admin', 'manager'],
     groupIcon: GroupIcons.clientes,
-    accent: '#a78bfa',
+    accent: '#1a6b3c',
     links: [
       { href: '/admin/clientes', label: 'Base de Clientes', icon: Icons.clientes },
       { href: '/admin/segmentacion', label: 'Segmentación', icon: Icons.segmentacion },
@@ -341,7 +341,7 @@ const ALL_SECTIONS: SectionDef[] = [
     label: 'Operaciones',
     roles: ['admin', 'manager'],
     groupIcon: GroupIcons.operaciones,
-    accent: '#34d399',
+    accent: '#1a6b3c',
     links: [
       { href: '/admin/ventas', label: 'Ventas Diarias', icon: Icons.ventas },
       { href: '/admin/inventario', label: 'Inventario', icon: Icons.inventario },
@@ -354,7 +354,7 @@ const ALL_SECTIONS: SectionDef[] = [
     label: 'Juegos y Tickets',
     roles: ['admin', 'manager'],
     groupIcon: GroupIcons.juegos,
-    accent: '#f472b6',
+    accent: '#F97316',
     links: [
       { href: '/admin/game-bundles', label: 'Juegos con Premios', icon: Icons.juegos },
       { href: '/admin/ticket-tiers', label: 'Premio por Consumo', icon: Icons.ticket },
@@ -366,7 +366,7 @@ const ALL_SECTIONS: SectionDef[] = [
     label: 'Restaurantes',
     roles: ['admin', 'manager'],
     groupIcon: GroupIcons.restaurantes,
-    accent: '#fb923c',
+    accent: '#F97316',
     links: [
       { href: '/admin/restaurantes', label: 'Mis Restaurantes', icon: Icons.restaurantes },
       { href: '/admin/rendimiento', label: 'Rendimiento del Equipo', icon: Icons.rendimiento },
@@ -380,7 +380,7 @@ const ALL_SECTIONS: SectionDef[] = [
     label: 'Reportes',
     roles: ['admin'],
     groupIcon: GroupIcons.reportes,
-    accent: '#22d3ee',
+    accent: '#1a6b3c',
     links: [
       { href: '/admin/asistente', label: 'Asistente IA', icon: Icons.asistente },
       { href: '/admin/corporativo', label: 'Vista Corporativa', icon: Icons.corporativo },
@@ -624,7 +624,7 @@ function GlobalSearch({ onSelect }: { onSelect?: (item: SearchResult) => void })
             )}
             {results.length > 0 && (
               <div>
-                {query !== '' && recent.length > 0 && <div style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }} />}
+                {query !== '' && recent.length > 0 && <div style={{ borderTop: '1px solid #e5e7eb' }} />}
                 <p className="px-3 pt-2.5 pb-1 text-[9px] font-bold tracking-widest text-black uppercase">Resultados</p>
                 {results.map((item, idx) => (
                   <button key={item.id + item.type} onMouseDown={() => selectResult(item)}
@@ -673,11 +673,11 @@ function NavLink({
           : 'border-transparent pl-[10px]'
       } ${highlighted ? 'sidebar-link-pulse' : ''}`}
       style={isActive
-        ? { background: 'rgba(59,130,246,0.18)', color: '#93c5fd' }
-        : { color: 'rgba(148,163,184,0.85)' }
+        ? { background: 'rgba(249,115,22,0.12)', color: '#111111' }
+        : { color: '#374151' }
       }
-      onMouseEnter={e => { if (!isActive) { (e.currentTarget as HTMLAnchorElement).style.background = 'rgba(255,255,255,0.06)'; (e.currentTarget as HTMLAnchorElement).style.color = '#f1f5f9'; } }}
-      onMouseLeave={e => { if (!isActive) { (e.currentTarget as HTMLAnchorElement).style.background = ''; (e.currentTarget as HTMLAnchorElement).style.color = 'rgba(148,163,184,0.85)'; } }}
+      onMouseEnter={e => { if (!isActive) { (e.currentTarget as HTMLAnchorElement).style.background = 'rgba(0,0,0,0.06)'; (e.currentTarget as HTMLAnchorElement).style.color = '#111111'; } }}
+      onMouseLeave={e => { if (!isActive) { (e.currentTarget as HTMLAnchorElement).style.background = ''; (e.currentTarget as HTMLAnchorElement).style.color = '#374151'; } }}
     >
       <span className="w-4 h-4 shrink-0 flex items-center justify-center">{icon}</span>
       <span className="truncate text-xs flex-1">{label}</span>
@@ -725,7 +725,7 @@ function AccordionSection({
   highlightedHref: string | null;
   linkBadges?: Record<string, number>;
 }) {
-  const accent = section.accent ?? '#60a5fa';
+  const accent = section.accent ?? '#F97316';
 
   return (
     <div className="rounded-xl overflow-hidden" style={{ marginBottom: 2 }}>
@@ -734,16 +734,16 @@ function AccordionSection({
         aria-expanded={isOpen}
         className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl transition-colors"
         style={{
-          background: isOpen ? 'rgba(255,255,255,0.06)' : hasActiveLink ? 'rgba(255,255,255,0.03)' : 'transparent',
+          background: isOpen ? 'rgba(0,0,0,0.06)' : hasActiveLink ? 'rgba(0,0,0,0.03)' : 'transparent',
         }}
         onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.07)'; }}
-        onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = isOpen ? 'rgba(255,255,255,0.06)' : hasActiveLink ? 'rgba(255,255,255,0.03)' : 'transparent'; }}
+        onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = isOpen ? 'rgba(0,0,0,0.06)' : hasActiveLink ? 'rgba(0,0,0,0.03)' : 'transparent'; }}
       >
         <span
           className="relative w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-colors"
           style={{
-            background: isOpen || hasActiveLink ? `${accent}22` : 'rgba(255,255,255,0.05)',
-            color: isOpen || hasActiveLink ? accent : 'rgba(148,163,184,0.75)',
+            background: isOpen || hasActiveLink ? `${accent}18` : 'rgba(0,0,0,0.06)',
+            color: isOpen || hasActiveLink ? accent : '#374151',
           }}
         >
           {section.groupIcon}
@@ -760,11 +760,11 @@ function AccordionSection({
           {section.label}
         </span>
         {hasActiveLink && !isOpen && (
-          <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: accent, boxShadow: `0 0 6px ${accent}` }} />
+          <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: accent }} />
         )}
         <svg
           className="w-3.5 h-3.5 shrink-0 transition-transform duration-300"
-          style={{ transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)', color: 'rgba(148,163,184,0.6)' }}
+          style={{ transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)', color: '#374151' }}
           fill="none" stroke="currentColor" viewBox="0 0 24 24"
         >
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -845,14 +845,14 @@ function CompactGroupIcon({
   hasActiveLink: boolean;
   badge?: number;
 }) {
-  const accent = section.accent ?? '#60a5fa';
+  const accent = section.accent ?? '#F97316';
   return (
     <div className="group/compact relative">
       <div
         className="relative w-9 h-9 mx-auto mb-1 rounded-lg flex items-center justify-center cursor-pointer transition-colors"
         style={{
-          background: hasActiveLink ? `${accent}22` : 'rgba(255,255,255,0.05)',
-          color: hasActiveLink ? accent : 'rgba(148,163,184,0.75)',
+          background: hasActiveLink ? `${accent}18` : 'rgba(0,0,0,0.06)',
+          color: hasActiveLink ? accent : '#374151',
         }}
       >
         {section.groupIcon}
@@ -1006,7 +1006,7 @@ function SidebarContent({
         label: 'Principal',
         roles: ['cajero'],
         groupIcon: GroupIcons.principal,
-        accent: '#60a5fa',
+        accent: '#F97316',
         links: CAJERO_LINKS,
       },
     ];
@@ -1148,7 +1148,7 @@ function SidebarContent({
 
       {/* User footer */}
       {username && (
-        <div className="px-3 py-2" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+        <div className="px-3 py-2" style={{ borderTop: '1px solid #e5e7eb' }}>
           {!compact && (
             <div className="flex items-center gap-2 px-2 py-1 mb-1">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" style={{ boxShadow: '0 0 6px rgba(52,211,153,0.6)' }} />
@@ -1162,9 +1162,9 @@ function SidebarContent({
               disabled={loggingOut}
               title="Cerrar sesion"
               className={`flex items-center gap-2 rounded-lg text-xs font-medium transition-all ${compact ? 'p-1.5' : 'flex-1 px-3 py-1.5'}`}
-              style={{ color: '#111111', border: '1px solid rgba(255,255,255,0.06)' }}
+              style={{ color: '#111111', border: '1px solid #e5e7eb' }}
               onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.color = '#fca5a5'; (e.currentTarget as HTMLButtonElement).style.background = 'rgba(239,68,68,0.1)'; (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(239,68,68,0.2)'; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.color = '#111111'; (e.currentTarget as HTMLButtonElement).style.background = ''; (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(255,255,255,0.06)'; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.color = '#111111'; (e.currentTarget as HTMLButtonElement).style.background = ''; (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(0,0,0,0.06)'; }}
             >
               <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -1175,8 +1175,8 @@ function SidebarContent({
               onClick={toggleDark}
               title={dark ? 'Modo claro' : 'Modo oscuro'}
               className="p-1.5 rounded-lg transition-all"
-              style={{ color: '#64748b', border: '1px solid rgba(255,255,255,0.06)' }}
-              onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.color = '#111111'; (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.06)'; }}
+              style={{ color: '#64748b', border: '1px solid #e5e7eb' }}
+              onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.color = '#111111'; (e.currentTarget as HTMLButtonElement).style.background = 'rgba(0,0,0,0.06)'; }}
               onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.color = '#64748b'; (e.currentTarget as HTMLButtonElement).style.background = ''; }}
             >
               {dark ? (

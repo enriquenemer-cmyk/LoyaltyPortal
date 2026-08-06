@@ -26,15 +26,67 @@ const inputClass =
 const labelClass = 'block text-[10px] font-semibold text-[#6b7280] uppercase tracking-widest mb-1.5';
 const helperClass = 'text-xs text-stone-400 mt-1 leading-relaxed';
 
-type Template = { name: string; reason: string; description: string; short: string; emoji: string };
+type Template = { name: string; reason: string; description: string; short: string; icon: React.ReactNode };
+
+const TEMPLATE_ICONS = [
+  // 2x1 en principales — two plates
+  <svg key="t0" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <ellipse cx="13" cy="24" rx="8" ry="2" fill="rgba(255,255,255,0.25)"/>
+    <circle cx="13" cy="18" r="7" stroke="white" strokeWidth="1.8" fill="none"/>
+    <path d="M10 18h6M13 15v6" stroke="white" strokeWidth="1.8" strokeLinecap="round"/>
+    <ellipse cx="27" cy="24" rx="8" ry="2" fill="rgba(255,255,255,0.25)"/>
+    <circle cx="27" cy="18" r="7" stroke="white" strokeWidth="1.8" fill="none"/>
+    <path d="M24 18h6M27 15v6" stroke="white" strokeWidth="1.8" strokeLinecap="round"/>
+  </svg>,
+  // Bebida gratis — cup with straw
+  <svg key="t1" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M14 12h12l-2 18H16L14 12Z" stroke="white" strokeWidth="1.8" fill="rgba(255,255,255,0.15)" strokeLinejoin="round"/>
+    <path d="M12 12h16" stroke="white" strokeWidth="1.8" strokeLinecap="round"/>
+    <path d="M25 10V8" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+    <path d="M25 8c0 0-1-2 0-3" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
+    <path d="M16 17h8" stroke="rgba(255,255,255,0.6)" strokeWidth="1.2" strokeLinecap="round"/>
+    <path d="M16.5 21h7" stroke="rgba(255,255,255,0.4)" strokeWidth="1.2" strokeLinecap="round"/>
+  </svg>,
+  // 10% descuento — price tag with percent
+  <svg key="t2" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M10 10h12l8 10-8 10H10V10Z" stroke="white" strokeWidth="1.8" fill="rgba(255,255,255,0.15)" strokeLinejoin="round"/>
+    <circle cx="15" cy="16" r="1.5" fill="white"/>
+    <path d="M14 24l8-8" stroke="white" strokeWidth="1.8" strokeLinecap="round"/>
+    <circle cx="23" cy="22" r="1.5" fill="white"/>
+    <circle cx="30" cy="13" r="2.5" stroke="white" strokeWidth="1.5" fill="none"/>
+  </svg>,
+  // Postre gratis — cake slice
+  <svg key="t3" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12 20h16v8H12z" stroke="white" strokeWidth="1.8" fill="rgba(255,255,255,0.15)" strokeLinejoin="round"/>
+    <path d="M12 20l8-8 8 8" stroke="white" strokeWidth="1.8" strokeLinejoin="round" fill="rgba(255,255,255,0.1)"/>
+    <path d="M20 12V9" stroke="white" strokeWidth="1.8" strokeLinecap="round"/>
+    <circle cx="20" cy="8.5" r="1.5" fill="white"/>
+    <path d="M12 24h16" stroke="rgba(255,255,255,0.5)" strokeWidth="1.2" strokeLinecap="round"/>
+    <path d="M16 28v-3M20 28v-3M24 28v-3" stroke="rgba(255,255,255,0.4)" strokeWidth="1.2" strokeLinecap="round"/>
+  </svg>,
+  // Burrito gratis — wrap
+  <svg key="t4" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <ellipse cx="20" cy="20" rx="10" ry="6" stroke="white" strokeWidth="1.8" fill="rgba(255,255,255,0.15)" transform="rotate(-30 20 20)"/>
+    <path d="M13 24c2 2 5 3 8 2s5-3 6-6" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
+    <path d="M15 17c1-1 3-2 5-1.5" stroke="rgba(255,255,255,0.6)" strokeWidth="1.2" strokeLinecap="round"/>
+    <path d="M17 21c1 0.5 3 0.5 4 0" stroke="rgba(255,255,255,0.5)" strokeWidth="1.2" strokeLinecap="round"/>
+    <circle cx="29" cy="13" r="4" stroke="white" strokeWidth="1.5" fill="rgba(255,255,255,0.1)"/>
+    <path d="M27 13h4M29 11v4" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
+  </svg>,
+  // Combo especial — star + crown
+  <svg key="t5" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M20 9l2.8 5.6 6.2.9-4.5 4.4 1.1 6.1L20 23l-5.6 3 1.1-6.1L11 15.5l6.2-.9L20 9Z" stroke="white" strokeWidth="1.8" fill="rgba(255,255,255,0.2)" strokeLinejoin="round"/>
+    <circle cx="20" cy="20" r="4" stroke="rgba(255,255,255,0.5)" strokeWidth="1" fill="none"/>
+  </svg>,
+];
 
 const TEMPLATES: Template[] = [
-  { name: '2x1 en principales', reason: 'Por tu visita especial', description: 'Disfruta dos principales al precio de uno en cualquier opción del menú.', short: 'Dos platillos al precio de uno', emoji: '🍽️' },
-  { name: 'Bebida gratis', reason: 'Premio de fidelidad', description: 'Una bebida de tu elección completamente gratis con la compra de cualquier principal.', short: 'Con cualquier compra', emoji: '🥤' },
-  { name: '10% de descuento', reason: 'Cliente frecuente', description: '10% de descuento en tu consumo total del día.', short: 'En el consumo total', emoji: '💸' },
-  { name: 'Postre gratis', reason: 'Por tu cumpleaños', description: 'Un postre de temporada gratis para celebrar tu cumpleaños.', short: 'El día de tu cumpleaños', emoji: '🎂' },
-  { name: 'Burrito gratis', reason: 'Concurso ganador', description: 'Un burrito de tu elección completamente gratis, del tamaño que prefieras.', short: 'Del tamaño que prefieras', emoji: '🌯' },
-  { name: 'Combo especial', reason: 'Premio especial', description: 'Combo especial: principal + bebida + postre a precio especial.', short: 'Principal + bebida + postre', emoji: '⭐' },
+  { name: '2x1 en principales', reason: 'Por tu visita especial', description: 'Disfruta dos principales al precio de uno en cualquier opción del menú.', short: 'Dos platillos al precio de uno', icon: TEMPLATE_ICONS[0] },
+  { name: 'Bebida gratis', reason: 'Premio de fidelidad', description: 'Una bebida de tu elección completamente gratis con la compra de cualquier principal.', short: 'Con cualquier compra', icon: TEMPLATE_ICONS[1] },
+  { name: '10% de descuento', reason: 'Cliente frecuente', description: '10% de descuento en tu consumo total del día.', short: 'En el consumo total', icon: TEMPLATE_ICONS[2] },
+  { name: 'Postre gratis', reason: 'Por tu cumpleaños', description: 'Un postre de temporada gratis para celebrar tu cumpleaños.', short: 'El día de tu cumpleaños', icon: TEMPLATE_ICONS[3] },
+  { name: 'Burrito gratis', reason: 'Concurso ganador', description: 'Un burrito de tu elección completamente gratis, del tamaño que prefieras.', short: 'Del tamaño que prefieras', icon: TEMPLATE_ICONS[4] },
+  { name: 'Combo especial', reason: 'Premio especial', description: 'Combo especial: principal + bebida + postre a precio especial.', short: 'Principal + bebida + postre', icon: TEMPLATE_ICONS[5] },
 ];
 
 const DRAFT_KEY = 'premia-draft';
@@ -747,7 +799,10 @@ function GenerateForm() {
 
                 {/* Template grid cards */}
                 <div className="mb-5">
-                  <label className={labelClass}>Plantilla rápida</label>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <label className={labelClass} style={{ marginBottom: 0 }}>Plantilla rápida</label>
+                    <span style={{ fontSize: 11, color: '#F97316', fontWeight: 600 }}>Selecciona y edita abajo ↓</span>
+                  </div>
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                     {TEMPLATES.map((tpl, i) => {
                       const active = selectedTemplate === i;
@@ -789,7 +844,7 @@ function GenerateForm() {
                             {/* Decorative circles */}
                             <div style={{ position: 'absolute', width: 80, height: 80, borderRadius: '50%', background: 'rgba(255,255,255,0.1)', top: -20, right: -20 }} />
                             <div style={{ position: 'absolute', width: 50, height: 50, borderRadius: '50%', background: 'rgba(255,255,255,0.1)', bottom: -15, left: 10 }} />
-                            <span style={{ fontSize: 32, position: 'relative', zIndex: 1, filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))' }}>{tpl.emoji}</span>
+                            <span style={{ position: 'relative', zIndex: 1, filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.25))' }}>{tpl.icon}</span>
                           </div>
                           {/* Content */}
                           <div style={{ padding: '10px 12px 12px' }}>

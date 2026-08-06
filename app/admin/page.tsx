@@ -823,13 +823,13 @@ function ExpiringAlert({ prizes }: { prizes: ExpiringPrize[] }) {
 
   return (
     <div
-      className="rounded-2xl border border-blue-300 bg-orange-50 p-5 flex flex-col gap-3"
+      className="rounded-2xl border border-[#E8E3DC] bg-orange-50 p-5 flex flex-col gap-3"
       style={{ boxShadow: '0 1px 2px rgba(180,130,0,0.06), 0 4px 12px rgba(180,130,0,0.08)' }}
     >
       <div className="flex items-center justify-between flex-wrap gap-2">
         <div className="flex items-center gap-2">
           <span className="text-lg leading-none"><ExclamationTriangleIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></span>
-          <span className="font-bold text-blue-800 text-sm">
+          <span className="font-bold text-[#111111] text-sm">
             {prizes.length === 1
               ? '1 premio vence en los próximos 3 días'
               : `${prizes.length} premios vencen en los próximos 3 días`}
@@ -837,7 +837,7 @@ function ExpiringAlert({ prizes }: { prizes: ExpiringPrize[] }) {
         </div>
         <Link
           href="/admin/premios"
-          className="text-xs font-bold text-orange-700 hover:text-blue-900 transition-colors"
+          className="text-xs font-bold text-orange-700 hover:text-[#111111] transition-colors"
         >
           Ver todos →
         </Link>
@@ -850,7 +850,7 @@ function ExpiringAlert({ prizes }: { prizes: ExpiringPrize[] }) {
             month: 'short',
           });
           return (
-            <li key={p.id} className="flex items-center justify-between text-xs text-blue-900">
+            <li key={p.id} className="flex items-center justify-between text-xs text-[#111111]">
               <span className="font-semibold truncate max-w-[260px]">{p.name}</span>
               <span className="text-orange-600 shrink-0 ml-2">Vence {date}</span>
             </li>
@@ -982,7 +982,7 @@ function SmartAlerts({
         >
           <div className="flex items-center gap-2.5 min-w-0">
             <span className="text-base leading-none shrink-0">{alert.icon}</span>
-            <span className="text-sm font-semibold text-blue-900 leading-snug">{alert.message}</span>
+            <span className="text-sm font-semibold text-[#111111] leading-snug">{alert.message}</span>
           </div>
           <div className="flex items-center gap-2 shrink-0">
             <Link
@@ -1039,7 +1039,7 @@ function ROIEstimateCard({ claims }: { claims: Claim[] }) {
       </div>
       <div className="min-w-0">
         <p className="text-xs font-bold text-orange-700 uppercase tracking-widest mb-0.5">Impacto estimado este mes</p>
-        <p className="text-base font-black text-blue-900 leading-snug">
+        <p className="text-base font-black text-[#111111] leading-snug">
           Este mes generaste aprox. <span style={{ color: '#059669' }}>{formatted}</span> adicionales gracias a los premios
         </p>
         <p className="text-[11px] text-orange-600 mt-0.5">
@@ -1365,7 +1365,7 @@ function SetupChecklist({
         <div className="flex items-center gap-4">
           <span className="text-3xl shrink-0"><SparklesIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></span>
           <div>
-            <p className="font-bold text-blue-900 text-base">¡Configuracion completa!</p>
+            <p className="font-bold text-[#111111] text-base">¡Configuracion completa!</p>
             <p className="text-sm text-orange-700 mt-0.5">Tu plataforma 3E esta lista para usarse.</p>
           </div>
         </div>
@@ -1447,7 +1447,7 @@ function SetupChecklist({
 
             {/* Content */}
             <div className="flex-1 min-w-0">
-              <p className={`text-sm font-bold mb-0.5 ${step.done ? 'text-blue-800 line-through opacity-70' : 'text-[#1C1917]'}`}>
+              <p className={`text-sm font-bold mb-0.5 ${step.done ? 'text-[#111111] line-through opacity-70' : 'text-[#1C1917]'}`}>
                 {step.title}
               </p>
               <p className="text-xs text-[#6b7280]">{step.description}</p>
@@ -2014,7 +2014,7 @@ export default function AdminDashboard() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <Link
               href="/admin/generate"
-              className="group flex items-center gap-4 p-5 rounded-2xl border border-[#E8E3DC] bg-white hover:border-blue-300 hover:bg-orange-50 transition-all stagger-item card-hover"
+              className="group flex items-center gap-4 p-5 rounded-2xl border border-[#E8E3DC] bg-white hover:border-[#F97316] hover:bg-orange-50 transition-all stagger-item card-hover"
               style={{ boxShadow: cardShadow }}
             >
               <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0" style={{ backgroundColor: '#fde8e0' }}>

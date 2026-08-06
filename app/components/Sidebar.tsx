@@ -1229,9 +1229,10 @@ export default function Sidebar() {
       </aside>
 
       {/* Mobile top bar */}
-      <div className="md:hidden fixed top-0 left-0 right-0 h-14 flex items-center justify-between px-4 z-40 bg-white" style={{ borderBottom: '2px solid #000000', width: '100vw' }}>
-        <Link href="/admin" className="flex items-center gap-2.5">
-          {LOGO}
+      <div className="md:hidden fixed top-0 left-0 right-0 h-14 flex items-center justify-between px-4 z-40 bg-white overflow-hidden" style={{ borderBottom: '2px solid #000000', width: '100vw' }}>
+        <Link href="/admin" className="flex items-center gap-2">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/logo-3e-oficial.webp" alt="3E by ENM" width={40} height={40} style={{ objectFit: 'contain', display: 'block' }} />
         </Link>
         <button
           onClick={() => setMobileOpen((v) => !v)}

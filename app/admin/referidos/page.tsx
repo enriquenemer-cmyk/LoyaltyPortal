@@ -113,7 +113,7 @@ export default async function ReferidosAdminPage() {
               return (
                 <div key={w.week} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 5, height: '100%', justifyContent: 'flex-end' }}>
                   {w.count > 0 && (
-                    <span style={{ fontSize: 11, fontWeight: 700, color: '#2563EB' }}>{w.count}</span>
+                    <span style={{ fontSize: 11, fontWeight: 700, color: '#F97316' }}>{w.count}</span>
                   )}
                   <div style={{
                     width: '100%', borderRadius: '6px 6px 0 0',
@@ -172,7 +172,7 @@ export default async function ReferidosAdminPage() {
                         </div>
                         <p style={{ color: '#94A3B8', fontSize: 10, fontFamily: 'monospace', letterSpacing: '0.05em' }}>{r.referral_code}</p>
                       </div>
-                      <p style={{ fontSize: 20, fontWeight: 900, color: '#2563EB', lineHeight: 1, flexShrink: 0 }}>{r.count}</p>
+                      <p style={{ fontSize: 20, fontWeight: 900, color: '#F97316', lineHeight: 1, flexShrink: 0 }}>{r.count}</p>
                       {/* Copy button */}
                       <button
                         className="copy-btn"
@@ -259,7 +259,7 @@ export default async function ReferidosAdminPage() {
                     <tr key={i} className="row-hover" style={{ borderBottom: '1px solid #F1F5F9', background: 'white' }}>
                       <td style={{ padding: '11px 12px', fontWeight: 700, color: '#1E293B' }}>{c.referrer_name}</td>
                       <td style={{ padding: '11px 12px' }}>
-                        <span style={{ background: '#EFF6FF', color: '#2563EB', borderRadius: 6, padding: '3px 8px', fontSize: 11, fontFamily: 'monospace', fontWeight: 700, letterSpacing: '0.06em' }}>
+                        <span style={{ background: '#EFF6FF', color: '#F97316', borderRadius: 6, padding: '3px 8px', fontSize: 11, fontFamily: 'monospace', fontWeight: 700, letterSpacing: '0.06em' }}>
                           {c.referral_code}
                         </span>
                       </td>

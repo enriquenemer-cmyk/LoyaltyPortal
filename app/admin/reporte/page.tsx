@@ -89,7 +89,7 @@ function WhatsAppAlertsSection() {
       </div>
       <div className="p-5 space-y-4">
         <div>
-          <label className="block text-xs font-semibold text-[#78716c] uppercase tracking-widest mb-1.5">
+          <label className="block text-xs font-semibold text-[#6b7280] uppercase tracking-widest mb-1.5">
             Número de WhatsApp del admin
           </label>
           <input
@@ -99,7 +99,7 @@ function WhatsAppAlertsSection() {
             placeholder="5215512345678"
             className="w-full bg-[#FAFAF9] border border-[#E8E3DC] rounded-xl px-4 py-3 text-sm text-[#1C1917] focus:outline-none focus:border-[#2563EB] transition-colors"
           />
-          <p className="text-xs text-[#a8a29e] mt-1">Formato internacional: 52 + 10 dígitos (ej: 5215512345678)</p>
+          <p className="text-xs text-[#6b7280] mt-1">Formato internacional: 52 + 10 dígitos (ej: 5215512345678)</p>
         </div>
         <label className="flex items-center gap-3 cursor-pointer select-none">
           <button
@@ -127,7 +127,7 @@ function WhatsAppAlertsSection() {
           </button>
           <button
             onClick={handleTest}
-            className="px-4 py-2.5 rounded-xl text-sm font-bold border border-[#E8E3DC] text-[#78716c] hover:bg-[#FAFAF9] transition-colors"
+            className="px-4 py-2.5 rounded-xl text-sm font-bold border border-[#E8E3DC] text-[#6b7280] hover:bg-[#FAFAF9] transition-colors"
           >
             Enviar prueba
           </button>
@@ -770,7 +770,7 @@ export default function ReportePage() {
                 onClick={handleDownloadPdf}
                 disabled={generatingPdf}
                 className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-bold transition-all disabled:opacity-60"
-                style={{ background: 'white', color: '#1d4ed8', boxShadow: '0 4px 16px rgba(0,0,0,0.15)' }}
+                style={{ background: 'white', color: '#111111', boxShadow: '0 4px 16px rgba(0,0,0,0.15)' }}
                 title="Descargar PDF completo"
               >
                 {generatingPdf ? (

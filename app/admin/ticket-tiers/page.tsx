@@ -360,7 +360,7 @@ export default function TicketTiersPage() {
               <p style={{ color: '#78716C', fontSize: 13, marginBottom: 16 }}>
                 Se entrega automáticamente cuando el monto del cliente no alcanza ningún nivel de premio.
                 {tiers.length > 0 && (
-                  <span style={{ color: '#2563EB', fontWeight: 600 }}>
+                  <span style={{ color: '#F97316', fontWeight: 600 }}>
                     {' '}Si el cliente gasta menos de ${Math.min(...tiers.map((t) => parseFloat(t.min_amount) || 0)).toFixed(0)}, verá este premio.
                   </span>
                 )}
@@ -492,7 +492,7 @@ export default function TicketTiersPage() {
                 </p>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
                   <div style={{ textAlign: 'center' }}>
-                    <p style={{ fontSize: 42, fontWeight: 900, color: '#2563EB', margin: 0, lineHeight: 1 }}>
+                    <p style={{ fontSize: 42, fontWeight: 900, color: '#F97316', margin: 0, lineHeight: 1 }}>
                       {avgRating.avg_rating > 0 ? avgRating.avg_rating.toFixed(1) : '—'}
                     </p>
                     <p style={{ fontSize: 12, color: '#78716C', marginTop: 4 }}>de 5 estrellas</p>
@@ -546,7 +546,7 @@ export default function TicketTiersPage() {
                     href={ticketUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    style={{ fontSize: 13, color: '#2563EB', wordBreak: 'break-all', textDecoration: 'none', fontWeight: 600 }}
+                    style={{ fontSize: 13, color: '#F97316', wordBreak: 'break-all', textDecoration: 'none', fontWeight: 600 }}
                   >
                     {ticketUrl}
                   </a>

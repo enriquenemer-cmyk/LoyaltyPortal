@@ -120,7 +120,7 @@ export default function SeguridadPage() {
             onClick={handleExport}
             disabled={exporting}
             className="flex items-center gap-2 font-bold px-5 py-3 rounded-xl text-sm disabled:opacity-60"
-            style={{ background: 'white', color: '#1d4ed8', boxShadow: '0 4px 16px rgba(0,0,0,0.15)' }}
+            style={{ background: 'white', color: '#111111', boxShadow: '0 4px 16px rgba(0,0,0,0.15)' }}
           >
             {exporting ? (
               <svg className="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
@@ -188,7 +188,7 @@ export default function SeguridadPage() {
               </svg>
             </div>
           ) : filteredLogs.length === 0 ? (
-            <div className="text-center py-12 text-[#a8a29e] text-sm">
+            <div className="text-center py-12 text-[#6b7280] text-sm">
               Sin actividad registrada
             </div>
           ) : (
@@ -201,7 +201,7 @@ export default function SeguridadPage() {
                   <div className="flex-1 min-w-0">
                     <p className="text-sm text-[#1C1917] font-medium truncate">{log.description}</p>
                     {log.user_name && (
-                      <p className="text-xs text-[#a8a29e] mt-0.5">{log.user_name}</p>
+                      <p className="text-xs text-[#6b7280] mt-0.5">{log.user_name}</p>
                     )}
                     {log.action === 'password_reset_requested' && !!log.metadata?.token && (
                       <button
@@ -231,7 +231,7 @@ export default function SeguridadPage() {
                       </button>
                     )}
                   </div>
-                  <time className="text-xs text-[#a8a29e] shrink-0 mt-0.5">
+                  <time className="text-xs text-[#6b7280] shrink-0 mt-0.5">
                     {new Date(log.created_at).toLocaleString('es-MX', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}
                   </time>
                 </div>

@@ -23,7 +23,7 @@ type QRResult = { id: string; url: string; qrDataUrl: string; index: number; sig
 const inputClass =
   'w-full bg-white border border-[#E8E3DC] rounded-lg px-3 py-2.5 text-sm text-[#1C1917] placeholder-[#a8a29e] focus:outline-none focus:ring-1 focus:ring-[#F97316]/30 focus:border-[#F97316] transition-colors';
 
-const labelClass = 'block text-[10px] font-semibold text-[#78716c] uppercase tracking-widest mb-1.5';
+const labelClass = 'block text-[10px] font-semibold text-[#6b7280] uppercase tracking-widest mb-1.5';
 const helperClass = 'text-xs text-stone-400 mt-1 leading-relaxed';
 
 type Template = { name: string; reason: string; description: string; short: string; emoji: string };
@@ -150,7 +150,7 @@ function RestaurantCombobox({
         {selected && !open ? (
           <>
             <span className="flex-1 text-[#1C1917] truncate">{selected.name}</span>
-            <button type="button" onClick={(e) => { e.stopPropagation(); handleClear(); }} className="ml-2 text-[#a8a29e] hover:text-[#1C1917] transition-colors text-base leading-none" aria-label="Limpiar">×</button>
+            <button type="button" onClick={(e) => { e.stopPropagation(); handleClear(); }} className="ml-2 text-[#6b7280] hover:text-[#1C1917] transition-colors text-base leading-none" aria-label="Limpiar">×</button>
           </>
         ) : (
           <>
@@ -165,7 +165,7 @@ function RestaurantCombobox({
               className="flex-1 bg-transparent outline-none text-[#1C1917] placeholder-[#a8a29e] min-w-0"
             />
             {(query || selected) && (
-              <button type="button" onClick={(e) => { e.stopPropagation(); handleClear(); }} className="ml-2 text-[#a8a29e] hover:text-[#1C1917] transition-colors text-base leading-none" aria-label="Limpiar">×</button>
+              <button type="button" onClick={(e) => { e.stopPropagation(); handleClear(); }} className="ml-2 text-[#6b7280] hover:text-[#1C1917] transition-colors text-base leading-none" aria-label="Limpiar">×</button>
             )}
           </>
         )}
@@ -177,7 +177,7 @@ function RestaurantCombobox({
             role="option"
             aria-selected={value === ''}
             onMouseDown={(e) => { e.preventDefault(); onChange(''); setQuery(''); setOpen(false); }}
-            className={`px-3 py-2 text-sm cursor-pointer transition-colors ${value === '' ? 'bg-orange-50 text-[#F97316] font-medium' : 'text-[#78716c] hover:bg-[#FAFAF9]'}`}
+            className={`px-3 py-2 text-sm cursor-pointer transition-colors ${value === '' ? 'bg-orange-50 text-[#F97316] font-medium' : 'text-[#6b7280] hover:bg-[#FAFAF9]'}`}
           >
             Sin restaurante
           </li>
@@ -217,7 +217,7 @@ function StepBar({ step }: { step: 1 | 2 }) {
         <span className="text-sm font-semibold text-[#1C1917]">
           {steps[step - 1].label}
         </span>
-        <span className="text-xs text-[#a8a29e] ml-auto">Paso {step} de 2</span>
+        <span className="text-xs text-[#6b7280] ml-auto">Paso {step} de 2</span>
       </div>
 
       {/* Desktop: full stepper */}
@@ -265,7 +265,7 @@ function StepBar({ step }: { step: 1 | 2 }) {
                     >
                       ✓
                     </div>
-                    <span className="text-sm text-[#a8a29e]">Generar</span>
+                    <span className="text-sm text-[#6b7280]">Generar</span>
                   </div>
                 </>
               )}
@@ -291,7 +291,7 @@ function ExplainerCard() {
           <span className="text-sm font-semibold text-[#1C1917]">¿Para qué sirve esto?</span>
         </div>
         <svg
-          className={`w-4 h-4 text-[#a8a29e] transition-transform ${open ? 'rotate-180' : ''}`}
+          className={`w-4 h-4 text-[#6b7280] transition-transform ${open ? 'rotate-180' : ''}`}
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -301,7 +301,7 @@ function ExplainerCard() {
       </button>
       {open && (
         <div className="px-4 py-3 bg-white border-t border-[#E8E3DC]">
-          <p className="text-sm text-[#78716c] leading-relaxed">
+          <p className="text-sm text-[#6b7280] leading-relaxed">
             Los premios QR son códigos únicos que puedes imprimir, enviar por WhatsApp o mostrar en pantalla. El cliente los escanea, se registra, y va a tu sucursal a cobrarlo.
           </p>
         </div>
@@ -596,7 +596,7 @@ function GenerateForm() {
             <h1 className="text-2xl font-bold text-[#1C1917]">
               {results.length === 1 ? 'Código generado' : `${results.length} códigos generados`}
             </h1>
-            <p className="text-sm text-[#78716c] mt-1">{form.name}</p>
+            <p className="text-sm text-[#6b7280] mt-1">{form.name}</p>
           </div>
 
           {/* QR display */}
@@ -608,7 +608,7 @@ function GenerateForm() {
                 className="block"
                 style={{ width: 240, height: 240 }}
               />
-              <p className="mt-4 text-xs text-[#a8a29e] font-mono break-all text-center">{results[0].url}</p>
+              <p className="mt-4 text-xs text-[#6b7280] font-mono break-all text-center">{results[0].url}</p>
               <div className="flex gap-6 mt-5">
                 <button
                   onClick={() => downloadOne(results[0])}
@@ -634,7 +634,7 @@ function GenerateForm() {
                     <img src={r.qrDataUrl} alt={`QR ${r.index}`} className="block rounded" style={{ width: 80, height: 80 }} />
                     <button
                       onClick={() => downloadOne(r)}
-                      className="mt-2 text-[10px] text-[#78716c] hover:text-[#F97316] transition-colors"
+                      className="mt-2 text-[10px] text-[#6b7280] hover:text-[#F97316] transition-colors"
                     >
                       Descargar
                     </button>
@@ -653,7 +653,7 @@ function GenerateForm() {
 
           <button
             onClick={resetWizard}
-            className="flex items-center gap-1.5 text-sm text-[#78716c] hover:text-[#1C1917] transition-colors"
+            className="flex items-center gap-1.5 text-sm text-[#6b7280] hover:text-[#1C1917] transition-colors"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16l-4-4m0 0l4-4m-4 4h18" /></svg>
             Generar otro
@@ -680,7 +680,7 @@ function GenerateForm() {
   // Live prize-card preview
   const QRPreview = (
     <div className="sticky top-6">
-      <div className="text-[10px] font-bold text-[#a8a29e] uppercase tracking-widest mb-2 text-center">Vista previa</div>
+      <div className="text-[10px] font-bold text-[#6b7280] uppercase tracking-widest mb-2 text-center">Vista previa</div>
       {/* Prize card */}
       <div
         className="rounded-2xl overflow-hidden shadow-lg"
@@ -706,7 +706,7 @@ function GenerateForm() {
         </div>
       </div>
 
-      <p className="text-[10px] text-[#a8a29e] text-center mt-3 leading-relaxed">
+      <p className="text-[10px] text-[#6b7280] text-center mt-3 leading-relaxed">
         Así verá el cliente su premio al escanear el QR
       </p>
     </div>
@@ -716,9 +716,16 @@ function GenerateForm() {
     <div className="min-h-screen bg-[#FAFAF9]">
       <div className="max-w-5xl mx-auto px-4 py-10">
         {/* Page header */}
-        <div className="mb-6">
-          <h1 className="text-xl font-bold text-[#1C1917] tracking-tight">Generar premio QR</h1>
-          <p className="text-sm text-[#78716c] mt-1">Crea un premio digital con código QR en 2 pasos.</p>
+        <div className="mb-8 flex items-center justify-between flex-wrap gap-4">
+          <div>
+            <div className="flex items-center gap-3 mb-1">
+              <div style={{ width: 40, height: 40, borderRadius: 12, background: 'linear-gradient(135deg,#F97316,#ea6a0a)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 14px rgba(249,115,22,0.35)' }}>
+                <svg width="20" height="20" fill="none" stroke="white" strokeWidth="2.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" /></svg>
+              </div>
+              <h1 className="text-2xl font-black text-[#111111] tracking-tight">Generar Premio QR</h1>
+            </div>
+            <p className="text-sm text-[#6b7280] ml-14">Crea un premio digital con código QR en 2 pasos.</p>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -731,8 +738,8 @@ function GenerateForm() {
               <div className="p-6">
                 <div className="mb-5">
                   <h2 className="text-base font-bold text-[#1C1917]">Detalles del premio</h2>
-                  <p className="text-sm text-[#a8a29e] mt-0.5">Nombre, razón, descripción y plantilla</p>
-                  {savedIndicator && <span className="text-xs text-[#a8a29e] mt-1 block">Borrador guardado</span>}
+                  <p className="text-sm text-[#6b7280] mt-0.5">Nombre, razón, descripción y plantilla</p>
+                  {savedIndicator && <span className="text-xs text-[#6b7280] mt-1 block">Borrador guardado</span>}
                 </div>
 
                 {/* Explainer card */}
@@ -874,7 +881,7 @@ function GenerateForm() {
               <div className="p-6">
                 <div className="mb-5">
                   <h2 className="text-base font-bold text-[#1C1917]">Configuración</h2>
-                  <p className="text-sm text-[#a8a29e] mt-0.5">Restaurante, fechas, cantidad y tipo de uso</p>
+                  <p className="text-sm text-[#6b7280] mt-0.5">Restaurante, fechas, cantidad y tipo de uso</p>
                 </div>
 
                 <div className="space-y-5 mb-6">
@@ -882,9 +889,9 @@ function GenerateForm() {
                   <div>
                     <label className={labelClass}>Restaurante</label>
                     {restaurantsLoading ? (
-                      <p className="text-sm text-[#a8a29e] py-2">Cargando...</p>
+                      <p className="text-sm text-[#6b7280] py-2">Cargando...</p>
                     ) : restaurants.length === 0 ? (
-                      <p className="text-sm text-[#78716c] py-2">
+                      <p className="text-sm text-[#6b7280] py-2">
                         Primero crea un restaurante en la sección <strong>Restaurantes</strong>.
                       </p>
                     ) : (
@@ -941,7 +948,7 @@ function GenerateForm() {
                               setQuickEndDate(opt.days);
                             }
                           }}
-                          className="px-2.5 py-1 rounded-md text-xs font-medium border border-[#E8E3DC] bg-white text-[#78716c] hover:border-[#F97316]/50 hover:text-[#F97316] transition-colors"
+                          className="px-2.5 py-1 rounded-md text-xs font-medium border border-[#E8E3DC] bg-white text-[#6b7280] hover:border-[#F97316]/50 hover:text-[#F97316] transition-colors"
                         >
                           {opt.label}
                         </button>
@@ -951,9 +958,9 @@ function GenerateForm() {
 
                   {/* Campaña */}
                   <div>
-                    <label className={labelClass}>Campana <span className="text-[#a8a29e] font-normal normal-case">(opcional)</span></label>
+                    <label className={labelClass}>Campana <span className="text-[#6b7280] font-normal normal-case">(opcional)</span></label>
                     {campaignsLoading ? (
-                      <p className="text-sm text-[#a8a29e] py-2">Cargando...</p>
+                      <p className="text-sm text-[#6b7280] py-2">Cargando...</p>
                     ) : (
                       <select value={form.campaign_id} onChange={(e) => setForm((prev) => ({ ...prev, campaign_id: e.target.value }))} className={inputClass}>
                         <option value="">Sin campana</option>
@@ -977,7 +984,7 @@ function GenerateForm() {
                               }}
                             />
                           </div>
-                          <p className="text-xs text-[#78716c]">Estilo QR de la campana <strong className="text-[#1C1917]">{sel.name}</strong></p>
+                          <p className="text-xs text-[#6b7280]">Estilo QR de la campana <strong className="text-[#1C1917]">{sel.name}</strong></p>
                         </div>
                       );
                     })()}
@@ -992,17 +999,17 @@ function GenerateForm() {
                       className={inputClass + ' w-24'}
                     />
                     <p className={helperClass}>Cada QR es único e independiente. Para eventos genera múltiples</p>
-                    {quantity > 1 && <p className="text-xs text-[#a8a29e] mt-1">Se generarán {quantity} códigos únicos e independientes</p>}
+                    {quantity > 1 && <p className="text-xs text-[#6b7280] mt-1">Se generarán {quantity} códigos únicos e independientes</p>}
                   </div>
 
                   {/* Uso */}
                   <div>
                     <label className={labelClass}>Modalidad de uso</label>
                     <div className="flex gap-1 p-1 bg-[#F5F5F4] rounded-lg w-fit">
-                      <button type="button" onClick={() => setSingleUse(true)} className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${singleUse ? 'bg-white text-[#1C1917] shadow-sm' : 'text-[#78716c] hover:text-[#1C1917]'}`}>
+                      <button type="button" onClick={() => setSingleUse(true)} className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${singleUse ? 'bg-white text-[#1C1917] shadow-sm' : 'text-[#6b7280] hover:text-[#1C1917]'}`}>
                         Uso único
                       </button>
-                      <button type="button" onClick={() => setSingleUse(false)} className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${!singleUse ? 'bg-white text-[#1C1917] shadow-sm' : 'text-[#78716c] hover:text-[#1C1917]'}`}>
+                      <button type="button" onClick={() => setSingleUse(false)} className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${!singleUse ? 'bg-white text-[#1C1917] shadow-sm' : 'text-[#6b7280] hover:text-[#1C1917]'}`}>
                         Multi-uso
                       </button>
                     </div>
@@ -1018,7 +1025,7 @@ function GenerateForm() {
                   <div>
                     <label className={labelClass}>
                       Límite de inventario total{' '}
-                      <span className="text-[#a8a29e] font-normal normal-case">(opcional)</span>
+                      <span className="text-[#6b7280] font-normal normal-case">(opcional)</span>
                     </label>
                     <input
                       type="number"
@@ -1029,7 +1036,7 @@ function GenerateForm() {
                       placeholder="Sin límite"
                       className={inputClass + ' w-32'}
                     />
-                    <p className="text-xs text-[#a8a29e] mt-1.5">
+                    <p className="text-xs text-[#6b7280] mt-1.5">
                       Cuántos clientes en total pueden canjear este premio (todos los QRs combinados)
                     </p>
                   </div>
@@ -1038,7 +1045,7 @@ function GenerateForm() {
                   <div>
                     <label className={labelClass}>
                       Activar el{' '}
-                      <span className="text-[#a8a29e] font-normal normal-case">(opcional — por defecto inmediato)</span>
+                      <span className="text-[#6b7280] font-normal normal-case">(opcional — por defecto inmediato)</span>
                     </label>
                     <input
                       type="datetime-local"
@@ -1047,7 +1054,7 @@ function GenerateForm() {
                       className={inputClass + ' w-64'}
                     />
                     {activateAt && (
-                      <p className="text-xs text-[#a8a29e] mt-1.5">
+                      <p className="text-xs text-[#6b7280] mt-1.5">
                         El QR existirá pero mostrará una cuenta regresiva hasta esta fecha y hora.
                       </p>
                     )}
@@ -1057,7 +1064,7 @@ function GenerateForm() {
                   <div>
                     <label className={labelClass}>
                       Horario de validez{' '}
-                      <span className="text-[#a8a29e] font-normal normal-case">(opcional)</span>
+                      <span className="text-[#6b7280] font-normal normal-case">(opcional)</span>
                     </label>
                     {/* Day checkboxes */}
                     <div className="flex flex-wrap gap-2 mb-3">
@@ -1110,7 +1117,7 @@ function GenerateForm() {
                       </div>
                     </div>
                     {(validDays.length > 0 || validHoursFrom || validHoursTo) && (
-                      <p className="text-xs text-[#a8a29e] mt-2">
+                      <p className="text-xs text-[#6b7280] mt-2">
                         Fuera de este horario/días, los clientes verán un mensaje de &ldquo;Fuera de horario&rdquo;.
                       </p>
                     )}
@@ -1120,7 +1127,7 @@ function GenerateForm() {
                   <div>
                     <label className={labelClass}>
                       Tipo de juego{' '}
-                      <span className="text-[#a8a29e] font-normal normal-case">(opcional)</span>
+                      <span className="text-[#6b7280] font-normal normal-case">(opcional)</span>
                     </label>
                     <p className={helperClass + ' mb-2'}>Opcional. Si seleccionas un juego, el cliente tendrá que jugar antes de ver el premio</p>
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
@@ -1143,7 +1150,7 @@ function GenerateForm() {
                           >
                             <div className="text-xl mb-1">{opt.emoji}</div>
                             <p className="text-xs font-bold text-[#1C1917] leading-tight">{opt.label}</p>
-                            <p className="text-[10px] text-[#a8a29e] leading-snug">{opt.desc}</p>
+                            <p className="text-[10px] text-[#6b7280] leading-snug">{opt.desc}</p>
                           </button>
                         );
                       })}
@@ -1153,7 +1160,7 @@ function GenerateForm() {
                   {/* URL de imagen */}
                   {form.photo_url !== undefined && (
                     <div>
-                      <label className={labelClass}>URL de imagen <span className="text-[#a8a29e] font-normal normal-case">(opcional)</span></label>
+                      <label className={labelClass}>URL de imagen <span className="text-[#6b7280] font-normal normal-case">(opcional)</span></label>
                       <input
                         type="url"
                         name="photo_url"
@@ -1175,7 +1182,7 @@ function GenerateForm() {
                 {/* Progress */}
                 {loading && (
                   <div className="mb-4">
-                    <div className="flex justify-between text-xs text-[#78716c] mb-1.5">
+                    <div className="flex justify-between text-xs text-[#6b7280] mb-1.5">
                       <span>Generando {progress} de {quantity}...</span>
                       <span>{Math.round((progress / quantity) * 100)}%</span>
                     </div>
@@ -1187,7 +1194,7 @@ function GenerateForm() {
 
                 {/* Nav */}
                 <div className="flex flex-col-reverse md:flex-row md:items-center md:justify-between gap-3">
-                  <button type="button" onClick={() => setStep(1)} disabled={loading} className="w-full md:w-auto flex items-center justify-center gap-1.5 text-sm text-[#78716c] hover:text-[#1C1917] transition-colors border border-[#E8E3DC] rounded-lg px-4 py-2.5 md:border-0 md:px-0 md:py-0 disabled:opacity-40">
+                  <button type="button" onClick={() => setStep(1)} disabled={loading} className="w-full md:w-auto flex items-center justify-center gap-1.5 text-sm text-[#6b7280] hover:text-[#1C1917] transition-colors border border-[#E8E3DC] rounded-lg px-4 py-2.5 md:border-0 md:px-0 md:py-0 disabled:opacity-40">
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16l-4-4m0 0l4-4m-4 4h18" /></svg>
                     ← Atrás
                   </button>
@@ -1211,7 +1218,7 @@ function GenerateForm() {
                         `Generar ${quantity === 1 ? '1 código QR' : `${quantity} códigos QR`}`
                       )}
                     </button>
-                    <Link href="/admin/generate/masivo" className="text-xs text-[#78716c] hover:text-[#1C1917] transition-colors">
+                    <Link href="/admin/generate/masivo" className="text-xs text-[#6b7280] hover:text-[#1C1917] transition-colors">
                       Generación masiva
                     </Link>
                   </div>

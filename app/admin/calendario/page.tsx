@@ -150,7 +150,7 @@ export default function CalendarioPage() {
             <div className="flex items-center justify-between mb-6">
               <button
                 onClick={goToPrevMonth}
-                className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#78716c] border border-[#E8E3DC] bg-white rounded-full px-4 py-2 hover:border-orange-200 hover:text-[#2563EB] transition-all"
+                className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#6b7280] border border-[#E8E3DC] bg-white rounded-full px-4 py-2 hover:border-orange-200 hover:text-[#2563EB] transition-all"
                 aria-label="Mes anterior"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -163,7 +163,7 @@ export default function CalendarioPage() {
               </h2>
               <button
                 onClick={goToNextMonth}
-                className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#78716c] border border-[#E8E3DC] bg-white rounded-full px-4 py-2 hover:border-orange-200 hover:text-[#2563EB] transition-all"
+                className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#6b7280] border border-[#E8E3DC] bg-white rounded-full px-4 py-2 hover:border-orange-200 hover:text-[#2563EB] transition-all"
                 aria-label="Mes siguiente"
               >
                 Siguiente
@@ -176,7 +176,7 @@ export default function CalendarioPage() {
             {/* Day headers */}
             <div className="grid grid-cols-7 mb-2">
               {DAY_NAMES.map((d) => (
-                <div key={d} className="text-center text-[10px] font-bold text-[#a8a29e] uppercase tracking-widest py-1">
+                <div key={d} className="text-center text-[10px] font-bold text-[#6b7280] uppercase tracking-widest py-1">
                   {d}
                 </div>
               ))}
@@ -227,7 +227,7 @@ export default function CalendarioPage() {
                             />
                           ))}
                           {dayPrizes.length > 4 && (
-                            <span className={`text-[9px] leading-none self-end font-bold ${todayCell ? 'text-white/80' : 'text-[#a8a29e]'}`}>
+                            <span className={`text-[9px] leading-none self-end font-bold ${todayCell ? 'text-white/80' : 'text-[#6b7280]'}`}>
                               +{dayPrizes.length - 4}
                             </span>
                           )}
@@ -241,7 +241,7 @@ export default function CalendarioPage() {
 
             {/* Legend */}
             <div className="mt-6 pt-4 border-t border-[#E8E3DC] flex items-center gap-3 flex-wrap">
-              <span className="text-[10px] font-bold text-[#a8a29e] uppercase tracking-widest">Leyenda</span>
+              <span className="text-[10px] font-bold text-[#6b7280] uppercase tracking-widest">Leyenda</span>
               <span className="inline-flex items-center gap-1.5 bg-green-50 border border-green-200 rounded-full px-2.5 py-1 text-xs font-semibold text-green-700">
                 <span className="w-2 h-2 rounded-full bg-green-500 inline-block animate-pulse" />
                 Activo
@@ -262,7 +262,7 @@ export default function CalendarioPage() {
             <div className="w-72 bg-white rounded-2xl border border-[#E8E3DC] p-5 self-start shrink-0" style={{ boxShadow: '0 1px 2px rgba(28,25,23,0.04), 0 4px 16px rgba(28,25,23,0.06)' }}>
               <div className="flex items-center justify-between mb-4">
                 <div>
-                  <p className="text-[10px] font-bold text-[#a8a29e] uppercase tracking-widest">
+                  <p className="text-[10px] font-bold text-[#6b7280] uppercase tracking-widest">
                     {MONTH_NAMES[month]} {year}
                   </p>
                   <h3 className="font-extrabold text-[#1C1917] text-lg leading-tight">
@@ -271,7 +271,7 @@ export default function CalendarioPage() {
                 </div>
                 <button
                   onClick={() => setSelectedDay(null)}
-                  className="w-8 h-8 flex items-center justify-center rounded-full border border-[#E8E3DC] text-[#a8a29e] hover:text-[#1C1917] transition-colors"
+                  className="w-8 h-8 flex items-center justify-center rounded-full border border-[#E8E3DC] text-[#6b7280] hover:text-[#1C1917] transition-colors"
                   aria-label="Cerrar panel"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -287,11 +287,11 @@ export default function CalendarioPage() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
                     </svg>
                   </div>
-                  <p className="text-sm text-[#78716c] font-medium">Sin premios este día</p>
+                  <p className="text-sm text-[#6b7280] font-medium">Sin premios este día</p>
                 </div>
               ) : (
                 <div className="space-y-2">
-                  <p className="text-[10px] font-bold text-[#a8a29e] uppercase tracking-widest mb-3">
+                  <p className="text-[10px] font-bold text-[#6b7280] uppercase tracking-widest mb-3">
                     {selectedDayPrizes.length} premio{selectedDayPrizes.length !== 1 ? 's' : ''}
                   </p>
                   {selectedDayPrizes.map(({ prize, status }) => {
@@ -307,7 +307,7 @@ export default function CalendarioPage() {
                           />
                           <p className="text-sm font-semibold text-[#1C1917] truncate flex-1">{prize.name}</p>
                           <svg
-                            className={`w-3.5 h-3.5 text-[#a8a29e] shrink-0 transition-transform ${isExpanded ? 'rotate-180' : ''}`}
+                            className={`w-3.5 h-3.5 text-[#6b7280] shrink-0 transition-transform ${isExpanded ? 'rotate-180' : ''}`}
                             fill="none" stroke="currentColor" viewBox="0 0 24 24"
                           >
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -317,21 +317,21 @@ export default function CalendarioPage() {
                           <div className="px-3 pb-3 border-t border-[#E8E3DC] bg-[#FAFAF9]">
                             <div className="pt-2 space-y-1.5">
                               <div className="flex items-center gap-1.5">
-                                <span className="text-[10px] font-bold text-[#a8a29e] uppercase tracking-widest">Estado</span>
+                                <span className="text-[10px] font-bold text-[#6b7280] uppercase tracking-widest">Estado</span>
                                 <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${status === 'active' ? 'bg-green-100 text-green-700' : status === 'expiring' ? 'bg-orange-100 text-[#2563EB]' : 'bg-stone-100 text-stone-500'}`}>
                                   {statusLabel[status]}
                                 </span>
                               </div>
-                              {prize.reason && <p className="text-xs text-[#78716c]">{prize.reason}</p>}
+                              {prize.reason && <p className="text-xs text-[#6b7280]">{prize.reason}</p>}
                               {prize.restaurant_name && (
-                                <p className="text-xs text-[#a8a29e] flex items-center gap-1">
+                                <p className="text-xs text-[#6b7280] flex items-center gap-1">
                                   <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-2 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                                   </svg>
                                   {prize.restaurant_name}
                                 </p>
                               )}
-                              <p className="text-[10px] text-[#a8a29e]">
+                              <p className="text-[10px] text-[#6b7280]">
                                 {prize.start_date} — {prize.end_date}
                               </p>
                             </div>

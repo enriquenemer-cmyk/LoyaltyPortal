@@ -269,8 +269,8 @@ input[type="date"] {
   animation: skeleton-sweep 1.5s ease-in-out infinite;
   border-radius: 8px;
 }
-.skeleton-blue {
-  background: linear-gradient(90deg, #EFF6FF 25%, #DBEAFE 50%, #EFF6FF 75%);
+.skeleton-blue, .skeleton-neutral {
+  background: linear-gradient(90deg, #f0ede8 25%, #e8e3dc 50%, #f0ede8 75%);
   background-size: 200% 100%;
   animation: skeleton-sweep 1.5s ease-in-out infinite;
   border-radius: 8px;

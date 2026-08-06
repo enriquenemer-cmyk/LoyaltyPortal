@@ -10,7 +10,7 @@ export default function ForbiddenPage() {
           </svg>
         </div>
         <h1 className="text-2xl font-bold text-[#1C1917] mb-2">Acceso restringido</h1>
-        <p className="text-[#78716c] text-sm mb-8">
+        <p className="text-[#6b7280] text-sm mb-8">
           No tienes permisos para acceder a esta sección. Contacta al administrador si crees que esto es un error.
         </p>
         <Link

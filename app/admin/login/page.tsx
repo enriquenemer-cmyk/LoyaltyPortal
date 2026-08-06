@@ -234,7 +234,7 @@ export default function LoginPage() {
                   onChange={(e) => setForm((p) => ({ ...p, username: e.target.value }))}
                   required
                   placeholder="admin"
-                  className="w-full bg-[#FAFAF9] border border-[#E8E3DC] rounded-xl pl-10 pr-4 py-3.5 text-sm text-[#1C1917] placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-orange-500/25 focus:border-orange-500 focus:bg-white transition-all"
+                  className="w-full bg-[#FAFAF9] border border-[#E8E3DC] rounded-xl pl-10 pr-4 py-3.5 text-sm text-[#1C1917] placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-[#F97316]/20 focus:border-[#F97316] focus:bg-white transition-all"
                 />
               </div>
             </div>
@@ -261,7 +261,7 @@ export default function LoginPage() {
                   onChange={(e) => setForm((p) => ({ ...p, password: e.target.value }))}
                   required
                   placeholder="••••••••"
-                  className="w-full bg-[#FAFAF9] border border-[#E8E3DC] rounded-xl pl-10 pr-4 py-3.5 text-sm text-[#1C1917] placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-orange-500/25 focus:border-orange-500 focus:bg-white transition-all"
+                  className="w-full bg-[#FAFAF9] border border-[#E8E3DC] rounded-xl pl-10 pr-4 py-3.5 text-sm text-[#1C1917] placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-[#F97316]/20 focus:border-[#F97316] focus:bg-white transition-all"
                 />
               </div>
             </div>
@@ -317,7 +317,7 @@ export default function LoginPage() {
             <div className="text-center">
               <Link
                 href="/admin/forgot-password"
-                className="text-sm text-[#78716c] hover:text-[#F97316] transition-colors"
+                className="text-sm text-[#6b7280] hover:text-[#F97316] transition-colors"
               >
                 ¿Olvidaste tu contraseña?
               </Link>

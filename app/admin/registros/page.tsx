@@ -47,7 +47,7 @@ function StatCard({
 }) {
   const colorMap = {
     gray:   { gradient: 'linear-gradient(135deg,#f8fafc 0%,#f1f5f9 100%)', accent: '#64748b', glow: 'rgba(100,116,139,0.15)', iconBg: '#e2e8f0', iconColor: '#475569', numColor: '#0f172a' },
-    orange: { gradient: 'linear-gradient(135deg,#eff6ff 0%,#dbeafe 100%)', accent: '#2563eb', glow: 'rgba(37,99,235,0.18)', iconBg: '#dbeafe', iconColor: '#1d4ed8', numColor: '#1e40af' },
+    orange: { gradient: 'linear-gradient(135deg,#eff6ff 0%,#dbeafe 100%)', accent: '#2563eb', glow: 'rgba(37,99,235,0.18)', iconBg: '#dbeafe', iconColor: '#F97316', numColor: '#1e40af' },
     blue:   { gradient: 'linear-gradient(135deg,#f0fdf4 0%,#dcfce7 100%)', accent: '#16a34a', glow: 'rgba(22,163,74,0.18)', iconBg: '#bbf7d0', iconColor: '#15803d', numColor: '#14532d' },
     amber:  { gradient: 'linear-gradient(135deg,#fffbeb 0%,#fef3c7 100%)', accent: '#d97706', glow: 'rgba(217,119,6,0.18)', iconBg: '#fde68a', iconColor: '#b45309', numColor: '#92400e' },
   };
@@ -85,7 +85,7 @@ function StatCard({
 
 function SortArrow({ direction }: { direction: SortDir }) {
   return (
-    <svg className="w-3 h-3 inline-block ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ color: '#2563EB' }}>
+    <svg className="w-3 h-3 inline-block ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ color: '#F97316' }}>
       {direction === 'asc' ? (
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 15l7-7 7 7" />
       ) : (
@@ -750,7 +750,7 @@ export default function RegistrosPage() {
                   value={statusFilter}
                   onChange={(e) => setStatusFilter(e.target.value as 'all' | 'pending' | 'delivered')}
                   className="flex-1 sm:flex-none text-sm border border-[#E8E3DC] rounded-lg px-2.5 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all"
-                  style={statusFilter !== 'all' ? { borderColor: '#2563EB', boxShadow: '0 0 0 2px #2563EB22', color: '#2563EB', fontWeight: 700 } : {}}
+                  style={statusFilter !== 'all' ? { borderColor: '#2563EB', boxShadow: '0 0 0 2px #2563EB22', color: '#F97316', fontWeight: 700 } : {}}
                 >
                   <option value="all">Todos</option>
                   <option value="pending">Pendientes</option>
@@ -767,7 +767,7 @@ export default function RegistrosPage() {
                       value={restaurantFilter}
                       onChange={(e) => setRestaurantFilter(e.target.value)}
                       className="flex-1 sm:flex-none text-sm border border-[#E8E3DC] rounded-lg px-2.5 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all"
-                      style={restaurantFilter !== 'all' ? { borderColor: '#2563EB', boxShadow: '0 0 0 2px #2563EB22', color: '#2563EB', fontWeight: 700 } : {}}
+                      style={restaurantFilter !== 'all' ? { borderColor: '#2563EB', boxShadow: '0 0 0 2px #2563EB22', color: '#F97316', fontWeight: 700 } : {}}
                     >
                       <option value="all">Todas las sucursales</option>
                       {restaurants.map((r) => (
@@ -782,7 +782,7 @@ export default function RegistrosPage() {
                 <button
                   onClick={clearFilters}
                   className="sm:ml-auto inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-lg border transition-colors"
-                  style={{ color: '#2563EB', borderColor: '#2563EB', background: '#fff7f5' }}
+                  style={{ color: '#F97316', borderColor: '#2563EB', background: '#fff7f5' }}
                 >
                   <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
@@ -797,7 +797,7 @@ export default function RegistrosPage() {
               <div className="mb-4 flex items-center gap-2">
                 <span
                   className="inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-full border"
-                  style={{ background: '#eff6ff', color: '#2563EB', borderColor: '#bfdbfe' }}
+                  style={{ background: '#eff6ff', color: '#F97316', borderColor: '#bfdbfe' }}
                 >
                   <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -1078,7 +1078,7 @@ export default function RegistrosPage() {
                     {hasActiveFilters && (
                       <span
                         className="inline-flex items-center gap-1 text-xs font-bold px-2 py-0.5 rounded-full border ml-2"
-                        style={{ color: '#2563EB', borderColor: '#2563EB', background: '#fff7f5' }}
+                        style={{ color: '#F97316', borderColor: '#2563EB', background: '#fff7f5' }}
                       >
                         <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L13 13.414V19a1 1 0 01-.553.894l-4 2A1 1 0 017 21v-7.586L3.293 6.707A1 1 0 013 6V4z" />

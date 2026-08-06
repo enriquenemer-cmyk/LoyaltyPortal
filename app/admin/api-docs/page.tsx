@@ -62,7 +62,7 @@ export default function ApiDocsPage() {
         <div className="mb-8">
           <p className="text-xs font-bold text-[#F97316] uppercase tracking-widest mb-1">Desarrolladores</p>
           <h1 className="text-2xl font-bold text-[#1C1917]">Documentación de API</h1>
-          <p className="text-sm text-[#78716c] mt-1">
+          <p className="text-sm text-[#6b7280] mt-1">
             Base URL: <code className="bg-[#F5F5F4] px-2 py-0.5 rounded text-[#1C1917] font-mono text-xs">{typeof window !== 'undefined' ? window.location.origin : 'https://tu-dominio.vercel.app'}</code>
           </p>
         </div>
@@ -81,15 +81,15 @@ export default function ApiDocsPage() {
                       <code className="text-sm font-mono text-[#1C1917] font-semibold">{ep.path}</code>
                     </div>
                     <div className="px-4 py-3 space-y-2">
-                      <p className="text-sm text-[#78716c]">{ep.desc}</p>
+                      <p className="text-sm text-[#6b7280]">{ep.desc}</p>
                       {(ep as { body?: string }).body && (
                         <div>
-                          <p className="text-xs font-semibold text-[#a8a29e] uppercase tracking-widest mb-1">Body</p>
+                          <p className="text-xs font-semibold text-[#6b7280] uppercase tracking-widest mb-1">Body</p>
                           <pre className="bg-[#1C1917] text-green-300 text-xs rounded-lg px-4 py-3 overflow-x-auto font-mono">{(ep as { body?: string }).body}</pre>
                         </div>
                       )}
                       <div>
-                        <p className="text-xs font-semibold text-[#a8a29e] uppercase tracking-widest mb-1">Response</p>
+                        <p className="text-xs font-semibold text-[#6b7280] uppercase tracking-widest mb-1">Response</p>
                         <pre className="bg-[#1C1917] text-orange-300 text-xs rounded-lg px-4 py-3 overflow-x-auto font-mono">{ep.response}</pre>
                       </div>
                     </div>
@@ -102,7 +102,7 @@ export default function ApiDocsPage() {
           {/* Webhook events */}
           <div>
             <h2 className="text-base font-bold text-[#1C1917] mb-3">Eventos de Webhook</h2>
-            <p className="text-sm text-[#78716c] mb-4">
+            <p className="text-sm text-[#6b7280] mb-4">
               Configura <code className="bg-[#F5F5F4] px-1.5 py-0.5 rounded font-mono text-xs">WEBHOOK_URL</code> en tus variables de entorno para recibir eventos.
             </p>
             <div className="flex flex-col gap-3">
@@ -113,7 +113,7 @@ export default function ApiDocsPage() {
                     <code className="text-sm font-mono text-[#1C1917] font-semibold">{ev.event}</code>
                   </div>
                   <div className="px-4 py-3 space-y-2">
-                    <p className="text-sm text-[#78716c]">{ev.desc}</p>
+                    <p className="text-sm text-[#6b7280]">{ev.desc}</p>
                     <pre className="bg-[#1C1917] text-yellow-300 text-xs rounded-lg px-4 py-3 overflow-x-auto font-mono">{ev.data}</pre>
                   </div>
                 </div>

@@ -235,7 +235,7 @@ export default function RendimientoPage() {
                         <div className="flex items-center gap-2">
                           <span
                             className="text-2xl font-black"
-                            style={{ color: '#2563EB' }}
+                            style={{ color: '#F97316' }}
                           >
                             {row.count}
                           </span>

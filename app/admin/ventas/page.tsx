@@ -67,7 +67,7 @@ function WeeklyComparisonWidget({ summary }: { summary: Summary | null }) {
     <div className="bg-white rounded-2xl border border-[#E8E3DC] p-6 flex flex-col gap-4 shadow-sm">
       <div>
         <h2 className="text-sm font-bold text-[#1C1917]">Esta semana vs semana anterior</h2>
-        <p className="text-xs text-[#a8a29e] mt-0.5">Comparativa de ventas totales</p>
+        <p className="text-xs text-[#6b7280] mt-0.5">Comparativa de ventas totales</p>
       </div>
       <div className="flex flex-col gap-3">
         <div className="flex items-end gap-3">
@@ -77,8 +77,8 @@ function WeeklyComparisonWidget({ summary }: { summary: Summary | null }) {
           <span className="text-sm font-black" style={{ color: arrowColor }}>{arrowLabel}</span>
         </div>
         {lastWeekApprox !== null && (
-          <p className="text-xs text-[#a8a29e]">
-            vs semana anterior: <span className="font-semibold text-[#78716c]">{formatCurrency(lastWeekApprox)}</span>
+          <p className="text-xs text-[#6b7280]">
+            vs semana anterior: <span className="font-semibold text-[#6b7280]">{formatCurrency(lastWeekApprox)}</span>
           </p>
         )}
       </div>
@@ -94,7 +94,7 @@ function PaymentMethodCards({ breakdown }: { breakdown?: { cash: number; card: n
 
   const methods = [
     { label: 'Efectivo', value: cash, icon: '', color: '#059669', bg: '#d1fae5' },
-    { label: 'Tarjeta', value: card, icon: '', color: '#2563EB', bg: '#dbeafe' },
+    { label: 'Tarjeta', value: card, icon: '', color: '#F97316', bg: '#dbeafe' },
     { label: 'Otros', value: other, icon: '', color: '#7c3aed', bg: '#ede9fe' },
   ];
 
@@ -135,7 +135,7 @@ function BestDayInsight({ bestDay }: { bestDay?: { name: string; average: number
       <div className="min-w-0">
         <p className="text-xs font-bold text-orange-700 uppercase tracking-widest mb-0.5">Mejor día de la semana</p>
         <p className="text-base font-black text-blue-900 leading-snug">
-          <span style={{ color: '#2563EB' }}>{bestDay.name}</span> es tu día más fuerte, con un promedio de {formatCurrency(bestDay.average)} en ventas
+          <span style={{ color: '#F97316' }}>{bestDay.name}</span> es tu día más fuerte, con un promedio de {formatCurrency(bestDay.average)} en ventas
         </p>
       </div>
     </div>
@@ -439,7 +439,7 @@ export default function VentasPage() {
           <button
             onClick={() => setShowModal(true)}
             className="flex items-center gap-2 font-bold px-5 py-3 rounded-xl text-sm transition-all"
-            style={{ background: 'white', color: '#1d4ed8', boxShadow: '0 4px 16px rgba(0,0,0,0.15)' }}
+            style={{ background: 'white', color: '#111111', boxShadow: '0 4px 16px rgba(0,0,0,0.15)' }}
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -465,7 +465,7 @@ export default function VentasPage() {
               <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 text-xl" style={{ backgroundColor: '#dbeafe' }}><CalendarIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
               <div>
                 <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest mb-0.5">Hoy</p>
-                <p className="text-2xl font-extrabold" style={{ color: '#2563EB' }}>{formatCurrency(summary?.today ?? 0)}</p>
+                <p className="text-2xl font-extrabold" style={{ color: '#F97316' }}>{formatCurrency(summary?.today ?? 0)}</p>
               </div>
             </div>
 

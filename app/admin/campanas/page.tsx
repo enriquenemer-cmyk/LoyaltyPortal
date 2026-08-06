@@ -21,7 +21,7 @@ type Campaign = {
 
 type Restaurant = { id: string; name: string };
 
-const labelClass = 'block text-[10px] font-semibold text-[#78716c] uppercase tracking-widest mb-1.5';
+const labelClass = 'block text-[10px] font-semibold text-[#6b7280] uppercase tracking-widest mb-1.5';
 const inputClass = 'w-full bg-[#FAFAF9] border border-[#E8E3DC] rounded-xl px-4 py-3 text-sm text-[#1C1917] focus:outline-none focus:border-[#2563EB] transition-colors';
 
 const DOT_STYLES = [
@@ -169,7 +169,7 @@ export default function CampanasPage() {
           <button
             onClick={openNew}
             className="flex items-center gap-2 font-bold px-5 py-3 rounded-xl text-sm transition-all"
-            style={{ background: 'white', color: '#1d4ed8', boxShadow: '0 4px 16px rgba(0,0,0,0.15)' }}
+            style={{ background: 'white', color: '#111111', boxShadow: '0 4px 16px rgba(0,0,0,0.15)' }}
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -223,7 +223,7 @@ export default function CampanasPage() {
 
                 {/* QR Personalización */}
                 <div className="border border-[#E8E3DC] rounded-xl p-4 space-y-4">
-                  <h3 className="text-xs font-bold text-[#78716c] uppercase tracking-widest">QR Personalizacion</h3>
+                  <h3 className="text-xs font-bold text-[#6b7280] uppercase tracking-widest">QR Personalizacion</h3>
 
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div>
@@ -235,7 +235,7 @@ export default function CampanasPage() {
                           onChange={e => setForm(p => ({ ...p, qr_dot_color: e.target.value }))}
                           className="w-10 h-10 rounded-lg border border-[#E8E3DC] cursor-pointer"
                         />
-                        <span className="text-xs text-[#78716c] font-mono">{form.qr_dot_color}</span>
+                        <span className="text-xs text-[#6b7280] font-mono">{form.qr_dot_color}</span>
                       </div>
                     </div>
                     <div>
@@ -247,7 +247,7 @@ export default function CampanasPage() {
                           onChange={e => setForm(p => ({ ...p, qr_background: e.target.value }))}
                           className="w-10 h-10 rounded-lg border border-[#E8E3DC] cursor-pointer"
                         />
-                        <span className="text-xs text-[#78716c] font-mono">{form.qr_background}</span>
+                        <span className="text-xs text-[#6b7280] font-mono">{form.qr_background}</span>
                       </div>
                     </div>
                     <div>
@@ -263,13 +263,13 @@ export default function CampanasPage() {
                           <button
                             type="button"
                             onClick={() => setForm(p => ({ ...p, qr_gradient_end: '' }))}
-                            className="text-xs text-[#a8a29e] hover:text-red-500 transition-colors"
+                            className="text-xs text-[#6b7280] hover:text-red-500 transition-colors"
                           >
                             Quitar
                           </button>
                         )}
                         {!form.qr_gradient_end && (
-                          <span className="text-xs text-[#a8a29e]">Sin gradiente</span>
+                          <span className="text-xs text-[#6b7280]">Sin gradiente</span>
                         )}
                       </div>
                     </div>
@@ -286,7 +286,7 @@ export default function CampanasPage() {
                           className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all ${
                             form.qr_dot_style === s.value
                               ? 'border-[#2563EB] bg-orange-50 text-[#2563EB]'
-                              : 'border-[#E8E3DC] text-[#78716c] hover:border-[#2563EB]/40'
+                              : 'border-[#E8E3DC] text-[#6b7280] hover:border-[#2563EB]/40'
                           }`}
                         >
                           {s.label}
@@ -306,7 +306,7 @@ export default function CampanasPage() {
                           className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all ${
                             form.qr_corner_style === s.value
                               ? 'border-[#2563EB] bg-orange-50 text-[#2563EB]'
-                              : 'border-[#E8E3DC] text-[#78716c] hover:border-[#2563EB]/40'
+                              : 'border-[#E8E3DC] text-[#6b7280] hover:border-[#2563EB]/40'
                           }`}
                         >
                           {s.label}
@@ -329,7 +329,7 @@ export default function CampanasPage() {
                   <button
                     type="button"
                     onClick={() => { setShowForm(false); setEditingId(null); }}
-                    className="px-6 py-2.5 rounded-xl text-sm font-bold border border-[#E8E3DC] text-[#78716c] hover:bg-[#FAFAF9] transition-colors"
+                    className="px-6 py-2.5 rounded-xl text-sm font-bold border border-[#E8E3DC] text-[#6b7280] hover:bg-[#FAFAF9] transition-colors"
                   >
                     Cancelar
                   </button>
@@ -338,11 +338,11 @@ export default function CampanasPage() {
 
               {/* Live preview */}
               <div className="lg:col-span-1 flex flex-col items-center gap-3">
-                <span className="text-[10px] font-bold text-[#a8a29e] uppercase tracking-widest">Vista previa</span>
+                <span className="text-[10px] font-bold text-[#6b7280] uppercase tracking-widest">Vista previa</span>
                 <div className="p-3 bg-[#FAFAF9] border border-[#E8E3DC] rounded-xl">
                   <QRPreview style={previewStyle} size={160} />
                 </div>
-                <p className="text-xs text-[#a8a29e] text-center">Se actualiza en tiempo real</p>
+                <p className="text-xs text-[#6b7280] text-center">Se actualiza en tiempo real</p>
               </div>
             </div>
           </div>
@@ -375,7 +375,7 @@ export default function CampanasPage() {
               </svg>
             </div>
             <p className="text-[#1C1917] font-bold text-lg mb-1">Sin campanas</p>
-            <p className="text-[#78716c] text-sm">Crea tu primera campana para organizar tus premios y personalizar sus QRs</p>
+            <p className="text-[#6b7280] text-sm">Crea tu primera campana para organizar tus premios y personalizar sus QRs</p>
           </div>
         ) : (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -397,7 +397,7 @@ export default function CampanasPage() {
                     <div className="flex-1 min-w-0 mr-3">
                       <h3 className="font-bold text-[#1C1917] text-base leading-tight truncate">{campaign.name}</h3>
                       {campaign.description && (
-                        <p className="text-xs text-[#78716c] mt-0.5 leading-relaxed line-clamp-2">{campaign.description}</p>
+                        <p className="text-xs text-[#6b7280] mt-0.5 leading-relaxed line-clamp-2">{campaign.description}</p>
                       )}
                       {campaign.restaurant_id && (
                         <span className="inline-flex items-center gap-1 text-xs font-semibold text-[#2563EB] bg-orange-50 px-2 py-0.5 rounded-full mt-2">
@@ -412,7 +412,7 @@ export default function CampanasPage() {
                   <div className="flex items-center gap-2 pt-3 border-t border-[#E8E3DC]">
                     <button
                       onClick={() => openEdit(campaign)}
-                      className="text-xs font-semibold text-[#78716c] hover:text-[#1C1917] transition-colors"
+                      className="text-xs font-semibold text-[#6b7280] hover:text-[#1C1917] transition-colors"
                     >
                       Editar
                     </button>
@@ -420,11 +420,11 @@ export default function CampanasPage() {
                     <button
                       onClick={() => handleDelete(campaign.id)}
                       disabled={deletingId === campaign.id}
-                      className="text-xs font-semibold text-[#a8a29e] hover:text-red-500 transition-colors disabled:opacity-50"
+                      className="text-xs font-semibold text-[#6b7280] hover:text-red-500 transition-colors disabled:opacity-50"
                     >
                       {deletingId === campaign.id ? 'Eliminando...' : 'Eliminar'}
                     </button>
-                    <span className="ml-auto text-xs text-[#a8a29e]">
+                    <span className="ml-auto text-xs text-[#6b7280]">
                       {new Date(campaign.created_at).toLocaleDateString('es-MX', { day: 'numeric', month: 'short', year: 'numeric' })}
                     </span>
                   </div>

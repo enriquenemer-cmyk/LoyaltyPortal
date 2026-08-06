@@ -170,12 +170,12 @@ function StatCardGrid({ children, loading }: { children: React.ReactNode; loadin
 
 function SkeletonCard() {
   return (
-    <div className="bg-white rounded-2xl border border-[#DBEAFE] p-6 flex flex-col gap-3" style={{ boxShadow: cardShadow }}>
+    <div className="bg-white rounded-2xl border border-[#E8E3DC] p-6 flex flex-col gap-3" style={{ boxShadow: cardShadow }}>
       <div className="flex items-center justify-between">
-        <div className="skeleton-blue h-4 w-32" />
-        <div className="skeleton-blue w-10 h-10 rounded-xl" />
+        <div className="skeleton-neutral h-4 w-32" />
+        <div className="skeleton-neutral w-10 h-10 rounded-xl" />
       </div>
-      <div className="skeleton-blue h-10 w-20" />
+      <div className="skeleton-neutral h-10 w-20" />
     </div>
   );
 }
@@ -323,7 +323,7 @@ function PeriodComparisonChart({ claims }: { claims: Claim[] }) {
       <div className="flex items-start justify-between flex-wrap gap-3 mb-4">
         <div>
           <h2 className="text-sm font-bold text-[#1C1917] mb-1">Este mes vs mes anterior</h2>
-          <p className="text-xs text-[#a8a29e]">Cobros diarios — {currentMonthName} vs {prevMonthName}</p>
+          <p className="text-xs text-[#6b7280]">Cobros diarios — {currentMonthName} vs {prevMonthName}</p>
         </div>
         <div className="flex flex-col items-end gap-1">
           <span className="text-base font-black text-[#1C1917]">
@@ -342,11 +342,11 @@ function PeriodComparisonChart({ claims }: { claims: Claim[] }) {
       <div className="flex items-center gap-4 mb-4">
         <div className="flex items-center gap-1.5">
           <div className="w-3 h-3 rounded-sm" style={{ background: '#F97316' }} />
-          <span className="text-[11px] font-semibold text-[#78716c] capitalize">{currentMonthName}</span>
+          <span className="text-[11px] font-semibold text-[#6b7280] capitalize">{currentMonthName}</span>
         </div>
         <div className="flex items-center gap-1.5">
           <div className="w-3 h-3 rounded-sm" style={{ background: '#a8a29e' }} />
-          <span className="text-[11px] font-semibold text-[#78716c] capitalize">{prevMonthName}</span>
+          <span className="text-[11px] font-semibold text-[#6b7280] capitalize">{prevMonthName}</span>
         </div>
       </div>
 
@@ -443,8 +443,8 @@ function SucursalHeatmap({ claims }: { claims: Claim[] }) {
     return (
       <div className="bg-white rounded-2xl border border-[#E8E3DC] p-6" style={{ boxShadow: cardShadow }}>
         <h2 className="text-sm font-bold text-[#1C1917] mb-1">Rendimiento por sucursal</h2>
-        <p className="text-xs text-[#a8a29e] mb-4">Cobros por día de semana y sucursal</p>
-        <p className="text-sm text-[#a8a29e]">Sin datos de sucursales aún.</p>
+        <p className="text-xs text-[#6b7280] mb-4">Cobros por día de semana y sucursal</p>
+        <p className="text-sm text-[#6b7280]">Sin datos de sucursales aún.</p>
       </div>
     );
   }
@@ -471,22 +471,22 @@ function SucursalHeatmap({ claims }: { claims: Claim[] }) {
   return (
     <div className="bg-white rounded-2xl border border-[#E8E3DC] p-6" style={{ boxShadow: cardShadow }}>
       <h2 className="text-sm font-bold text-[#1C1917] mb-1">Rendimiento por sucursal</h2>
-      <p className="text-xs text-[#a8a29e] mb-5">Cobros por día de semana — intensidad de color = volumen</p>
+      <p className="text-xs text-[#6b7280] mb-5">Cobros por día de semana — intensidad de color = volumen</p>
 
       <div className="overflow-x-auto">
         <table className="border-separate" style={{ borderSpacing: '3px' }}>
           <thead>
             <tr>
               <th className="text-left pr-3 pb-1" style={{ minWidth: 120 }}>
-                <span className="text-[10px] font-semibold text-[#a8a29e]">Sucursal</span>
+                <span className="text-[10px] font-semibold text-[#6b7280]">Sucursal</span>
               </th>
               {WEEKDAY_LABELS.map((day) => (
                 <th key={day} style={{ width: cellW }} className="pb-1">
-                  <span className="text-[10px] font-semibold text-[#a8a29e]">{day}</span>
+                  <span className="text-[10px] font-semibold text-[#6b7280]">{day}</span>
                 </th>
               ))}
               <th className="pl-3 pb-1">
-                <span className="text-[10px] font-semibold text-[#a8a29e]">Total</span>
+                <span className="text-[10px] font-semibold text-[#6b7280]">Total</span>
               </th>
             </tr>
           </thead>
@@ -533,11 +533,11 @@ function SucursalHeatmap({ claims }: { claims: Claim[] }) {
 
       {/* Legend */}
       <div className="flex items-center gap-2 mt-4">
-        <span className="text-[10px] text-[#a8a29e] font-semibold">Menos</span>
+        <span className="text-[10px] text-[#6b7280] font-semibold">Menos</span>
         {['#fafaf9', '#EFF6FF', '#BAE6FD', '#0EA5E9', '#0369A1'].map((c) => (
           <div key={c} className="w-5 h-5 rounded" style={{ backgroundColor: c, border: c === '#fafaf9' ? '1px solid #e7e5e4' : undefined }} />
         ))}
-        <span className="text-[10px] text-[#a8a29e] font-semibold">Más</span>
+        <span className="text-[10px] text-[#6b7280] font-semibold">Más</span>
       </div>
     </div>
   );
@@ -635,10 +635,10 @@ function CustomerLifecycleFunnel({ claims }: { claims: Claim[] }) {
       <div className="flex items-start justify-between flex-wrap gap-3 mb-5">
         <div>
           <h2 className="text-sm font-bold text-[#1C1917] mb-1">Ciclo de vida del cliente</h2>
-          <p className="text-xs text-[#a8a29e]">Segmentación de {totalCustomers} clientes únicos</p>
+          <p className="text-xs text-[#6b7280]">Segmentación de {totalCustomers} clientes únicos</p>
         </div>
         <div className="text-right">
-          <span className="text-xs text-[#a8a29e] font-semibold">
+          <span className="text-xs text-[#6b7280] font-semibold">
             {funnelTotal} clasificados
           </span>
         </div>
@@ -681,7 +681,7 @@ function CustomerLifecycleFunnel({ claims }: { claims: Claim[] }) {
               {/* Label */}
               <div className="min-w-0 flex-1">
                 <p className="text-xs font-bold text-[#1C1917]">{step.label}</p>
-                <p className="text-[10px] text-[#a8a29e]">{step.sublabel}</p>
+                <p className="text-[10px] text-[#6b7280]">{step.sublabel}</p>
               </div>
 
               {/* Arrow connector (except last) */}
@@ -702,7 +702,7 @@ function CustomerLifecycleFunnel({ claims }: { claims: Claim[] }) {
         {steps.map((step) => (
           <div key={step.label} className="flex items-center gap-2">
             <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: step.accentColor }} />
-            <span className="text-[11px] text-[#78716c]">
+            <span className="text-[11px] text-[#6b7280]">
               <span className="font-bold text-[#1C1917]">{step.count}</span> {step.label.toLowerCase()}
             </span>
           </div>
@@ -753,7 +753,7 @@ function ActivityHeatmap({ claims }: { claims: Claim[] }) {
   return (
     <div className="bg-white rounded-2xl border border-[#E8E3DC] p-6" style={{ boxShadow: cardShadow }}>
       <h2 className="text-sm font-bold text-[#1C1917] mb-1">Actividad por hora y día</h2>
-      <p className="text-xs text-[#a8a29e] mb-5">Cobros agrupados por franja horaria y día de la semana</p>
+      <p className="text-xs text-[#6b7280] mb-5">Cobros agrupados por franja horaria y día de la semana</p>
 
       <div className="overflow-x-auto">
         <table className="border-separate" style={{ borderSpacing: '4px' }}>
@@ -763,7 +763,7 @@ function ActivityHeatmap({ claims }: { claims: Claim[] }) {
               {BLOCK_SHORT.map((label) => (
                 <th
                   key={label}
-                  className="text-[10px] font-semibold text-[#a8a29e] text-center pb-1 whitespace-nowrap"
+                  className="text-[10px] font-semibold text-[#6b7280] text-center pb-1 whitespace-nowrap"
                   style={{ minWidth: 64 }}
                 >
                   {label}
@@ -774,7 +774,7 @@ function ActivityHeatmap({ claims }: { claims: Claim[] }) {
           <tbody>
             {DAY_LABELS.map((dayLabel, di) => (
               <tr key={dayLabel}>
-                <td className="text-[11px] font-semibold text-[#78716c] pr-2 text-right whitespace-nowrap">
+                <td className="text-[11px] font-semibold text-[#6b7280] pr-2 text-right whitespace-nowrap">
                   {dayLabel}
                 </td>
                 {grid[di].map((count, bi) => {
@@ -806,11 +806,11 @@ function ActivityHeatmap({ claims }: { claims: Claim[] }) {
 
       {/* Legend */}
       <div className="flex items-center gap-3 mt-4">
-        <span className="text-[10px] text-[#a8a29e] font-semibold">Menos</span>
+        <span className="text-[10px] text-[#6b7280] font-semibold">Menos</span>
         {['#f5f5f4', '#EFF6FF', '#BAE6FD', '#0EA5E9'].map((c) => (
           <div key={c} className="w-5 h-5 rounded" style={{ backgroundColor: c }} />
         ))}
-        <span className="text-[10px] text-[#a8a29e] font-semibold">Más</span>
+        <span className="text-[10px] text-[#6b7280] font-semibold">Más</span>
       </div>
     </div>
   );
@@ -973,7 +973,7 @@ function SmartAlerts({
 
   return (
     <div className="flex flex-col gap-3">
-      <span className="text-xs font-bold text-[#78716c] uppercase tracking-widest">Alertas</span>
+      <span className="text-xs font-bold text-[#6b7280] uppercase tracking-widest">Alertas</span>
       {alerts.map((alert) => (
         <div
           key={alert.id}
@@ -1072,7 +1072,7 @@ function ConversionRateWidget({ data }: { data: ConversionData | null }) {
     <div className="bg-white rounded-2xl border border-[#E8E3DC] p-6 flex flex-col gap-4" style={{ boxShadow: '0 1px 2px rgba(28,25,23,0.04), 0 4px 16px rgba(28,25,23,0.06)' }}>
       <div>
         <h2 className="text-sm font-bold text-[#1C1917]">Tasa de conversión</h2>
-        <p className="text-xs text-[#a8a29e] mt-0.5">Últimos 30 días</p>
+        <p className="text-xs text-[#6b7280] mt-0.5">Últimos 30 días</p>
       </div>
       <div className="flex items-center gap-6">
         {/* Circular ring */}
@@ -1096,7 +1096,7 @@ function ConversionRateWidget({ data }: { data: ConversionData | null }) {
         </div>
         <div className="min-w-0">
           <p className="text-2xl font-black text-[#1C1917]">{data?.total_claims ?? 0}</p>
-          <p className="text-xs text-[#a8a29e] mt-1 leading-snug">
+          <p className="text-xs text-[#6b7280] mt-1 leading-snug">
             de {data?.total_prizes ?? 0} premios canjeados este mes
           </p>
         </div>
@@ -1121,17 +1121,17 @@ function WeeklyWidget({ data }: { data: WeeklyData | null }) {
     <div className="bg-white rounded-2xl border border-[#E8E3DC] p-6 flex flex-col gap-4" style={{ boxShadow: '0 1px 2px rgba(28,25,23,0.04), 0 4px 16px rgba(28,25,23,0.06)' }}>
       <div>
         <h2 className="text-sm font-bold text-[#1C1917]">Esta semana</h2>
-        <p className="text-xs text-[#a8a29e] mt-0.5">Comparativa semanal de cobros</p>
+        <p className="text-xs text-[#6b7280] mt-0.5">Comparativa semanal de cobros</p>
       </div>
       <div className="flex flex-col gap-3">
         <div className="flex items-end gap-3">
           <span className="text-4xl font-black text-[#1C1917]">{data?.this_week ?? 0}</span>
-          <span className="text-xs font-semibold text-[#78716c] mb-2">cobros</span>
+          <span className="text-xs font-semibold text-[#6b7280] mb-2">cobros</span>
         </div>
         <div className="flex items-center gap-2">
           <span className="text-sm font-black" style={{ color: arrowColor }}>{arrowLabel}</span>
         </div>
-        <p className="text-xs text-[#a8a29e]">vs semana anterior: <span className="font-semibold text-[#78716c]">{data?.last_week ?? 0}</span></p>
+        <p className="text-xs text-[#6b7280]">vs semana anterior: <span className="font-semibold text-[#6b7280]">{data?.last_week ?? 0}</span></p>
       </div>
     </div>
   );
@@ -1193,8 +1193,8 @@ function AtRiskWidget({ clients }: { clients: AtRiskClient[] }) {
     return (
       <div className="bg-white rounded-2xl border border-[#E8E3DC] p-6" style={{ boxShadow: '0 1px 2px rgba(28,25,23,0.04), 0 4px 16px rgba(28,25,23,0.06)' }}>
         <h2 className="text-sm font-bold text-[#1C1917] mb-1">Clientes en riesgo de perderse</h2>
-        <p className="text-xs text-[#a8a29e] mb-4">Sin cobro en más de 30 días</p>
-        <p className="text-sm text-[#78716c]"><SparklesIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Todos tus clientes han visitado recientemente</p>
+        <p className="text-xs text-[#6b7280] mb-4">Sin cobro en más de 30 días</p>
+        <p className="text-sm text-[#6b7280]"><SparklesIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Todos tus clientes han visitado recientemente</p>
       </div>
     );
   }
@@ -1202,7 +1202,7 @@ function AtRiskWidget({ clients }: { clients: AtRiskClient[] }) {
   return (
     <div className="bg-white rounded-2xl border border-[#E8E3DC] p-6" style={{ boxShadow: '0 1px 2px rgba(28,25,23,0.04), 0 4px 16px rgba(28,25,23,0.06)' }}>
       <h2 className="text-sm font-bold text-[#1C1917] mb-1">Clientes en riesgo de perderse</h2>
-      <p className="text-xs text-[#a8a29e] mb-4">Sin cobro en más de 30 días</p>
+      <p className="text-xs text-[#6b7280] mb-4">Sin cobro en más de 30 días</p>
       <div className="flex flex-col gap-4">
         {clients.map((client) => {
           const initials = client.full_name.split(' ').slice(0, 2).map((w) => w[0] ?? '').join('').toUpperCase();
@@ -1257,7 +1257,7 @@ function AtRiskWidget({ clients }: { clients: AtRiskClient[] }) {
                 </a>
               </div>
               {aiMsg && (
-                <p className="text-xs text-[#78716c] bg-[#FAFAF9] border border-[#E8E3DC] rounded-lg px-3 py-2 ml-12">
+                <p className="text-xs text-[#6b7280] bg-[#FAFAF9] border border-[#E8E3DC] rounded-lg px-3 py-2 ml-12">
                   {aiMsg}
                 </p>
               )}
@@ -1396,14 +1396,14 @@ function SetupChecklist({
           </div>
           <button
             onClick={dismiss}
-            className="text-[#a8a29e] hover:text-[#78716c] transition-colors text-sm font-bold leading-none"
+            className="text-[#6b7280] hover:text-[#6b7280] transition-colors text-sm font-bold leading-none"
             aria-label="Cerrar checklist"
           >
             ✕
           </button>
         </div>
         <div className="flex items-center justify-between mb-2">
-          <span className="text-xs font-semibold text-[#78716c]">
+          <span className="text-xs font-semibold text-[#6b7280]">
             {completedCount} de {steps.length} pasos completados
           </span>
           <span className="text-xs font-bold" style={{ color: '#F97316' }}>{progressPct}%</span>
@@ -1450,7 +1450,7 @@ function SetupChecklist({
               <p className={`text-sm font-bold mb-0.5 ${step.done ? 'text-blue-800 line-through opacity-70' : 'text-[#1C1917]'}`}>
                 {step.title}
               </p>
-              <p className="text-xs text-[#a8a29e]">{step.description}</p>
+              <p className="text-xs text-[#6b7280]">{step.description}</p>
             </div>
 
             {/* CTA */}
@@ -1696,7 +1696,7 @@ export default function AdminDashboard() {
         <button
           onClick={() => loadDashboard.current()}
           className="flex items-center gap-2 px-6 py-2.5 rounded-xl text-white text-sm font-bold transition-all shadow-sm hover:opacity-90"
-          style={{ background: 'linear-gradient(135deg,#F97316,#0891B2)', boxShadow: '0 4px 16px rgba(249,115,22,0.3)' }}
+          style={{ background: 'linear-gradient(135deg,#F97316,#ea6a0a)', boxShadow: '0 4px 16px rgba(249,115,22,0.3)' }}
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -1739,9 +1739,9 @@ export default function AdminDashboard() {
                 <Link
                   href="/admin/registros"
                   className="px-5 py-2.5 rounded-xl text-sm font-bold transition-all"
-                  style={{ background: 'white', color: '#1d4ed8' }}
-                  onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = '#eff6ff'; }}
-                  onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = 'white'; }}
+                  style={{ background: 'white', color: '#111111', border: '1px solid #e5e7eb' }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = '#f9fafb'; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = 'white'; (e.currentTarget as HTMLAnchorElement).style.color = '#111111'; }}
                 >
                   Ver Registros
                 </Link>
@@ -1844,7 +1844,7 @@ export default function AdminDashboard() {
               <span className="text-3xl shrink-0"><HandRaisedIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></span>
               <div>
                 <p className="font-bold text-[#1C1917] text-base">¡Bienvenido! Comienza configurando tu primer restaurante.</p>
-                <p className="text-sm text-[#78716c] mt-0.5">Sigue el asistente de configuración para poner en marcha 3E.</p>
+                <p className="text-sm text-[#6b7280] mt-0.5">Sigue el asistente de configuración para poner en marcha 3E.</p>
               </div>
             </div>
             <div className="flex items-center gap-3 shrink-0">
@@ -1857,7 +1857,7 @@ export default function AdminDashboard() {
               </Link>
               <button
                 onClick={() => setShowOnboardingBanner(false)}
-                className="text-[#a8a29e] hover:text-[#78716c] transition-colors text-sm font-semibold"
+                className="text-[#6b7280] hover:text-[#6b7280] transition-colors text-sm font-semibold"
                 aria-label="Cerrar banner"
               >
                 ✕
@@ -1885,7 +1885,7 @@ export default function AdminDashboard() {
         {/* ── Business Analytics Row ── */}
         {!loading && (
           <div>
-            <span className="text-xs font-bold text-[#78716c] uppercase tracking-widest block mb-3">Analítica de negocio</span>
+            <span className="text-xs font-bold text-[#6b7280] uppercase tracking-widest block mb-3">Analítica de negocio</span>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <ConversionRateWidget data={conversionData} />
               <WeeklyWidget data={weeklyData} />
@@ -1906,7 +1906,7 @@ export default function AdminDashboard() {
         {/* Stat cards + restaurant filter */}
         <div>
           <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
-            <span className="text-sm font-bold text-[#78716c] uppercase tracking-widest">Resumen</span>
+            <span className="text-sm font-bold text-[#6b7280] uppercase tracking-widest">Resumen</span>
             <select
               value={selectedRestaurant}
               onChange={(e) => setSelectedRestaurant(e.target.value)}
@@ -1985,7 +1985,7 @@ export default function AdminDashboard() {
             <div className="flex items-center justify-between mb-4">
               <div>
                 <h2 className="text-sm font-bold text-[#1C1917]">Actividad últimos 14 días</h2>
-                <p className="text-xs text-[#a8a29e]">Cobros diarios registrados</p>
+                <p className="text-xs text-[#6b7280]">Cobros diarios registrados</p>
               </div>
               {activityData.length > 0 && (
                 <span className="text-xs font-bold text-[#F97316] tabular-nums">
@@ -2002,7 +2002,7 @@ export default function AdminDashboard() {
           <div>
             <div className="flex items-center justify-between mb-3">
               <h2 className="label-caps slide-up-sm">Top premios canjeados</h2>
-              <span className="text-xs text-[#a8a29e]">Últimos 30 días</span>
+              <span className="text-xs text-[#6b7280]">Últimos 30 días</span>
             </div>
             <TopPremiosChart items={topPremios} />
           </div>
@@ -2024,7 +2024,7 @@ export default function AdminDashboard() {
               </div>
               <div>
                 <p className="font-bold text-[#1C1917] group-hover:text-[#F97316] transition-colors">Generar Premio</p>
-                <p className="text-xs text-[#a8a29e] mt-0.5">Crea un nuevo QR de premio</p>
+                <p className="text-xs text-[#6b7280] mt-0.5">Crea un nuevo QR de premio</p>
               </div>
             </Link>
 
@@ -2040,7 +2040,7 @@ export default function AdminDashboard() {
               </div>
               <div>
                 <p className="font-bold text-[#1C1917] group-hover:text-stone-700 transition-colors">Generar Masivo</p>
-                <p className="text-xs text-[#a8a29e] mt-0.5">Genera múltiples premios a la vez</p>
+                <p className="text-xs text-[#6b7280] mt-0.5">Genera múltiples premios a la vez</p>
               </div>
             </Link>
 
@@ -2056,7 +2056,7 @@ export default function AdminDashboard() {
               </div>
               <div>
                 <p className="font-bold text-[#1C1917] group-hover:text-orange-600 transition-colors">Ver Registros</p>
-                <p className="text-xs text-[#a8a29e] mt-0.5">Historial completo de cobros</p>
+                <p className="text-xs text-[#6b7280] mt-0.5">Historial completo de cobros</p>
               </div>
             </Link>
           </div>
@@ -2065,14 +2065,14 @@ export default function AdminDashboard() {
         {/* Embudo de conversión */}
         <div className="bg-white rounded-2xl border border-[#E8E3DC] p-6" style={{ boxShadow: cardShadow }}>
           <h2 className="text-sm font-bold text-[#1C1917] mb-1">Embudo de conversión</h2>
-          <p className="text-xs text-[#a8a29e] mb-6">De QRs generados a premios cobrados</p>
+          <p className="text-xs text-[#6b7280] mb-6">De QRs generados a premios cobrados</p>
 
           {loading ? (
             <div className="flex flex-col gap-4">
               {[80, 55, 30].map((w, i) => (
                 <div key={i} className="flex items-center gap-4">
-                  <div className="h-9 rounded-lg skeleton-blue" style={{ width: `${w}%` }} />
-                  <div className="h-4 w-20 rounded skeleton-blue" />
+                  <div className="h-9 rounded-lg skeleton-neutral" style={{ width: `${w}%` }} />
+                  <div className="h-4 w-20 rounded skeleton-neutral" />
                 </div>
               ))}
             </div>
@@ -2146,7 +2146,7 @@ export default function AdminDashboard() {
           {/* Bar chart */}
           <div className="lg:col-span-3 bg-white rounded-2xl border border-[#E8E3DC] p-6" style={{ boxShadow: cardShadow }}>
             <h2 className="text-sm font-bold text-[#1C1917] mb-1">Actividad — últimos 7 días</h2>
-            <p className="text-xs text-[#a8a29e] mb-4">
+            <p className="text-xs text-[#6b7280] mb-4">
               Cobros registrados por día
               {selectedRestaurant !== 'all' && (
                 <span className="ml-1 font-semibold text-[#F97316]">· {selectedRestaurant}</span>
@@ -2155,7 +2155,7 @@ export default function AdminDashboard() {
             {loading ? (
               <div className="flex items-end gap-3 h-36">
                 {Array.from({ length: 7 }).map((_, i) => (
-                  <div key={i} className="flex-1 rounded-lg skeleton-blue" style={{ height: `${30 + (i * 13) % 70}%` }} />
+                  <div key={i} className="flex-1 rounded-lg skeleton-neutral" style={{ height: `${30 + (i * 13) % 70}%` }} />
                 ))}
               </div>
             ) : (
@@ -2167,7 +2167,7 @@ export default function AdminDashboard() {
           <div className="lg:col-span-2 bg-white rounded-2xl border border-[#E8E3DC] p-6 flex flex-col gap-4" style={{ boxShadow: cardShadow }}>
             <div>
               <h2 className="text-sm font-bold text-[#1C1917]">Cobros Recientes</h2>
-              <p className="text-xs text-[#a8a29e] mt-0.5">
+              <p className="text-xs text-[#6b7280] mt-0.5">
                 {selectedRestaurant === 'all' ? 'Últimas actividades' : `Sucursal: ${selectedRestaurant}`}
               </p>
             </div>
@@ -2175,17 +2175,17 @@ export default function AdminDashboard() {
               <div className="flex flex-col gap-3">
                 {Array.from({ length: 5 }).map((_, i) => (
                   <div key={i} className="flex items-center gap-3">
-                    <div className="skeleton-blue w-9 h-9 rounded-full shrink-0" />
+                    <div className="skeleton-neutral w-9 h-9 rounded-full shrink-0" />
                     <div className="flex-1 flex flex-col gap-1.5">
-                      <div className="skeleton-blue h-3 rounded w-3/4" />
-                      <div className="skeleton-blue h-2.5 rounded w-1/2" />
+                      <div className="skeleton-neutral h-3 rounded w-3/4" />
+                      <div className="skeleton-neutral h-2.5 rounded w-1/2" />
                     </div>
-                    <div className="skeleton-blue h-5 w-16 rounded-full" />
+                    <div className="skeleton-neutral h-5 w-16 rounded-full" />
                   </div>
                 ))}
               </div>
             ) : recent5.length === 0 ? (
-              <p className="text-sm text-[#a8a29e] mt-2">Sin cobros aún.</p>
+              <p className="text-sm text-[#6b7280] mt-2">Sin cobros aún.</p>
             ) : (
               <div className="flex flex-col gap-3">
                 {recent5.map((c) => {
@@ -2203,7 +2203,7 @@ export default function AdminDashboard() {
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-semibold text-[#1C1917] truncate">{c.full_name}</p>
                         <div className="flex items-center gap-1.5 mt-0.5">
-                          <p className="text-xs text-[#a8a29e]"><RelativeDate dateStr={c.claimed_at} /></p>
+                          <p className="text-xs text-[#6b7280]"><RelativeDate dateStr={c.claimed_at} /></p>
                           {c.prize_name && (
                             <span
                               className="text-[10px] font-bold px-1.5 py-0.5 rounded-full truncate max-w-[90px]"
@@ -2329,7 +2329,7 @@ export default function AdminDashboard() {
             {/* Clientes recurrentes */}
             <div className="bg-white rounded-2xl border border-[#E8E3DC] p-6" style={{ boxShadow: cardShadow }}>
               <h2 className="text-sm font-bold text-[#1C1917] mb-1">Clientes recurrentes</h2>
-              <p className="text-xs text-[#a8a29e] mb-4">Clientes con 2 o más cobros</p>
+              <p className="text-xs text-[#6b7280] mb-4">Clientes con 2 o más cobros</p>
               {(() => {
                 const byPhone: Record<string, number> = {};
                 for (const c of filteredClaims) { byPhone[c.phone] = (byPhone[c.phone] || 0) + 1; }
@@ -2350,7 +2350,7 @@ export default function AdminDashboard() {
                     </div>
                     <div>
                       <p className="text-3xl font-bold text-[#1C1917]">{recurring}</p>
-                      <p className="text-xs text-[#a8a29e] mt-1">de {total} clientes únicos</p>
+                      <p className="text-xs text-[#6b7280] mt-1">de {total} clientes únicos</p>
                     </div>
                   </div>
                 );
@@ -2360,7 +2360,7 @@ export default function AdminDashboard() {
             {/* Premio más popular */}
             <div className="bg-white rounded-2xl border border-[#E8E3DC] p-6" style={{ boxShadow: cardShadow }}>
               <h2 className="text-sm font-bold text-[#1C1917] mb-1">Premios más populares</h2>
-              <p className="text-xs text-[#a8a29e] mb-4">Top 3 por cobros</p>
+              <p className="text-xs text-[#6b7280] mb-4">Top 3 por cobros</p>
               {(() => {
                 const byPrize: Record<string, number> = {};
                 for (const c of filteredClaims) {
@@ -2373,7 +2373,7 @@ export default function AdminDashboard() {
                   <div className="flex flex-col gap-3">
                     {sorted.map(([name, count], i) => (
                       <div key={name} className="flex items-center gap-3">
-                        <span className="w-5 text-xs font-bold text-[#a8a29e] shrink-0">#{i + 1}</span>
+                        <span className="w-5 text-xs font-bold text-[#6b7280] shrink-0">#{i + 1}</span>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center justify-between mb-1">
                             <span className="text-xs font-semibold text-[#1C1917] truncate max-w-[140px]">{name}</span>
@@ -2393,7 +2393,7 @@ export default function AdminDashboard() {
             {/* Mejor día de la semana */}
             <div className="bg-white rounded-2xl border border-[#E8E3DC] p-6" style={{ boxShadow: cardShadow }}>
               <h2 className="text-sm font-bold text-[#1C1917] mb-1">Mejor día de la semana</h2>
-              <p className="text-xs text-[#a8a29e] mb-4">Cobros por día</p>
+              <p className="text-xs text-[#6b7280] mb-4">Cobros por día</p>
               {(() => {
                 const DAYS = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
                 const counts = [0, 0, 0, 0, 0, 0, 0];
@@ -2407,10 +2407,10 @@ export default function AdminDashboard() {
                     {DAYS.map((day, i) => {
                       const isTop = i === maxDay;
                       return (
-                        <div key={day} className={`flex flex-col items-center gap-1 px-3 py-2 rounded-xl text-xs font-bold transition-all ${isTop ? 'text-white' : 'text-[#78716c] bg-[#FAFAF9]'}`}
+                        <div key={day} className={`flex flex-col items-center gap-1 px-3 py-2 rounded-xl text-xs font-bold transition-all ${isTop ? 'text-white' : 'text-[#6b7280] bg-[#FAFAF9]'}`}
                           style={isTop ? { background: '#F97316' } : {}}>
                           <span>{day}</span>
-                          <span className={isTop ? 'text-white/80 font-normal' : 'text-[#a8a29e] font-normal'}>{counts[i]}</span>
+                          <span className={isTop ? 'text-white/80 font-normal' : 'text-[#6b7280] font-normal'}>{counts[i]}</span>
                         </div>
                       );
                     })}
@@ -2422,11 +2422,11 @@ export default function AdminDashboard() {
             {/* Tiempo promedio de cobro */}
             <div className="bg-white rounded-2xl border border-[#E8E3DC] p-6" style={{ boxShadow: cardShadow }}>
               <h2 className="text-sm font-bold text-[#1C1917] mb-1">Tiempo promedio de cobro</h2>
-              <p className="text-xs text-[#a8a29e] mb-4">Desde registro hasta entrega</p>
+              <p className="text-xs text-[#6b7280] mb-4">Desde registro hasta entrega</p>
               {(() => {
                 const delivered = filteredClaims.filter((c) => c.status === 'delivered' && (c as { delivered_at?: string | null }).delivered_at);
                 if (delivered.length === 0) {
-                  return <p className="text-sm text-[#a8a29e]">Sin cobros entregados aún</p>;
+                  return <p className="text-sm text-[#6b7280]">Sin cobros entregados aún</p>;
                 }
                 const avgMs = delivered.reduce((sum, c) => {
                   const start = new Date(c.claimed_at).getTime();
@@ -2448,7 +2448,7 @@ export default function AdminDashboard() {
                     </div>
                     <div>
                       <p className="text-3xl font-black text-[#1C1917]">{display}</p>
-                      <p className="text-xs text-[#a8a29e] mt-1">sobre {delivered.length} cobros entregados</p>
+                      <p className="text-xs text-[#6b7280] mt-1">sobre {delivered.length} cobros entregados</p>
                     </div>
                   </div>
                 );

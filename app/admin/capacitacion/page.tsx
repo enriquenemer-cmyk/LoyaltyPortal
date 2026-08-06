@@ -41,7 +41,7 @@ const ICONS = ['', '', '', '', '️', '', '‍🍳', ''];
 const inputClass =
   'w-full bg-white border border-[#E8E3DC] rounded-lg px-3 py-2.5 text-sm text-[#1C1917] placeholder-[#a8a29e] focus:outline-none focus:ring-1 focus:ring-[#2563EB]/30 focus:border-[#2563EB] transition-colors';
 
-const labelClass = 'block text-[10px] font-semibold text-[#78716c] uppercase tracking-widest mb-1.5';
+const labelClass = 'block text-[10px] font-semibold text-[#6b7280] uppercase tracking-widest mb-1.5';
 
 const MEDALS = ['', '', ''];
 
@@ -489,7 +489,7 @@ export default function CapacitacionAdminPage() {
               setSuccess('');
             }}
             className="flex items-center gap-2 font-bold px-5 py-3 rounded-xl text-sm transition-all"
-            style={{ background: 'white', color: '#1d4ed8', boxShadow: '0 4px 16px rgba(0,0,0,0.15)' }}
+            style={{ background: 'white', color: '#111111', boxShadow: '0 4px 16px rgba(0,0,0,0.15)' }}
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={showForm ? 'M6 18L18 6M6 6l12 12' : 'M12 4v16m8-8H4'} />

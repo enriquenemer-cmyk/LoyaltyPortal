@@ -60,7 +60,7 @@ function Step1({ onNext }: { onNext: () => void }) {
       <BurritoIllustration />
       <div className="flex flex-col gap-3">
         <h1 className="text-3xl font-black text-[#1C1917]">Bienvenido a 3E</h1>
-        <p className="text-base text-[#78716c] max-w-sm mx-auto">
+        <p className="text-base text-[#6b7280] max-w-sm mx-auto">
           La plataforma de premios y fidelidad para Burrito. Genera QRs de premio, gestiona restaurantes y haz seguimiento de cobros en tiempo real.
         </p>
       </div>
@@ -119,25 +119,25 @@ function Step2({ onNext }: { onNext: () => void }) {
     }
   }
 
-  const inputCls = 'w-full rounded-xl border border-[#E8E3DC] bg-white px-4 py-2.5 text-sm text-[#1C1917] placeholder:text-[#a8a29e] outline-none focus:ring-2 focus:ring-[#F97316] focus:border-[#F97316] transition-all';
+  const inputCls = 'w-full rounded-xl border border-[#E8E3DC] bg-white px-4 py-2.5 text-sm text-[#1C1917] placeholder:text-[#6b7280] outline-none focus:ring-2 focus:ring-[#F97316] focus:border-[#F97316] transition-all';
 
   return (
     <div className="flex flex-col gap-6">
       <div>
         <h2 className="text-2xl font-black text-[#1C1917]">Crea tu primer restaurante</h2>
-        <p className="text-sm text-[#78716c] mt-1">Agrega la información básica de tu sucursal principal.</p>
+        <p className="text-sm text-[#6b7280] mt-1">Agrega la información básica de tu sucursal principal.</p>
       </div>
 
       {done ? (
         <div className="flex flex-col items-center gap-3 py-8">
           <div className="w-14 h-14 rounded-full bg-emerald-100 flex items-center justify-center text-2xl">✓</div>
           <p className="font-bold text-emerald-700 text-lg">Restaurante creado</p>
-          <p className="text-sm text-[#78716c]">Continuando al siguiente paso…</p>
+          <p className="text-sm text-[#6b7280]">Continuando al siguiente paso…</p>
         </div>
       ) : (
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-semibold text-[#78716c] uppercase tracking-wide">Nombre *</label>
+            <label className="text-xs font-semibold text-[#6b7280] uppercase tracking-wide">Nombre *</label>
             <input
               className={inputCls}
               placeholder="ej. Burrito Centro"
@@ -148,7 +148,7 @@ function Step2({ onNext }: { onNext: () => void }) {
             />
           </div>
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-semibold text-[#78716c] uppercase tracking-wide">Dirección</label>
+            <label className="text-xs font-semibold text-[#6b7280] uppercase tracking-wide">Dirección</label>
             <input
               className={inputCls}
               placeholder="ej. Av. Revolución 123, Col. Centro"
@@ -158,7 +158,7 @@ function Step2({ onNext }: { onNext: () => void }) {
             />
           </div>
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-semibold text-[#78716c] uppercase tracking-wide">Teléfono</label>
+            <label className="text-xs font-semibold text-[#6b7280] uppercase tracking-wide">Teléfono</label>
             <input
               className={inputCls}
               placeholder="ej. 55 1234 5678"
@@ -192,7 +192,7 @@ function Step3({ onFinish }: { onFinish: () => void }) {
     <div className="flex flex-col gap-6">
       <div>
         <h2 className="text-2xl font-black text-[#1C1917]">Genera tu primer premio</h2>
-        <p className="text-sm text-[#78716c] mt-1">
+        <p className="text-sm text-[#6b7280] mt-1">
           Crea un QR de premio personalizado para repartir a tus clientes.
         </p>
       </div>
@@ -209,7 +209,7 @@ function Step3({ onFinish }: { onFinish: () => void }) {
           </div>
           <div>
             <p className="font-bold text-[#1C1917]">Generador de premios</p>
-            <p className="text-xs text-[#a8a29e] mt-0.5">Elige nombre, fecha de vencimiento y restaurante</p>
+            <p className="text-xs text-[#6b7280] mt-0.5">Elige nombre, fecha de vencimiento y restaurante</p>
           </div>
         </div>
 
@@ -239,7 +239,7 @@ function Step3({ onFinish }: { onFinish: () => void }) {
 
       <button
         onClick={onFinish}
-        className="text-sm font-semibold text-[#a8a29e] hover:text-[#78716c] transition-colors text-center"
+        className="text-sm font-semibold text-[#6b7280] hover:text-[#6b7280] transition-colors text-center"
       >
         Saltar por ahora — ir al panel
       </button>

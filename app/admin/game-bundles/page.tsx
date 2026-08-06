@@ -66,7 +66,7 @@ export default function GameBundlesPage() {
           <div className="text-2xl shrink-0"><LightBulbIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
           <div>
             <p className="text-sm font-bold text-[#1C1917] mb-1">¿Cómo funciona?</p>
-            <ol className="text-sm text-[#78716c] space-y-0.5 list-decimal list-inside">
+            <ol className="text-sm text-[#6b7280] space-y-0.5 list-decimal list-inside">
               <li>Genera un premio normal en <strong className="text-[#1C1917]">Generar Premio</strong></li>
               <li>En el paso 2, selecciona el tipo de juego</li>
               <li>El cliente escanea el QR → juega → descubre su premio</li>
@@ -94,7 +94,7 @@ export default function GameBundlesPage() {
               </div>
               <div>
                 <h2 className="text-base font-bold text-[#1C1917] mb-1 group-hover:text-[#F97316] transition-colors">{game.name}</h2>
-                <p className="text-sm text-[#78716c] leading-relaxed">{game.desc}</p>
+                <p className="text-sm text-[#6b7280] leading-relaxed">{game.desc}</p>
               </div>
               <div className="flex items-center gap-1 text-xs font-semibold text-[#F97316] mt-auto pt-1">
                 Generar premio con este juego

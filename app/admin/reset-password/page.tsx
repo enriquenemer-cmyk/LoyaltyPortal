@@ -89,7 +89,7 @@ function ResetPasswordForm() {
                 </svg>
               </div>
               <p className="text-sm font-semibold text-[#1C1917] mb-2">Contrasena actualizada</p>
-              <p className="text-sm text-[#78716c]">Redirigiendo al inicio de sesion...</p>
+              <p className="text-sm text-[#6b7280]">Redirigiendo al inicio de sesion...</p>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-5">
@@ -110,7 +110,7 @@ function ResetPasswordForm() {
                     required
                     minLength={6}
                     placeholder="minimo 6 caracteres"
-                    className="w-full bg-[#FAFAF9] border border-[#E8E3DC] rounded-xl pl-10 pr-4 py-3.5 text-sm text-[#1C1917] placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-orange-500/25 focus:border-orange-500 focus:bg-white transition-all"
+                    className="w-full bg-[#FAFAF9] border border-[#E8E3DC] rounded-xl pl-10 pr-4 py-3.5 text-sm text-[#1C1917] placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-[#F97316]/20 focus:border-[#F97316] focus:bg-white transition-all"
                   />
                 </div>
               </div>
@@ -131,7 +131,7 @@ function ResetPasswordForm() {
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     required
                     placeholder="repite la contrasena"
-                    className="w-full bg-[#FAFAF9] border border-[#E8E3DC] rounded-xl pl-10 pr-4 py-3.5 text-sm text-[#1C1917] placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-orange-500/25 focus:border-orange-500 focus:bg-white transition-all"
+                    className="w-full bg-[#FAFAF9] border border-[#E8E3DC] rounded-xl pl-10 pr-4 py-3.5 text-sm text-[#1C1917] placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-[#F97316]/20 focus:border-[#F97316] focus:bg-white transition-all"
                   />
                 </div>
               </div>
@@ -170,7 +170,7 @@ function ResetPasswordForm() {
               </button>
 
               <div className="text-center">
-                <Link href="/admin/login" className="text-sm text-[#78716c] hover:text-[#F97316] transition-colors">
+                <Link href="/admin/login" className="text-sm text-[#6b7280] hover:text-[#F97316] transition-colors">
                   Volver al inicio de sesion
                 </Link>
               </div>

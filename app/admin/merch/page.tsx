@@ -107,24 +107,24 @@ export default function MerchPage() {
             <div className="flex-1 min-w-40">
               <label className="block text-xs font-semibold text-stone-500 mb-1">Nombre</label>
               <input required value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
-                placeholder="Gorra ST" className="w-full border border-[#E8E3DC] rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-[#2563EB]" />
+                placeholder="Gorra ST" className="w-full border border-[#E8E3DC] rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-[#F97316]" />
             </div>
             <div>
               <label className="block text-xs font-semibold text-stone-500 mb-1">Descripción</label>
               <input value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
-                placeholder="Opcional" className="border border-[#E8E3DC] rounded-xl px-3 py-2 text-sm w-44 focus:outline-none focus:border-[#2563EB]" />
+                placeholder="Opcional" className="border border-[#E8E3DC] rounded-xl px-3 py-2 text-sm w-44 focus:outline-none focus:border-[#F97316]" />
             </div>
             <div>
               <label className="block text-xs font-semibold text-stone-500 mb-1">Puntos</label>
               <input type="number" required min={1} value={form.points_cost} onChange={e => setForm(f => ({ ...f, points_cost: parseInt(e.target.value) }))}
-                className="border border-[#E8E3DC] rounded-xl px-3 py-2 text-sm w-24 focus:outline-none focus:border-[#2563EB]" />
+                className="border border-[#E8E3DC] rounded-xl px-3 py-2 text-sm w-24 focus:outline-none focus:border-[#F97316]" />
             </div>
             <div>
               <label className="block text-xs font-semibold text-stone-500 mb-1">Stock (opt.)</label>
               <input type="number" min={1} value={form.stock} onChange={e => setForm(f => ({ ...f, stock: e.target.value }))}
-                placeholder="∞" className="border border-[#E8E3DC] rounded-xl px-3 py-2 text-sm w-20 focus:outline-none focus:border-[#2563EB]" />
+                placeholder="∞" className="border border-[#E8E3DC] rounded-xl px-3 py-2 text-sm w-20 focus:outline-none focus:border-[#F97316]" />
             </div>
-            <button type="submit" disabled={saving} className="px-5 py-2.5 rounded-xl text-white text-sm font-bold disabled:opacity-60" style={{ background: '#2563EB' }}>
+            <button type="submit" disabled={saving} className="px-5 py-2.5 rounded-xl text-white text-sm font-bold disabled:opacity-60" style={{ background: '#F97316' }}>
               {saving ? 'Guardando...' : '+ Agregar'}
             </button>
           </form>
@@ -137,7 +137,7 @@ export default function MerchPage() {
             <div className="flex-1">
               <label className="block text-xs font-semibold text-stone-500 mb-1">Teléfono del cliente</label>
               <input value={redeemPhone} onChange={e => setRedeemPhone(e.target.value)}
-                placeholder="5512345678" className="w-full border border-[#E8E3DC] rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-[#2563EB]" />
+                placeholder="5512345678" className="w-full border border-[#E8E3DC] rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-[#F97316]" />
             </div>
           </div>
           {redeemResult && (

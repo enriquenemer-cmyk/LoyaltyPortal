@@ -198,12 +198,12 @@ function BarChart({ data }: { data: DayBar[] }) {
     >
       <defs>
         <linearGradient id="barGrad" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#2563EB" />
+          <stop offset="0%" stopColor="#F97316" />
           <stop offset="100%" stopColor="#0EA5E9" />
         </linearGradient>
         <linearGradient id="barGradToday" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#7C3AED" />
-          <stop offset="100%" stopColor="#2563EB" />
+          <stop offset="0%" stopColor="#1a6b3c" />
+          <stop offset="100%" stopColor="#F97316" />
         </linearGradient>
         <filter id="barGlow">
           <feGaussianBlur stdDeviation="2" result="blur" />
@@ -249,18 +249,18 @@ function BarChart({ data }: { data: DayBar[] }) {
             )}
             {/* Count label */}
             {d.count > 0 && (
-              <text x={x + barW / 2} y={y - 6} textAnchor="middle" fontSize="11" fill={isToday ? '#7C3AED' : '#2563EB'} fontWeight="800"
+              <text x={x + barW / 2} y={y - 6} textAnchor="middle" fontSize="11" fill={isToday ? '#1a6b3c' : '#F97316'} fontWeight="800"
                 style={{ animation: `fade-in-up 0.4s ease-out ${i * 0.08 + 0.3}s both` }}>
                 {d.count}
               </text>
             )}
             {/* Day label */}
             <text x={x + barW / 2} y={chartH + 18} textAnchor="middle" fontSize="11"
-              fill={isToday ? '#7C3AED' : '#94a3b8'} fontWeight={isToday ? '800' : '500'}>
+              fill={isToday ? '#1a6b3c' : '#94a3b8'} fontWeight={isToday ? '800' : '500'}>
               {d.label}
             </text>
             {/* Today dot */}
-            {isToday && <circle cx={x + barW / 2} cy={chartH + 24} r="2.5" fill="#7C3AED" />}
+            {isToday && <circle cx={x + barW / 2} cy={chartH + 24} r="2.5" fill="#1a6b3c" />}
           </g>
         );
       })}
@@ -327,7 +327,7 @@ function PeriodComparisonChart({ claims }: { claims: Claim[] }) {
         </div>
         <div className="flex flex-col items-end gap-1">
           <span className="text-base font-black text-[#1C1917]">
-            Este mes: <span style={{ color: '#2563EB' }}>{totalCurrent} cobros</span>
+            Este mes: <span style={{ color: '#F97316' }}>{totalCurrent} cobros</span>
           </span>
           <span className="text-xs font-semibold flex items-center gap-1" style={{ color: changeUp ? '#059669' : '#dc2626' }}>
             <svg width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
@@ -341,7 +341,7 @@ function PeriodComparisonChart({ claims }: { claims: Claim[] }) {
       {/* Legend */}
       <div className="flex items-center gap-4 mb-4">
         <div className="flex items-center gap-1.5">
-          <div className="w-3 h-3 rounded-sm" style={{ background: '#2563EB' }} />
+          <div className="w-3 h-3 rounded-sm" style={{ background: '#F97316' }} />
           <span className="text-[11px] font-semibold text-[#78716c] capitalize">{currentMonthName}</span>
         </div>
         <div className="flex items-center gap-1.5">
@@ -390,7 +390,7 @@ function PeriodComparisonChart({ claims }: { claims: Claim[] }) {
                 {currH > 0 && (
                   <rect
                     x={x + barW + pairGap} y={chartH - currH} width={barW} height={currH} rx={2}
-                    fill="#2563EB"
+                    fill="#F97316"
                   >
                     <title>Día {day} · {currentMonthName}: {curr} cobro{curr !== 1 ? 's' : ''}</title>
                   </rect>
@@ -522,7 +522,7 @@ function SucursalHeatmap({ claims }: { claims: Claim[] }) {
                     );
                   })}
                   <td className="pl-3">
-                    <span className="text-xs font-bold" style={{ color: '#2563EB' }}>{rowTotal}</span>
+                    <span className="text-xs font-bold" style={{ color: '#F97316' }}>{rowTotal}</span>
                   </td>
                 </tr>
               );
@@ -978,7 +978,7 @@ function SmartAlerts({
         <div
           key={alert.id}
           className="flex items-center justify-between gap-3 rounded-2xl border border-orange-200 bg-orange-50 px-4 py-3"
-          style={{ boxShadow: '0 1px 2px rgba(37,99,235,0.04), 0 4px 12px rgba(37,99,235,0.07)' }}
+          style={{ boxShadow: '0 1px 2px rgba(249,115,22,0.04), 0 4px 12px rgba(249,115,22,0.07)' }}
         >
           <div className="flex items-center gap-2.5 min-w-0">
             <span className="text-base leading-none shrink-0">{alert.icon}</span>
@@ -988,7 +988,7 @@ function SmartAlerts({
             <Link
               href={alert.ctaHref}
               className="text-xs font-bold text-white px-3 py-1.5 rounded-lg transition-opacity hover:opacity-90"
-              style={{ background: '#2563EB' }}
+              style={{ background: '#F97316' }}
             >
               {alert.ctaLabel}
             </Link>
@@ -1053,7 +1053,7 @@ function ROIEstimateCard({ claims }: { claims: Claim[] }) {
 // ---- Avatar helpers ---------------------------------------------------------
 
 const AVATAR_COLORS = [
-  '#2563EB', '#7c3aed', '#0891b2', '#be185d', '#059669', '#0EA5E9',
+  '#F97316', '#1a6b3c', '#0891b2', '#be185d', '#059669', '#0EA5E9',
 ];
 
 function avatarColor(name: string) {
@@ -1140,7 +1140,7 @@ function WeeklyWidget({ data }: { data: WeeklyData | null }) {
 // ---- At-Risk Clients Widget -------------------------------------------------
 
 function AtRiskWidget({ clients }: { clients: AtRiskClient[] }) {
-  const AVATAR_COLORS_LOCAL = ['#2563EB', '#7c3aed', '#0891b2', '#be185d', '#059669'];
+  const AVATAR_COLORS_LOCAL = ['#F97316', '#1a6b3c', '#0891b2', '#be185d', '#059669'];
   const [aiMessages, setAiMessages] = useState<Record<string, string>>({});
   const [aiLoading, setAiLoading] = useState<Record<string, boolean>>({});
   const [aiError, setAiError] = useState<Record<string, string>>({});
@@ -1230,7 +1230,7 @@ function AtRiskWidget({ clients }: { clients: AtRiskClient[] }) {
                 <button
                   onClick={() => generateAiMessage(client)}
                   disabled={isLoading}
-                  className="shrink-0 flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-bold text-[#2563EB] border border-[#2563EB]/30 bg-[#2563EB]/5 transition-opacity hover:opacity-80 disabled:opacity-60"
+                  className="shrink-0 flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-bold text-[#F97316] border border-[#F97316]/30 bg-[#F97316]/5 transition-opacity hover:opacity-80 disabled:opacity-60"
                   title="Generar mensaje con IA"
                 >
                   {isLoading ? (
@@ -1406,12 +1406,12 @@ function SetupChecklist({
           <span className="text-xs font-semibold text-[#78716c]">
             {completedCount} de {steps.length} pasos completados
           </span>
-          <span className="text-xs font-bold" style={{ color: '#2563EB' }}>{progressPct}%</span>
+          <span className="text-xs font-bold" style={{ color: '#F97316' }}>{progressPct}%</span>
         </div>
         <div className="h-2 bg-[#F5F0EB] rounded-full overflow-hidden">
           <div
             className="h-2 rounded-full transition-all duration-500"
-            style={{ width: `${progressPct}%`, background: 'linear-gradient(90deg,#2563EB,#0EA5E9)' }}
+            style={{ width: `${progressPct}%`, background: 'linear-gradient(90deg,#F97316,#0EA5E9)' }}
           />
         </div>
       </div>
@@ -1433,7 +1433,7 @@ function SetupChecklist({
               style={
                 step.done
                   ? { background: '#059669', color: '#fff' }
-                  : { background: '#2563EB', color: '#fff' }
+                  : { background: '#F97316', color: '#fff' }
               }
             >
               {step.done ? (
@@ -1458,7 +1458,7 @@ function SetupChecklist({
               <Link
                 href={step.ctaHref}
                 className="text-xs font-bold text-white px-3 py-1.5 rounded-lg shrink-0 transition-opacity hover:opacity-90"
-                style={{ background: '#2563EB' }}
+                style={{ background: '#F97316' }}
               >
                 {step.ctaLabel}
               </Link>
@@ -1676,7 +1676,7 @@ export default function AdminDashboard() {
     .sort((a, b) => new Date(b.claimed_at).getTime() - new Date(a.claimed_at).getTime())
     .slice(0, 5);
 
-  const brand = '#2563EB';
+  const brand = '#F97316';
 
   if (dashboardError) {
     return (
@@ -1689,14 +1689,14 @@ export default function AdminDashboard() {
         <div>
           <h2 className="text-xl font-bold text-stone-800 mb-2">No se pudo cargar el dashboard</h2>
           <p className="text-sm text-stone-500 max-w-sm">{dashboardError}</p>
-          <p className="text-xs font-bold mt-3 px-3 py-1.5 rounded-full inline-block" style={{ color: '#2563EB', background: '#fff7f5', border: '1px solid #fde8e0' }}>
+          <p className="text-xs font-bold mt-3 px-3 py-1.5 rounded-full inline-block" style={{ color: '#F97316', background: '#fff7f5', border: '1px solid #fde8e0' }}>
             Estamos trabajando en ello
           </p>
         </div>
         <button
           onClick={() => loadDashboard.current()}
           className="flex items-center gap-2 px-6 py-2.5 rounded-xl text-white text-sm font-bold transition-all shadow-sm hover:opacity-90"
-          style={{ background: 'linear-gradient(135deg,#2563EB,#0891B2)', boxShadow: '0 4px 16px rgba(37,99,235,0.3)' }}
+          style={{ background: 'linear-gradient(135deg,#F97316,#0891B2)', boxShadow: '0 4px 16px rgba(249,115,22,0.3)' }}
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -1838,7 +1838,7 @@ export default function AdminDashboard() {
         {!loading && showOnboardingBanner && (
           <div
             className="rounded-2xl border border-orange-200 p-5 flex items-center justify-between flex-wrap gap-4"
-            style={{ background: 'linear-gradient(135deg, #FDE8E0 0%, #FEF3C7 100%)', boxShadow: '0 1px 2px rgba(37,99,235,0.06), 0 4px 12px rgba(37,99,235,0.1)' }}
+            style={{ background: 'linear-gradient(135deg, #FDE8E0 0%, #FEF3C7 100%)', boxShadow: '0 1px 2px rgba(249,115,22,0.06), 0 4px 12px rgba(249,115,22,0.1)' }}
           >
             <div className="flex items-center gap-4">
               <span className="text-3xl shrink-0"><HandRaisedIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></span>
@@ -1910,7 +1910,7 @@ export default function AdminDashboard() {
             <select
               value={selectedRestaurant}
               onChange={(e) => setSelectedRestaurant(e.target.value)}
-              className="bg-white rounded-xl border border-[#E8E3DC] text-stone-600 text-sm font-medium px-3 py-2 outline-none focus:ring-2 focus:ring-[#2563EB] focus:border-[#2563EB] transition-all cursor-pointer"
+              className="bg-white rounded-xl border border-[#E8E3DC] text-stone-600 text-sm font-medium px-3 py-2 outline-none focus:ring-2 focus:ring-[#F97316] focus:border-[#F97316] transition-all cursor-pointer"
               style={{ boxShadow: cardShadow }}
             >
               <option value="all">Todas las sucursales</option>
@@ -1927,10 +1927,10 @@ export default function AdminDashboard() {
                 <StatCard
                   label="Entregados"
                   value={entregados}
-                  borderColor="#2563EB"
+                  borderColor="#F97316"
                   bgColor="rgba(255,255,255,0.25)"
                   textColor="white"
-                  gradient="linear-gradient(135deg,#2563EB 0%,#0EA5E9 100%)"
+                  gradient="linear-gradient(135deg,#F97316 0%,#0EA5E9 100%)"
                   trend={claimsTrend}
                   trendLabel={claimsTrendLabel}
                   icon={<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="rgba(255,255,255,0.22)" /><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg>}
@@ -1947,10 +1947,10 @@ export default function AdminDashboard() {
                 <StatCard
                   label="Total Premios"
                   value={totalPremios}
-                  borderColor="#8B5CF6"
+                  borderColor="#1a6b3c"
                   bgColor="rgba(255,255,255,0.25)"
                   textColor="white"
-                  gradient="linear-gradient(135deg,#7C3AED 0%,#A78BFA 100%)"
+                  gradient="linear-gradient(135deg,#1a6b3c 0%,#A78BFA 100%)"
                   icon={<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3" y="9" width="18" height="11" rx="2" fill="rgba(255,255,255,0.22)" /><path d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg>}
                 />
                 <StatCard
@@ -1988,7 +1988,7 @@ export default function AdminDashboard() {
                 <p className="text-xs text-[#a8a29e]">Cobros diarios registrados</p>
               </div>
               {activityData.length > 0 && (
-                <span className="text-xs font-bold text-[#2563EB] tabular-nums">
+                <span className="text-xs font-bold text-[#F97316] tabular-nums">
                   {activityData.reduce((s, d) => s + d.count, 0)} total
                 </span>
               )}
@@ -2023,7 +2023,7 @@ export default function AdminDashboard() {
                 </svg>
               </div>
               <div>
-                <p className="font-bold text-[#1C1917] group-hover:text-[#2563EB] transition-colors">Generar Premio</p>
+                <p className="font-bold text-[#1C1917] group-hover:text-[#F97316] transition-colors">Generar Premio</p>
                 <p className="text-xs text-[#a8a29e] mt-0.5">Crea un nuevo QR de premio</p>
               </div>
             </Link>
@@ -2080,7 +2080,7 @@ export default function AdminDashboard() {
             <div className="flex flex-col gap-2">
               {(() => {
                 const steps = [
-                  { label: 'QRs Generados', count: totalPremios, color: '#2563EB', widthPct: 100 },
+                  { label: 'QRs Generados', count: totalPremios, color: '#F97316', widthPct: 100 },
                   {
                     label: 'Registrados', count: totalCobros, color: '#0EA5E9',
                     widthPct: totalPremios > 0 ? Math.round((totalCobros / totalPremios) * 100) : 0,
@@ -2149,7 +2149,7 @@ export default function AdminDashboard() {
             <p className="text-xs text-[#a8a29e] mb-4">
               Cobros registrados por día
               {selectedRestaurant !== 'all' && (
-                <span className="ml-1 font-semibold text-[#2563EB]">· {selectedRestaurant}</span>
+                <span className="ml-1 font-semibold text-[#F97316]">· {selectedRestaurant}</span>
               )}
             </p>
             {loading ? (
@@ -2278,7 +2278,7 @@ export default function AdminDashboard() {
               {/* Best day */}
               <div className="bg-white rounded-2xl border border-[#E8E3DC] p-5 flex items-center gap-4" style={{ boxShadow: cardShadow }}>
                 <div className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0" style={{ background: '#ede9fe' }}>
-                  <svg className="w-5 h-5 text-violet-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5 text-[#1a6b3c]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
                 </div>
@@ -2341,7 +2341,7 @@ export default function AdminDashboard() {
                     <div className="relative w-20 h-20 shrink-0">
                       <svg viewBox="0 0 36 36" className="w-20 h-20 -rotate-90">
                         <circle cx="18" cy="18" r="15.9" fill="none" stroke="#f5f5f4" strokeWidth="3" />
-                        <circle cx="18" cy="18" r="15.9" fill="none" stroke="#2563EB" strokeWidth="3"
+                        <circle cx="18" cy="18" r="15.9" fill="none" stroke="#F97316" strokeWidth="3"
                           strokeDasharray={`${pct} ${100 - pct}`} strokeLinecap="round" />
                       </svg>
                       <div className="absolute inset-0 flex items-center justify-center">
@@ -2377,10 +2377,10 @@ export default function AdminDashboard() {
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center justify-between mb-1">
                             <span className="text-xs font-semibold text-[#1C1917] truncate max-w-[140px]">{name}</span>
-                            <span className="text-xs font-bold text-[#2563EB] shrink-0 ml-2">{count}</span>
+                            <span className="text-xs font-bold text-[#F97316] shrink-0 ml-2">{count}</span>
                           </div>
                           <div className="h-2 bg-[#f5f5f4] rounded-full overflow-hidden">
-                            <div className="h-2 rounded-full transition-all" style={{ width: `${(count / maxVal) * 100}%`, background: i === 0 ? '#2563EB' : i === 1 ? '#0EA5E9' : '#BAE6FD' }} />
+                            <div className="h-2 rounded-full transition-all" style={{ width: `${(count / maxVal) * 100}%`, background: i === 0 ? '#F97316' : i === 1 ? '#0EA5E9' : '#BAE6FD' }} />
                           </div>
                         </div>
                       </div>
@@ -2408,7 +2408,7 @@ export default function AdminDashboard() {
                       const isTop = i === maxDay;
                       return (
                         <div key={day} className={`flex flex-col items-center gap-1 px-3 py-2 rounded-xl text-xs font-bold transition-all ${isTop ? 'text-white' : 'text-[#78716c] bg-[#FAFAF9]'}`}
-                          style={isTop ? { background: '#2563EB' } : {}}>
+                          style={isTop ? { background: '#F97316' } : {}}>
                           <span>{day}</span>
                           <span className={isTop ? 'text-white/80 font-normal' : 'text-[#a8a29e] font-normal'}>{counts[i]}</span>
                         </div>
@@ -2442,7 +2442,7 @@ export default function AdminDashboard() {
                 return (
                   <div className="flex items-center gap-4">
                     <div className="w-14 h-14 rounded-2xl flex items-center justify-center" style={{ background: '#fde8e0' }}>
-                      <svg className="w-6 h-6" style={{ color: '#2563EB' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-6 h-6" style={{ color: '#F97316' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
                     </div>

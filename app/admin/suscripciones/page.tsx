@@ -121,7 +121,7 @@ function SuscripcionesContent() {
               <input
                 value={phone} onChange={e => setPhone(e.target.value)} required
                 placeholder="5512345678"
-                className="border border-[#E8E3DC] rounded-xl px-3 py-2 text-sm w-44 focus:outline-none focus:border-[#2563EB]"
+                className="border border-[#E8E3DC] rounded-xl px-3 py-2 text-sm w-44 focus:outline-none focus:border-[#F97316]"
               />
             </div>
             <div>
@@ -129,13 +129,13 @@ function SuscripcionesContent() {
               <input
                 value={email} onChange={e => setEmail(e.target.value)} type="email" required
                 placeholder="cliente@email.com"
-                className="border border-[#E8E3DC] rounded-xl px-3 py-2 text-sm w-52 focus:outline-none focus:border-[#2563EB]"
+                className="border border-[#E8E3DC] rounded-xl px-3 py-2 text-sm w-52 focus:outline-none focus:border-[#F97316]"
               />
             </div>
             <button
               type="submit" disabled={sending}
               className="px-5 py-2.5 rounded-xl text-white text-sm font-bold disabled:opacity-60"
-              style={{ background: '#2563EB' }}
+              style={{ background: '#F97316' }}
             >
               {sending ? 'Generando...' : 'Generar link Stripe →'}
             </button>

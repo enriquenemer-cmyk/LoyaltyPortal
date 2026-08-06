@@ -16,7 +16,7 @@ interface Particle {
   opacity: number;
 }
 
-const CONFETTI_COLORS = ['#2563EB', '#0EA5E9', '#38BDF8', '#34d399', '#60a5fa', '#a78bfa', '#f472b6'];
+const CONFETTI_COLORS = ['#F97316', '#0EA5E9', '#38BDF8', '#34d399', '#60a5fa', '#a78bfa', '#f472b6'];
 
 function launchConfetti() {
   const canvas = document.createElement('canvas');
@@ -224,7 +224,7 @@ function OnboardingTourInner() {
             left: highlightRect.left - 6,
             width: highlightRect.width + 12,
             height: highlightRect.height + 12,
-            boxShadow: '0 0 0 3px #2563EB, 0 0 0 6px rgba(37,99,235,0.25)',
+            boxShadow: '0 0 0 3px #F97316, 0 0 0 6px rgba(249,115,22,0.25)',
           }}
           aria-hidden="true"
         />
@@ -303,7 +303,7 @@ function OnboardingTourInner() {
                 style={{
                   width: i + 1 === tourStep ? 20 : 8,
                   height: 8,
-                  background: i + 1 === tourStep ? '#2563EB' : i + 1 < tourStep ? '#0EA5E9' : '#e7e5e4',
+                  background: i + 1 === tourStep ? '#F97316' : i + 1 < tourStep ? '#0EA5E9' : '#e7e5e4',
                 }}
               />
             ))}
@@ -320,7 +320,7 @@ function OnboardingTourInner() {
             <button
               onClick={isLast ? finish : next}
               className="text-xs font-bold text-white px-4 py-1.5 rounded-lg transition-opacity hover:opacity-90"
-              style={{ background: '#2563EB' }}
+              style={{ background: '#F97316' }}
             >
               {isLast ? '¡Listo!' : 'Siguiente →'}
             </button>

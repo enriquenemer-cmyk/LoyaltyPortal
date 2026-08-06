@@ -207,7 +207,7 @@ export default function AutomatizacionPage() {
           <div className="px-6 py-5">
             <Link
               href="/admin/reglas"
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold text-[#2563EB] border border-orange-200 bg-orange-50 hover:bg-orange-100 transition-colors"
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold text-[#F97316] border border-orange-200 bg-orange-50 hover:bg-orange-100 transition-colors"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />

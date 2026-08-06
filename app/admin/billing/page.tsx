@@ -89,7 +89,7 @@ export default function BillingPage() {
           <div className="flex gap-3">
             <input value={email} onChange={e => setEmail(e.target.value)} type="email"
               placeholder="email@restaurante.com"
-              className="flex-1 border border-[#E8E3DC] rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-[#2563EB]"
+              className="flex-1 border border-[#E8E3DC] rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-[#F97316]"
             />
           </div>
           <p className="text-xs text-stone-400 mt-2">Luego haz click en "Generar link" en el restaurante deseado</p>

@@ -298,7 +298,7 @@ export default function LoginPage() {
               className="w-full text-white font-bold py-4 rounded-xl transition-all text-base disabled:opacity-60 mt-2"
               style={{
                 background: 'linear-gradient(135deg,#F97316,#ea6a0a)',
-                boxShadow: loading ? 'none' : '0 8px 24px rgba(37,99,235,0.40)',
+                boxShadow: loading ? 'none' : '0 8px 24px rgba(249,115,22,0.40)',
               }}
             >
               {loading ? (

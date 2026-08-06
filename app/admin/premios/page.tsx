@@ -124,7 +124,7 @@ function QRModal({ prize, onClose }: { prize: Prize; onClose: () => void }) {
     >
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden border border-[#E8E3DC] pop-in">
         {/* Header */}
-        <div className="bg-gradient-to-r from-blue-600 to-blue-500 px-5 py-4 flex items-center justify-between">
+        <div className="bg-gradient-to-r from-orange-500 to-blue-500 px-5 py-4 flex items-center justify-between">
           <div>
             <p className="text-xs font-bold text-blue-100 uppercase tracking-widest mb-0.5">Ver QR</p>
             <h2 className="text-white font-extrabold text-base leading-tight truncate max-w-[220px]">{prize.name}</h2>
@@ -614,7 +614,7 @@ export default function PremiosPage() {
               value={restaurantFilter}
               onChange={(e) => { setRestaurantFilter(e.target.value); setPage(1); }}
               className="text-sm border border-[#E8E3DC] rounded-xl px-3 py-2.5 bg-white focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-orange-400 transition-all shadow-sm"
-              style={restaurantFilter ? { borderColor: '#2563EB', color: '#2563EB', fontWeight: 700 } : {}}
+              style={restaurantFilter ? { borderColor: '#F97316', color: '#F97316', fontWeight: 700 } : {}}
             >
               <option value="">Todos los restaurantes</option>
               {restaurants.map((r) => (
@@ -643,7 +643,7 @@ export default function PremiosPage() {
                 <Link
                   href="/admin/generate"
                   className="inline-flex items-center gap-2 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition-all"
-                  style={{ background: 'linear-gradient(135deg,#2563EB,#0891B2)', boxShadow: '0 4px 16px rgba(37,99,235,0.35)' }}
+                  style={{ background: 'linear-gradient(135deg,#F97316,#0891B2)', boxShadow: '0 4px 16px rgba(249,115,22,0.35)' }}
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
@@ -666,7 +666,7 @@ export default function PremiosPage() {
                         checked={selectAll}
                         onChange={handleToggleSelectAll}
                         className="w-4 h-4 rounded border-stone-300 cursor-pointer"
-                        style={{ accentColor: '#2563EB' }}
+                        style={{ accentColor: '#F97316' }}
                         aria-label="Seleccionar todos"
                       />
                     </th>
@@ -698,7 +698,7 @@ export default function PremiosPage() {
                               checked={isSelected}
                               onChange={() => handleToggleRow(p.id)}
                               className="w-4 h-4 rounded border-stone-300 cursor-pointer"
-                              style={{ accentColor: '#2563EB' }}
+                              style={{ accentColor: '#F97316' }}
                               aria-label={`Seleccionar ${p.name}`}
                             />
                           </td>

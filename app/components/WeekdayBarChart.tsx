@@ -33,7 +33,7 @@ export default function WeekdayBarChart({ data, valueSuffix = '', formatValue }:
     >
       <defs>
         <linearGradient id="weekdayBarGrad" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#2563EB" />
+          <stop offset="0%" stopColor="#F97316" />
           <stop offset="100%" stopColor="#0EA5E9" />
         </linearGradient>
       </defs>
@@ -64,7 +64,7 @@ export default function WeekdayBarChart({ data, valueSuffix = '', formatValue }:
               />
             )}
             {d.value > 0 && (
-              <text x={x + barW / 2} y={y - 6} textAnchor="middle" fontSize="11" fill="#2563EB" fontWeight="800">
+              <text x={x + barW / 2} y={y - 6} textAnchor="middle" fontSize="11" fill="#F97316" fontWeight="800">
                 {fmt(d.value)}
               </text>
             )}

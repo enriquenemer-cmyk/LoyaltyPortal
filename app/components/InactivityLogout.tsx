@@ -62,7 +62,7 @@ export default function InactivityLogout() {
         <button
           onClick={reset}
           className="w-full py-3 rounded-xl text-white font-bold text-sm"
-          style={{ background: 'linear-gradient(135deg,#2563EB,#0891B2)' }}
+          style={{ background: 'linear-gradient(135deg,#F97316,#0891B2)' }}
         >
           Continuar sesión
         </button>

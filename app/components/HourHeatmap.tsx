@@ -84,7 +84,7 @@ export default function HourHeatmap({ hours }: { hours: HeatmapHour[] }) {
         </div>
         <div className="flex items-center gap-2">
           <span className="text-[10px] text-[#a8a29e] font-semibold">Menos</span>
-          {['#EFF6FF', '#BFDBFE', '#60A5FA', '#2563EB', '#1e3a8a'].map((c) => (
+          {['#EFF6FF', '#BFDBFE', '#60A5FA', '#F97316', '#1e3a8a'].map((c) => (
             <div key={c} className="w-4 h-4 rounded" style={{ backgroundColor: c }} />
           ))}
           <span className="text-[10px] text-[#a8a29e] font-semibold">Más</span>

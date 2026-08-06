@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
-const brand = '#2563EB';
+const brand = '#F97316';
 const cardShadow = '0 1px 2px rgba(28,25,23,0.04), 0 4px 16px rgba(28,25,23,0.06)';
 
 function BurritoIllustration() {
@@ -13,7 +13,7 @@ function BurritoIllustration() {
       {/* Plate */}
       <ellipse cx="80" cy="130" rx="60" ry="14" fill="#FDE8E0" />
       {/* Burrito body */}
-      <rect x="30" y="72" width="100" height="50" rx="25" fill="#2563EB" />
+      <rect x="30" y="72" width="100" height="50" rx="25" fill="#F97316" />
       {/* Burrito wrap lines */}
       <path d="M50 72 Q80 60 110 72" stroke="#C94010" strokeWidth="2.5" strokeLinecap="round" fill="none" />
       <path d="M38 95 Q80 88 122 95" stroke="#C94010" strokeWidth="2" strokeLinecap="round" fill="none" />
@@ -29,9 +29,9 @@ function BurritoIllustration() {
       <path d="M120 22 L123.5 33 L135 33 L125.5 40.5 L129 51.5 L120 44.5 L111 51.5 L114.5 40.5 L105 33 L116.5 33 Z" fill="#FFF" />
       {/* Sparkles */}
       <circle cx="40" cy="35" r="4" fill="#FB923C" opacity="0.6" />
-      <circle cx="28" cy="55" r="3" fill="#2563EB" opacity="0.4" />
+      <circle cx="28" cy="55" r="3" fill="#F97316" opacity="0.4" />
       <circle cx="145" cy="68" r="3.5" fill="#F59E0B" opacity="0.5" />
-      <path d="M52 28 L54 24 L56 28 L60 30 L56 32 L54 36 L52 32 L48 30 Z" fill="#2563EB" opacity="0.5" />
+      <path d="M52 28 L54 24 L56 28 L60 30 L56 32 L54 36 L52 32 L48 30 Z" fill="#F97316" opacity="0.5" />
     </svg>
   );
 }
@@ -119,7 +119,7 @@ function Step2({ onNext }: { onNext: () => void }) {
     }
   }
 
-  const inputCls = 'w-full rounded-xl border border-[#E8E3DC] bg-white px-4 py-2.5 text-sm text-[#1C1917] placeholder:text-[#a8a29e] outline-none focus:ring-2 focus:ring-[#2563EB] focus:border-[#2563EB] transition-all';
+  const inputCls = 'w-full rounded-xl border border-[#E8E3DC] bg-white px-4 py-2.5 text-sm text-[#1C1917] placeholder:text-[#a8a29e] outline-none focus:ring-2 focus:ring-[#F97316] focus:border-[#F97316] transition-all';
 
   return (
     <div className="flex flex-col gap-6">
@@ -221,7 +221,7 @@ function Step3({ onFinish }: { onFinish: () => void }) {
             'El sistema genera un QR descargable',
           ].map((item, i) => (
             <li key={i} className="flex items-start gap-2">
-              <span className="text-[#2563EB] font-bold shrink-0">{i + 1}.</span>
+              <span className="text-[#F97316] font-bold shrink-0">{i + 1}.</span>
               {item}
             </li>
           ))}

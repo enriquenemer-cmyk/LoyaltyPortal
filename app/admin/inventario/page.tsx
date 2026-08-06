@@ -203,7 +203,7 @@ function NewProductModal({
             <select
               value={restaurantId}
               onChange={(e) => setRestaurantId(e.target.value)}
-              className="w-full px-3 py-2.5 border border-[#E8E3DC] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20 focus:border-[#2563EB]"
+              className="w-full px-3 py-2.5 border border-[#E8E3DC] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#F97316]/20 focus:border-[#F97316]"
             >
               <option value="">Sin restaurante específico</option>
               {restaurants.map((r) => (
@@ -219,7 +219,7 @@ function NewProductModal({
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Ej. Servilletas"
-              className="w-full px-3 py-2.5 border border-[#E8E3DC] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20 focus:border-[#2563EB]"
+              className="w-full px-3 py-2.5 border border-[#E8E3DC] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#F97316]/20 focus:border-[#F97316]"
             />
           </div>
 
@@ -231,7 +231,7 @@ function NewProductModal({
                 value={unit}
                 onChange={(e) => setUnit(e.target.value)}
                 placeholder="unidad, kg, lt..."
-                className="w-full px-3 py-2.5 border border-[#E8E3DC] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20 focus:border-[#2563EB]"
+                className="w-full px-3 py-2.5 border border-[#E8E3DC] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#F97316]/20 focus:border-[#F97316]"
               />
             </div>
             <div>
@@ -241,7 +241,7 @@ function NewProductModal({
                 min="0"
                 value={minStockAlert}
                 onChange={(e) => setMinStockAlert(e.target.value)}
-                className="w-full px-3 py-2.5 border border-[#E8E3DC] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20 focus:border-[#2563EB]"
+                className="w-full px-3 py-2.5 border border-[#E8E3DC] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#F97316]/20 focus:border-[#F97316]"
               />
             </div>
           </div>
@@ -260,7 +260,7 @@ function NewProductModal({
             onClick={handleSubmit}
             disabled={saving}
             className="px-5 py-2.5 rounded-xl text-sm font-bold text-white transition-all disabled:opacity-50"
-            style={{ background: 'linear-gradient(135deg,#2563EB,#0891B2)' }}
+            style={{ background: 'linear-gradient(135deg,#F97316,#0891B2)' }}
           >
             {saving ? 'Guardando...' : 'Crear producto'}
           </button>
@@ -332,7 +332,7 @@ function MovementModal({
               value={quantity}
               onChange={(e) => setQuantity(e.target.value)}
               autoFocus
-              className="w-full px-3 py-2.5 border border-[#E8E3DC] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20 focus:border-[#2563EB]"
+              className="w-full px-3 py-2.5 border border-[#E8E3DC] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#F97316]/20 focus:border-[#F97316]"
             />
           </div>
           <div>
@@ -342,7 +342,7 @@ function MovementModal({
               value={note}
               onChange={(e) => setNote(e.target.value)}
               placeholder="Motivo, proveedor, etc."
-              className="w-full px-3 py-2.5 border border-[#E8E3DC] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20 focus:border-[#2563EB]"
+              className="w-full px-3 py-2.5 border border-[#E8E3DC] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#F97316]/20 focus:border-[#F97316]"
             />
           </div>
         </div>
@@ -456,7 +456,7 @@ export default function InventarioPage() {
           <button
             onClick={() => setShowNewProduct(true)}
             className="flex items-center gap-2 font-bold px-5 py-3 rounded-xl text-sm transition-all"
-            style={{ background: 'white', color: '#2563EB', boxShadow: '0 4px 16px rgba(0,0,0,0.15)' }}
+            style={{ background: 'white', color: '#F97316', boxShadow: '0 4px 16px rgba(0,0,0,0.15)' }}
           >
             + Nuevo Producto
           </button>
@@ -470,7 +470,7 @@ export default function InventarioPage() {
         {/* KPI cards */}
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-8">
           {[
-            { label: 'Productos activos', value: activeProducts.length, icon: '', borderColor: '#2563EB', bgColor: '#dbeafe', numColor: '#2563EB' },
+            { label: 'Productos activos', value: activeProducts.length, icon: '', borderColor: '#F97316', bgColor: '#dbeafe', numColor: '#F97316' },
             { label: 'Stock bajo', value: lowStockCount, icon: '', borderColor: '#dc2626', bgColor: '#fee2e2', numColor: '#dc2626' },
             { label: 'Movimientos hoy', value: movementsToday, icon: '', borderColor: '#0d9488', bgColor: '#ccfbf1', numColor: '#0d9488' },
           ].map(({ label, value, icon, borderColor, bgColor, numColor }) => (
@@ -508,8 +508,8 @@ export default function InventarioPage() {
             onClick={() => setTab('productos')}
             className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-bold border transition-all ${
               tab === 'productos'
-                ? 'bg-[#2563EB] text-white border-[#2563EB] shadow-md shadow-blue-200'
-                : 'bg-white text-slate-600 border-slate-200 hover:border-[#2563EB] hover:text-[#2563EB]'
+                ? 'bg-[#F97316] text-white border-[#F97316] shadow-md shadow-blue-200'
+                : 'bg-white text-slate-600 border-slate-200 hover:border-[#F97316] hover:text-[#F97316]'
             }`}
           >
             Productos
@@ -518,8 +518,8 @@ export default function InventarioPage() {
             onClick={() => setTab('movimientos')}
             className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-bold border transition-all ${
               tab === 'movimientos'
-                ? 'bg-[#2563EB] text-white border-[#2563EB] shadow-md shadow-blue-200'
-                : 'bg-white text-slate-600 border-slate-200 hover:border-[#2563EB] hover:text-[#2563EB]'
+                ? 'bg-[#F97316] text-white border-[#F97316] shadow-md shadow-blue-200'
+                : 'bg-white text-slate-600 border-slate-200 hover:border-[#F97316] hover:text-[#F97316]'
             }`}
           >
             Historial de movimientos

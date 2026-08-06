@@ -127,8 +127,8 @@ function SegmentButton({
       onClick={onClick}
       className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-bold border transition-all whitespace-nowrap ${
         active
-          ? 'bg-[#2563EB] text-white border-[#2563EB] shadow-md shadow-blue-200'
-          : 'bg-white text-slate-600 border-slate-200 hover:border-[#2563EB] hover:text-[#2563EB]'
+          ? 'bg-[#F97316] text-white border-[#F97316] shadow-md shadow-blue-200'
+          : 'bg-white text-slate-600 border-slate-200 hover:border-[#F97316] hover:text-[#F97316]'
       }`}
     >
       <span>{seg.icon}</span>
@@ -173,7 +173,7 @@ function DaysBadge({ days }: { days: number }) {
 function HistorialRow({ claim }: { claim: Claim }) {
   return (
     <div className="flex items-start gap-3 py-2 border-b border-slate-50 last:border-0">
-      <div className="w-1.5 h-1.5 rounded-full bg-[#2563EB]/40 mt-1.5 shrink-0" />
+      <div className="w-1.5 h-1.5 rounded-full bg-[#F97316]/40 mt-1.5 shrink-0" />
       <div className="flex-1 min-w-0">
         <p className="text-xs font-semibold text-slate-700 truncate">{claim.prize_name}</p>
         <p className="text-[10px] text-slate-400">{claim.prize_location || claim.location || '—'}</p>
@@ -202,11 +202,11 @@ function CustomerRow({ customer }: { customer: CustomerProfile }) {
             <Avatar name={customer.full_name} />
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-medium text-slate-900 group-hover:text-[#2563EB] transition-colors text-sm">
+                <span className="font-medium text-slate-900 group-hover:text-[#F97316] transition-colors text-sm">
                   {customer.full_name}
                 </span>
                 {customer.isNew && (
-                  <span className="text-[9px] font-extrabold bg-violet-100 text-violet-600 border border-violet-200 rounded-full px-1.5 py-0.5 uppercase tracking-wide">
+                  <span className="text-[9px] font-extrabold bg-violet-100 text-[#1a6b3c] border border-violet-200 rounded-full px-1.5 py-0.5 uppercase tracking-wide">
                     Nuevo
                   </span>
                 )}
@@ -225,7 +225,7 @@ function CustomerRow({ customer }: { customer: CustomerProfile }) {
         <td className="px-5 py-4">
           <a
             href={`mailto:${customer.email}`}
-            className="text-[#2563EB] hover:text-orange-700 hover:underline text-xs"
+            className="text-[#F97316] hover:text-orange-700 hover:underline text-xs"
           >
             {customer.email}
           </a>
@@ -241,7 +241,7 @@ function CustomerRow({ customer }: { customer: CustomerProfile }) {
 
         {/* Total canjes */}
         <td className="px-5 py-4">
-          <span className="inline-flex items-center gap-1.5 bg-orange-50 text-[#2563EB] text-xs font-bold px-2.5 py-1 rounded-full border border-orange-200">
+          <span className="inline-flex items-center gap-1.5 bg-orange-50 text-[#F97316] text-xs font-bold px-2.5 py-1 rounded-full border border-orange-200">
             <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
             </svg>
@@ -284,8 +284,8 @@ function CustomerRow({ customer }: { customer: CustomerProfile }) {
             onClick={() => setExpanded((v) => !v)}
             className={`inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border transition-all ${
               expanded
-                ? 'bg-[#2563EB] text-white border-[#2563EB]'
-                : 'bg-white text-slate-500 border-slate-200 hover:border-[#2563EB] hover:text-[#2563EB]'
+                ? 'bg-[#F97316] text-white border-[#F97316]'
+                : 'bg-white text-slate-500 border-slate-200 hover:border-[#F97316] hover:text-[#F97316]'
             }`}
           >
             Ver historial
@@ -305,7 +305,7 @@ function CustomerRow({ customer }: { customer: CustomerProfile }) {
       {expanded && (
         <tr>
           <td colSpan={7} className="px-5 pb-4 pt-0 bg-orange-50/30">
-            <div className="ml-13 pl-3 border-l-2 border-[#2563EB]/20 ml-[52px]">
+            <div className="ml-13 pl-3 border-l-2 border-[#F97316]/20 ml-[52px]">
               <p className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest mb-2 mt-1">
                 Historial de canjes — {customer.totalClaims} en total
               </p>
@@ -446,7 +446,7 @@ export default function ClientesPage() {
               <div className="flex items-center mt-3 gap-2">
                 <div className="flex -space-x-2">
                   {['A','M','R','L'].map((l,i) => (
-                    <div key={i} className="w-7 h-7 rounded-full border-2 flex items-center justify-center text-white text-[9px] font-black" style={{ borderColor: 'rgba(255,255,255,0.4)', background: ['#2563eb','#7c3aed','#0d9488','#d97706'][i] }}>{l}</div>
+                    <div key={i} className="w-7 h-7 rounded-full border-2 flex items-center justify-center text-white text-[9px] font-black" style={{ borderColor: 'rgba(255,255,255,0.4)', background: ['#2563eb','#1a6b3c','#0d9488','#d97706'][i] }}>{l}</div>
                   ))}
                   {customers.length > 4 && <div className="w-7 h-7 rounded-full border-2 flex items-center justify-center text-[9px] font-black" style={{ borderColor: 'rgba(255,255,255,0.4)', background: 'rgba(255,255,255,0.2)', color: 'white' }}>+{customers.length - 4}</div>}
                 </div>
@@ -490,10 +490,10 @@ export default function ClientesPage() {
         ) : (
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
           {[
-            { label: 'Clientes únicos', value: customers.length, icon: '', borderColor: '#2563EB', bgColor: '#fde8e0', numColor: '#2563EB' },
+            { label: 'Clientes únicos', value: customers.length, icon: '', borderColor: '#F97316', bgColor: '#fde8e0', numColor: '#F97316' },
             { label: 'Frecuentes', value: segmentCounts.frecuentes, icon: '', borderColor: '#0284C7', bgColor: '#fef3c7', numColor: '#0EA5E9' },
-            { label: 'Sin canjear', value: segmentCounts.sin_canjear, icon: '⏳', borderColor: '#0284C7', bgColor: '#fef9c3', numColor: '#1D4ED8' },
-            { label: 'Nuevos (30d)', value: segmentCounts.nuevos, icon: '', borderColor: '#8b5cf6', bgColor: '#ede9fe', numColor: '#7c3aed' },
+            { label: 'Sin canjear', value: segmentCounts.sin_canjear, icon: '⏳', borderColor: '#0284C7', bgColor: '#fef9c3', numColor: '#ea6a0a' },
+            { label: 'Nuevos (30d)', value: segmentCounts.nuevos, icon: '', borderColor: '#8b5cf6', bgColor: '#ede9fe', numColor: '#1a6b3c' },
           ].map(({ label, value, icon, borderColor, bgColor, numColor }) => (
             <div
               key={label}
@@ -541,7 +541,7 @@ export default function ClientesPage() {
               placeholder="Buscar por nombre, correo o teléfono..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 bg-white border border-[#E8E3DC] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20 focus:border-[#2563EB] transition-all shadow-sm"
+              className="w-full pl-10 pr-4 py-2.5 bg-white border border-[#E8E3DC] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#F97316]/20 focus:border-[#F97316] transition-all shadow-sm"
             />
           </div>
           {search && (
@@ -626,7 +626,7 @@ export default function ClientesPage() {
                 <span className="font-medium text-slate-600">{filtered.length}</span> de{' '}
                 <span className="font-medium text-slate-600">{customers.length}</span> clientes
                 {segment !== 'todos' && (
-                  <span className="ml-2 text-[#2563EB] font-bold">
+                  <span className="ml-2 text-[#F97316] font-bold">
                     · {SEGMENTS.find((s) => s.key === segment)?.label}
                   </span>
                 )}

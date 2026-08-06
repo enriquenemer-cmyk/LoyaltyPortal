@@ -108,7 +108,7 @@ export default function WebhooksPage() {
             <button
               onClick={copyUrl}
               className="shrink-0 px-4 py-3 rounded-xl font-bold text-sm text-white transition-all"
-              style={{ background: copied ? '#22c55e' : 'linear-gradient(135deg,#2563EB,#0891B2)' }}
+              style={{ background: copied ? '#22c55e' : 'linear-gradient(135deg,#F97316,#0891B2)' }}
             >
               {copied ? 'Copiado' : 'Copiar'}
             </button>
@@ -162,7 +162,7 @@ export default function WebhooksPage() {
             onClick={sendTest}
             disabled={testing}
             className="w-full font-bold py-3.5 rounded-xl text-white flex items-center justify-center gap-2 disabled:opacity-60"
-            style={{ background: 'linear-gradient(135deg,#2563EB,#0891B2)', boxShadow: '0 4px 16px rgba(37,99,235,0.30)' }}
+            style={{ background: 'linear-gradient(135deg,#F97316,#0891B2)', boxShadow: '0 4px 16px rgba(249,115,22,0.30)' }}
           >
             {testing
               ? <><svg className="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/></svg>Enviando...</>

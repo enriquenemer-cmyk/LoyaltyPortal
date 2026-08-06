@@ -60,7 +60,7 @@ export default function ApiDocsPage() {
     <div className="min-h-screen bg-[#FAFAF9] p-6 md:p-10">
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
-          <p className="text-xs font-bold text-[#2563EB] uppercase tracking-widest mb-1">Desarrolladores</p>
+          <p className="text-xs font-bold text-[#F97316] uppercase tracking-widest mb-1">Desarrolladores</p>
           <h1 className="text-2xl font-bold text-[#1C1917]">Documentación de API</h1>
           <p className="text-sm text-[#78716c] mt-1">
             Base URL: <code className="bg-[#F5F5F4] px-2 py-0.5 rounded text-[#1C1917] font-mono text-xs">{typeof window !== 'undefined' ? window.location.origin : 'https://tu-dominio.vercel.app'}</code>

@@ -16,7 +16,7 @@ export default function AdminError({
 
   return (
     <div className="min-h-screen bg-[#FAFAF9] flex flex-col items-center justify-center gap-6 px-4 text-center">
-      <span className="text-8xl font-black bg-gradient-to-r from-blue-500 to-blue-300 bg-clip-text text-transparent leading-none">
+      <span className="text-8xl font-black bg-gradient-to-r from-orange-500 to-blue-300 bg-clip-text text-transparent leading-none">
         500
       </span>
       <span className="text-5xl"></span>

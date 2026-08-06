@@ -128,8 +128,8 @@ export default function Navbar() {
               onMouseEnter={() => setLogoHovered(true)}
               onMouseLeave={() => setLogoHovered(false)}
               style={{
-                background: 'linear-gradient(135deg,#2563EB,#0891B2)',
-                boxShadow: '0 3px 10px rgba(37,99,235,0.30)',
+                background: 'linear-gradient(135deg,#F97316,#0891B2)',
+                boxShadow: '0 3px 10px rgba(249,115,22,0.30)',
                 transform: logoHovered ? 'scale(1.12) rotate(-6deg)' : 'scale(1)',
                 transition: 'transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1)',
               }}
@@ -153,14 +153,14 @@ export default function Navbar() {
                   href={link.href}
                   className={`relative flex items-center gap-1.5 px-3.5 h-14 text-sm transition-all ${
                     exactActive
-                      ? 'font-semibold text-[#2563EB]'
+                      ? 'font-semibold text-[#F97316]'
                       : 'font-medium text-stone-500 hover:text-[#1C1917]'
                   }`}
                 >
                   {link.icon}
                   <span>{link.label}</span>
                   {exactActive && (
-                    <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#2563EB] rounded-t-full" style={{ animation: 'scale-in 0.2s ease-out' }} />
+                    <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#F97316] rounded-t-full" style={{ animation: 'scale-in 0.2s ease-out' }} />
                   )}
                 </Link>
               );
@@ -180,7 +180,7 @@ export default function Navbar() {
                 <Link
                   href="/admin/perfil"
                   title="Mi perfil"
-                  className="flex items-center justify-center w-8 h-8 rounded-lg text-stone-400 hover:text-[#2563EB] hover:bg-orange-50 border border-[#E8E3DC] transition-all"
+                  className="flex items-center justify-center w-8 h-8 rounded-lg text-stone-400 hover:text-[#F97316] hover:bg-orange-50 border border-[#E8E3DC] transition-all"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
@@ -228,7 +228,7 @@ export default function Navbar() {
                 onClick={() => setMobileOpen(false)}
                 className={`flex items-center gap-3 px-5 py-3 text-sm transition-colors ${
                   exactActive
-                    ? 'text-[#2563EB] font-semibold bg-orange-50'
+                    ? 'text-[#F97316] font-semibold bg-orange-50'
                     : 'text-stone-600 font-medium hover:bg-[#FAFAF9]'
                 }`}
               >

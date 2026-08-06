@@ -21,7 +21,7 @@ type Campaign = {
 type QRResult = { id: string; url: string; qrDataUrl: string; index: number; sig?: string };
 
 const inputClass =
-  'w-full bg-white border border-[#E8E3DC] rounded-lg px-3 py-2.5 text-sm text-[#1C1917] placeholder-[#a8a29e] focus:outline-none focus:ring-1 focus:ring-[#2563EB]/30 focus:border-[#2563EB] transition-colors';
+  'w-full bg-white border border-[#E8E3DC] rounded-lg px-3 py-2.5 text-sm text-[#1C1917] placeholder-[#a8a29e] focus:outline-none focus:ring-1 focus:ring-[#F97316]/30 focus:border-[#F97316] transition-colors';
 
 const labelClass = 'block text-[10px] font-semibold text-[#78716c] uppercase tracking-widest mb-1.5';
 const helperClass = 'text-xs text-stone-400 mt-1 leading-relaxed';
@@ -77,7 +77,7 @@ async function addLogoToQR(qrDataUrl: string): Promise<string> {
       ctx.save();
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillStyle = '#2563EB';
+      ctx.fillStyle = '#F97316';
       ctx.font = `bold ${Math.round(overlaySize * 0.38)}px sans-serif`;
       ctx.fillText('PT', size / 2, size / 2);
       ctx.restore();
@@ -144,7 +144,7 @@ function RestaurantCombobox({
   return (
     <div ref={containerRef} className="relative">
       <div
-        className="flex items-center w-full bg-white border border-[#E8E3DC] rounded-lg px-3 py-2.5 text-sm focus-within:ring-1 focus-within:ring-[#2563EB]/30 focus-within:border-[#2563EB] transition-colors cursor-text"
+        className="flex items-center w-full bg-white border border-[#E8E3DC] rounded-lg px-3 py-2.5 text-sm focus-within:ring-1 focus-within:ring-[#F97316]/30 focus-within:border-[#F97316] transition-colors cursor-text"
         onClick={() => { setOpen(true); inputRef.current?.focus(); }}
       >
         {selected && !open ? (
@@ -177,7 +177,7 @@ function RestaurantCombobox({
             role="option"
             aria-selected={value === ''}
             onMouseDown={(e) => { e.preventDefault(); onChange(''); setQuery(''); setOpen(false); }}
-            className={`px-3 py-2 text-sm cursor-pointer transition-colors ${value === '' ? 'bg-orange-50 text-[#2563EB] font-medium' : 'text-[#78716c] hover:bg-[#FAFAF9]'}`}
+            className={`px-3 py-2 text-sm cursor-pointer transition-colors ${value === '' ? 'bg-orange-50 text-[#F97316] font-medium' : 'text-[#78716c] hover:bg-[#FAFAF9]'}`}
           >
             Sin restaurante
           </li>
@@ -188,7 +188,7 @@ function RestaurantCombobox({
               aria-selected={r.id === value}
               onMouseDown={(e) => { e.preventDefault(); handleSelect(r); }}
               onMouseEnter={() => setHighlighted(i)}
-              className={`px-3 py-2 text-sm cursor-pointer transition-colors ${r.id === value ? 'bg-orange-50 text-[#2563EB] font-medium' : i === highlighted ? 'bg-[#FAFAF9] text-[#1C1917]' : 'text-[#1C1917] hover:bg-[#FAFAF9]'}`}
+              className={`px-3 py-2 text-sm cursor-pointer transition-colors ${r.id === value ? 'bg-orange-50 text-[#F97316] font-medium' : i === highlighted ? 'bg-[#FAFAF9] text-[#1C1917]' : 'text-[#1C1917] hover:bg-[#FAFAF9]'}`}
             >
               {r.name}
             </li>
@@ -210,7 +210,7 @@ function StepBar({ step }: { step: 1 | 2 }) {
       <div className="flex md:hidden items-center gap-2">
         <div
           className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold shrink-0"
-          style={{ background: '#2563EB', color: '#fff' }}
+          style={{ background: '#F97316', color: '#fff' }}
         >
           {step}
         </div>
@@ -231,7 +231,7 @@ function StepBar({ step }: { step: 1 | 2 }) {
                 <div
                   className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-semibold shrink-0 transition-all"
                   style={{
-                    background: done || active ? '#2563EB' : '#e7e5e4',
+                    background: done || active ? '#F97316' : '#e7e5e4',
                     color: done || active ? '#fff' : '#a8a29e',
                     border: !done && !active ? '2px solid #e7e5e4' : 'none',
                   }}
@@ -592,7 +592,7 @@ function GenerateForm() {
         <div className="max-w-2xl mx-auto px-4 py-10">
           {/* Header */}
           <div className="mb-8">
-            <p className="text-xs font-semibold text-[#2563EB] uppercase tracking-widest mb-2">Completado</p>
+            <p className="text-xs font-semibold text-[#F97316] uppercase tracking-widest mb-2">Completado</p>
             <h1 className="text-2xl font-bold text-[#1C1917]">
               {results.length === 1 ? 'Código generado' : `${results.length} códigos generados`}
             </h1>
@@ -612,14 +612,14 @@ function GenerateForm() {
               <div className="flex gap-6 mt-5">
                 <button
                   onClick={() => downloadOne(results[0])}
-                  className="flex items-center gap-1.5 text-sm text-[#1C1917] hover:text-[#2563EB] transition-colors font-medium"
+                  className="flex items-center gap-1.5 text-sm text-[#1C1917] hover:text-[#F97316] transition-colors font-medium"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
                   Descargar PNG
                 </button>
                 <button
                   onClick={printAll}
-                  className="flex items-center gap-1.5 text-sm text-[#1C1917] hover:text-[#2563EB] transition-colors font-medium"
+                  className="flex items-center gap-1.5 text-sm text-[#1C1917] hover:text-[#F97316] transition-colors font-medium"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" /></svg>
                   Imprimir
@@ -634,7 +634,7 @@ function GenerateForm() {
                     <img src={r.qrDataUrl} alt={`QR ${r.index}`} className="block rounded" style={{ width: 80, height: 80 }} />
                     <button
                       onClick={() => downloadOne(r)}
-                      className="mt-2 text-[10px] text-[#78716c] hover:text-[#2563EB] transition-colors"
+                      className="mt-2 text-[10px] text-[#78716c] hover:text-[#F97316] transition-colors"
                     >
                       Descargar
                     </button>
@@ -684,7 +684,7 @@ function GenerateForm() {
       {/* Prize card */}
       <div
         className="rounded-2xl overflow-hidden shadow-lg"
-        style={{ background: 'linear-gradient(135deg, #2563EB 0%, #0891B2 100%)' }}
+        style={{ background: 'linear-gradient(135deg, #F97316 0%, #0891B2 100%)' }}
       >
         <div className="px-5 pt-5 pb-4">
           <p className="text-[10px] font-bold uppercase tracking-widest text-orange-200 mb-1">3E</p>
@@ -755,12 +755,12 @@ function GenerateForm() {
                           }}
                           className={`relative text-left rounded-xl p-4 border cursor-pointer transition-all ${
                             active
-                              ? 'border-[#2563EB] bg-orange-50 shadow-sm'
-                              : 'border-[#E8E3DC] bg-white hover:border-[#2563EB]/40 hover:shadow-sm'
+                              ? 'border-[#F97316] bg-orange-50 shadow-sm'
+                              : 'border-[#E8E3DC] bg-white hover:border-[#F97316]/40 hover:shadow-sm'
                           }`}
                         >
                           {active && (
-                            <span className="absolute top-2 right-2 w-4 h-4 rounded-full bg-[#2563EB] flex items-center justify-center">
+                            <span className="absolute top-2 right-2 w-4 h-4 rounded-full bg-[#F97316] flex items-center justify-center">
                               <svg className="w-2.5 h-2.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                               </svg>
@@ -782,12 +782,12 @@ function GenerateForm() {
                       }}
                       className={`relative text-left rounded-xl p-4 border cursor-pointer transition-all ${
                         selectedTemplate === 'custom'
-                          ? 'border-[#2563EB] bg-orange-50 shadow-sm'
-                          : 'border-dashed border-[#E8E3DC] bg-white hover:border-[#2563EB]/40 hover:shadow-sm'
+                          ? 'border-[#F97316] bg-orange-50 shadow-sm'
+                          : 'border-dashed border-[#E8E3DC] bg-white hover:border-[#F97316]/40 hover:shadow-sm'
                       }`}
                     >
                       {selectedTemplate === 'custom' && (
-                        <span className="absolute top-2 right-2 w-4 h-4 rounded-full bg-[#2563EB] flex items-center justify-center">
+                        <span className="absolute top-2 right-2 w-4 h-4 rounded-full bg-[#F97316] flex items-center justify-center">
                           <svg className="w-2.5 h-2.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                           </svg>
@@ -802,17 +802,17 @@ function GenerateForm() {
 
                 <div className="space-y-4 mb-6">
                   <div>
-                    <label className={labelClass}>Nombre del premio <span className="text-[#2563EB]">*</span></label>
+                    <label className={labelClass}>Nombre del premio <span className="text-[#F97316]">*</span></label>
                     <input name="name" value={form.name} onChange={handleChange} required placeholder="Ej: 2x1 en principales" className={inputClass} />
                     <p className={helperClass}>Lo que el cliente verá en grande. Ej: &ldquo;2x1 en principales&rdquo; o &ldquo;Bebida gratis&rdquo;</p>
                   </div>
                   <div>
-                    <label className={labelClass}>Razón por la que ganan <span className="text-[#2563EB]">*</span></label>
+                    <label className={labelClass}>Razón por la que ganan <span className="text-[#F97316]">*</span></label>
                     <textarea name="reason" value={form.reason} onChange={handleChange} required rows={2} placeholder="Ej: Por participar en el concurso de Instagram" className={inputClass + ' resize-none'} />
                     <p className={helperClass}>Por qué ganaron este premio. Ej: &ldquo;Por ser nuestro cliente del mes&rdquo; o &ldquo;Por participar en Instagram&rdquo;</p>
                   </div>
                   <div>
-                    <label className={labelClass}>Descripción <span className="text-[#2563EB]">*</span></label>
+                    <label className={labelClass}>Descripción <span className="text-[#F97316]">*</span></label>
                     <textarea name="description" value={form.description} onChange={handleChange} required rows={3} placeholder="Describe en qué consiste el premio exactamente" className={inputClass + ' resize-none'} />
                     <p className={helperClass}>Detalles del premio. Qué incluye exactamente, qué no incluye, condiciones</p>
                   </div>
@@ -824,7 +824,7 @@ function GenerateForm() {
                     disabled={!step1Valid}
                     onClick={() => setStep(2)}
                     className="w-full md:w-auto flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-white text-sm font-semibold transition-all disabled:opacity-40 disabled:cursor-not-allowed"
-                    style={{ background: '#2563EB' }}
+                    style={{ background: '#F97316' }}
                   >
                     Siguiente →
                   </button>
@@ -904,7 +904,7 @@ function GenerateForm() {
                               setQuickEndDate(opt.days);
                             }
                           }}
-                          className="px-2.5 py-1 rounded-md text-xs font-medium border border-[#E8E3DC] bg-white text-[#78716c] hover:border-[#2563EB]/50 hover:text-[#2563EB] transition-colors"
+                          className="px-2.5 py-1 rounded-md text-xs font-medium border border-[#E8E3DC] bg-white text-[#78716c] hover:border-[#F97316]/50 hover:text-[#F97316] transition-colors"
                         >
                           {opt.label}
                         </button>
@@ -1040,9 +1040,9 @@ function GenerateForm() {
                             }
                             className="w-9 h-9 rounded-lg text-xs font-bold border transition-all"
                             style={{
-                              background: active ? '#2563EB' : 'white',
+                              background: active ? '#F97316' : 'white',
                               color: active ? 'white' : '#78716c',
-                              borderColor: active ? '#2563EB' : '#E8E3DC',
+                              borderColor: active ? '#F97316' : '#E8E3DC',
                             }}
                           >
                             {label}
@@ -1101,7 +1101,7 @@ function GenerateForm() {
                             type="button"
                             onClick={() => setGameType(opt.value)}
                             className={`text-left rounded-xl p-3 border transition-all ${
-                              active ? 'border-[#2563EB] bg-orange-50 shadow-sm' : 'border-[#E8E3DC] bg-white hover:border-[#2563EB]/40'
+                              active ? 'border-[#F97316] bg-orange-50 shadow-sm' : 'border-[#E8E3DC] bg-white hover:border-[#F97316]/40'
                             }`}
                           >
                             <div className="text-xl mb-1">{opt.emoji}</div>
@@ -1143,7 +1143,7 @@ function GenerateForm() {
                       <span>{Math.round((progress / quantity) * 100)}%</span>
                     </div>
                     <div className="w-full bg-[#F5F5F4] rounded-full h-1 overflow-hidden">
-                      <div className="h-1 rounded-full transition-all duration-300" style={{ width: `${(progress / quantity) * 100}%`, background: '#2563EB' }} />
+                      <div className="h-1 rounded-full transition-all duration-300" style={{ width: `${(progress / quantity) * 100}%`, background: '#F97316' }} />
                     </div>
                   </div>
                 )}
@@ -1160,7 +1160,7 @@ function GenerateForm() {
                       disabled={loading || !step2Valid}
                       onClick={handleGenerate}
                       className="w-full md:w-auto py-3 px-6 rounded-xl text-white font-bold text-sm transition-all disabled:opacity-60 flex items-center justify-center gap-2"
-                      style={{ background: '#2563EB' }}
+                      style={{ background: '#F97316' }}
                     >
                       {loading ? (
                         <>

@@ -329,7 +329,7 @@ export default function EventosPage() {
               <button
                 type="submit"
                 disabled={submitting}
-                className="flex-2 px-6 py-2 text-sm font-bold text-white bg-[#2563EB] rounded-xl hover:bg-orange-500 transition-colors disabled:opacity-60"
+                className="flex-2 px-6 py-2 text-sm font-bold text-white bg-[#F97316] rounded-xl hover:bg-orange-500 transition-colors disabled:opacity-60"
               >
                 {submitting ? 'Creando...' : 'Crear evento'}
               </button>

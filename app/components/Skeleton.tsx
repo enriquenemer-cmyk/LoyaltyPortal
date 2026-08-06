@@ -11,7 +11,7 @@ export function Skeleton({ className = '' }: { className?: string }) {
 
 export function SkeletonCard() {
   return (
-    <div className="bg-white rounded-2xl border border-[#DBEAFE] p-6 flex flex-col gap-3 shadow-[0_1px_2px_rgba(37,99,235,0.04),_0_4px_16px_rgba(37,99,235,0.06)]">
+    <div className="bg-white rounded-2xl border border-[#DBEAFE] p-6 flex flex-col gap-3 shadow-[0_1px_2px_rgba(249,115,22,0.04),_0_4px_16px_rgba(249,115,22,0.06)]">
       <div className="flex items-center justify-between">
         <Skeleton className="h-4 w-32" />
         <Skeleton className="w-10 h-10 rounded-xl" />
@@ -24,7 +24,7 @@ export function SkeletonCard() {
 export function SkeletonTable({ rows = 5 }: { rows?: number }) {
   return (
     <div
-      className="bg-white rounded-2xl border border-[#DBEAFE] overflow-hidden shadow-[0_1px_2px_rgba(37,99,235,0.04),_0_4px_16px_rgba(37,99,235,0.06)]"
+      className="bg-white rounded-2xl border border-[#DBEAFE] overflow-hidden shadow-[0_1px_2px_rgba(249,115,22,0.04),_0_4px_16px_rgba(249,115,22,0.06)]"
       aria-hidden="true"
     >
       {/* Header */}

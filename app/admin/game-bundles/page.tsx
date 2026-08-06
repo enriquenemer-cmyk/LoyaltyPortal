@@ -10,7 +10,7 @@ const GAMES = [
     name: 'Tragamonedas',
     desc: 'Tres carretes que giran al tocar la pantalla. Si coinciden los símbolos, el cliente gana el premio.',
     badge: 'Clásico',
-    badgeColor: '#2563EB',
+    badgeColor: '#F97316',
     href: '/admin/generate?game_type=slots',
   },
   {
@@ -28,7 +28,7 @@ const GAMES = [
     name: 'Tiro de Penalti',
     desc: 'El cliente elige un ángulo y lanza el balón. Si entra, gana el premio instantáneamente.',
     badge: 'Deportivo',
-    badgeColor: '#2563EB',
+    badgeColor: '#F97316',
     href: '/admin/generate?game_type=penalty',
   },
   {
@@ -81,7 +81,7 @@ export default function GameBundlesPage() {
             <Link
               key={game.id}
               href={game.href}
-              className="bg-white border border-[#E8E3DC] rounded-2xl p-6 hover:border-[#2563EB]/40 hover:shadow-md transition-all group flex flex-col gap-3"
+              className="bg-white border border-[#E8E3DC] rounded-2xl p-6 hover:border-[#F97316]/40 hover:shadow-md transition-all group flex flex-col gap-3"
             >
               <div className="flex items-start justify-between">
                 <div className="text-4xl">{game.emoji}</div>
@@ -93,10 +93,10 @@ export default function GameBundlesPage() {
                 </span>
               </div>
               <div>
-                <h2 className="text-base font-bold text-[#1C1917] mb-1 group-hover:text-[#2563EB] transition-colors">{game.name}</h2>
+                <h2 className="text-base font-bold text-[#1C1917] mb-1 group-hover:text-[#F97316] transition-colors">{game.name}</h2>
                 <p className="text-sm text-[#78716c] leading-relaxed">{game.desc}</p>
               </div>
-              <div className="flex items-center gap-1 text-xs font-semibold text-[#2563EB] mt-auto pt-1">
+              <div className="flex items-center gap-1 text-xs font-semibold text-[#F97316] mt-auto pt-1">
                 Generar premio con este juego
                 <svg className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
@@ -107,14 +107,14 @@ export default function GameBundlesPage() {
         </div>
 
         {/* CTA */}
-        <div className="bg-gradient-to-br from-[#2563EB] to-[#c94315] rounded-2xl p-6 text-white flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div className="bg-gradient-to-br from-[#F97316] to-[#c94315] rounded-2xl p-6 text-white flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
             <p className="font-bold text-lg">¿Listo para crear tu primer juego?</p>
             <p className="text-white/75 text-sm mt-0.5">Elige un juego arriba o genera desde el panel principal.</p>
           </div>
           <Link
             href="/admin/generate"
-            className="shrink-0 bg-white text-[#2563EB] font-bold text-sm px-5 py-2.5 rounded-xl hover:bg-orange-50 transition-colors text-center"
+            className="shrink-0 bg-white text-[#F97316] font-bold text-sm px-5 py-2.5 rounded-xl hover:bg-orange-50 transition-colors text-center"
           >
             Generar Premio →
           </Link>

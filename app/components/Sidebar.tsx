@@ -399,7 +399,7 @@ const ALL_SECTIONS: SectionDef[] = [
     label: 'Configuración',
     roles: ['admin'],
     groupIcon: GroupIcons.configuracion,
-    accent: '#94a3b8',
+    accent: '#111111',
     links: [
       { href: '/admin/usuarios', label: 'Usuarios', icon: Icons.usuarios },
       { href: '/admin/permisos', label: 'Permisos', icon: Icons.permisos },
@@ -574,7 +574,7 @@ function GlobalSearch({ onSelect }: { onSelect?: (item: SearchResult) => void })
     claim: 'bg-orange-50 text-orange-600', prize: 'bg-orange-50 text-orange-600',
     restaurant: 'bg-emerald-50 text-emerald-600', user: 'bg-purple-50 text-[#1a6b3c]',
     premio: 'bg-yellow-900/40 text-yellow-300', cliente: 'bg-blue-900/40 text-orange-300',
-    cobro: 'bg-stone-200/60 text-stone-600',
+    cobro: 'bg-stone-200/60 text-stone-800',
   };
 
   const showDropdown = focused && (results.length > 0 || (query === '' && recent.length > 0) || loading);
@@ -589,7 +589,7 @@ function GlobalSearch({ onSelect }: { onSelect?: (item: SearchResult) => void })
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
             </svg>
           ) : (
-            <svg className="absolute left-2.5 w-3.5 h-3.5 text-stone-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="absolute left-2.5 w-3.5 h-3.5 text-stone-700 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
           )}
@@ -610,11 +610,11 @@ function GlobalSearch({ onSelect }: { onSelect?: (item: SearchResult) => void })
             style={{ background: '#1e293b', border: '1px solid rgba(255,255,255,0.1)', boxShadow: '0 8px 32px rgba(0,0,0,0.5)' }}>
             {query === '' && recent.length > 0 && (
               <div>
-                <p className="px-3 pt-2.5 pb-1 text-[9px] font-bold tracking-widest text-stone-500 uppercase">Búsquedas recientes</p>
+                <p className="px-3 pt-2.5 pb-1 text-[9px] font-bold tracking-widest text-black uppercase">Búsquedas recientes</p>
                 {recent.map((q) => (
                   <button key={q} onMouseDown={() => selectRecent(q)}
-                    className="w-full flex items-center gap-2 px-3 py-2 text-xs text-stone-600 hover:bg-black/6 transition-colors text-left">
-                    <svg className="w-3 h-3 text-stone-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    className="w-full flex items-center gap-2 px-3 py-2 text-xs text-stone-800 hover:bg-black/6 transition-colors text-left">
+                    <svg className="w-3 h-3 text-stone-700 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                     {q}
@@ -625,14 +625,14 @@ function GlobalSearch({ onSelect }: { onSelect?: (item: SearchResult) => void })
             {results.length > 0 && (
               <div>
                 {query !== '' && recent.length > 0 && <div style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }} />}
-                <p className="px-3 pt-2.5 pb-1 text-[9px] font-bold tracking-widest text-stone-500 uppercase">Resultados</p>
+                <p className="px-3 pt-2.5 pb-1 text-[9px] font-bold tracking-widest text-black uppercase">Resultados</p>
                 {results.map((item, idx) => (
                   <button key={item.id + item.type} onMouseDown={() => selectResult(item)}
                     className={`w-full flex items-start gap-2.5 px-3 py-2 text-left transition-colors ${idx === activeIdx ? 'bg-orange-500/20' : 'hover:bg-black/8'}`}>
                     <span className="mt-0.5 text-sm shrink-0">{typeIcon[item.type]}</span>
                     <div className="min-w-0 flex-1">
                       <p className="text-xs font-semibold text-black truncate">{item.title}</p>
-                      {item.subtitle && <p className="text-[10px] text-stone-500 truncate">{item.subtitle}</p>}
+                      {item.subtitle && <p className="text-[10px] text-stone-700 truncate">{item.subtitle}</p>}
                     </div>
                     <span className={`mt-0.5 text-[9px] font-bold px-1.5 py-0.5 rounded shrink-0 ${typeColor[item.type]}`}>
                       {typeLabel[item.type]}
@@ -642,7 +642,7 @@ function GlobalSearch({ onSelect }: { onSelect?: (item: SearchResult) => void })
               </div>
             )}
             {!loading && query !== '' && results.length === 0 && (
-              <p className="px-3 py-3 text-xs text-stone-500 text-center">Sin resultados para &ldquo;{query}&rdquo;</p>
+              <p className="px-3 py-3 text-xs text-stone-700 text-center">Sin resultados para &ldquo;{query}&rdquo;</p>
             )}
           </div>
         )}
@@ -1079,7 +1079,7 @@ function SidebarContent({
             href="/admin/registros?status=pending"
             onClick={onLinkClick}
             aria-label="Cobros pendientes"
-            className="relative p-1.5 rounded-lg text-stone-500 hover:text-[#1a6b3c] hover:bg-black/6 transition-colors"
+            className="relative p-1.5 rounded-lg text-stone-700 hover:text-[#1a6b3c] hover:bg-black/6 transition-colors"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -1094,7 +1094,7 @@ function SidebarContent({
             <button
               onClick={onToggleCompact}
               title={compact ? 'Expandir menú' : 'Modo compacto'}
-              className="hidden md:flex p-1.5 rounded-lg text-stone-500 hover:text-[#1a6b3c] hover:bg-black/6 transition-colors"
+              className="hidden md:flex p-1.5 rounded-lg text-stone-700 hover:text-[#1a6b3c] hover:bg-black/6 transition-colors"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ transform: compact ? 'rotate(180deg)' : 'none' }}>
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
@@ -1152,7 +1152,7 @@ function SidebarContent({
           {!compact && (
             <div className="flex items-center gap-2 px-2 py-1 mb-1">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" style={{ boxShadow: '0 0 6px rgba(52,211,153,0.6)' }} />
-              <span className="text-xs font-semibold truncate" style={{ color: '#94a3b8' }}>{username}</span>
+              <span className="text-xs font-semibold truncate" style={{ color: '#111111' }}>{username}</span>
               <span className="ml-auto text-[9px] font-bold tracking-wide uppercase" style={{ color: 'rgba(100,116,139,0.6)' }}>{role}</span>
             </div>
           )}
@@ -1162,9 +1162,9 @@ function SidebarContent({
               disabled={loggingOut}
               title="Cerrar sesion"
               className={`flex items-center gap-2 rounded-lg text-xs font-medium transition-all ${compact ? 'p-1.5' : 'flex-1 px-3 py-1.5'}`}
-              style={{ color: '#94a3b8', border: '1px solid rgba(255,255,255,0.06)' }}
+              style={{ color: '#111111', border: '1px solid rgba(255,255,255,0.06)' }}
               onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.color = '#fca5a5'; (e.currentTarget as HTMLButtonElement).style.background = 'rgba(239,68,68,0.1)'; (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(239,68,68,0.2)'; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.color = '#94a3b8'; (e.currentTarget as HTMLButtonElement).style.background = ''; (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(255,255,255,0.06)'; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.color = '#111111'; (e.currentTarget as HTMLButtonElement).style.background = ''; (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(255,255,255,0.06)'; }}
             >
               <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -1176,7 +1176,7 @@ function SidebarContent({
               title={dark ? 'Modo claro' : 'Modo oscuro'}
               className="p-1.5 rounded-lg transition-all"
               style={{ color: '#64748b', border: '1px solid rgba(255,255,255,0.06)' }}
-              onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.color = '#94a3b8'; (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.06)'; }}
+              onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.color = '#111111'; (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.06)'; }}
               onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.color = '#64748b'; (e.currentTarget as HTMLButtonElement).style.background = ''; }}
             >
               {dark ? (
@@ -1229,7 +1229,7 @@ export default function Sidebar() {
       </aside>
 
       {/* Mobile top bar */}
-      <div className="md:hidden fixed top-0 left-0 right-0 h-14 flex items-center justify-between px-4 z-40 bg-white border-b-2 border-black">
+      <div className="md:hidden fixed top-0 left-0 right-0 h-14 flex items-center justify-between px-4 z-40 bg-white" style={{ borderBottom: '2px solid #000000', width: '100vw' }}>
         <Link href="/admin" className="flex items-center gap-2.5">
           {LOGO}
         </Link>

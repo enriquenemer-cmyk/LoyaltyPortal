@@ -708,11 +708,10 @@ input[type="date"] {
 
 /* ── Hero gradient banner ── */
 .hero-gradient {
-  background: linear-gradient(135deg, #0a2218 0%, #1a6b3c 50%, #0a2218 100%);
-  background-size: 200% 200%;
-  animation: gradientShift 18s ease-in-out infinite;
+  background: #1a6b3c;
   position: relative;
   overflow: hidden;
+  border-bottom: 4px solid #111;
 }
 @keyframes gradientShift {
   0%   { background-position: 0% 50%; }
@@ -732,8 +731,8 @@ input[type="date"] {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 55% 90% at 95% 50%, rgba(26,107,60,0.45) 0%, transparent 60%),
-    radial-gradient(ellipse 45% 70% at 0% 100%, rgba(14,165,233,0.35) 0%, transparent 55%);
+    radial-gradient(ellipse 60% 80% at 100% 50%, rgba(249,115,22,0.18) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 70% at 0% 100%, rgba(0,0,0,0.25) 0%, transparent 55%);
   pointer-events: none;
   z-index: 0;
 }
@@ -1704,4 +1703,127 @@ input[type="date"] {
   .admin-content .rounded-xl.bg-white {
     box-shadow: 3px 3px 0 #111 !important;
   }
+}
+
+/* ══ COMIC GLOBAL COHESION — section labels, hero extras, nav ══ */
+
+/* Section labels uppercase — bold orange accent */
+.admin-content [class*="tracking-widest"],
+.admin-content [class*="uppercase"][class*="text-xs"],
+.admin-content [class*="uppercase"][class*="text-[10px]"],
+.admin-content [class*="uppercase"][class*="text-stone"] {
+  color: #111 !important;
+  font-weight: 900 !important;
+  letter-spacing: 0.12em !important;
+}
+
+/* Hero action buttons in banner area */
+.hero-gradient a[style*="background: white"],
+.hero-gradient a[style*="background:white"] {
+  border: 2px solid #111 !important;
+  box-shadow: 3px 3px 0 #111 !important;
+  font-weight: 800 !important;
+}
+.hero-gradient a[style*="background: #F97316"],
+.hero-gradient a[style*="background:#F97316"] {
+  border: 2px solid #111 !important;
+  box-shadow: 3px 3px 0 #111 !important;
+  font-weight: 800 !important;
+}
+
+/* Hero halftone pattern bigger dots */
+.hero-gradient::after {
+  background-image: radial-gradient(circle, rgba(255,255,255,0.12) 1.5px, transparent 1.5px) !important;
+  background-size: 18px 18px !important;
+}
+
+/* Quick action cards — comic border */
+.admin-content a[class*="rounded-2xl"],
+.admin-content a[class*="rounded-xl"] {
+  border: 2px solid #111 !important;
+  box-shadow: 3px 3px 0 #111 !important;
+  transition: transform 0.1s ease, box-shadow 0.1s ease !important;
+}
+.admin-content a[class*="rounded-2xl"]:hover,
+.admin-content a[class*="rounded-xl"]:hover {
+  transform: translate(-2px, -2px) !important;
+  box-shadow: 5px 5px 0 #111 !important;
+}
+
+/* Stat card border-left — remove conflicting shadow, keep comic */
+.admin-content .border-l-4 {
+  border-radius: 14px !important;
+}
+
+/* Sidebar section header labels */
+aside .text-\[10px\],
+aside [class*="tracking-widest"] {
+  font-weight: 900 !important;
+  color: #111 !important;
+  letter-spacing: 0.12em !important;
+}
+
+/* Sidebar active item — stronger pop */
+aside a[style*="background: rgba(249,115,22"] {
+  border-left: 3px solid #F97316 !important;
+  font-weight: 700 !important;
+}
+
+/* Comic orange glow on focus anywhere */
+:focus-visible {
+  outline: 3px solid #F97316 !important;
+  outline-offset: 2px !important;
+}
+
+/* Select dropdowns — comic */
+.admin-content select {
+  border: 2px solid #111 !important;
+  box-shadow: 3px 3px 0 #111 !important;
+}
+
+/* Badges / pills — comic treatment */
+.admin-content span[class*="rounded-full"][class*="bg-green"],
+.admin-content span[class*="rounded-full"][class*="bg-emerald"] {
+  border: 1.5px solid #111 !important;
+  font-weight: 800 !important;
+  box-shadow: 2px 2px 0 #111 !important;
+}
+.admin-content span[class*="rounded-full"][class*="bg-orange"],
+.admin-content span[class*="rounded-full"][class*="bg-amber"] {
+  border: 1.5px solid #111 !important;
+  font-weight: 800 !important;
+  box-shadow: 2px 2px 0 #111 !important;
+}
+
+/* Dashboard hero "Actualizar" button comic style */
+.hero-gradient button {
+  border: 2px solid rgba(255,255,255,0.6) !important;
+  font-weight: 700 !important;
+  background: rgba(0,0,0,0.25) !important;
+  color: white !important;
+}
+
+/* Page icon boxes (orange gradient icon header) */
+.admin-content [style*="linear-gradient(135deg,#F97316"] {
+  border: 2px solid #111 !important;
+  box-shadow: 3px 3px 0 #111 !important;
+}
+
+/* Comic divider lines */
+.admin-content hr {
+  border: none !important;
+  border-top: 2px solid #111 !important;
+  opacity: 0.12 !important;
+}
+
+/* Alert/notice boxes — comic */
+.admin-content [class*="bg-orange-50"],
+.admin-content [class*="bg-amber-50"] {
+  border: 2px solid #F97316 !important;
+  box-shadow: 3px 3px 0 rgba(249,115,22,0.3) !important;
+}
+
+/* Skeleton loading — warm dots background visible through */
+.skeleton-neutral {
+  border: 2px solid rgba(0,0,0,0.06) !important;
 }

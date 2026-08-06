@@ -1411,7 +1411,7 @@ function SetupChecklist({
         <div className="h-2 bg-[#F5F0EB] rounded-full overflow-hidden">
           <div
             className="h-2 rounded-full transition-all duration-500"
-            style={{ width: `${progressPct}%`, background: 'linear-gradient(90deg,#F97316,#0EA5E9)' }}
+            style={{ width: `${progressPct}%`, background: 'linear-gradient(90deg,#F97316,#1a6b3c)' }}
           />
         </div>
       </div>
@@ -1729,19 +1729,19 @@ export default function AdminDashboard() {
               <div className="flex gap-2.5">
                 <Link
                   href="/admin/generate"
-                  className="px-5 py-2.5 rounded-xl text-sm font-bold transition-all"
-                  style={{ background: 'rgba(255,255,255,0.15)', color: 'white', border: '1px solid rgba(255,255,255,0.2)', backdropFilter: 'blur(8px)' }}
-                  onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = 'rgba(255,255,255,0.25)'; }}
-                  onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = 'rgba(255,255,255,0.15)'; }}
+                  className="px-5 py-2.5 rounded-xl text-sm font-black transition-all"
+                  style={{ background: '#F97316', color: 'white', border: '2px solid #111', boxShadow: '3px 3px 0 #111' }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.transform = 'translate(-1px,-1px)'; (e.currentTarget as HTMLAnchorElement).style.boxShadow = '5px 5px 0 #111'; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.transform = ''; (e.currentTarget as HTMLAnchorElement).style.boxShadow = '3px 3px 0 #111'; }}
                 >
                   + Generar Premio
                 </Link>
                 <Link
                   href="/admin/registros"
-                  className="px-5 py-2.5 rounded-xl text-sm font-bold transition-all"
-                  style={{ background: 'white', color: '#111111', border: '1px solid #e5e7eb' }}
-                  onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = '#f9fafb'; }}
-                  onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = 'white'; (e.currentTarget as HTMLAnchorElement).style.color = '#111111'; }}
+                  className="px-5 py-2.5 rounded-xl text-sm font-black transition-all"
+                  style={{ background: 'white', color: '#111111', border: '2px solid #111', boxShadow: '3px 3px 0 #111' }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.transform = 'translate(-1px,-1px)'; (e.currentTarget as HTMLAnchorElement).style.boxShadow = '5px 5px 0 #111'; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.transform = ''; (e.currentTarget as HTMLAnchorElement).style.boxShadow = '3px 3px 0 #111'; }}
                 >
                   Ver Registros
                 </Link>

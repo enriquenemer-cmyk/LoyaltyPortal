@@ -29,12 +29,12 @@ const helperClass = 'text-xs text-stone-400 mt-1 leading-relaxed';
 type Template = { name: string; reason: string; description: string; short: string; emoji: string };
 
 const TEMPLATES: Template[] = [
-  { name: '2x1 en principales', reason: 'Por tu visita especial', description: 'Disfruta dos principales al precio de uno en cualquier opción del menú.', short: 'Dos platillos al precio de uno', emoji: '️' },
-  { name: 'Bebida gratis', reason: 'Premio de fidelidad', description: 'Una bebida de tu elección completamente gratis con la compra de cualquier principal.', short: 'Con cualquier compra', emoji: '' },
-  { name: '10% de descuento', reason: 'Cliente frecuente', description: '10% de descuento en tu consumo total del día.', short: 'En el consumo total', emoji: '' },
-  { name: 'Postre gratis', reason: 'Por tu cumpleaños', description: 'Un postre de temporada gratis para celebrar tu cumpleaños.', short: 'El día de tu cumpleaños', emoji: '' },
-  { name: 'Burrito gratis', reason: 'Concurso ganador', description: 'Un burrito de tu elección completamente gratis, del tamaño que prefieras.', short: 'Del tamaño que prefieras', emoji: '' },
-  { name: 'Combo especial', reason: 'Premio especial', description: 'Combo especial: principal + bebida + postre a precio especial.', short: 'Principal + bebida + postre', emoji: '' },
+  { name: '2x1 en principales', reason: 'Por tu visita especial', description: 'Disfruta dos principales al precio de uno en cualquier opción del menú.', short: 'Dos platillos al precio de uno', emoji: '🍽️' },
+  { name: 'Bebida gratis', reason: 'Premio de fidelidad', description: 'Una bebida de tu elección completamente gratis con la compra de cualquier principal.', short: 'Con cualquier compra', emoji: '🥤' },
+  { name: '10% de descuento', reason: 'Cliente frecuente', description: '10% de descuento en tu consumo total del día.', short: 'En el consumo total', emoji: '💸' },
+  { name: 'Postre gratis', reason: 'Por tu cumpleaños', description: 'Un postre de temporada gratis para celebrar tu cumpleaños.', short: 'El día de tu cumpleaños', emoji: '🎂' },
+  { name: 'Burrito gratis', reason: 'Concurso ganador', description: 'Un burrito de tu elección completamente gratis, del tamaño que prefieras.', short: 'Del tamaño que prefieras', emoji: '🌯' },
+  { name: 'Combo especial', reason: 'Premio especial', description: 'Combo especial: principal + bebida + postre a precio especial.', short: 'Principal + bebida + postre', emoji: '⭐' },
 ];
 
 const DRAFT_KEY = 'premia-draft';
@@ -741,9 +741,18 @@ function GenerateForm() {
                 {/* Template grid cards */}
                 <div className="mb-5">
                   <label className={labelClass}>Plantilla rápida</label>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                     {TEMPLATES.map((tpl, i) => {
                       const active = selectedTemplate === i;
+                      const gradients = [
+                        'linear-gradient(135deg,#FF6B35 0%,#F97316 100%)',
+                        'linear-gradient(135deg,#1a6b3c 0%,#22c55e 100%)',
+                        'linear-gradient(135deg,#111111 0%,#374151 100%)',
+                        'linear-gradient(135deg,#F97316 0%,#fbbf24 100%)',
+                        'linear-gradient(135deg,#1a6b3c 0%,#0d9488 100%)',
+                        'linear-gradient(135deg,#F97316 0%,#ef4444 100%)',
+                      ];
+                      const grad = gradients[i % gradients.length];
                       return (
                         <button
                           key={i}
@@ -753,22 +762,38 @@ function GenerateForm() {
                             setForm((prev) => ({ ...prev, name: tpl.name, reason: tpl.reason, description: tpl.description }));
                             setPreviewName(tpl.name);
                           }}
-                          className={`relative text-left rounded-xl p-4 border cursor-pointer transition-all ${
-                            active
-                              ? 'border-[#F97316] bg-orange-50 shadow-sm'
-                              : 'border-[#E8E3DC] bg-white hover:border-[#F97316]/40 hover:shadow-sm'
-                          }`}
+                          style={{
+                            border: active ? '2px solid #F97316' : '2px solid transparent',
+                            transform: active ? 'scale(1.03)' : 'scale(1)',
+                            boxShadow: active ? '0 8px 24px rgba(249,115,22,0.30)' : '0 2px 8px rgba(0,0,0,0.08)',
+                            transition: 'all 0.18s ease',
+                            borderRadius: 16,
+                            overflow: 'hidden',
+                            cursor: 'pointer',
+                            background: '#fff',
+                            textAlign: 'left',
+                            position: 'relative',
+                          }}
+                          onMouseEnter={e => { if (!active) { (e.currentTarget as HTMLButtonElement).style.transform = 'scale(1.02)'; (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 6px 20px rgba(0,0,0,0.12)'; } }}
+                          onMouseLeave={e => { if (!active) { (e.currentTarget as HTMLButtonElement).style.transform = 'scale(1)'; (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 2px 8px rgba(0,0,0,0.08)'; } }}
                         >
+                          {/* Gradient top strip */}
+                          <div style={{ background: grad, height: 72, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', overflow: 'hidden' }}>
+                            {/* Decorative circles */}
+                            <div style={{ position: 'absolute', width: 80, height: 80, borderRadius: '50%', background: 'rgba(255,255,255,0.1)', top: -20, right: -20 }} />
+                            <div style={{ position: 'absolute', width: 50, height: 50, borderRadius: '50%', background: 'rgba(255,255,255,0.1)', bottom: -15, left: 10 }} />
+                            <span style={{ fontSize: 32, position: 'relative', zIndex: 1, filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))' }}>{tpl.emoji}</span>
+                          </div>
+                          {/* Content */}
+                          <div style={{ padding: '10px 12px 12px' }}>
+                            <p style={{ fontSize: 13, fontWeight: 700, color: '#111111', lineHeight: 1.3, marginBottom: 3 }}>{tpl.name}</p>
+                            <p style={{ fontSize: 11, color: '#6b7280', lineHeight: 1.4 }}>{tpl.short}</p>
+                          </div>
                           {active && (
-                            <span className="absolute top-2 right-2 w-4 h-4 rounded-full bg-[#F97316] flex items-center justify-center">
-                              <svg className="w-2.5 h-2.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                              </svg>
+                            <span style={{ position: 'absolute', top: 8, right: 8, width: 20, height: 20, borderRadius: '50%', background: '#F97316', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                              <svg width="11" height="11" fill="none" stroke="white" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
                             </span>
                           )}
-                          <div className="text-3xl mb-2">{tpl.emoji}</div>
-                          <p className="text-sm font-bold text-[#1C1917] leading-tight mb-0.5">{tpl.name}</p>
-                          <p className="text-[11px] text-[#a8a29e] leading-snug">{tpl.short}</p>
                         </button>
                       );
                     })}
@@ -780,22 +805,34 @@ function GenerateForm() {
                         setForm((prev) => ({ ...prev, name: '', reason: '', description: '' }));
                         setPreviewName('');
                       }}
-                      className={`relative text-left rounded-xl p-4 border cursor-pointer transition-all ${
-                        selectedTemplate === 'custom'
-                          ? 'border-[#F97316] bg-orange-50 shadow-sm'
-                          : 'border-dashed border-[#E8E3DC] bg-white hover:border-[#F97316]/40 hover:shadow-sm'
-                      }`}
+                      style={{
+                        border: selectedTemplate === 'custom' ? '2px solid #F97316' : '2px dashed #d1d5db',
+                        transform: selectedTemplate === 'custom' ? 'scale(1.03)' : 'scale(1)',
+                        boxShadow: selectedTemplate === 'custom' ? '0 8px 24px rgba(249,115,22,0.30)' : '0 2px 8px rgba(0,0,0,0.06)',
+                        transition: 'all 0.18s ease',
+                        borderRadius: 16,
+                        overflow: 'hidden',
+                        cursor: 'pointer',
+                        background: '#fff',
+                        textAlign: 'left',
+                        position: 'relative',
+                      }}
+                      onMouseEnter={e => { if (selectedTemplate !== 'custom') { (e.currentTarget as HTMLButtonElement).style.transform = 'scale(1.02)'; (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 6px 20px rgba(0,0,0,0.10)'; } }}
+                      onMouseLeave={e => { if (selectedTemplate !== 'custom') { (e.currentTarget as HTMLButtonElement).style.transform = 'scale(1)'; (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 2px 8px rgba(0,0,0,0.06)'; } }}
                     >
+                      <div style={{ background: 'linear-gradient(135deg,#f9fafb 0%,#f3f4f6 100%)', height: 72, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', overflow: 'hidden' }}>
+                        <div style={{ position: 'absolute', width: 60, height: 60, borderRadius: '50%', background: 'rgba(249,115,22,0.08)', top: -15, right: -10 }} />
+                        <PencilIcon style={{ width: 28, height: 28, color: '#F97316', position: 'relative', zIndex: 1 }} aria-hidden="true" />
+                      </div>
+                      <div style={{ padding: '10px 12px 12px' }}>
+                        <p style={{ fontSize: 13, fontWeight: 700, color: '#111111', lineHeight: 1.3, marginBottom: 3 }}>Personalizado</p>
+                        <p style={{ fontSize: 11, color: '#6b7280', lineHeight: 1.4 }}>Crea desde cero</p>
+                      </div>
                       {selectedTemplate === 'custom' && (
-                        <span className="absolute top-2 right-2 w-4 h-4 rounded-full bg-[#F97316] flex items-center justify-center">
-                          <svg className="w-2.5 h-2.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                          </svg>
+                        <span style={{ position: 'absolute', top: 8, right: 8, width: 20, height: 20, borderRadius: '50%', background: '#F97316', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                          <svg width="11" height="11" fill="none" stroke="white" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
                         </span>
                       )}
-                      <div className="text-3xl mb-2"><PencilIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
-                      <p className="text-sm font-bold text-[#1C1917] leading-tight mb-0.5">Personalizado</p>
-                      <p className="text-[11px] text-[#a8a29e] leading-snug">Crea desde cero</p>
                     </button>
                   </div>
                 </div>

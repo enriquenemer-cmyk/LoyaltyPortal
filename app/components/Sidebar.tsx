@@ -1065,13 +1065,13 @@ function SidebarContent({
   return (
     <div className="flex flex-col h-full" onClick={onLinkClick ? undefined : undefined}>
       {/* Logo header */}
-      <div className={`px-3 py-3 border-b-2 border-black flex items-center ${compact ? 'flex-col gap-2' : 'justify-between'}`}>
-        <Link href="/admin" className="flex items-center gap-2" onClick={onLinkClick}>
+      <div className={`border-b-2 border-black flex items-center overflow-hidden ${compact ? 'flex-col gap-2 px-2 py-2 justify-center' : 'px-4 py-3 justify-between'}`}>
+        <Link href="/admin" className="flex items-center gap-2 min-w-0" onClick={onLinkClick}>
           <div className="shrink-0 flex items-center justify-center">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/logo-3e-oficial.webp" alt="3E by ENM" width={52} height={52} style={{ objectFit: 'contain' }} />
+            <img src="/logo-3e-oficial.webp" alt="3E by ENM" width={compact ? 36 : 44} height={compact ? 36 : 44} style={{ objectFit: 'contain', display: 'block' }} />
           </div>
-          {!compact && <span className="text-xs font-extrabold text-black tracking-tight leading-none">3E</span>}
+          {!compact && <span className="text-sm font-black text-black tracking-tight leading-none">3E</span>}
         </Link>
         <div className={`flex items-center gap-1 ${compact ? 'flex-col' : ''}`}>
           {!compact && <NotificationBell />}

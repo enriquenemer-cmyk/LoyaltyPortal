@@ -1827,3 +1827,227 @@ aside a[style*="background: rgba(249,115,22"] {
 .skeleton-neutral {
   border: 2px solid rgba(0,0,0,0.06) !important;
 }
+
+/* ══════════════════════════════════════════════════════
+   COMIC BUTTONS — EVERY BUTTON/INTERACTIVE ELEMENT
+   Bold border · Offset shadow · Press on click · Hover lift
+   ══════════════════════════════════════════════════════ */
+
+/* BASE: every button in the admin area gets comic treatment */
+.admin-content button,
+.admin-content a[class*="rounded"],
+aside button,
+aside a[class*="rounded"] {
+  position: relative;
+  transition: transform 0.1s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.1s ease !important;
+}
+
+/* ── PRIMARY orange buttons ── */
+.admin-content button[style*="background: linear-gradient(135deg,#F97316"],
+.admin-content button[style*="background:#F97316"],
+.admin-content button[style*="background: #F97316"],
+.admin-content button[class*="bg-[#F97316]"],
+.admin-content button[class*="bg-orange"],
+.admin-content a[style*="background: #F97316"],
+.admin-content a[style*="background:#F97316"],
+.admin-content a[class*="bg-orange"],
+.hero-gradient a[style*="background: #F97316"],
+.hero-gradient a[style*="background:#F97316"] {
+  border: 2.5px solid #111 !important;
+  box-shadow: 4px 4px 0 #111 !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.01em !important;
+  border-radius: 12px !important;
+}
+.admin-content button[style*="background: linear-gradient(135deg,#F97316"]:not(:disabled):hover,
+.admin-content button[style*="background:#F97316"]:not(:disabled):hover,
+.admin-content button[style*="background: #F97316"]:not(:disabled):hover,
+.admin-content button[class*="bg-[#F97316]"]:not(:disabled):hover,
+.admin-content button[class*="bg-orange"]:not(:disabled):hover,
+.admin-content a[style*="background: #F97316"]:not(:disabled):hover,
+.admin-content a[style*="background:#F97316"]:not(:disabled):hover {
+  transform: translate(-2px, -2px) !important;
+  box-shadow: 6px 6px 0 #111 !important;
+}
+.admin-content button[style*="background: linear-gradient(135deg,#F97316"]:not(:disabled):active,
+.admin-content button[style*="background: #F97316"]:not(:disabled):active,
+.admin-content button[class*="bg-[#F97316]"]:not(:disabled):active,
+.admin-content a[style*="background: #F97316"]:not(:disabled):active {
+  transform: translate(2px, 2px) !important;
+  box-shadow: 1px 1px 0 #111 !important;
+}
+
+/* ── GREEN buttons ── */
+.admin-content button[style*="background: #1a6b3c"],
+.admin-content button[style*="background:#1a6b3c"],
+.admin-content button[class*="bg-[#1a6b3c]"],
+.admin-content button[class*="bg-green"],
+.admin-content button[class*="bg-emerald"],
+.admin-content a[style*="background: #1a6b3c"],
+.admin-content a[class*="bg-green"] {
+  border: 2.5px solid #111 !important;
+  box-shadow: 4px 4px 0 #111 !important;
+  font-weight: 800 !important;
+  border-radius: 12px !important;
+}
+.admin-content button[style*="background: #1a6b3c"]:not(:disabled):hover,
+.admin-content button[class*="bg-green"]:not(:disabled):hover {
+  transform: translate(-2px, -2px) !important;
+  box-shadow: 6px 6px 0 #111 !important;
+}
+.admin-content button[style*="background: #1a6b3c"]:not(:disabled):active,
+.admin-content button[class*="bg-green"]:not(:disabled):active {
+  transform: translate(2px, 2px) !important;
+  box-shadow: 1px 1px 0 #111 !important;
+}
+
+/* ── WHITE / GHOST / OUTLINE buttons ── */
+.admin-content button[style*="background: white"],
+.admin-content button[style*="background:#fff"],
+.admin-content button[style*="background: #fff"],
+.admin-content button[class*="bg-white"]:not([class*="rounded-full"]),
+.admin-content a[style*="background: white"],
+.admin-content a[style*="background: #fff"],
+.admin-content a[class*="bg-white"]:not([class*="rounded-full"]) {
+  border: 2px solid #111 !important;
+  box-shadow: 3px 3px 0 #111 !important;
+  font-weight: 700 !important;
+  border-radius: 12px !important;
+}
+.admin-content button[style*="background: white"]:not(:disabled):hover,
+.admin-content button[class*="bg-white"]:not([class*="rounded-full"]):not(:disabled):hover,
+.admin-content a[style*="background: white"]:not(:disabled):hover,
+.admin-content a[class*="bg-white"]:not([class*="rounded-full"]):not(:disabled):hover {
+  transform: translate(-2px, -2px) !important;
+  box-shadow: 5px 5px 0 #111 !important;
+}
+.admin-content button[style*="background: white"]:not(:disabled):active,
+.admin-content a[style*="background: white"]:not(:disabled):active {
+  transform: translate(2px, 2px) !important;
+  box-shadow: 0px 0px 0 #111 !important;
+}
+
+/* ── GHOST / text buttons — subtle comic outline on hover ── */
+.admin-content button[class*="text-stone"],
+.admin-content button[class*="text-gray"],
+.admin-content button[class*="text-[#6b7280]"],
+.admin-content button[class*="text-[#111111]"],
+.admin-content button[class*="hover:bg-stone"],
+.admin-content button[class*="hover:bg-black"] {
+  border: 2px solid transparent !important;
+  font-weight: 700 !important;
+  border-radius: 10px !important;
+}
+.admin-content button[class*="hover:bg-stone"]:hover,
+.admin-content button[class*="hover:bg-black"]:hover {
+  border-color: #111 !important;
+  box-shadow: 2px 2px 0 #111 !important;
+}
+
+/* ── DANGER / red buttons ── */
+.admin-content button[class*="bg-red"],
+.admin-content button[style*="background: #ef4444"],
+.admin-content button[style*="background: red"] {
+  border: 2.5px solid #111 !important;
+  box-shadow: 4px 4px 0 #111 !important;
+  font-weight: 800 !important;
+  border-radius: 12px !important;
+}
+.admin-content button[class*="bg-red"]:not(:disabled):hover {
+  transform: translate(-2px, -2px) !important;
+  box-shadow: 6px 6px 0 #111 !important;
+}
+.admin-content button[class*="bg-red"]:not(:disabled):active {
+  transform: translate(2px, 2px) !important;
+  box-shadow: 1px 1px 0 #111 !important;
+}
+
+/* ── TAB / filter buttons — pill style with comic border ── */
+.admin-content button[class*="rounded-full"],
+.admin-content button[class*="rounded-lg"][class*="text-xs"] {
+  border: 2px solid transparent !important;
+  font-weight: 700 !important;
+}
+.admin-content button[class*="rounded-full"]:hover,
+.admin-content button[class*="rounded-lg"][class*="text-xs"]:hover {
+  border-color: #111 !important;
+  box-shadow: 2px 2px 0 #111 !important;
+}
+
+/* ── SIDEBAR NAV LINKS — comic hover ── */
+aside a {
+  border-radius: 10px !important;
+  font-weight: 600 !important;
+  transition: all 0.12s ease !important;
+}
+aside a:hover {
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.15) !important;
+}
+
+/* ── FORM INPUTS + TEXTAREA + SELECT — comic 3D feel ── */
+.admin-content input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+.admin-content textarea,
+.admin-content select {
+  border: 2px solid #111 !important;
+  border-radius: 10px !important;
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.15) !important;
+  font-weight: 500 !important;
+  transition: border-color 0.1s, box-shadow 0.1s, transform 0.1s !important;
+}
+.admin-content input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):focus,
+.admin-content textarea:focus,
+.admin-content select:focus {
+  border-color: #F97316 !important;
+  box-shadow: 3px 3px 0 rgba(249,115,22,0.5) !important;
+  outline: none !important;
+  transform: translate(-1px, -1px) !important;
+}
+
+/* ── CHECKBOXES — comic square with orange check ── */
+.admin-content input[type="checkbox"] {
+  width: 18px !important;
+  height: 18px !important;
+  border: 2px solid #111 !important;
+  border-radius: 4px !important;
+  box-shadow: 2px 2px 0 #111 !important;
+  accent-color: #F97316 !important;
+  cursor: pointer !important;
+}
+
+/* ── STATUS BADGES — comic pill ── */
+.admin-content .rounded-full[class*="bg-"] {
+  border: 1.5px solid rgba(0,0,0,0.2) !important;
+  font-weight: 800 !important;
+  box-shadow: 1.5px 1.5px 0 rgba(0,0,0,0.2) !important;
+  letter-spacing: 0.04em !important;
+}
+
+/* ── ICON BUTTONS (circle icons, small actions) ── */
+.admin-content button[class*="rounded-full"][class*="p-"],
+.admin-content button[class*="rounded-lg"][class*="p-1"] {
+  border: 2px solid transparent !important;
+  box-shadow: none !important;
+}
+.admin-content button[class*="rounded-full"][class*="p-"]:hover,
+.admin-content button[class*="rounded-lg"][class*="p-1"]:hover {
+  border-color: #111 !important;
+  box-shadow: 2px 2px 0 #111 !important;
+  transform: translate(-1px, -1px) !important;
+}
+
+/* ── DISABLED buttons — desaturated, no hover ── */
+.admin-content button:disabled {
+  opacity: 0.5 !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.15) !important;
+}
+
+/* ── GLOBAL CURSOR for clickable things ── */
+.admin-content button,
+.admin-content [role="button"],
+.admin-content [onClick],
+aside button,
+aside a {
+  cursor: pointer !important;
+}

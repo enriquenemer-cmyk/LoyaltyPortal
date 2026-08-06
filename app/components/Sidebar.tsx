@@ -673,11 +673,11 @@ function NavLink({
           : 'border-transparent pl-[10px]'
       } ${highlighted ? 'sidebar-link-pulse' : ''}`}
       style={isActive
-        ? { background: 'rgba(249,115,22,0.12)', color: '#111111' }
-        : { color: '#374151' }
+        ? { background: 'rgba(249,115,22,0.15)', color: '#F97316', fontWeight: 600 }
+        : { color: '#333333' }
       }
-      onMouseEnter={e => { if (!isActive) { (e.currentTarget as HTMLAnchorElement).style.background = 'rgba(0,0,0,0.06)'; (e.currentTarget as HTMLAnchorElement).style.color = '#111111'; } }}
-      onMouseLeave={e => { if (!isActive) { (e.currentTarget as HTMLAnchorElement).style.background = ''; (e.currentTarget as HTMLAnchorElement).style.color = '#374151'; } }}
+      onMouseEnter={e => { if (!isActive) { (e.currentTarget as HTMLAnchorElement).style.background = 'rgba(249,115,22,0.08)'; (e.currentTarget as HTMLAnchorElement).style.color = '#111111'; } }}
+      onMouseLeave={e => { if (!isActive) { (e.currentTarget as HTMLAnchorElement).style.background = ''; (e.currentTarget as HTMLAnchorElement).style.color = '#333333'; } }}
     >
       <span className="w-4 h-4 shrink-0 flex items-center justify-center">{icon}</span>
       <span className="truncate text-xs flex-1">{label}</span>
@@ -734,16 +734,16 @@ function AccordionSection({
         aria-expanded={isOpen}
         className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl transition-colors"
         style={{
-          background: isOpen ? 'rgba(0,0,0,0.06)' : hasActiveLink ? 'rgba(0,0,0,0.03)' : 'transparent',
+          background: isOpen || hasActiveLink ? `${accent}10` : 'transparent',
         }}
-        onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.07)'; }}
-        onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = isOpen ? 'rgba(0,0,0,0.06)' : hasActiveLink ? 'rgba(0,0,0,0.03)' : 'transparent'; }}
+        onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = `${accent}12`; }}
+        onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = isOpen || hasActiveLink ? `${accent}10` : 'transparent'; }}
       >
         <span
           className="relative w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-colors"
           style={{
-            background: isOpen || hasActiveLink ? `${accent}18` : 'rgba(0,0,0,0.06)',
-            color: isOpen || hasActiveLink ? accent : '#374151',
+            background: `${accent}15`,
+            color: accent,
           }}
         >
           {section.groupIcon}
@@ -755,7 +755,7 @@ function AccordionSection({
         </span>
         <span
           className="flex-1 text-left text-[12.5px] font-bold truncate"
-          style={{ color: isOpen || hasActiveLink ? '#f1f5f9' : 'rgba(203,213,225,0.85)' }}
+          style={{ color: '#111111' }}
         >
           {section.label}
         </span>
@@ -764,7 +764,7 @@ function AccordionSection({
         )}
         <svg
           className="w-3.5 h-3.5 shrink-0 transition-transform duration-300"
-          style={{ transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)', color: '#374151' }}
+          style={{ transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)', color: '#555555' }}
           fill="none" stroke="currentColor" viewBox="0 0 24 24"
         >
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -777,7 +777,7 @@ function AccordionSection({
         style={{ gridTemplateRows: isOpen ? '1fr' : '0fr' }}
       >
         <div className="overflow-hidden min-h-0">
-          <div className="pt-1 pb-1.5 pl-2 space-y-0.5" style={{ borderLeft: `2px solid ${accent}33`, marginLeft: 17 }}>
+          <div className="pt-1 pb-1.5 pl-2 space-y-0.5" style={{ borderLeft: `2px solid ${accent}40`, marginLeft: 17 }}>
             {section.links.map((link) => (
               <NavLink
                 key={link.href}
@@ -851,8 +851,8 @@ function CompactGroupIcon({
       <div
         className="relative w-9 h-9 mx-auto mb-1 rounded-lg flex items-center justify-center cursor-pointer transition-colors"
         style={{
-          background: hasActiveLink ? `${accent}18` : 'rgba(0,0,0,0.06)',
-          color: hasActiveLink ? accent : '#374151',
+          background: `${accent}15`,
+          color: accent,
         }}
       >
         {section.groupIcon}

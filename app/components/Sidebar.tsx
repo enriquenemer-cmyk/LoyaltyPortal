@@ -580,7 +580,7 @@ function GlobalSearch({ onSelect }: { onSelect?: (item: SearchResult) => void })
   const showDropdown = focused && (results.length > 0 || (query === '' && recent.length > 0) || loading);
 
   return (
-    <div className="px-3 py-2 border-b-2 border-black">
+    <div className="px-3 py-2" style={{ borderBottom: '2px solid #000' }}>
       <div className="relative">
         <div className="relative flex items-center">
           {loading ? (
@@ -601,8 +601,8 @@ function GlobalSearch({ onSelect }: { onSelect?: (item: SearchResult) => void })
             onBlur={() => setTimeout(() => setFocused(false), 150)}
             onKeyDown={handleKeyDown}
             placeholder="Buscar datos..."
-            className="sidebar-search-input w-full pl-8 pr-3 py-1.5 text-xs rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400/30 transition-all"
-            style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)', color: '#e2e8f0' }}
+            className="sidebar-search-input w-full pl-8 pr-3 py-1.5 text-xs rounded-lg focus:outline-none transition-all"
+            style={{ background: '#f5f5f5', border: '2px solid #111', color: '#111', boxShadow: '2px 2px 0 #111', fontWeight: 600 }}
           />
         </div>
         {showDropdown && (

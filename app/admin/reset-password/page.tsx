@@ -4,6 +4,12 @@ import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 
+const haloBg = {
+  background: '#FAFAF9',
+  backgroundImage: 'radial-gradient(circle, rgba(0,0,0,0.06) 1px, transparent 1px)',
+  backgroundSize: '20px 20px',
+};
+
 function ResetPasswordForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -26,12 +32,12 @@ function ResetPasswordForm() {
     setError('');
 
     if (newPassword.length < 6) {
-      setError('La contrasena debe tener al menos 6 caracteres.');
+      setError('La contraseña debe tener al menos 6 caracteres.');
       return;
     }
 
     if (newPassword !== confirmPassword) {
-      setError('Las contrasenas no coinciden.');
+      setError('Las contraseñas no coinciden.');
       return;
     }
 
@@ -44,60 +50,65 @@ function ResetPasswordForm() {
       });
       const data = await res.json();
       if (!res.ok) {
-        setError(data.error || 'Error al restablecer la contrasena.');
+        setError(data.error || 'Error al restablecer la contraseña.');
         return;
       }
       setSuccess(true);
       setTimeout(() => router.push('/admin/login?reset=1'), 2000);
     } catch {
-      setError('Error de conexion.');
+      setError('Error de conexión.');
     } finally {
       setLoading(false);
     }
   }
 
+  const inputStyle = { border: '2px solid #111', color: '#111', boxShadow: '3px 3px 0 rgba(0,0,0,0.12)', fontWeight: 600 } as const;
+  const focusInput = (e: React.FocusEvent<HTMLInputElement>) => { e.currentTarget.style.borderColor = '#F97316'; e.currentTarget.style.boxShadow = '3px 3px 0 rgba(249,115,22,0.4)'; };
+  const blurInput = (e: React.FocusEvent<HTMLInputElement>) => { e.currentTarget.style.borderColor = '#111'; e.currentTarget.style.boxShadow = '3px 3px 0 rgba(0,0,0,0.12)'; };
+
   return (
-    <div className="min-h-screen bg-[#FAFAF9] flex items-center justify-center px-4">
+    <div className="min-h-screen flex items-center justify-center px-4" style={haloBg}>
       <div className="w-full max-w-sm">
         {/* Icon */}
         <div className="flex justify-center mb-6">
           <div
             className="w-14 h-14 rounded-2xl flex items-center justify-center"
-            style={{
-              background: 'linear-gradient(135deg,#F97316,#0891B2)',
-              boxShadow: '0 8px 24px rgba(249,115,22,0.35)',
-            }}
+            style={{ background: '#F97316', border: '2px solid #111', boxShadow: '3px 3px 0 #111' }}
           >
             <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8}
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
                 d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
             </svg>
           </div>
         </div>
 
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-black text-[#1C1917]">Nueva contrasena</h1>
-          <p className="text-stone-400 text-sm mt-2">Elige una nueva contrasena segura para tu cuenta.</p>
+          <h1 style={{ fontSize: 26, fontWeight: 900, color: '#111', letterSpacing: '-0.03em' }}>Nueva contraseña</h1>
+          <p style={{ color: '#6b7280', fontSize: 14, fontWeight: 500, marginTop: 8 }}>Elige una nueva contraseña segura para tu cuenta.</p>
         </div>
 
-        <div className="bg-white rounded-2xl border border-[#E8E3DC] p-8" style={{ boxShadow: '0 1px 4px rgba(28,25,23,0.06)' }}>
+        <div style={{ background: '#fff', border: '2px solid #111', borderRadius: 20, boxShadow: '6px 6px 0 #111', padding: '2.25rem' }}>
           {success ? (
             <div className="text-center">
-              <div className="w-12 h-12 rounded-full bg-emerald-50 flex items-center justify-center mx-auto mb-4">
-                <svg className="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              <div
+                className="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4"
+                style={{ background: '#1a6b3c', border: '2px solid #111', boxShadow: '2px 2px 0 #111' }}
+              >
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
                 </svg>
               </div>
-              <p className="text-sm font-semibold text-[#1C1917] mb-2">Contrasena actualizada</p>
-              <p className="text-sm text-[#6b7280]">Redirigiendo al inicio de sesion...</p>
+              <p style={{ fontSize: 14, fontWeight: 800, color: '#111', marginBottom: 8 }}>Contraseña actualizada</p>
+              <p style={{ fontSize: 13, color: '#6b7280', fontWeight: 500 }}>Redirigiendo al inicio de sesión...</p>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-5">
               <div>
-                <label className="block text-sm font-semibold text-[#1C1917] mb-2">Nueva contrasena</label>
+                <label style={{ display: 'block', fontSize: 13, fontWeight: 800, color: '#111', marginBottom: 6 }}>Nueva contraseña</label>
                 <div className="relative">
                   <svg
-                    className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400"
+                    className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4"
+                    style={{ color: '#111', opacity: 0.5 }}
                     fill="none" stroke="currentColor" viewBox="0 0 24 24"
                   >
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
@@ -109,17 +120,21 @@ function ResetPasswordForm() {
                     onChange={(e) => setNewPassword(e.target.value)}
                     required
                     minLength={6}
-                    placeholder="minimo 6 caracteres"
-                    className="w-full bg-[#FAFAF9] border border-[#E8E3DC] rounded-xl pl-10 pr-4 py-3.5 text-sm text-[#1C1917] placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-[#F97316]/20 focus:border-[#F97316] focus:bg-white transition-all"
+                    placeholder="mínimo 6 caracteres"
+                    className="w-full pl-10 pr-4 py-2.5 text-sm rounded-[10px] transition-all focus:outline-none"
+                    style={inputStyle}
+                    onFocus={focusInput}
+                    onBlur={blurInput}
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-[#1C1917] mb-2">Confirmar contrasena</label>
+                <label style={{ display: 'block', fontSize: 13, fontWeight: 800, color: '#111', marginBottom: 6 }}>Confirmar contraseña</label>
                 <div className="relative">
                   <svg
-                    className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400"
+                    className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4"
+                    style={{ color: '#111', opacity: 0.5 }}
                     fill="none" stroke="currentColor" viewBox="0 0 24 24"
                   >
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
@@ -130,31 +145,41 @@ function ResetPasswordForm() {
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     required
-                    placeholder="repite la contrasena"
-                    className="w-full bg-[#FAFAF9] border border-[#E8E3DC] rounded-xl pl-10 pr-4 py-3.5 text-sm text-[#1C1917] placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-[#F97316]/20 focus:border-[#F97316] focus:bg-white transition-all"
+                    placeholder="repite la contraseña"
+                    className="w-full pl-10 pr-4 py-2.5 text-sm rounded-[10px] transition-all focus:outline-none"
+                    style={inputStyle}
+                    onFocus={focusInput}
+                    onBlur={blurInput}
                   />
                 </div>
               </div>
 
               {error && (
-                <div className="bg-red-50 border border-red-200 text-red-700 rounded-xl px-4 py-3 text-sm flex items-center gap-2.5">
-                  <svg className="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <div className="flex items-center gap-2.5 px-4 py-3 rounded-[10px]" style={{ background: '#fef2f2', border: '2px solid #111', boxShadow: '3px 3px 0 rgba(220,38,38,0.3)' }}>
+                  <svg style={{ width: 16, height: 16, color: '#dc2626', flexShrink: 0 }} fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd"
                       d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
                       clipRule="evenodd" />
                   </svg>
-                  {error}
+                  <span style={{ fontSize: 13, color: '#dc2626', fontWeight: 700 }}>{error}</span>
                 </div>
               )}
 
               <button
                 type="submit"
                 disabled={loading || !token}
-                className="w-full text-white font-bold py-4 rounded-xl transition-all text-base disabled:opacity-60"
+                className="w-full py-3 rounded-[12px] text-white text-sm transition-all"
                 style={{
-                  background: 'linear-gradient(135deg,#F97316,#0891B2)',
-                  boxShadow: loading ? 'none' : '0 8px 24px rgba(249,115,22,0.40)',
+                  background: (loading || !token) ? '#6b9e7e' : '#F97316',
+                  border: '2.5px solid #111',
+                  boxShadow: (loading || !token) ? 'none' : '4px 4px 0 #111',
+                  fontWeight: 800,
+                  cursor: (loading || !token) ? 'not-allowed' : 'pointer',
                 }}
+                onMouseEnter={e => { if (!loading && token) { (e.currentTarget as HTMLButtonElement).style.transform = 'translate(-2px, -2px)'; (e.currentTarget as HTMLButtonElement).style.boxShadow = '6px 6px 0 #111'; } }}
+                onMouseLeave={e => { if (!loading && token) { (e.currentTarget as HTMLButtonElement).style.transform = 'translate(0, 0)'; (e.currentTarget as HTMLButtonElement).style.boxShadow = '4px 4px 0 #111'; } }}
+                onMouseDown={e => { if (!loading && token) { (e.currentTarget as HTMLButtonElement).style.transform = 'translate(2px, 2px)'; (e.currentTarget as HTMLButtonElement).style.boxShadow = '1px 1px 0 #111'; } }}
+                onMouseUp={e => { if (!loading && token) { (e.currentTarget as HTMLButtonElement).style.transform = 'translate(-2px, -2px)'; (e.currentTarget as HTMLButtonElement).style.boxShadow = '6px 6px 0 #111'; } }}
               >
                 {loading ? (
                   <span className="flex items-center justify-center gap-2">
@@ -165,13 +190,13 @@ function ResetPasswordForm() {
                     Actualizando...
                   </span>
                 ) : (
-                  'Actualizar contrasena'
+                  'Actualizar contraseña'
                 )}
               </button>
 
               <div className="text-center">
-                <Link href="/admin/login" className="text-sm text-[#6b7280] hover:text-[#F97316] transition-colors">
-                  Volver al inicio de sesion
+                <Link href="/admin/login" style={{ fontSize: 13, color: '#6b7280', fontWeight: 600 }}>
+                  Volver al inicio de sesión
                 </Link>
               </div>
             </form>
@@ -185,8 +210,8 @@ function ResetPasswordForm() {
 export default function ResetPasswordPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen bg-[#FAFAF9] flex items-center justify-center">
-        <svg className="animate-spin w-7 h-7 text-[#F97316]" fill="none" viewBox="0 0 24 24">
+      <div className="min-h-screen flex items-center justify-center" style={haloBg}>
+        <svg className="animate-spin w-7 h-7" style={{ color: '#F97316' }} fill="none" viewBox="0 0 24 24">
           <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
         </svg>

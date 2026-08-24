@@ -28,8 +28,9 @@ export async function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Login page is always accessible
-  if (pathname === '/admin/login') {
+  // Auth pages are always accessible, even without a session
+  const PUBLIC_AUTH_ROUTES = ['/admin/login', '/admin/forgot-password', '/admin/reset-password'];
+  if (PUBLIC_AUTH_ROUTES.includes(pathname)) {
     return NextResponse.next();
   }
 

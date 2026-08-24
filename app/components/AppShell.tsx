@@ -10,8 +10,8 @@ import { ErrorBoundary } from './ErrorBoundary';
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
-  const isAdminLogin = pathname === '/admin/login';
-  const isAdminPage = pathname.startsWith('/admin') && !isAdminLogin;
+  const isStandaloneAuthPage = pathname === '/admin/login' || pathname === '/admin/forgot-password' || pathname === '/admin/reset-password';
+  const isAdminPage = pathname.startsWith('/admin') && !isStandaloneAuthPage;
   const isCajeroPage = pathname.startsWith('/cajero');
   const isEmpleadosPage = pathname.startsWith('/empleados');
 
@@ -35,7 +35,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     );
   }
 
-  if (isAdminLogin || isEmpleadosPage) {
+  if (isStandaloneAuthPage || isEmpleadosPage) {
     return <>{children}</>;
   }
 

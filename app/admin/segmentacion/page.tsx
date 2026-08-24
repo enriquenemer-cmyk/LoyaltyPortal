@@ -36,7 +36,7 @@ const SEGMENT_LABELS: Record<RfmSegment, string> = {
 
 const SEGMENT_BADGE_CLASS: Record<RfmSegment, string> = {
   champions: 'bg-amber-50 text-amber-700 border-amber-300',
-  leales: 'bg-orange-50 text-orange-700 border-blue-300',
+  leales: 'bg-orange-50 text-orange-700 border-orange-300',
   nuevos_prometedores: 'bg-emerald-50 text-emerald-700 border-emerald-300',
   en_riesgo: 'bg-orange-50 text-orange-700 border-orange-300',
   perdidos: 'bg-red-50 text-red-700 border-red-300',
@@ -53,7 +53,7 @@ function SegmentBadge({ segment }: { segment: RfmSegment }) {
 
 function formatDate(dateStr: string) {
   const date = new Date(dateStr);
-  return date.toLocaleDateString('es-MX', { year: 'numeric', month: 'short', day: 'numeric' });
+  return date.toLocaleDateString('es-CO', { year: 'numeric', month: 'short', day: 'numeric' });
 }
 
 export default function SegmentacionPage() {
@@ -144,7 +144,7 @@ export default function SegmentacionPage() {
               placeholder="Buscar por nombre o teléfono..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 bg-white border border-[#E8E3DC] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20 focus:border-[#2563EB] transition-all shadow-sm"
+              className="w-full pl-10 pr-4 py-2.5 bg-white border border-[#E8E3DC] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#F97316]/20 focus:border-[#F97316] transition-all shadow-sm"
             />
           </div>
           {(search || activeSegment) && (
@@ -200,7 +200,7 @@ export default function SegmentacionPage() {
                       <tr key={c.phone} className="hover:bg-orange-50/40 transition-colors group">
                         <td className="px-5 py-4">
                           <div>
-                            <span className="font-medium text-slate-900 group-hover:text-[#2563EB] transition-colors text-sm">
+                            <span className="font-medium text-slate-900 group-hover:text-[#F97316] transition-colors text-sm">
                               {c.full_name}
                             </span>
                             <p className="text-[10px] text-slate-400 font-mono mt-0.5">{c.phone}</p>
@@ -216,7 +216,7 @@ export default function SegmentacionPage() {
                           </div>
                         </td>
                         <td className="px-5 py-4">
-                          <span className="inline-flex items-center gap-1.5 bg-orange-50 text-[#2563EB] text-xs font-bold px-2.5 py-1 rounded-full border border-orange-200">
+                          <span className="inline-flex items-center gap-1.5 bg-orange-50 text-[#F97316] text-xs font-bold px-2.5 py-1 rounded-full border border-orange-200">
                             {c.frequency} {c.frequency === 1 ? 'canje' : 'canjes'}
                           </span>
                         </td>
@@ -249,7 +249,7 @@ export default function SegmentacionPage() {
                 Mostrando <span className="font-medium text-slate-600">{filtered.length}</span> de{' '}
                 <span className="font-medium text-slate-600">{customers.length}</span> clientes
                 {activeSegment && (
-                  <span className="ml-2 text-[#2563EB] font-bold">· {SEGMENT_LABELS[activeSegment]}</span>
+                  <span className="ml-2 text-[#F97316] font-bold">· {SEGMENT_LABELS[activeSegment]}</span>
                 )}
               </p>
             </div>

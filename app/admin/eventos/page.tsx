@@ -51,7 +51,7 @@ const STATUS_CONFIG = {
 };
 
 function formatDt(iso: string) {
-  return new Date(iso).toLocaleString('es-MX', { dateStyle: 'short', timeStyle: 'short' });
+  return new Date(iso).toLocaleString('es-CO', { dateStyle: 'short', timeStyle: 'short' });
 }
 
 export default function EventosPage() {

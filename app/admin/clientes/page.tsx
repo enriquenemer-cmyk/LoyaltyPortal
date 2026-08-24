@@ -63,7 +63,7 @@ type Segment = 'todos' | 'frecuentes' | 'cumpleanos' | 'sin_canjear' | 'nuevos';
 
 function formatDate(dateStr: string) {
   const date = new Date(dateStr);
-  return date.toLocaleString('es-MX', {
+  return date.toLocaleString('es-CO', {
     year: 'numeric',
     month: 'short',
     day: 'numeric',
@@ -74,7 +74,7 @@ function formatDate(dateStr: string) {
 
 function formatDateShort(dateStr: string) {
   const date = new Date(dateStr);
-  return date.toLocaleDateString('es-MX', {
+  return date.toLocaleDateString('es-CO', {
     year: 'numeric',
     month: 'short',
     day: 'numeric',
@@ -127,7 +127,7 @@ function SegmentButton({
       onClick={onClick}
       className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-bold border transition-all whitespace-nowrap ${
         active
-          ? 'bg-[#F97316] text-white border-[#F97316] shadow-md shadow-blue-200'
+          ? 'bg-[#F97316] text-white border-[#F97316] shadow-md shadow-orange-200'
           : 'bg-white text-slate-600 border-slate-200 hover:border-[#F97316] hover:text-[#F97316]'
       }`}
     >
@@ -235,7 +235,7 @@ function CustomerRow({ customer }: { customer: CustomerProfile }) {
         <td className="px-5 py-4">
           <div className="flex flex-col gap-0.5">
             <TierBadge tier={customer.tier} />
-            <span className="text-[10px] text-slate-400 font-mono">{customer.totalPoints.toLocaleString('es-MX')} pts</span>
+            <span className="text-[10px] text-slate-400 font-mono">{customer.totalPoints.toLocaleString('es-CO')} pts</span>
           </div>
         </td>
 
@@ -446,7 +446,7 @@ export default function ClientesPage() {
               <div className="flex items-center mt-3 gap-2">
                 <div className="flex -space-x-2">
                   {['A','M','R','L'].map((l,i) => (
-                    <div key={i} className="w-7 h-7 rounded-full border-2 flex items-center justify-center text-white text-[9px] font-black" style={{ borderColor: 'rgba(255,255,255,0.4)', background: ['#2563eb','#1a6b3c','#0d9488','#d97706'][i] }}>{l}</div>
+                    <div key={i} className="w-7 h-7 rounded-full border-2 flex items-center justify-center text-white text-[9px] font-black" style={{ borderColor: 'rgba(255,255,255,0.4)', background: ['#F97316','#1a6b3c','#0d9488','#d97706'][i] }}>{l}</div>
                   ))}
                   {customers.length > 4 && <div className="w-7 h-7 rounded-full border-2 flex items-center justify-center text-[9px] font-black" style={{ borderColor: 'rgba(255,255,255,0.4)', background: 'rgba(255,255,255,0.2)', color: 'white' }}>+{customers.length - 4}</div>}
                 </div>
@@ -491,8 +491,8 @@ export default function ClientesPage() {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
           {[
             { label: 'Clientes únicos', value: customers.length, icon: '', borderColor: '#F97316', bgColor: '#fde8e0', numColor: '#F97316' },
-            { label: 'Frecuentes', value: segmentCounts.frecuentes, icon: '', borderColor: '#0284C7', bgColor: '#fef3c7', numColor: '#0EA5E9' },
-            { label: 'Sin canjear', value: segmentCounts.sin_canjear, icon: '⏳', borderColor: '#0284C7', bgColor: '#fef9c3', numColor: '#ea6a0a' },
+            { label: 'Frecuentes', value: segmentCounts.frecuentes, icon: '', borderColor: '#EA580C', bgColor: '#fef3c7', numColor: '#F97316' },
+            { label: 'Sin canjear', value: segmentCounts.sin_canjear, icon: '⏳', borderColor: '#EA580C', bgColor: '#fef9c3', numColor: '#ea6a0a' },
             { label: 'Nuevos (30d)', value: segmentCounts.nuevos, icon: '', borderColor: '#8b5cf6', bgColor: '#ede9fe', numColor: '#1a6b3c' },
           ].map(({ label, value, icon, borderColor, bgColor, numColor }) => (
             <div

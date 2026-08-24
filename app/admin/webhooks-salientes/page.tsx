@@ -96,33 +96,33 @@ export default function WebhooksSalientesPage() {
                 <label className="block text-xs font-semibold text-stone-500 mb-1">Nombre</label>
                 <input required value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
                   placeholder="Zapier — Tier upgrade"
-                  className="w-full border border-[#E8E3DC] rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-[#2563EB]" />
+                  className="w-full border border-[#E8E3DC] rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-[#F97316]" />
               </div>
               <div>
                 <label className="block text-xs font-semibold text-stone-500 mb-1">URL destino</label>
                 <input required type="url" value={form.url} onChange={e => setForm(f => ({ ...f, url: e.target.value }))}
                   placeholder="https://hooks.zapier.com/..."
-                  className="w-full border border-[#E8E3DC] rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-[#2563EB]" />
+                  className="w-full border border-[#E8E3DC] rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-[#F97316]" />
               </div>
             </div>
             <div>
               <label className="block text-xs font-semibold text-stone-500 mb-1">Secret HMAC (opcional — valida la firma en tu app)</label>
               <input type="password" value={form.secret} onChange={e => setForm(f => ({ ...f, secret: e.target.value }))}
                 placeholder="mi-secreto-seguro"
-                className="w-full border border-[#E8E3DC] rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-[#2563EB]" />
+                className="w-full border border-[#E8E3DC] rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-[#F97316]" />
             </div>
             <div>
               <label className="block text-xs font-semibold text-stone-500 mb-2">Eventos a escuchar</label>
               <div className="flex flex-wrap gap-2">
                 {ALL_EVENTS.map(ev => (
                   <button key={ev} type="button" onClick={() => toggleEvent(ev)}
-                    className={`text-xs px-3 py-1.5 rounded-full border font-semibold transition-all ${form.events.includes(ev) ? 'bg-[#2563EB] text-white border-[#2563EB]' : 'bg-white text-stone-600 border-[#E8E3DC] hover:border-[#2563EB]'}`}>
+                    className={`text-xs px-3 py-1.5 rounded-full border font-semibold transition-all ${form.events.includes(ev) ? 'bg-[#F97316] text-white border-[#F97316]' : 'bg-white text-stone-600 border-[#E8E3DC] hover:border-[#F97316]'}`}>
                     {ev}
                   </button>
                 ))}
               </div>
             </div>
-            <button type="submit" disabled={saving} className="px-5 py-2.5 rounded-xl text-white text-sm font-bold disabled:opacity-60" style={{ background: '#2563EB' }}>
+            <button type="submit" disabled={saving} className="px-5 py-2.5 rounded-xl text-white text-sm font-bold disabled:opacity-60" style={{ background: '#F97316' }}>
               {saving ? 'Guardando...' : '+ Crear webhook'}
             </button>
           </form>
@@ -156,7 +156,7 @@ export default function WebhooksSalientesPage() {
                         ))}
                       </div>
                       {wh.last_triggered_at && (
-                        <p className="text-xs text-stone-400 mt-1">Último disparo: {new Date(wh.last_triggered_at).toLocaleString('es-MX')}</p>
+                        <p className="text-xs text-stone-400 mt-1">Último disparo: {new Date(wh.last_triggered_at).toLocaleString('es-CO')}</p>
                       )}
                       {testResult[wh.id] && (
                         <p className={`text-xs mt-1 font-semibold ${testResult[wh.id].startsWith('OK') ? 'text-emerald-600' : 'text-red-600'}`}>{testResult[wh.id]}</p>
@@ -180,7 +180,7 @@ export default function WebhooksSalientesPage() {
 
         {/* Zapier instructions */}
         <div className="bg-orange-50 border border-orange-200 rounded-2xl p-5 mt-6">
-          <p className="text-sm font-bold text-blue-800 mb-2">Cómo conectar con Zapier</p>
+          <p className="text-sm font-bold text-orange-800 mb-2">Cómo conectar con Zapier</p>
           <ol className="text-xs text-orange-700 space-y-1 list-decimal list-inside">
             <li>En Zapier, crea un Zap con trigger "Webhooks by Zapier → Catch Hook"</li>
             <li>Copia la URL de webhook que te da Zapier</li>

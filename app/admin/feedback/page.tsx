@@ -112,7 +112,7 @@ export default function FeedbackPage() {
                     <div className="flex items-center gap-2 mb-0.5">
                       <span className="text-amber-500 text-xs">{'★'.repeat(e.metadata?.stars ?? 0)}</span>
                       <span className="text-xs text-stone-400">
-                        {new Date(e.created_at).toLocaleDateString('es-MX', { day: 'numeric', month: 'short' })}
+                        {new Date(e.created_at).toLocaleDateString('es-CO', { day: 'numeric', month: 'short' })}
                       </span>
                     </div>
                     <p className="text-sm text-[#1C1917]">{e.metadata?.comment}</p>
@@ -134,7 +134,7 @@ export default function FeedbackPage() {
                   <div>
                     <p className="text-sm text-red-900">{e.metadata?.comment ?? 'Sin comentario'}</p>
                     <p className="text-xs text-red-400">
-                      {new Date(e.created_at).toLocaleDateString('es-MX', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}
+                      {new Date(e.created_at).toLocaleDateString('es-CO', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}
                     </p>
                   </div>
                 </div>

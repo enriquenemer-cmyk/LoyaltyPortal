@@ -84,7 +84,7 @@ export default function BottomNav() {
     >
       {tabs.map((tab) => {
         const isActive = tab.exact ? pathname === tab.href : pathname.startsWith(tab.href);
-        const color = isActive ? '#93c5fd' : 'rgba(148,163,184,0.6)';
+        const color = isActive ? '#FDBA74' : 'rgba(148,163,184,0.6)';
 
         return (
           <Link
@@ -99,7 +99,7 @@ export default function BottomNav() {
                 width: '4px',
                 height: '4px',
                 borderRadius: '50%',
-                background: isActive ? '#60a5fa' : 'transparent',
+                background: isActive ? '#FB923C' : 'transparent',
                 marginBottom: '1px',
               }}
             />

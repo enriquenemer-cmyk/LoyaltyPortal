@@ -167,7 +167,7 @@ function InstructionOverlay({
             marginTop: 12,
             padding: '10px 24px',
             borderRadius: 10,
-            background: '#2563EB',
+            background: '#F97316',
             color: 'white',
             fontWeight: 800,
             fontSize: 14,
@@ -265,7 +265,7 @@ function SlotsGame({ prizeName, onWin }: { prizeName: string; onWin: () => void 
       `}</style>
 
       <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 13, marginBottom: 20 }}>
-        Vas a ganar: <strong style={{ color: '#38BDF8' }}>{prizeName}</strong>
+        Vas a ganar: <strong style={{ color: '#FB923C' }}>{prizeName}</strong>
       </p>
 
       <div style={{
@@ -275,7 +275,7 @@ function SlotsGame({ prizeName, onWin }: { prizeName: string; onWin: () => void 
         padding: '24px 16px',
         maxWidth: 340,
         margin: '0 auto',
-        boxShadow: '0 0 40px rgba(37,99,235,0.3), inset 0 2px 0 rgba(255,255,255,0.05)',
+        boxShadow: '0 0 40px rgba(249,115,22,0.3), inset 0 2px 0 rgba(255,255,255,0.05)',
         position: 'relative',
       }}>
         {state === 'instructing' && (
@@ -292,7 +292,7 @@ function SlotsGame({ prizeName, onWin }: { prizeName: string; onWin: () => void 
           />
         )}
         <MuteButton />
-        <div style={{ fontSize: 14, fontWeight: 800, color: '#2563EB', letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: 16 }}>
+        <div style={{ fontSize: 14, fontWeight: 800, color: '#F97316', letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: 16 }}>
           <RectangleGroupIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Tragamonedas
         </div>
 
@@ -309,7 +309,7 @@ function SlotsGame({ prizeName, onWin }: { prizeName: string; onWin: () => void 
           <div style={{
             position: 'absolute', left: 0, right: 0,
             top: '50%', height: 2,
-            background: 'rgba(37,99,235,0.6)',
+            background: 'rgba(249,115,22,0.6)',
             pointerEvents: 'none',
           }} />
 
@@ -320,8 +320,8 @@ function SlotsGame({ prizeName, onWin }: { prizeName: string; onWin: () => void 
               overflow: 'hidden',
               borderRadius: 8,
               background: '#1a1614',
-              border: `2px solid ${state === 'won' ? '#2563EB' : '#292524'}`,
-              boxShadow: state === 'won' ? '0 0 12px rgba(37,99,235,0.5)' : 'none',
+              border: `2px solid ${state === 'won' ? '#F97316' : '#292524'}`,
+              boxShadow: state === 'won' ? '0 0 12px rgba(249,115,22,0.5)' : 'none',
               transition: 'border-color 0.3s, box-shadow 0.3s',
             }}>
               <div
@@ -357,7 +357,7 @@ function SlotsGame({ prizeName, onWin }: { prizeName: string; onWin: () => void 
 
         {state === 'won' && (
           <div style={{ animation: 'flash 0.4s 2, bounce 0.6s 0.5s ease-out both', marginTop: 16 }}>
-            <div style={{ fontSize: 28, fontWeight: 900, color: '#2563EB', letterSpacing: '0.05em' }}>
+            <div style={{ fontSize: 28, fontWeight: 900, color: '#F97316', letterSpacing: '0.05em' }}>
               ¡¡GANASTE!!
             </div>
             <div style={{ fontSize: 24 }}><SparklesIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /><SparklesIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /><SparklesIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
@@ -373,7 +373,7 @@ function SlotsGame({ prizeName, onWin }: { prizeName: string; onWin: () => void 
               marginTop: 20,
               padding: '14px 0',
               borderRadius: 12,
-              background: state === 'spinning' ? '#78350f' : '#2563EB',
+              background: state === 'spinning' ? '#78350f' : '#F97316',
               color: 'white',
               fontWeight: 900,
               fontSize: 18,
@@ -396,7 +396,7 @@ function SlotsGame({ prizeName, onWin }: { prizeName: string; onWin: () => void 
               marginTop: 12,
               padding: '14px 0',
               borderRadius: 12,
-              background: 'linear-gradient(135deg, #38BDF8, #0284C7)',
+              background: 'linear-gradient(135deg, #FB923C, #EA580C)',
               color: '#1c1917',
               fontWeight: 900,
               fontSize: 16,
@@ -432,7 +432,7 @@ function RouletteGame({ prizeName, onWin }: { prizeName: string; onWin: () => vo
 
   const SEGMENTS = 8;
   const LABELS = ['¡PREMIO!', 'Gira\notra vez', 'Inténtalo', 'Casi...', 'Sigue\narriba', 'Casi\nganas', 'Última\nchance', 'Gira más'];
-  const COLORS = ['#2563EB', '#c2410c', '#0369A1', '#1D4ED8', '#0EA5E9', '#1E40AF', '#0891B2', '#1D4ED8'];
+  const COLORS = ['#F97316', '#c2410c', '#C2410C', '#C2410C', '#F97316', '#9A3412', '#EA580C', '#C2410C'];
   const WIN_SEGMENT = 0;
 
   const segAngle = 360 / SEGMENTS;
@@ -476,8 +476,8 @@ function RouletteGame({ prizeName, onWin }: { prizeName: string; onWin: () => vo
     <div style={{ textAlign: 'center', padding: '0 16px' }}>
       <style>{`
         @keyframes glowPulse {
-          0%,100%{box-shadow:0 0 20px rgba(37,99,235,0.5)}
-          50%{box-shadow:0 0 50px rgba(37,99,235,0.9)}
+          0%,100%{box-shadow:0 0 20px rgba(249,115,22,0.5)}
+          50%{box-shadow:0 0 50px rgba(249,115,22,0.9)}
         }
         @keyframes winPop {
           0%{transform:scale(0);opacity:0}
@@ -491,7 +491,7 @@ function RouletteGame({ prizeName, onWin }: { prizeName: string; onWin: () => vo
       `}</style>
 
       <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 13, marginBottom: 20 }}>
-        Vas a ganar: <strong style={{ color: '#38BDF8' }}>{prizeName}</strong>
+        Vas a ganar: <strong style={{ color: '#FB923C' }}>{prizeName}</strong>
       </p>
 
       <div style={{
@@ -501,7 +501,7 @@ function RouletteGame({ prizeName, onWin }: { prizeName: string; onWin: () => vo
         padding: '24px 16px',
         maxWidth: 340,
         margin: '0 auto',
-        boxShadow: state === 'won' ? '0 0 40px rgba(37,99,235,0.6)' : '0 0 40px rgba(0,0,0,0.4)',
+        boxShadow: state === 'won' ? '0 0 40px rgba(249,115,22,0.6)' : '0 0 40px rgba(0,0,0,0.4)',
         transition: 'box-shadow 0.5s',
         position: 'relative',
       }}>
@@ -513,7 +513,7 @@ function RouletteGame({ prizeName, onWin }: { prizeName: string; onWin: () => vo
           />
         )}
         <MuteButton />
-        <div style={{ fontSize: 14, fontWeight: 800, color: '#2563EB', letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: 16 }}>
+        <div style={{ fontSize: 14, fontWeight: 800, color: '#F97316', letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: 16 }}>
           <RectangleGroupIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Ruleta de la Suerte
         </div>
 
@@ -523,7 +523,7 @@ function RouletteGame({ prizeName, onWin }: { prizeName: string; onWin: () => vo
             width: 0, height: 0,
             borderLeft: '10px solid transparent',
             borderRight: '10px solid transparent',
-            borderTop: '22px solid #38BDF8',
+            borderTop: '22px solid #FB923C',
             zIndex: 10,
             filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.5))',
           }} />
@@ -534,7 +534,7 @@ function RouletteGame({ prizeName, onWin }: { prizeName: string; onWin: () => vo
             overflow: 'hidden',
             transform: `rotate(${rotation}deg)`,
             transition: state === 'spinning' ? 'transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99)' : 'none',
-            boxShadow: state === 'won' ? '0 0 30px rgba(37,99,235,0.7)' : 'none',
+            boxShadow: state === 'won' ? '0 0 30px rgba(249,115,22,0.7)' : 'none',
           }}>
             <svg viewBox="0 0 200 200" width="220" height="220">
               {Array.from({ length: SEGMENTS }).map((_, i) => (
@@ -564,7 +564,7 @@ function RouletteGame({ prizeName, onWin }: { prizeName: string; onWin: () => vo
 
         {state === 'won' && (
           <div style={{ animation: 'winPop 0.5s ease-out', marginTop: 16 }}>
-            <div style={{ fontSize: 26, fontWeight: 900, color: '#38BDF8' }}><StarIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> ¡PREMIO! <StarIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
+            <div style={{ fontSize: 26, fontWeight: 900, color: '#FB923C' }}><StarIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> ¡PREMIO! <StarIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
             <div style={{ color: 'rgba(255,255,255,0.7)', fontSize: 13, marginTop: 4 }}>¡Caíste en el segmento dorado!</div>
           </div>
         )}
@@ -578,7 +578,7 @@ function RouletteGame({ prizeName, onWin }: { prizeName: string; onWin: () => vo
               marginTop: 20,
               padding: '14px 0',
               borderRadius: 12,
-              background: state === 'spinning' ? '#78350f' : '#2563EB',
+              background: state === 'spinning' ? '#78350f' : '#F97316',
               color: 'white',
               fontWeight: 900,
               fontSize: 18,
@@ -600,7 +600,7 @@ function RouletteGame({ prizeName, onWin }: { prizeName: string; onWin: () => vo
               marginTop: 12,
               padding: '14px 0',
               borderRadius: 12,
-              background: 'linear-gradient(135deg, #38BDF8, #0284C7)',
+              background: 'linear-gradient(135deg, #FB923C, #EA580C)',
               color: '#1c1917',
               fontWeight: 900,
               fontSize: 16,
@@ -678,7 +678,7 @@ function PenaltyGame({ prizeName, onWin }: { prizeName: string; onWin: () => voi
       `}</style>
 
       <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 13, marginBottom: 20 }}>
-        Vas a ganar: <strong style={{ color: '#38BDF8' }}>{prizeName}</strong>
+        Vas a ganar: <strong style={{ color: '#FB923C' }}>{prizeName}</strong>
       </p>
 
       <div style={{
@@ -700,8 +700,8 @@ function PenaltyGame({ prizeName, onWin }: { prizeName: string; onWin: () => voi
                   <span key={i} style={{
                     display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
                     width: 32, height: 32, borderRadius: 6,
-                    background: 'rgba(37,99,235,0.15)', border: '1px dashed rgba(37,99,235,0.5)',
-                    fontSize: 16, color: '#2563EB', fontWeight: 700,
+                    background: 'rgba(249,115,22,0.15)', border: '1px dashed rgba(249,115,22,0.5)',
+                    fontSize: 16, color: '#F97316', fontWeight: 700,
                   }}>{arrow}</span>
                 ))}
               </div>
@@ -710,7 +710,7 @@ function PenaltyGame({ prizeName, onWin }: { prizeName: string; onWin: () => voi
           />
         )}
         <MuteButton />
-        <div style={{ fontSize: 14, fontWeight: 800, color: '#2563EB', letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: 16 }}>
+        <div style={{ fontSize: 14, fontWeight: 800, color: '#F97316', letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: 16 }}>
            Penales
         </div>
 
@@ -774,7 +774,7 @@ function PenaltyGame({ prizeName, onWin }: { prizeName: string; onWin: () => voi
             {state === 'goal' && (
               <div style={{
                 position: 'absolute', inset: 0,
-                background: 'rgba(37,99,235,0.3)',
+                background: 'rgba(249,115,22,0.3)',
                 zIndex: 5,
                 pointerEvents: 'none',
               }} />
@@ -790,15 +790,15 @@ function PenaltyGame({ prizeName, onWin }: { prizeName: string; onWin: () => voi
                   top: `${z.y - 14}%`,
                   width: '28%',
                   height: '28%',
-                  background: 'rgba(37,99,235,0.12)',
-                  border: '1px dashed rgba(37,99,235,0.4)',
+                  background: 'rgba(249,115,22,0.12)',
+                  border: '1px dashed rgba(249,115,22,0.4)',
                   borderRadius: 6,
                   cursor: 'pointer',
                   zIndex: 10,
                   transition: 'background 0.15s',
                 }}
-                onMouseEnter={e => (e.currentTarget.style.background = 'rgba(37,99,235,0.35)')}
-                onMouseLeave={e => (e.currentTarget.style.background = 'rgba(37,99,235,0.12)')}
+                onMouseEnter={e => (e.currentTarget.style.background = 'rgba(249,115,22,0.35)')}
+                onMouseLeave={e => (e.currentTarget.style.background = 'rgba(249,115,22,0.12)')}
               />
             ))}
           </div>
@@ -817,8 +817,8 @@ function PenaltyGame({ prizeName, onWin }: { prizeName: string; onWin: () => voi
 
         {state === 'goal' && (
           <div style={{ animation: 'goalPop 0.5s ease-out', marginTop: 16 }}>
-            <div style={{ fontSize: 26, fontWeight: 900, color: '#2563EB' }}> ¡GOOOOOL!</div>
-            <div style={{ color: '#38BDF8', fontSize: 18, fontWeight: 900 }}>¡GANASTE!</div>
+            <div style={{ fontSize: 26, fontWeight: 900, color: '#F97316' }}> ¡GOOOOOL!</div>
+            <div style={{ color: '#FB923C', fontSize: 18, fontWeight: 900 }}>¡GANASTE!</div>
           </div>
         )}
 
@@ -836,7 +836,7 @@ function PenaltyGame({ prizeName, onWin }: { prizeName: string; onWin: () => voi
               marginTop: 16,
               padding: '14px 0',
               borderRadius: 12,
-              background: 'linear-gradient(135deg, #38BDF8, #0284C7)',
+              background: 'linear-gradient(135deg, #FB923C, #EA580C)',
               color: '#1c1917',
               fontWeight: 900,
               fontSize: 16,
@@ -883,10 +883,10 @@ function ScratchGame({ prizeName, onWin }: { prizeName: string; onWin: () => voi
     if (!ctx) return;
 
     const grad = ctx.createLinearGradient(0, 0, CARD_W, CARD_H);
-    grad.addColorStop(0, '#0EA5E9');
-    grad.addColorStop(0.3, '#38BDF8');
-    grad.addColorStop(0.6, '#0284C7');
-    grad.addColorStop(1, '#1D4ED8');
+    grad.addColorStop(0, '#F97316');
+    grad.addColorStop(0.3, '#FB923C');
+    grad.addColorStop(0.6, '#EA580C');
+    grad.addColorStop(1, '#C2410C');
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, CARD_W, CARD_H);
 
@@ -982,7 +982,7 @@ function ScratchGame({ prizeName, onWin }: { prizeName: string; onWin: () => voi
       `}</style>
 
       <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 13, marginBottom: 20 }}>
-        Vas a ganar: <strong style={{ color: '#38BDF8' }}>{prizeName}</strong>
+        Vas a ganar: <strong style={{ color: '#FB923C' }}>{prizeName}</strong>
       </p>
 
       <div style={{
@@ -1014,7 +1014,7 @@ function ScratchGame({ prizeName, onWin }: { prizeName: string; onWin: () => voi
           />
         )}
         <MuteButton />
-        <div style={{ fontSize: 14, fontWeight: 800, color: '#2563EB', letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: 16 }}>
+        <div style={{ fontSize: 14, fontWeight: 800, color: '#F97316', letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: 16 }}>
           🃏 Rasca y Gana
         </div>
 
@@ -1039,7 +1039,7 @@ function ScratchGame({ prizeName, onWin }: { prizeName: string; onWin: () => voi
             <div style={{
               fontSize: 15,
               fontWeight: 900,
-              background: 'linear-gradient(135deg, #2563EB, #38BDF8)',
+              background: 'linear-gradient(135deg, #F97316, #FB923C)',
               backgroundSize: '200% auto',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
@@ -1049,7 +1049,7 @@ function ScratchGame({ prizeName, onWin }: { prizeName: string; onWin: () => voi
             }}>
               {prizeName}
             </div>
-            <div style={{ fontSize: 12, fontWeight: 800, color: '#38BDF8', letterSpacing: '0.1em' }}>¡GANASTE!</div>
+            <div style={{ fontSize: 12, fontWeight: 800, color: '#FB923C', letterSpacing: '0.1em' }}>¡GANASTE!</div>
           </div>
 
           <canvas
@@ -1082,7 +1082,7 @@ function ScratchGame({ prizeName, onWin }: { prizeName: string; onWin: () => voi
               marginTop: 20,
               padding: '14px 0',
               borderRadius: 12,
-              background: 'linear-gradient(135deg, #38BDF8, #0284C7)',
+              background: 'linear-gradient(135deg, #FB923C, #EA580C)',
               color: '#1c1917',
               fontWeight: 900,
               fontSize: 16,

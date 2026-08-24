@@ -60,7 +60,7 @@ export default function PerfilPage() {
       </div>
       <div className="max-w-lg mx-auto px-4 md:px-10 py-6">
 
-        <form onSubmit={handleSubmit} className="bg-white rounded-2xl border border-[#E8E3DC] shadow-[0_1px_2px_rgba(28,25,23,0.04),_0_4px_16px_rgba(28,25,23,0.06)] overflow-hidden" style={{ borderTop: '3px solid #2563EB' }}>
+        <form onSubmit={handleSubmit} className="bg-white rounded-2xl border border-[#E8E3DC] shadow-[0_1px_2px_rgba(28,25,23,0.04),_0_4px_16px_rgba(28,25,23,0.06)] overflow-hidden" style={{ borderTop: '3px solid #F97316' }}>
           <div className="p-6 border-b border-[#E8E3DC]">
             <h2 className="text-base font-bold text-[#1C1917]">Seguridad de la cuenta</h2>
             <p className="text-xs text-stone-400 mt-0.5">Mínimo 8 caracteres para la nueva contraseña.</p>
@@ -106,7 +106,7 @@ export default function PerfilPage() {
             {message && (
               <div className={`rounded-xl px-4 py-3 text-sm flex items-start gap-2 ${
                 message.type === 'success' ? 'bg-emerald-50 border border-emerald-200 text-emerald-700' :
-                message.type === 'info' ? 'bg-orange-50 border border-orange-200 text-blue-800' :
+                message.type === 'info' ? 'bg-orange-50 border border-orange-200 text-orange-800' :
                 'bg-red-50 border border-red-200 text-red-700'
               }`}>
                 <svg className="w-4 h-4 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -122,7 +122,7 @@ export default function PerfilPage() {
               type="submit"
               disabled={loading}
               className="w-full text-white font-black py-3.5 rounded-2xl transition-all text-sm disabled:opacity-60"
-              style={{ background: 'linear-gradient(135deg,#2563EB,#0891B2)', boxShadow: loading ? 'none' : '0 8px 24px rgba(37,99,235,0.35)' }}
+              style={{ background: 'linear-gradient(135deg,#F97316,#EA580C)', boxShadow: loading ? 'none' : '0 8px 24px rgba(249,115,22,0.35)' }}
             >
               {loading ? 'Actualizando...' : 'Cambiar Contraseña'}
             </button>

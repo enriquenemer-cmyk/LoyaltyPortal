@@ -40,7 +40,7 @@ type Tab = 'productos' | 'movimientos';
 
 function formatDateTime(dateStr: string) {
   const date = new Date(dateStr);
-  return date.toLocaleString('es-MX', {
+  return date.toLocaleString('es-CO', {
     year: 'numeric',
     month: 'short',
     day: 'numeric',
@@ -260,7 +260,7 @@ function NewProductModal({
             onClick={handleSubmit}
             disabled={saving}
             className="px-5 py-2.5 rounded-xl text-sm font-bold text-white transition-all disabled:opacity-50"
-            style={{ background: 'linear-gradient(135deg,#F97316,#0891B2)' }}
+            style={{ background: 'linear-gradient(135deg,#F97316,#EA580C)' }}
           >
             {saving ? 'Guardando...' : 'Crear producto'}
           </button>
@@ -470,7 +470,7 @@ export default function InventarioPage() {
         {/* KPI cards */}
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-8">
           {[
-            { label: 'Productos activos', value: activeProducts.length, icon: '', borderColor: '#F97316', bgColor: '#dbeafe', numColor: '#F97316' },
+            { label: 'Productos activos', value: activeProducts.length, icon: '', borderColor: '#F97316', bgColor: '#FFEDD5', numColor: '#F97316' },
             { label: 'Stock bajo', value: lowStockCount, icon: '', borderColor: '#dc2626', bgColor: '#fee2e2', numColor: '#dc2626' },
             { label: 'Movimientos hoy', value: movementsToday, icon: '', borderColor: '#0d9488', bgColor: '#ccfbf1', numColor: '#0d9488' },
           ].map(({ label, value, icon, borderColor, bgColor, numColor }) => (
@@ -508,7 +508,7 @@ export default function InventarioPage() {
             onClick={() => setTab('productos')}
             className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-bold border transition-all ${
               tab === 'productos'
-                ? 'bg-[#F97316] text-white border-[#F97316] shadow-md shadow-blue-200'
+                ? 'bg-[#F97316] text-white border-[#F97316] shadow-md shadow-orange-200'
                 : 'bg-white text-slate-600 border-slate-200 hover:border-[#F97316] hover:text-[#F97316]'
             }`}
           >
@@ -518,7 +518,7 @@ export default function InventarioPage() {
             onClick={() => setTab('movimientos')}
             className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-bold border transition-all ${
               tab === 'movimientos'
-                ? 'bg-[#F97316] text-white border-[#F97316] shadow-md shadow-blue-200'
+                ? 'bg-[#F97316] text-white border-[#F97316] shadow-md shadow-orange-200'
                 : 'bg-white text-slate-600 border-slate-200 hover:border-[#F97316] hover:text-[#F97316]'
             }`}
           >

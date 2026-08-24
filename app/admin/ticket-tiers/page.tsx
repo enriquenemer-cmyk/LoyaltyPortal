@@ -66,7 +66,7 @@ export default function TicketTiersPage() {
   const [consolationSaved, setConsolationSaved] = useState(false);
   const [welcomeTitle, setWelcomeTitle] = useState('');
   const [welcomeSubtitle, setWelcomeSubtitle] = useState('');
-  const [primaryColor, setPrimaryColor] = useState('#2563EB');
+  const [primaryColor, setPrimaryColor] = useState('#F97316');
   const [avgRating, setAvgRating] = useState<{ avg_rating: number; total: number } | null>(null);
 
   useEffect(() => {
@@ -121,7 +121,7 @@ export default function TicketTiersPage() {
           setConsolationDesc(d.config.consolation_prize_description ?? '¡Gracias por visitarnos! Vuelve pronto.');
           setWelcomeTitle(d.config.welcome_title ?? '');
           setWelcomeSubtitle(d.config.welcome_subtitle ?? '');
-          setPrimaryColor(d.config.primary_color ?? '#2563EB');
+          setPrimaryColor(d.config.primary_color ?? '#F97316');
         }
       })
       .catch(() => {});
@@ -182,7 +182,7 @@ export default function TicketTiersPage() {
           min_amount_for_game: minTierAmount,
           welcome_title: welcomeTitle || null,
           welcome_subtitle: welcomeSubtitle || null,
-          primary_color: primaryColor || '#2563EB',
+          primary_color: primaryColor || '#F97316',
         }),
       });
       setConsolationSaved(true);
@@ -393,18 +393,18 @@ export default function TicketTiersPage() {
               {/* Preview */}
               {consolationName && (
                 <div style={{
-                  background: 'rgba(37,99,235,0.08)',
-                  border: '1px dashed rgba(37,99,235,0.4)',
+                  background: 'rgba(249,115,22,0.08)',
+                  border: '1px dashed rgba(249,115,22,0.4)',
                   borderRadius: 10,
                   padding: '12px 16px',
                   marginTop: 14,
                 }}>
-                  <p style={{ fontSize: 11, color: '#1E40AF', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 4 }}>
+                  <p style={{ fontSize: 11, color: '#9A3412', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 4 }}>
                     Vista previa del cliente
                   </p>
                   <p style={{ fontSize: 14, fontWeight: 700, color: '#1C1917', marginBottom: 2 }}><GiftIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> {consolationName}</p>
                   <p style={{ fontSize: 12, color: '#78716C', margin: 0 }}>{consolationDesc}</p>
-                  <p style={{ fontSize: 11, color: '#0284C7', fontWeight: 700, marginTop: 6, fontFamily: 'monospace' }}>Código: CONS-XXXXXX</p>
+                  <p style={{ fontSize: 11, color: '#EA580C', fontWeight: 700, marginTop: 6, fontFamily: 'monospace' }}>Código: CONS-XXXXXX</p>
                 </div>
               )}
 
@@ -441,7 +441,7 @@ export default function TicketTiersPage() {
                       Color principal
                     </label>
                     <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
-                      {['#2563EB', '#7C3AED', '#0EA5E9', '#16A34A', '#DC2626', '#D97706'].map((c) => (
+                      {['#F97316', '#7C3AED', '#F97316', '#16A34A', '#DC2626', '#D97706'].map((c) => (
                         <button
                           key={c}
                           onClick={() => setPrimaryColor(c)}
@@ -657,7 +657,7 @@ const selectStyle: React.CSSProperties = {
 const primaryBtn: React.CSSProperties = {
   padding: '10px 20px',
   borderRadius: 10,
-  background: '#2563EB',
+  background: '#F97316',
   color: 'white',
   fontWeight: 700,
   fontSize: 14,

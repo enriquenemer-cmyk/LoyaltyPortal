@@ -736,7 +736,7 @@ function GenerateForm() {
       {/* Prize card */}
       <div
         className="rounded-2xl overflow-hidden shadow-lg"
-        style={{ background: 'linear-gradient(135deg, #F97316 0%, #0891B2 100%)' }}
+        style={{ background: 'linear-gradient(135deg, #F97316 0%, #EA580C 100%)' }}
       >
         <div className="px-5 pt-5 pb-4">
           <p className="text-[10px] font-bold uppercase tracking-widest text-orange-200 mb-1">3E</p>

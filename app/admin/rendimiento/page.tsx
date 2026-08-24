@@ -27,7 +27,7 @@ function formatTime(hours: number | null): string {
 
 function formatDate(dateStr: string | null): string {
   if (!dateStr) return '—';
-  return new Date(dateStr).toLocaleString('es-MX', {
+  return new Date(dateStr).toLocaleString('es-CO', {
     day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit',
   });
 }
@@ -145,7 +145,7 @@ export default function RendimientoPage() {
                   onClick={() => setRange(r)}
                   className={`px-3 py-1.5 rounded-lg text-sm font-semibold transition-all ${
                     range === r
-                      ? 'bg-white text-[#2563EB] shadow-sm border border-[#E8E3DC]'
+                      ? 'bg-white text-[#F97316] shadow-sm border border-[#E8E3DC]'
                       : 'text-stone-500 hover:text-gray-900'
                   }`}
                 >
@@ -189,9 +189,9 @@ export default function RendimientoPage() {
             <div className="text-center py-20">
               <div
                 className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4"
-                style={{ background: 'rgba(37,99,235,0.10)' }}
+                style={{ background: 'rgba(249,115,22,0.10)' }}
               >
-                <svg className="w-8 h-8 text-[#2563EB]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-8 h-8 text-[#F97316]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
               </div>
@@ -224,7 +224,7 @@ export default function RendimientoPage() {
                         <div className="flex items-center gap-3">
                           <div
                             className="w-9 h-9 rounded-xl flex items-center justify-center text-white text-sm font-black shrink-0"
-                            style={{ background: 'linear-gradient(135deg,#2563EB,#0891B2)' }}
+                            style={{ background: 'linear-gradient(135deg,#F97316,#EA580C)' }}
                           >
                             {row.delivered_by.slice(0, 2).toUpperCase()}
                           </div>
@@ -263,7 +263,7 @@ export default function RendimientoPage() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
             <div className="bg-white rounded-2xl border border-[#E8E3DC] shadow-sm p-5">
               <p className="text-stone-400 text-xs font-bold uppercase tracking-widest mb-1">Total entregados</p>
-              <p className="text-3xl font-black text-[#2563EB]">
+              <p className="text-3xl font-black text-[#F97316]">
                 {performance.reduce((s, r) => s + r.count, 0)}
               </p>
             </div>

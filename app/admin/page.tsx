@@ -199,7 +199,7 @@ function BarChart({ data }: { data: DayBar[] }) {
       <defs>
         <linearGradient id="barGrad" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" stopColor="#F97316" />
-          <stop offset="100%" stopColor="#0EA5E9" />
+          <stop offset="100%" stopColor="#F97316" />
         </linearGradient>
         <linearGradient id="barGradToday" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" stopColor="#1a6b3c" />
@@ -228,7 +228,7 @@ function BarChart({ data }: { data: DayBar[] }) {
         return (
           <g key={d.label}>
             {/* Track */}
-            <rect x={x} y={0} width={barW} height={chartH} rx={8} fill={isToday ? '#EDE9FE' : '#EFF6FF'} />
+            <rect x={x} y={0} width={barW} height={chartH} rx={8} fill={isToday ? '#EDE9FE' : '#FFF7ED'} />
             {/* Bar with grow animation */}
             {barH > 0 && (
               <>
@@ -419,16 +419,16 @@ const WEEKDAY_LABELS = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
 function sucursalHeatmapColor(count: number, max: number): string {
   if (count === 0) return '#fafaf9';
   const intensity = count / max;
-  if (intensity < 0.2) return '#EFF6FF';
-  if (intensity < 0.4) return '#EFF6FF';
-  if (intensity < 0.6) return '#BAE6FD';
-  if (intensity < 0.8) return '#0EA5E9';
-  return '#0369A1';
+  if (intensity < 0.2) return '#FFF7ED';
+  if (intensity < 0.4) return '#FFF7ED';
+  if (intensity < 0.6) return '#FED7AA';
+  if (intensity < 0.8) return '#F97316';
+  return '#C2410C';
 }
 
 function sucursalTextColor(count: number, max: number): string {
   const intensity = max > 0 ? count / max : 0;
-  return intensity >= 0.6 ? '#EFF6FF' : '#78716c';
+  return intensity >= 0.6 ? '#FFF7ED' : '#78716c';
 }
 
 function SucursalHeatmap({ claims }: { claims: Claim[] }) {
@@ -534,7 +534,7 @@ function SucursalHeatmap({ claims }: { claims: Claim[] }) {
       {/* Legend */}
       <div className="flex items-center gap-2 mt-4">
         <span className="text-[10px] text-[#6b7280] font-semibold">Menos</span>
-        {['#fafaf9', '#EFF6FF', '#BAE6FD', '#0EA5E9', '#0369A1'].map((c) => (
+        {['#fafaf9', '#FFF7ED', '#FED7AA', '#F97316', '#C2410C'].map((c) => (
           <div key={c} className="w-5 h-5 rounded" style={{ backgroundColor: c, border: c === '#fafaf9' ? '1px solid #e7e5e4' : undefined }} />
         ))}
         <span className="text-[10px] text-[#6b7280] font-semibold">Más</span>
@@ -733,9 +733,9 @@ function dayIndex(jsDay: number): number {
 
 function heatmapColor(count: number): string {
   if (count === 0) return '#f5f5f4';   // stone-100
-  if (count <= 2) return '#EFF6FF';   // blue-100
-  if (count <= 5) return '#BAE6FD';   // blue-200
-  return '#0EA5E9';                   // blue-400
+  if (count <= 2) return '#FFF7ED';   // orange-100
+  if (count <= 5) return '#FED7AA';   // orange-200
+  return '#F97316';                   // orange-400
 }
 
 function ActivityHeatmap({ claims }: { claims: Claim[] }) {
@@ -790,7 +790,7 @@ function ActivityHeatmap({ claims }: { claims: Claim[] }) {
                           height: 32,
                           backgroundColor: bg,
                           opacity,
-                          color: count >= 3 ? '#1E3A8A' : '#a8a29e',
+                          color: count >= 3 ? '#7C2D12' : '#a8a29e',
                         }}
                       >
                         {count > 0 ? count : ''}
@@ -807,7 +807,7 @@ function ActivityHeatmap({ claims }: { claims: Claim[] }) {
       {/* Legend */}
       <div className="flex items-center gap-3 mt-4">
         <span className="text-[10px] text-[#6b7280] font-semibold">Menos</span>
-        {['#f5f5f4', '#EFF6FF', '#BAE6FD', '#0EA5E9'].map((c) => (
+        {['#f5f5f4', '#FFF7ED', '#FED7AA', '#F97316'].map((c) => (
           <div key={c} className="w-5 h-5 rounded" style={{ backgroundColor: c }} />
         ))}
         <span className="text-[10px] text-[#6b7280] font-semibold">Más</span>
@@ -1053,7 +1053,7 @@ function ROIEstimateCard({ claims }: { claims: Claim[] }) {
 // ---- Avatar helpers ---------------------------------------------------------
 
 const AVATAR_COLORS = [
-  '#F97316', '#1a6b3c', '#0891b2', '#be185d', '#059669', '#0EA5E9',
+  '#F97316', '#1a6b3c', '#EA580C', '#be185d', '#059669', '#F97316',
 ];
 
 function avatarColor(name: string) {
@@ -1140,7 +1140,7 @@ function WeeklyWidget({ data }: { data: WeeklyData | null }) {
 // ---- At-Risk Clients Widget -------------------------------------------------
 
 function AtRiskWidget({ clients }: { clients: AtRiskClient[] }) {
-  const AVATAR_COLORS_LOCAL = ['#F97316', '#1a6b3c', '#0891b2', '#be185d', '#059669'];
+  const AVATAR_COLORS_LOCAL = ['#F97316', '#1a6b3c', '#EA580C', '#be185d', '#059669'];
   const [aiMessages, setAiMessages] = useState<Record<string, string>>({});
   const [aiLoading, setAiLoading] = useState<Record<string, boolean>>({});
   const [aiError, setAiError] = useState<Record<string, string>>({});
@@ -1930,7 +1930,7 @@ export default function AdminDashboard() {
                   borderColor="#F97316"
                   bgColor="rgba(255,255,255,0.25)"
                   textColor="white"
-                  gradient="linear-gradient(135deg,#F97316 0%,#0EA5E9 100%)"
+                  gradient="linear-gradient(135deg,#F97316 0%,#F97316 100%)"
                   trend={claimsTrend}
                   trendLabel={claimsTrendLabel}
                   icon={<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="rgba(255,255,255,0.22)" /><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg>}
@@ -2050,7 +2050,7 @@ export default function AdminDashboard() {
               style={{ boxShadow: cardShadow }}
             >
               <div className="w-12 h-12 rounded-xl bg-orange-50 flex items-center justify-center shrink-0">
-                <svg width="24" height="24" fill="none" stroke="#3b82f6" strokeWidth="2" viewBox="0 0 24 24">
+                <svg width="24" height="24" fill="none" stroke="#F97316" strokeWidth="2" viewBox="0 0 24 24">
                   <path d="M4 6h16M4 10h16M4 14h16M4 18h16" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </div>
@@ -2082,7 +2082,7 @@ export default function AdminDashboard() {
                 const steps = [
                   { label: 'QRs Generados', count: totalPremios, color: '#F97316', widthPct: 100 },
                   {
-                    label: 'Registrados', count: totalCobros, color: '#0EA5E9',
+                    label: 'Registrados', count: totalCobros, color: '#F97316',
                     widthPct: totalPremios > 0 ? Math.round((totalCobros / totalPremios) * 100) : 0,
                   },
                   {
@@ -2116,7 +2116,7 @@ export default function AdminDashboard() {
                             <svg width="14" height="14" fill="none" stroke="#a8a29e" strokeWidth="2" viewBox="0 0 24 24">
                               <path d="M19 9l-7 7-7-7" strokeLinecap="round" strokeLinejoin="round" />
                             </svg>
-                            <span className="text-[11px] font-semibold" style={{ color: convReg > 0 ? '#0EA5E9' : '#a8a29e' }}>
+                            <span className="text-[11px] font-semibold" style={{ color: convReg > 0 ? '#F97316' : '#a8a29e' }}>
                               {convReg}% de conversión (generados → registrados)
                             </span>
                           </div>
@@ -2380,7 +2380,7 @@ export default function AdminDashboard() {
                             <span className="text-xs font-bold text-[#F97316] shrink-0 ml-2">{count}</span>
                           </div>
                           <div className="h-2 bg-[#f5f5f4] rounded-full overflow-hidden">
-                            <div className="h-2 rounded-full transition-all" style={{ width: `${(count / maxVal) * 100}%`, background: i === 0 ? '#F97316' : i === 1 ? '#0EA5E9' : '#BAE6FD' }} />
+                            <div className="h-2 rounded-full transition-all" style={{ width: `${(count / maxVal) * 100}%`, background: i === 0 ? '#F97316' : i === 1 ? '#F97316' : '#FED7AA' }} />
                           </div>
                         </div>
                       </div>

@@ -87,7 +87,7 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
           </p>
           <a
             href="/"
-            style={{ display: 'inline-block', padding: '10px 20px', borderRadius: 12, background: 'linear-gradient(135deg,#2563EB,#1D4ED8)', color: '#fff', fontSize: 14, fontWeight: 600, textDecoration: 'none' }}
+            style={{ display: 'inline-block', padding: '10px 20px', borderRadius: 12, background: 'linear-gradient(135deg,#F97316,#C2410C)', color: '#fff', fontSize: 14, fontWeight: 600, textDecoration: 'none' }}
           >
             Volver al inicio
           </a>
@@ -97,7 +97,7 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
   }
 
   const { profile, claims, stamp_card } = data;
-  const tierColor = TIER_COLOR[profile.tier] ?? '#2563EB';
+  const tierColor = TIER_COLOR[profile.tier] ?? '#F97316';
   const tierEmoji = TIER_EMOJI[profile.tier] ?? '';
   const stampPct = stamp_card ? Math.round((stamp_card.stamps_count / stamp_card.stamps_required) * 100) : 0;
   const { next, nextThreshold, pointsToNext, progressPct } = getTierProgress(profile.tier, profile.total_points);
@@ -105,7 +105,7 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
   return (
     <div style={{ minHeight: '100vh', width: '100%', overflowX: 'hidden', background: '#FAFAF9', fontFamily: 'system-ui, sans-serif' }}>
       {/* Hero */}
-      <div style={{ background: 'linear-gradient(135deg,#1D4ED8,#2563EB,#3B82F6)', padding: '32px 16px 40px', textAlign: 'center' }}>
+      <div style={{ background: 'linear-gradient(135deg,#C2410C,#F97316,#F97316)', padding: '32px 16px 40px', textAlign: 'center' }}>
         <div style={{ maxWidth: 420, margin: '0 auto' }}>
           <div style={{ width: 76, height: 76, borderRadius: '50%', background: 'rgba(255,255,255,0.15)', border: `3px solid ${tierColor}`, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 14px', fontSize: 34 }}>
             {tierEmoji || ''}
@@ -113,7 +113,7 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
           <h1 style={{ fontSize: 22, fontWeight: 800, color: '#fff', margin: '0 0 6px' }}>
             {profile.full_name ?? 'Cliente 3E'}
           </h1>
-          <span style={{ fontSize: 13, fontWeight: 700, color: '#1D4ED8', background: '#fff', padding: '4px 14px', borderRadius: 20, display: 'inline-block' }}>
+          <span style={{ fontSize: 13, fontWeight: 700, color: '#C2410C', background: '#fff', padding: '4px 14px', borderRadius: 20, display: 'inline-block' }}>
             Nivel {TIER_LABEL[profile.tier] ?? profile.tier}
           </span>
         </div>
@@ -124,7 +124,7 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
         {/* Points cards */}
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 16 }}>
           {[
-            { label: 'Puntos actuales', value: profile.total_points.toLocaleString(), accent: '#2563EB' },
+            { label: 'Puntos actuales', value: profile.total_points.toLocaleString(), accent: '#F97316' },
             { label: 'Puntos históricos', value: profile.lifetime_points.toLocaleString(), accent: '#7C3AED' },
           ].map(c => (
             <div key={c.label} style={{ background: '#fff', borderRadius: 16, border: '1px solid #E8E3DC', padding: '14px 16px' }}>
@@ -145,7 +145,7 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
                 <p style={{ fontSize: 12, fontWeight: 600, color: '#78716C', margin: 0 }}>{progressPct}%</p>
               </div>
               <div style={{ background: '#F5F3F0', borderRadius: 8, height: 8, overflow: 'hidden' }}>
-                <div style={{ width: `${progressPct}%`, height: '100%', background: `linear-gradient(90deg,${tierColor},#2563EB)`, borderRadius: 8 }} />
+                <div style={{ width: `${progressPct}%`, height: '100%', background: `linear-gradient(90deg,${tierColor},#F97316)`, borderRadius: 8 }} />
               </div>
               <p style={{ fontSize: 11, color: '#78716C', margin: '8px 0 0' }}>
                 Te faltan {pointsToNext.toLocaleString()} puntos para llegar a {TIER_LABEL[next]} (meta: {nextThreshold?.toLocaleString()} pts)
@@ -183,13 +183,13 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
             <p style={{ fontSize: 12, fontWeight: 700, color: '#1C1917', margin: '0 0 8px' }}>Tarjeta de sellos</p>
             <div style={{ display: 'flex', gap: 6, marginBottom: 8, flexWrap: 'wrap' }}>
               {Array.from({ length: stamp_card.stamps_required }).map((_, i) => (
-                <div key={i} style={{ width: 28, height: 28, borderRadius: '50%', background: i < stamp_card.stamps_count ? '#2563EB' : '#E8E3DC', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, color: '#fff', flexShrink: 0 }}>
+                <div key={i} style={{ width: 28, height: 28, borderRadius: '50%', background: i < stamp_card.stamps_count ? '#F97316' : '#E8E3DC', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, color: '#fff', flexShrink: 0 }}>
                   {i < stamp_card.stamps_count ? '✓' : ''}
                 </div>
               ))}
             </div>
             <div style={{ background: '#F5F3F0', borderRadius: 8, height: 6, overflow: 'hidden' }}>
-              <div style={{ width: `${stampPct}%`, height: '100%', background: '#2563EB', borderRadius: 8 }} />
+              <div style={{ width: `${stampPct}%`, height: '100%', background: '#F97316', borderRadius: 8 }} />
             </div>
             <p style={{ fontSize: 11, color: '#78716C', margin: '6px 0 0' }}>{stamp_card.stamps_count}/{stamp_card.stamps_required} sellos</p>
           </div>
@@ -205,10 +205,10 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
                   <div style={{ minWidth: 0 }}>
                     <p style={{ fontSize: 13, fontWeight: 600, color: '#1C1917', margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{c.prize_name}</p>
                     <p style={{ fontSize: 11, color: '#78716C', margin: 0 }}>
-                      {new Date(c.claimed_at).toLocaleDateString('es-MX', { day: 'numeric', month: 'short', year: 'numeric' })}
+                      {new Date(c.claimed_at).toLocaleDateString('es-CO', { day: 'numeric', month: 'short', year: 'numeric' })}
                     </p>
                   </div>
-                  <span style={{ fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 20, background: c.status === 'delivered' ? '#EAF3DE' : '#E6F1FB', color: c.status === 'delivered' ? '#27500A' : '#0C447C', flexShrink: 0 }}>
+                  <span style={{ fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 20, background: c.status === 'delivered' ? '#EAF3DE' : '#FFF7ED', color: c.status === 'delivered' ? '#27500A' : '#9A3412', flexShrink: 0 }}>
                     {c.status === 'delivered' ? 'Entregado' : 'Pendiente'}
                   </span>
                 </div>
@@ -305,7 +305,7 @@ function BattlePassTrack({ seasonData }: { seasonData: NonNullable<SeasonData> }
         </span>
       </div>
       <p style={{ fontSize: 11, color: '#78716C', margin: '0 0 14px' }}>
-        Hasta {new Date(season.end_date).toLocaleDateString('es-MX', { day: 'numeric', month: 'short' })}
+        Hasta {new Date(season.end_date).toLocaleDateString('es-CO', { day: 'numeric', month: 'short' })}
       </p>
 
       {/* Horizontal scrollable track */}
@@ -337,13 +337,13 @@ function BattlePassTrack({ seasonData }: { seasonData: NonNullable<SeasonData> }
                     justifyContent: 'center',
                     fontSize: 15,
                     fontWeight: 800,
-                    color: unlocked ? '#fff' : isNext ? '#1D4ED8' : '#A8A29E',
+                    color: unlocked ? '#fff' : isNext ? '#C2410C' : '#A8A29E',
                     background: unlocked
                       ? 'linear-gradient(135deg,#F59E0B,#D97706)'
                       : isNext
-                        ? 'linear-gradient(135deg,#DBEAFE,#EDE9FE)'
+                        ? 'linear-gradient(135deg,#FFEDD5,#EDE9FE)'
                         : '#F5F3F0',
-                    border: unlocked ? '2px solid #FBBF24' : isNext ? '2px solid #2563EB' : '2px solid #E8E3DC',
+                    border: unlocked ? '2px solid #FBBF24' : isNext ? '2px solid #F97316' : '2px solid #E8E3DC',
                     flexShrink: 0,
                   }}
                 >
@@ -386,7 +386,7 @@ function BattlePassTrack({ seasonData }: { seasonData: NonNullable<SeasonData> }
         <div style={{
           width: `${progressPct}%`,
           height: '100%',
-          background: 'linear-gradient(90deg,#2563EB,#7C3AED)',
+          background: 'linear-gradient(90deg,#F97316,#7C3AED)',
           borderRadius: 8,
           transition: 'width 0.3s ease',
         }} />

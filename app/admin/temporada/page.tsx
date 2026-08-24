@@ -288,8 +288,8 @@ function SeasonCard({ season, onToggleActive }: { season: Season; onToggleActive
       .catch(() => setLeaderboard([]));
   }, [season.id]);
 
-  const start = new Date(season.start_date).toLocaleDateString('es-MX', { day: 'numeric', month: 'short', year: 'numeric' });
-  const end = new Date(season.end_date).toLocaleDateString('es-MX', { day: 'numeric', month: 'short', year: 'numeric' });
+  const start = new Date(season.start_date).toLocaleDateString('es-CO', { day: 'numeric', month: 'short', year: 'numeric' });
+  const end = new Date(season.end_date).toLocaleDateString('es-CO', { day: 'numeric', month: 'short', year: 'numeric' });
 
   return (
     <div style={{ background: 'white', border: '1px solid #E8E3DC', borderRadius: 14, padding: 18 }}>
@@ -345,7 +345,7 @@ const inputStyle: React.CSSProperties = {
 };
 
 const primaryBtn: React.CSSProperties = {
-  padding: '10px 20px', borderRadius: 10, background: '#2563EB', color: 'white',
+  padding: '10px 20px', borderRadius: 10, background: '#F97316', color: 'white',
   fontWeight: 700, fontSize: 14, border: 'none', cursor: 'pointer',
 };
 

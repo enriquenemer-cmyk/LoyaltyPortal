@@ -62,7 +62,7 @@ export function AiCardGenerator({ phone, tier }: { phone: string; tier: string }
       {!imageUrl && !loading && (
         <button
           onClick={handleGenerate}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold text-white bg-[#2563EB] hover:bg-[#0891B2] transition-all shadow-sm"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold text-white bg-[#F97316] hover:bg-[#EA580C] transition-all shadow-sm"
         >
           <span><PaintBrushIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></span>
           Generar Tarjeta IA
@@ -71,7 +71,7 @@ export function AiCardGenerator({ phone, tier }: { phone: string; tier: string }
 
       {loading && (
         <div className="flex items-center gap-3 text-sm text-stone-500">
-          <div className="w-5 h-5 border-2 border-[#2563EB] border-t-transparent rounded-full animate-spin" />
+          <div className="w-5 h-5 border-2 border-[#F97316] border-t-transparent rounded-full animate-spin" />
           {loadingMsg}
         </div>
       )}
@@ -92,7 +92,7 @@ export function AiCardGenerator({ phone, tier }: { phone: string; tier: string }
           />
           <button
             onClick={handleGenerate}
-            className="mt-3 text-xs font-bold text-[#2563EB] hover:underline"
+            className="mt-3 text-xs font-bold text-[#F97316] hover:underline"
           >
             Ver de nuevo / regenerar
           </button>

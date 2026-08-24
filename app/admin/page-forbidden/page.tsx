@@ -15,7 +15,7 @@ export default function ForbiddenPage() {
         </p>
         <Link
           href="/admin"
-          className="inline-flex items-center gap-2 bg-[#2563EB] hover:bg-[#0891B2] text-white text-sm font-semibold px-5 py-2.5 rounded-xl transition-colors"
+          className="inline-flex items-center gap-2 bg-[#F97316] hover:bg-[#EA580C] text-white text-sm font-semibold px-5 py-2.5 rounded-xl transition-colors"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16l-4-4m0 0l4-4m-4 4h18" />

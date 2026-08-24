@@ -93,13 +93,13 @@ export default function GiftCardsPage() {
           <h2 className="text-sm font-bold text-[#1C1917] mb-4">Crear nueva gift card</h2>
           <form onSubmit={handleCreate} className="flex flex-wrap gap-3 items-end">
             <div>
-              <label className="block text-xs font-semibold text-stone-500 mb-1">Valor ($MXN)</label>
+              <label className="block text-xs font-semibold text-stone-500 mb-1">Valor ($COP)</label>
               <select
                 value={form.amount_mxn}
                 onChange={e => setForm(f => ({ ...f, amount_mxn: parseInt(e.target.value) }))}
-                className="border border-[#E8E3DC] rounded-xl px-3 py-2 text-sm bg-white focus:outline-none focus:border-[#2563EB]"
+                className="border border-[#E8E3DC] rounded-xl px-3 py-2 text-sm bg-white focus:outline-none focus:border-[#F97316]"
               >
-                {[100, 200, 500, 1000].map(v => <option key={v} value={v}>${v} MXN ({Math.round(v / 2)} pts)</option>)}
+                {[100, 200, 500, 1000].map(v => <option key={v} value={v}>${v} COP ({Math.round(v / 2)} pts)</option>)}
               </select>
             </div>
             <div>
@@ -108,13 +108,13 @@ export default function GiftCardsPage() {
                 value={form.purchased_by_phone}
                 onChange={e => setForm(f => ({ ...f, purchased_by_phone: e.target.value }))}
                 placeholder="5512345678"
-                className="border border-[#E8E3DC] rounded-xl px-3 py-2 text-sm w-40 focus:outline-none focus:border-[#2563EB]"
+                className="border border-[#E8E3DC] rounded-xl px-3 py-2 text-sm w-40 focus:outline-none focus:border-[#F97316]"
               />
             </div>
             <button
               type="submit" disabled={creating}
               className="px-5 py-2.5 rounded-xl text-white text-sm font-bold disabled:opacity-60"
-              style={{ background: '#2563EB' }}
+              style={{ background: '#F97316' }}
             >
               {creating ? 'Creando...' : '+ Crear gift card'}
             </button>
@@ -132,7 +132,7 @@ export default function GiftCardsPage() {
                   {copied ? '✓ Copiado' : 'Copiar'}
                 </button>
               </div>
-              <p className="text-xs text-emerald-600 mt-1">${newCard.amount_mxn} MXN · {newCard.points} puntos</p>
+              <p className="text-xs text-emerald-600 mt-1">${newCard.amount_mxn} COP · {newCard.points} puntos</p>
             </div>
           )}
         </div>
@@ -174,7 +174,7 @@ export default function GiftCardsPage() {
                       </td>
                       <td className="px-6 py-3 text-stone-500 font-mono text-xs">{c.redeemed_by_phone ?? '—'}</td>
                       <td className="px-6 py-3 text-stone-400 text-xs whitespace-nowrap">
-                        {new Date(c.created_at).toLocaleDateString('es-MX', { day: 'numeric', month: 'short' })}
+                        {new Date(c.created_at).toLocaleDateString('es-CO', { day: 'numeric', month: 'short' })}
                       </td>
                     </tr>
                   ))}

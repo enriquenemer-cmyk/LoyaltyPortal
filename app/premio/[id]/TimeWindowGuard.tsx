@@ -70,10 +70,10 @@ export default function TimeWindowGuard({ validHours, validDays, children }: Pro
         <p style={{ color: '#555', fontSize: 14, lineHeight: 1.6, margin: 0 }}>
           Este premio solo es válido{' '}
           {validHours && (
-            <><strong style={{ color: '#2563EB' }}>{validHours.replace('-', ' – ')}</strong>{' '}</>
+            <><strong style={{ color: '#F97316' }}>{validHours.replace('-', ' – ')}</strong>{' '}</>
           )}
           {validDays && (
-            <>los días <strong style={{ color: '#2563EB' }}>{daysText}</strong></>
+            <>los días <strong style={{ color: '#F97316' }}>{daysText}</strong></>
           )}
           . Vuelve dentro del horario indicado.
         </p>

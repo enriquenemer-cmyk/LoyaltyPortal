@@ -159,7 +159,7 @@ function IconGift() {
         <path d="M18 11h6.5a3.5 3.5 0 000-7C20 4 18 11 18 11z" fill="#1a6b3c" opacity="0.15" stroke="#1a6b3c" strokeWidth="1.8" strokeLinejoin="round" />
       </g>
       {/* Decorative sparkles */}
-      <circle cx="56" cy="20" r="2.5" fill="#0EA5E9" opacity="0.5" />
+      <circle cx="56" cy="20" r="2.5" fill="#F97316" opacity="0.5" />
       <circle cx="14" cy="50" r="2" fill="#1a6b3c" opacity="0.4" />
       <path d="M58 50l2 2-2 2-2-2z" fill="#F97316" opacity="0.35" />
     </svg>
@@ -169,7 +169,7 @@ function IconGift() {
 function IconUsers() {
   return (
     <svg width="72" height="72" viewBox="0 0 72 72" fill="none" aria-hidden="true">
-      <circle cx="36" cy="36" r="32" fill="#0EA5E9" opacity="0.07" />
+      <circle cx="36" cy="36" r="32" fill="#F97316" opacity="0.07" />
       <circle cx="36" cy="36" r="22" fill="#F97316" opacity="0.06" />
       <g transform="translate(16,18)">
         <circle cx="14" cy="9" r="7" fill="#F97316" opacity="0.15" stroke="#F97316" strokeWidth="1.8" />
@@ -178,7 +178,7 @@ function IconUsers() {
         <path d="M24 2.2a7 7 0 010 13.6" stroke="#1a6b3c" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
       </g>
       <circle cx="58" cy="18" r="2.5" fill="#1a6b3c" opacity="0.45" />
-      <circle cx="13" cy="52" r="2" fill="#0EA5E9" opacity="0.5" />
+      <circle cx="13" cy="52" r="2" fill="#F97316" opacity="0.5" />
     </svg>
   );
 }
@@ -187,7 +187,7 @@ function IconClipboard() {
   return (
     <svg width="72" height="72" viewBox="0 0 72 72" fill="none" aria-hidden="true">
       <circle cx="36" cy="36" r="32" fill="#F97316" opacity="0.07" />
-      <circle cx="36" cy="36" r="22" fill="#0EA5E9" opacity="0.06" />
+      <circle cx="36" cy="36" r="22" fill="#F97316" opacity="0.06" />
       <g transform="translate(20,14)">
         <path d="M16 4h2a2 2 0 012 2v26a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2"
           fill="#F97316" opacity="0.1" stroke="#F97316" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
@@ -196,7 +196,7 @@ function IconClipboard() {
         <line x1="9" y1="19" x2="13" y2="19" stroke="#1a6b3c" strokeWidth="1.8" strokeLinecap="round" />
       </g>
       <path d="M56 48l2 2-2 2-2-2z" fill="#F97316" opacity="0.4" />
-      <circle cx="14" cy="50" r="2.2" fill="#0EA5E9" opacity="0.45" />
+      <circle cx="14" cy="50" r="2.2" fill="#F97316" opacity="0.45" />
     </svg>
   );
 }
@@ -204,15 +204,15 @@ function IconClipboard() {
 function IconChart() {
   return (
     <svg width="72" height="72" viewBox="0 0 72 72" fill="none" aria-hidden="true">
-      <circle cx="36" cy="36" r="32" fill="#0EA5E9" opacity="0.07" />
+      <circle cx="36" cy="36" r="32" fill="#F97316" opacity="0.07" />
       <circle cx="36" cy="36" r="22" fill="#F97316" opacity="0.06" />
       <g transform="translate(18,18)">
-        <rect x="2" y="22" width="6" height="14" rx="1.5" fill="#0EA5E9" opacity="0.18" stroke="#0EA5E9" strokeWidth="1.8" />
+        <rect x="2" y="22" width="6" height="14" rx="1.5" fill="#F97316" opacity="0.18" stroke="#F97316" strokeWidth="1.8" />
         <rect x="14" y="12" width="6" height="24" rx="1.5" fill="#F97316" opacity="0.18" stroke="#F97316" strokeWidth="1.8" />
         <rect x="26" y="2" width="6" height="34" rx="1.5" fill="#1a6b3c" opacity="0.18" stroke="#1a6b3c" strokeWidth="1.8" />
       </g>
       <circle cx="56" cy="20" r="2.3" fill="#1a6b3c" opacity="0.4" />
-      <circle cx="14" cy="50" r="2" fill="#0EA5E9" opacity="0.5" />
+      <circle cx="14" cy="50" r="2" fill="#F97316" opacity="0.5" />
     </svg>
   );
 }
@@ -221,13 +221,13 @@ function IconSearch() {
   return (
     <svg width="72" height="72" viewBox="0 0 72 72" fill="none" aria-hidden="true">
       <circle cx="36" cy="36" r="32" fill="#F97316" opacity="0.07" />
-      <circle cx="36" cy="36" r="22" fill="#0EA5E9" opacity="0.06" />
+      <circle cx="36" cy="36" r="22" fill="#F97316" opacity="0.06" />
       <g transform="translate(18,18)">
         <circle cx="15" cy="15" r="11" fill="#F97316" opacity="0.12" stroke="#F97316" strokeWidth="1.8" />
         <line x1="29" y1="29" x2="35" y2="35" stroke="#1a6b3c" strokeWidth="2.2" strokeLinecap="round" />
       </g>
       <circle cx="56" cy="50" r="2.2" fill="#1a6b3c" opacity="0.4" />
-      <circle cx="14" cy="50" r="2" fill="#0EA5E9" opacity="0.5" />
+      <circle cx="14" cy="50" r="2" fill="#F97316" opacity="0.5" />
     </svg>
   );
 }
@@ -241,7 +241,7 @@ function IconStar() {
         <polygon points="20 3 25.15 13.77 37 15.45 28.5 23.57 30.55 35.35 20 29.77 9.45 35.35 11.5 23.57 3 15.45 14.85 13.77"
           fill="#F97316" opacity="0.15" stroke="#F97316" strokeWidth="1.8" strokeLinejoin="round" />
       </g>
-      <circle cx="56" cy="20" r="2.3" fill="#0EA5E9" opacity="0.45" />
+      <circle cx="56" cy="20" r="2.3" fill="#F97316" opacity="0.45" />
       <path d="M14 52l2 2-2 2-2-2z" fill="#1a6b3c" opacity="0.4" />
     </svg>
   );
@@ -277,7 +277,7 @@ export function EmptyState(props: EmptyStateProps) {
               <Link
                 href={action.href}
                 className="inline-flex items-center gap-2 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition-all hover:opacity-90"
-                style={{ background: 'linear-gradient(135deg,#F97316,#0891B2)', boxShadow: '0 4px 14px rgba(249,115,22,0.30)' }}
+                style={{ background: 'linear-gradient(135deg,#F97316,#EA580C)', boxShadow: '0 4px 14px rgba(249,115,22,0.30)' }}
               >
                 {action.label}
               </Link>
@@ -285,7 +285,7 @@ export function EmptyState(props: EmptyStateProps) {
               <button
                 onClick={action.onClick}
                 className="inline-flex items-center gap-2 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition-all hover:opacity-90"
-                style={{ background: 'linear-gradient(135deg,#F97316,#0891B2)', boxShadow: '0 4px 14px rgba(249,115,22,0.30)' }}
+                style={{ background: 'linear-gradient(135deg,#F97316,#EA580C)', boxShadow: '0 4px 14px rgba(249,115,22,0.30)' }}
               >
                 {action.label}
               </button>

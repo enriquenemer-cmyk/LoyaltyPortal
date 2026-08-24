@@ -91,7 +91,7 @@ export default function EmpleadosLoginPage() {
             <div
               key={i}
               className={`w-3.5 h-3.5 rounded-full border-2 transition-all ${
-                i < pin.length ? 'bg-[#2563EB] border-[#2563EB]' : 'border-stone-300 bg-transparent'
+                i < pin.length ? 'bg-[#F97316] border-[#F97316]' : 'border-stone-300 bg-transparent'
               }`}
             />
           ))}
@@ -150,7 +150,7 @@ export default function EmpleadosLoginPage() {
           type="button"
           onClick={handleSubmit}
           disabled={submitting || pin.length < 4}
-          className="w-full rounded-2xl bg-[#2563EB] hover:bg-[#1d4ed8] disabled:opacity-50 text-white text-lg font-bold transition-colors"
+          className="w-full rounded-2xl bg-[#F97316] hover:bg-[#C2410C] disabled:opacity-50 text-white text-lg font-bold transition-colors"
           style={{ minHeight: 56 }}
         >
           {submitting ? 'Verificando…' : 'Ingresar'}

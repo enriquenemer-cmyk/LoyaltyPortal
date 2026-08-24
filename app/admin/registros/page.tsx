@@ -30,7 +30,7 @@ const BATCH_SIZE = 25;
 
 function formatDate(dateStr: string) {
   const date = new Date(dateStr);
-  return date.toLocaleString('es-MX', {
+  return date.toLocaleString('es-CO', {
     year: 'numeric', month: 'short', day: 'numeric',
     hour: '2-digit', minute: '2-digit',
   });
@@ -47,7 +47,7 @@ function StatCard({
 }) {
   const colorMap = {
     gray:   { gradient: 'linear-gradient(135deg,#f8fafc 0%,#f1f5f9 100%)', accent: '#64748b', glow: 'rgba(100,116,139,0.15)', iconBg: '#e2e8f0', iconColor: '#475569', numColor: '#0f172a' },
-    orange: { gradient: 'linear-gradient(135deg,#eff6ff 0%,#dbeafe 100%)', accent: '#2563eb', glow: 'rgba(37,99,235,0.18)', iconBg: '#dbeafe', iconColor: '#F97316', numColor: '#1e40af' },
+    orange: { gradient: 'linear-gradient(135deg,#FFF7ED 0%,#FFEDD5 100%)', accent: '#F97316', glow: 'rgba(249,115,22,0.18)', iconBg: '#FFEDD5', iconColor: '#F97316', numColor: '#9A3412' },
     blue:   { gradient: 'linear-gradient(135deg,#f0fdf4 0%,#dcfce7 100%)', accent: '#16a34a', glow: 'rgba(22,163,74,0.18)', iconBg: '#bbf7d0', iconColor: '#15803d', numColor: '#14532d' },
     amber:  { gradient: 'linear-gradient(135deg,#fffbeb 0%,#fef3c7 100%)', accent: '#d97706', glow: 'rgba(217,119,6,0.18)', iconBg: '#fde68a', iconColor: '#b45309', numColor: '#92400e' },
   };
@@ -167,7 +167,7 @@ function NoCobrosEmptyState() {
       </p>
       <button
         onClick={() => setHowOpen((v) => !v)}
-        className="inline-flex items-center gap-2 text-sm font-bold text-[#2563EB] bg-orange-50 border border-orange-200 px-4 py-2 rounded-xl hover:bg-orange-100 transition-colors mb-4"
+        className="inline-flex items-center gap-2 text-sm font-bold text-[#F97316] bg-orange-50 border border-orange-200 px-4 py-2 rounded-xl hover:bg-orange-100 transition-colors mb-4"
       >
         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -188,7 +188,7 @@ function NoCobrosEmptyState() {
             { step: '3', title: 'El cajero confirma la entrega', desc: 'El cajero escanea el pase del cliente, verifica y presiona "Entregar". El cobro queda registrado aquí.' },
           ].map(({ step, title, desc }) => (
             <div key={step} className="flex gap-3 bg-orange-50 border border-orange-100 rounded-xl p-3">
-              <div className="w-7 h-7 rounded-full bg-[#2563EB] text-white font-black text-xs flex items-center justify-center shrink-0 mt-0.5">
+              <div className="w-7 h-7 rounded-full bg-[#F97316] text-white font-black text-xs flex items-center justify-center shrink-0 mt-0.5">
                 {step}
               </div>
               <div>
@@ -409,11 +409,11 @@ export default function RegistrosPage() {
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 11px; color: #1e293b; background: #fff; }
-    .report-header { padding: 24px 32px 16px; border-bottom: 3px solid #2563EB; display: flex; justify-content: space-between; align-items: flex-end; }
+    .report-header { padding: 24px 32px 16px; border-bottom: 3px solid #F97316; display: flex; justify-content: space-between; align-items: flex-end; }
     .report-header .brand { display: flex; align-items: center; gap: 10px; }
-    .report-header .brand-dot { width: 28px; height: 28px; border-radius: 50%; background: #2563EB; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 900; font-size: 14px; }
+    .report-header .brand-dot { width: 28px; height: 28px; border-radius: 50%; background: #F97316; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 900; font-size: 14px; }
     .report-header .brand-name { font-size: 18px; font-weight: 900; color: #1e293b; letter-spacing: -0.5px; }
-    .report-header .brand-sub { font-size: 11px; color: #2563EB; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-top: 2px; }
+    .report-header .brand-sub { font-size: 11px; color: #F97316; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-top: 2px; }
     .report-header .meta { text-align: right; font-size: 10px; color: #64748b; line-height: 1.6; }
     .report-header .meta strong { color: #1e293b; }
     .summary { padding: 12px 32px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; display: flex; gap: 32px; }
@@ -421,7 +421,7 @@ export default function RegistrosPage() {
     .summary-item .label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #94a3b8; }
     .summary-item .value { font-size: 20px; font-weight: 900; color: #1e293b; }
     .summary-item.delivered .value { color: #059669; }
-    .summary-item.pending .value { color: #0EA5E9; }
+    .summary-item.pending .value { color: #F97316; }
     .table-wrap { padding: 20px 32px 0; }
     table { width: 100%; border-collapse: collapse; }
     thead tr { background: #1e293b; }
@@ -431,9 +431,9 @@ export default function RegistrosPage() {
     tbody td { padding: 7px 10px; font-size: 10px; color: #334155; vertical-align: middle; }
     tbody td:first-child { font-weight: 700; color: #0f172a; }
     .status-delivered { color: #059669; font-weight: 700; }
-    .status-pending { color: #0EA5E9; font-weight: 700; }
+    .status-pending { color: #F97316; font-weight: 700; }
     .report-footer { margin: 20px 32px 0; padding: 14px 0; border-top: 2px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; }
-    .report-footer .footer-brand { font-size: 11px; font-weight: 900; color: #2563EB; text-transform: uppercase; letter-spacing: 1px; }
+    .report-footer .footer-brand { font-size: 11px; font-weight: 900; color: #F97316; text-transform: uppercase; letter-spacing: 1px; }
     .report-footer .footer-note { font-size: 9px; color: #94a3b8; }
     @page { size: A4 landscape; margin: 0; }
   </style>
@@ -449,7 +449,7 @@ export default function RegistrosPage() {
     </div>
     <div class="meta">
       <div><strong>Período:</strong> ${dateRangeLabel}</div>
-      <div><strong>Generado:</strong> ${new Date().toLocaleString('es-MX', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</div>
+      <div><strong>Generado:</strong> ${new Date().toLocaleString('es-CO', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</div>
       <div><strong>Registros:</strong> ${filtered.length} de ${claims.length}</div>
     </div>
   </div>
@@ -527,7 +527,7 @@ export default function RegistrosPage() {
     return (
       <th
         className={`text-left px-5 py-3.5 font-bold text-xs uppercase tracking-wider cursor-pointer select-none transition-colors ${
-          isActive ? 'text-[#2563EB]' : 'text-stone-500 hover:text-stone-700'
+          isActive ? 'text-[#F97316]' : 'text-stone-500 hover:text-stone-700'
         } ${className}`}
         onClick={() => handleSort(colKey)}
       >
@@ -715,7 +715,7 @@ export default function RegistrosPage() {
             {/* Filter bar */}
             <div
               className="mb-5 flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-3 bg-white border rounded-xl px-4 py-3 shadow-sm"
-              style={{ borderColor: hasActiveFilters ? '#2563EB' : '#E8E3DC' }}
+              style={{ borderColor: hasActiveFilters ? '#F97316' : '#E8E3DC' }}
             >
               {/* Date range: stacked on mobile */}
               <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
@@ -726,7 +726,7 @@ export default function RegistrosPage() {
                     value={dateFrom}
                     onChange={(e) => setDateFrom(e.target.value)}
                     className="flex-1 sm:flex-none text-sm border border-[#E8E3DC] rounded-lg px-2.5 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all"
-                    style={dateFrom ? { borderColor: '#2563EB', boxShadow: '0 0 0 2px #2563EB22' } : {}}
+                    style={dateFrom ? { borderColor: '#F97316', boxShadow: '0 0 0 2px #F9731622' } : {}}
                   />
                 </div>
                 <div className="hidden sm:block text-stone-300 text-sm">—</div>
@@ -737,7 +737,7 @@ export default function RegistrosPage() {
                     value={dateTo}
                     onChange={(e) => setDateTo(e.target.value)}
                     className="flex-1 sm:flex-none text-sm border border-[#E8E3DC] rounded-lg px-2.5 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all"
-                    style={dateTo ? { borderColor: '#2563EB', boxShadow: '0 0 0 2px #2563EB22' } : {}}
+                    style={dateTo ? { borderColor: '#F97316', boxShadow: '0 0 0 2px #F9731622' } : {}}
                   />
                 </div>
               </div>
@@ -750,7 +750,7 @@ export default function RegistrosPage() {
                   value={statusFilter}
                   onChange={(e) => setStatusFilter(e.target.value as 'all' | 'pending' | 'delivered')}
                   className="flex-1 sm:flex-none text-sm border border-[#E8E3DC] rounded-lg px-2.5 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all"
-                  style={statusFilter !== 'all' ? { borderColor: '#2563EB', boxShadow: '0 0 0 2px #2563EB22', color: '#F97316', fontWeight: 700 } : {}}
+                  style={statusFilter !== 'all' ? { borderColor: '#F97316', boxShadow: '0 0 0 2px #F9731622', color: '#F97316', fontWeight: 700 } : {}}
                 >
                   <option value="all">Todos</option>
                   <option value="pending">Pendientes</option>
@@ -767,7 +767,7 @@ export default function RegistrosPage() {
                       value={restaurantFilter}
                       onChange={(e) => setRestaurantFilter(e.target.value)}
                       className="flex-1 sm:flex-none text-sm border border-[#E8E3DC] rounded-lg px-2.5 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all"
-                      style={restaurantFilter !== 'all' ? { borderColor: '#2563EB', boxShadow: '0 0 0 2px #2563EB22', color: '#F97316', fontWeight: 700 } : {}}
+                      style={restaurantFilter !== 'all' ? { borderColor: '#F97316', boxShadow: '0 0 0 2px #F9731622', color: '#F97316', fontWeight: 700 } : {}}
                     >
                       <option value="all">Todas las sucursales</option>
                       {restaurants.map((r) => (
@@ -782,7 +782,7 @@ export default function RegistrosPage() {
                 <button
                   onClick={clearFilters}
                   className="sm:ml-auto inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-lg border transition-colors"
-                  style={{ color: '#F97316', borderColor: '#2563EB', background: '#fff7f5' }}
+                  style={{ color: '#F97316', borderColor: '#F97316', background: '#fff7f5' }}
                 >
                   <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
@@ -797,22 +797,22 @@ export default function RegistrosPage() {
               <div className="mb-4 flex items-center gap-2">
                 <span
                   className="inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-full border"
-                  style={{ background: '#eff6ff', color: '#F97316', borderColor: '#bfdbfe' }}
+                  style={{ background: '#FFF7ED', color: '#F97316', borderColor: '#FED7AA' }}
                 >
                   <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
                   {dateFrom
-                    ? new Date(dateFrom + 'T00:00:00').toLocaleDateString('es-MX', { day: 'numeric', month: 'short' })
+                    ? new Date(dateFrom + 'T00:00:00').toLocaleDateString('es-CO', { day: 'numeric', month: 'short' })
                     : '…'}
                   {' – '}
                   {dateTo
-                    ? new Date(dateTo + 'T00:00:00').toLocaleDateString('es-MX', { day: 'numeric', month: 'short' })
+                    ? new Date(dateTo + 'T00:00:00').toLocaleDateString('es-CO', { day: 'numeric', month: 'short' })
                     : '…'}
                   <button
                     type="button"
                     onClick={() => { setDateFrom(''); setDateTo(''); }}
-                    className="ml-1 hover:text-blue-900 transition-colors leading-none"
+                    className="ml-1 hover:text-orange-900 transition-colors leading-none"
                     aria-label="Limpiar fechas"
                   >
                     ×
@@ -865,7 +865,7 @@ export default function RegistrosPage() {
                         <div className="flex items-start gap-3">
                           <Avatar name={claim.full_name} />
                           <div className="flex-1 min-w-0">
-                            <a href={`/admin/cliente/${encodeURIComponent(claim.phone)}`} className="font-bold text-stone-900 text-sm leading-tight truncate block hover:text-[#2563EB] transition-colors">{claim.full_name}</a>
+                            <a href={`/admin/cliente/${encodeURIComponent(claim.phone)}`} className="font-bold text-stone-900 text-sm leading-tight truncate block hover:text-[#F97316] transition-colors">{claim.full_name}</a>
                             <a href={`tel:${claim.phone}`} className="text-xs text-stone-400 font-mono mt-0.5 block">{claim.phone}</a>
                           </div>
                           {claim.status === 'delivered' ? (
@@ -925,14 +925,14 @@ export default function RegistrosPage() {
                                 <td className={`${compact ? 'py-2' : 'py-4'} pl-0 pr-5`}>
                                   <div className="flex items-center">
                                     {/* Orange left border on hover */}
-                                    <div className="w-[3px] self-stretch min-h-[44px] rounded-r bg-[#2563EB] opacity-0 group-hover:opacity-100 transition-opacity mr-4" />
+                                    <div className="w-[3px] self-stretch min-h-[44px] rounded-r bg-[#F97316] opacity-0 group-hover:opacity-100 transition-opacity mr-4" />
                                     <div className="flex items-center gap-3">
                                       <Avatar name={claim.full_name} size={compact ? 28 : 36} />
                                       <div>
                                         <a
                                           href={`/admin/cliente/${encodeURIComponent(claim.phone)}`}
                                           onClick={(e) => e.stopPropagation()}
-                                          className="font-semibold text-sm text-[#1C1917] group-hover:text-[#2563EB] transition-colors leading-tight hover:underline"
+                                          className="font-semibold text-sm text-[#1C1917] group-hover:text-[#F97316] transition-colors leading-tight hover:underline"
                                         >{claim.full_name}</a>
                                         <p className="text-xs text-stone-400 mt-0.5 font-mono">{claim.phone}</p>
                                       </div>
@@ -950,7 +950,7 @@ export default function RegistrosPage() {
                                       <span className="status-dot-active" />Entregado
                                     </span>
                                   ) : (
-                                    <span className="inline-flex items-center text-xs font-bold text-[#1D4ED8]">
+                                    <span className="inline-flex items-center text-xs font-bold text-[#C2410C]">
                                       <span className="status-dot-pending" />Pendiente
                                     </span>
                                   )}
@@ -963,7 +963,7 @@ export default function RegistrosPage() {
                                     {/* Ver detalles toggle */}
                                     <button
                                       onClick={() => toggleExpand(claim.id)}
-                                      className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#2563EB] border border-orange-200 bg-orange-50 hover:bg-orange-100 px-2.5 py-1.5 rounded-lg transition-colors"
+                                      className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#F97316] border border-orange-200 bg-orange-50 hover:bg-orange-100 px-2.5 py-1.5 rounded-lg transition-colors"
                                     >
                                       Ver detalles
                                       <svg
@@ -1078,7 +1078,7 @@ export default function RegistrosPage() {
                     {hasActiveFilters && (
                       <span
                         className="inline-flex items-center gap-1 text-xs font-bold px-2 py-0.5 rounded-full border ml-2"
-                        style={{ color: '#F97316', borderColor: '#2563EB', background: '#fff7f5' }}
+                        style={{ color: '#F97316', borderColor: '#F97316', background: '#fff7f5' }}
                       >
                         <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L13 13.414V19a1 1 0 01-.553.894l-4 2A1 1 0 017 21v-7.586L3.293 6.707A1 1 0 013 6V4z" />

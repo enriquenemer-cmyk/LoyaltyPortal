@@ -18,7 +18,7 @@ function BurritoIllustration() {
       <path d="M50 72 Q80 60 110 72" stroke="#C94010" strokeWidth="2.5" strokeLinecap="round" fill="none" />
       <path d="M38 95 Q80 88 122 95" stroke="#C94010" strokeWidth="2" strokeLinecap="round" fill="none" />
       {/* Filling peek */}
-      <ellipse cx="80" cy="72" rx="30" ry="10" fill="#0891B2" />
+      <ellipse cx="80" cy="72" rx="30" ry="10" fill="#EA580C" />
       <ellipse cx="80" cy="72" rx="20" ry="7" fill="#FDE68A" />
       <circle cx="70" cy="72" r="4" fill="#4ADE80" />
       <circle cx="80" cy="70" r="4" fill="#F87171" />

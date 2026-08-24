@@ -51,7 +51,7 @@ export default function TopPremiosChart({ items }: Props) {
                 className="h-full rounded-full"
                 style={{
                   width: mounted ? `${item.percentage}%` : '0%',
-                  background: 'linear-gradient(90deg, #3b82f6, #0ea5e9)',
+                  background: 'linear-gradient(90deg, #F97316, #F97316)',
                   transition: `width 0.6s cubic-bezier(0.34,1.56,0.64,1) ${delay}ms`,
                   borderRadius: 4,
                   minWidth: item.percentage > 0 ? 4 : 0,

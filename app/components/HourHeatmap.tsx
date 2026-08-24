@@ -24,7 +24,7 @@ export default function HourHeatmap({ hours }: { hours: HeatmapHour[] }) {
   const row2 = hours.slice(12, 24);
 
   function blockColor(count: number): string {
-    if (count === 0) return '#EFF6FF';
+    if (count === 0) return '#FFF7ED';
     const opacity = 0.15 + 0.85 * (count / maxCount);
     // interpolate from light blue to dark blue
     const r = Math.round(37 + (239 - 37) * (1 - opacity));
@@ -34,9 +34,9 @@ export default function HourHeatmap({ hours }: { hours: HeatmapHour[] }) {
   }
 
   function textColor(count: number): string {
-    if (count === 0) return '#93c5fd';
+    if (count === 0) return '#FDBA74';
     const opacity = 0.15 + 0.85 * (count / maxCount);
-    return opacity > 0.5 ? 'white' : '#1d4ed8';
+    return opacity > 0.5 ? 'white' : '#C2410C';
   }
 
   function renderRow(rowHours: HeatmapHour[]) {
@@ -59,7 +59,7 @@ export default function HourHeatmap({ hours }: { hours: HeatmapHour[] }) {
                 {tooltip?.hour === hour && (
                   <div
                     className="absolute bottom-full mb-1 left-1/2 -translate-x-1/2 z-20 px-2 py-1 rounded-lg text-[10px] font-semibold text-white whitespace-nowrap pointer-events-none"
-                    style={{ background: '#1e3a8a', boxShadow: '0 2px 8px rgba(0,0,0,0.2)' }}
+                    style={{ background: '#7C2D12', boxShadow: '0 2px 8px rgba(0,0,0,0.2)' }}
                   >
                     {formatHour(hour)}: {count} cobro{count !== 1 ? 's' : ''}
                   </div>
@@ -84,7 +84,7 @@ export default function HourHeatmap({ hours }: { hours: HeatmapHour[] }) {
         </div>
         <div className="flex items-center gap-2">
           <span className="text-[10px] text-[#a8a29e] font-semibold">Menos</span>
-          {['#EFF6FF', '#BFDBFE', '#60A5FA', '#F97316', '#1e3a8a'].map((c) => (
+          {['#FFF7ED', '#FED7AA', '#FB923C', '#F97316', '#7C2D12'].map((c) => (
             <div key={c} className="w-4 h-4 rounded" style={{ backgroundColor: c }} />
           ))}
           <span className="text-[10px] text-[#a8a29e] font-semibold">Más</span>

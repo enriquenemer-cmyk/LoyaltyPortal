@@ -84,7 +84,7 @@ export default function OfflineIndicator() {
         gap: 8,
         fontSize: 14,
         fontWeight: 600,
-        color: '#1E40AF',
+        color: '#9A3412',
       }}
     >
       <span><SignalIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Sin conexión — Los datos mostrados pueden no estar actualizados</span>

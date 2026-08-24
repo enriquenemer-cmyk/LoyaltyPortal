@@ -24,7 +24,7 @@ export default function AdminLoading() {
       {/* Chart + recent feed row */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Chart */}
-        <div className="bg-white rounded-2xl border border-[#DBEAFE] p-6 shadow-[0_1px_2px_rgba(249,115,22,0.04)]">
+        <div className="bg-white rounded-2xl border border-[#FFEDD5] p-6 shadow-[0_1px_2px_rgba(249,115,22,0.04)]">
           <div className="skeleton-blue h-4 w-44 rounded-md mb-1" />
           <div className="skeleton-blue h-3 w-56 rounded-md mb-6" />
           <div className="flex items-end gap-3 h-36">
@@ -39,7 +39,7 @@ export default function AdminLoading() {
         </div>
 
         {/* Recent cobros */}
-        <div className="lg:col-span-2 bg-white rounded-2xl border border-[#DBEAFE] p-6 shadow-[0_1px_2px_rgba(249,115,22,0.04)]">
+        <div className="lg:col-span-2 bg-white rounded-2xl border border-[#FFEDD5] p-6 shadow-[0_1px_2px_rgba(249,115,22,0.04)]">
           <div className="skeleton-blue h-4 w-36 rounded-md mb-1" />
           <div className="skeleton-blue h-3 w-48 rounded-md mb-5" />
           <div className="flex flex-col gap-4">

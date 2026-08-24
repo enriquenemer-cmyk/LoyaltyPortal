@@ -17,7 +17,7 @@ const PAGE_SIZE = 50;
 
 function formatDate(dateStr: string) {
   const date = new Date(dateStr);
-  return date.toLocaleString('es-MX', {
+  return date.toLocaleString('es-CO', {
     year: 'numeric', month: 'short', day: 'numeric',
     hour: '2-digit', minute: '2-digit',
   });

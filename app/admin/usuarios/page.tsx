@@ -149,7 +149,7 @@ export default function UsuariosPage() {
                   value={form.username}
                   onChange={(e) => setForm((f) => ({ ...f, username: e.target.value }))}
                   placeholder="ej. manager_sucursal1"
-                  className="w-full border border-[#E8E3DC] rounded-xl px-3 py-2.5 text-sm text-[#1C1917] placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-[#2563EB]/30 focus:border-[#2563EB] transition-colors"
+                  className="w-full border border-[#E8E3DC] rounded-xl px-3 py-2.5 text-sm text-[#1C1917] placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-[#F97316]/30 focus:border-[#F97316] transition-colors"
                 />
               </div>
               <div>
@@ -163,7 +163,7 @@ export default function UsuariosPage() {
                   value={form.password}
                   onChange={(e) => setForm((f) => ({ ...f, password: e.target.value }))}
                   placeholder="••••••••"
-                  className="w-full border border-[#E8E3DC] rounded-xl px-3 py-2.5 text-sm text-[#1C1917] placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-[#2563EB]/30 focus:border-[#2563EB] transition-colors"
+                  className="w-full border border-[#E8E3DC] rounded-xl px-3 py-2.5 text-sm text-[#1C1917] placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-[#F97316]/30 focus:border-[#F97316] transition-colors"
                 />
               </div>
               <div>
@@ -173,7 +173,7 @@ export default function UsuariosPage() {
                 <select
                   value={form.restaurant_id}
                   onChange={(e) => setForm((f) => ({ ...f, restaurant_id: e.target.value }))}
-                  className="w-full border border-[#E8E3DC] rounded-xl px-3 py-2.5 text-sm text-[#1C1917] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/30 focus:border-[#2563EB] transition-colors bg-white"
+                  className="w-full border border-[#E8E3DC] rounded-xl px-3 py-2.5 text-sm text-[#1C1917] focus:outline-none focus:ring-2 focus:ring-[#F97316]/30 focus:border-[#F97316] transition-colors bg-white"
                 >
                   <option value="">Sin restaurante (Admin global)</option>
                   {restaurants.map((r) => (
@@ -188,7 +188,7 @@ export default function UsuariosPage() {
                 <select
                   value={form.role}
                   onChange={(e) => setForm((f) => ({ ...f, role: e.target.value as 'admin' | 'manager' | 'cajero' }))}
-                  className="w-full border border-[#E8E3DC] rounded-xl px-3 py-2.5 text-sm text-[#1C1917] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/30 focus:border-[#2563EB] transition-colors bg-white"
+                  className="w-full border border-[#E8E3DC] rounded-xl px-3 py-2.5 text-sm text-[#1C1917] focus:outline-none focus:ring-2 focus:ring-[#F97316]/30 focus:border-[#F97316] transition-colors bg-white"
                 >
                   <option value="manager">Manager</option>
                   <option value="cajero">Cajero</option>
@@ -199,7 +199,7 @@ export default function UsuariosPage() {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="bg-[#2563EB] hover:bg-[#0891B2] disabled:opacity-60 text-white text-sm font-semibold px-5 py-2.5 rounded-xl transition-colors"
+                  className="bg-[#F97316] hover:bg-[#EA580C] disabled:opacity-60 text-white text-sm font-semibold px-5 py-2.5 rounded-xl transition-colors"
                 >
                   {submitting ? 'Creando…' : 'Crear usuario'}
                 </button>
@@ -247,8 +247,8 @@ export default function UsuariosPage() {
                     >
                       <td className="px-5 py-3.5">
                         <div className="flex items-center gap-2.5">
-                          <div className="w-7 h-7 rounded-full bg-[#2563EB]/10 flex items-center justify-center shrink-0">
-                            <svg className="w-3.5 h-3.5 text-[#2563EB]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <div className="w-7 h-7 rounded-full bg-[#F97316]/10 flex items-center justify-center shrink-0">
+                            <svg className="w-3.5 h-3.5 text-[#F97316]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                             </svg>
                           </div>
@@ -272,7 +272,7 @@ export default function UsuariosPage() {
                         {user.restaurant_name ?? <span className="text-stone-400 italic">Sin restaurante</span>}
                       </td>
                       <td className="px-5 py-3.5 text-stone-500">
-                        {new Date(user.created_at).toLocaleDateString('es-MX', {
+                        {new Date(user.created_at).toLocaleDateString('es-CO', {
                           day: '2-digit', month: 'short', year: 'numeric',
                         })}
                       </td>

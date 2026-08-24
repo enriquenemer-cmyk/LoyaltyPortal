@@ -22,7 +22,7 @@ function buildWeeklyData(chains: Array<{ referred_at: string }>) {
 function getWeekLabel(d: Date) {
   const start = new Date(d);
   start.setDate(d.getDate() - d.getDay());
-  return start.toLocaleDateString('es-MX', { month: 'short', day: 'numeric' });
+  return start.toLocaleDateString('es-CO', { month: 'short', day: 'numeric' });
 }
 
 export default async function ReferidosAdminPage() {
@@ -30,7 +30,7 @@ export default async function ReferidosAdminPage() {
   const weeklyData = buildWeeklyData(stats.chains);
   const maxWeekly = Math.max(...weeklyData.map((w) => w.count), 1);
 
-  const gradient = 'linear-gradient(135deg, #2563EB 0%, #0891B2 100%)';
+  const gradient = 'linear-gradient(135deg, #F97316 0%, #EA580C 100%)';
 
   const card: React.CSSProperties = {
     background: 'white',
@@ -67,7 +67,7 @@ export default async function ReferidosAdminPage() {
     }}>
       <style>{`
         .copy-btn { cursor: pointer; transition: background 0.15s, transform 0.1s; }
-        .copy-btn:hover { background: #EFF6FF !important; }
+        .copy-btn:hover { background: #FFF7ED !important; }
         .copy-btn:active { transform: scale(0.96); }
         .row-hover { transition: background 0.1s; }
         .row-hover:hover { background: #F8FAFC !important; }
@@ -147,8 +147,8 @@ export default async function ReferidosAdminPage() {
                   return (
                     <div key={r.referral_code} style={{
                       display: 'flex', alignItems: 'center', gap: 10,
-                      background: i === 0 ? '#EFF6FF' : '#F8FAFC',
-                      border: `1px solid ${i === 0 ? '#BFDBFE' : '#E2E8F0'}`,
+                      background: i === 0 ? '#FFF7ED' : '#F8FAFC',
+                      border: `1px solid ${i === 0 ? '#FED7AA' : '#E2E8F0'}`,
                       borderRadius: 12, padding: '10px 12px',
                     }}>
                       <div style={{
@@ -215,7 +215,7 @@ export default async function ReferidosAdminPage() {
                   }}>
                     <div style={{ minWidth: 0, flex: 1 }}>
                       <p style={{ fontSize: 12, fontWeight: 700, color: '#1E293B', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{c.referrer_name}</p>
-                      <p style={{ fontSize: 10, color: '#38BDF8', fontFamily: 'monospace', fontWeight: 600 }}>{c.referral_code}</p>
+                      <p style={{ fontSize: 10, color: '#FB923C', fontFamily: 'monospace', fontWeight: 600 }}>{c.referral_code}</p>
                     </div>
                     <svg width="12" height="12" fill="none" stroke="#CBD5E1" viewBox="0 0 24 24" style={{ flexShrink: 0 }}>
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -223,7 +223,7 @@ export default async function ReferidosAdminPage() {
                     <div style={{ minWidth: 0, flex: 1 }}>
                       <p style={{ fontSize: 12, fontWeight: 600, color: '#475569', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{c.referred_name}</p>
                       <p style={{ fontSize: 10, color: '#94A3B8' }}>
-                        {new Date(c.referred_at).toLocaleDateString('es-MX', { day: '2-digit', month: 'short' })}
+                        {new Date(c.referred_at).toLocaleDateString('es-CO', { day: '2-digit', month: 'short' })}
                       </p>
                     </div>
                   </div>
@@ -259,13 +259,13 @@ export default async function ReferidosAdminPage() {
                     <tr key={i} className="row-hover" style={{ borderBottom: '1px solid #F1F5F9', background: 'white' }}>
                       <td style={{ padding: '11px 12px', fontWeight: 700, color: '#1E293B' }}>{c.referrer_name}</td>
                       <td style={{ padding: '11px 12px' }}>
-                        <span style={{ background: '#EFF6FF', color: '#F97316', borderRadius: 6, padding: '3px 8px', fontSize: 11, fontFamily: 'monospace', fontWeight: 700, letterSpacing: '0.06em' }}>
+                        <span style={{ background: '#FFF7ED', color: '#F97316', borderRadius: 6, padding: '3px 8px', fontSize: 11, fontFamily: 'monospace', fontWeight: 700, letterSpacing: '0.06em' }}>
                           {c.referral_code}
                         </span>
                       </td>
                       <td style={{ padding: '11px 12px', color: '#475569' }}>{c.referred_name}</td>
                       <td style={{ padding: '11px 12px', color: '#94A3B8' }}>
-                        {new Date(c.referred_at).toLocaleDateString('es-MX', { day: '2-digit', month: 'short', year: 'numeric' })}
+                        {new Date(c.referred_at).toLocaleDateString('es-CO', { day: '2-digit', month: 'short', year: 'numeric' })}
                       </td>
                     </tr>
                   ))}

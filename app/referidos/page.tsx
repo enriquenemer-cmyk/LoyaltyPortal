@@ -27,7 +27,7 @@ function getInitials(name: string) {
 }
 
 function Avatar({ name, size = 40 }: { name: string; size?: number }) {
-  const colors = ['#2563EB', '#0891B2', '#38BDF8', '#0EA5E9', '#6366F1'];
+  const colors = ['#F97316', '#EA580C', '#FB923C', '#F97316', '#6366F1'];
   const idx = name.charCodeAt(0) % colors.length;
   return (
     <div
@@ -139,14 +139,14 @@ function ReferidosContent() {
   const nextRewardAt = data ? REWARD_STEP - (data.count % REWARD_STEP) : REWARD_STEP;
   const rewardsEarned = data ? Math.floor(data.count / REWARD_STEP) : 0;
 
-  const gradient = 'linear-gradient(135deg, #2563EB 0%, #0891B2 100%)';
+  const gradient = 'linear-gradient(135deg, #F97316 0%, #EA580C 100%)';
 
   if (loading) {
     return (
       <div style={{ minHeight: '100vh', background: '#F8FAFC', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
         <div style={{ textAlign: 'center' }}>
-          <div style={{ width: 48, height: 48, border: '4px solid #E2E8F0', borderTopColor: '#2563EB', borderRadius: '50%', animation: 'spin 0.8s linear infinite', margin: '0 auto 16px' }} />
+          <div style={{ width: 48, height: 48, border: '4px solid #E2E8F0', borderTopColor: '#F97316', borderRadius: '50%', animation: 'spin 0.8s linear infinite', margin: '0 auto 16px' }} />
           <p style={{ color: '#64748B', fontSize: 14 }}>Cargando tu programa...</p>
         </div>
       </div>
@@ -162,7 +162,7 @@ function ReferidosContent() {
           <p style={{ color: '#64748B', fontSize: 15, lineHeight: 1.6, marginBottom: 24 }}>
             Accede con tu código de referido o número de teléfono:
           </p>
-          <code style={{ background: '#E0F2FE', color: '#0891B2', padding: '8px 16px', borderRadius: 8, fontSize: 13 }}>
+          <code style={{ background: '#FFEDD5', color: '#EA580C', padding: '8px 16px', borderRadius: 8, fontSize: 13 }}>
             /referidos?code=TU-CODIGO
           </code>
         </div>
@@ -176,7 +176,7 @@ function ReferidosContent() {
         @keyframes spin { to { transform: rotate(360deg); } }
         @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         .step-card { transition: transform 0.2s ease, box-shadow 0.2s ease; }
-        .step-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(37,99,235,0.12) !important; }
+        .step-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(249,115,22,0.12) !important; }
         .cta-btn { transition: transform 0.15s ease, opacity 0.15s ease; cursor: pointer; border: none; }
         .cta-btn:hover { transform: scale(1.04); opacity: 0.92; }
         .cta-btn:active { transform: scale(0.97); }
@@ -214,21 +214,21 @@ function ReferidosContent() {
       <div style={{ maxWidth: 600, margin: '-40px auto 0', padding: '0 16px 80px', position: 'relative', zIndex: 2 }}>
 
         {/* ── REFERRAL LINK CARD ── */}
-        <div style={{ background: 'white', borderRadius: 20, padding: 28, boxShadow: '0 8px 40px rgba(37,99,235,0.14)', marginBottom: 16, animation: 'fadeUp 0.5s ease 0.2s both' }}>
+        <div style={{ background: 'white', borderRadius: 20, padding: 28, boxShadow: '0 8px 40px rgba(249,115,22,0.14)', marginBottom: 16, animation: 'fadeUp 0.5s ease 0.2s both' }}>
           <p style={{ fontSize: 11, fontWeight: 700, color: '#94A3B8', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 10 }}>Tu link único</p>
-          <div style={{ background: '#F0F9FF', border: '1.5px solid #BAE6FD', borderRadius: 12, padding: '12px 14px', marginBottom: 14, display: 'flex', alignItems: 'center', gap: 8, overflow: 'hidden' }}>
+          <div style={{ background: '#F0F9FF', border: '1.5px solid #FED7AA', borderRadius: 12, padding: '12px 14px', marginBottom: 14, display: 'flex', alignItems: 'center', gap: 8, overflow: 'hidden' }}>
             <svg width="15" height="15" fill="none" viewBox="0 0 24 24" style={{ flexShrink: 0 }}>
-              <path stroke="#0891B2" strokeWidth="2" strokeLinecap="round" d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" />
+              <path stroke="#EA580C" strokeWidth="2" strokeLinecap="round" d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" />
             </svg>
-            <span style={{ fontSize: 12, color: '#0891B2', fontFamily: 'monospace', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1 }}>
+            <span style={{ fontSize: 12, color: '#EA580C', fontFamily: 'monospace', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1 }}>
               {referralLink}
             </span>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
             <button onClick={handleCopy} className="cta-btn" style={{
               padding: '13px 10px', borderRadius: 12,
-              background: copied ? '#DCFCE7' : '#EFF6FF',
-              color: copied ? '#16A34A' : '#2563EB',
+              background: copied ? '#DCFCE7' : '#FFF7ED',
+              color: copied ? '#16A34A' : '#F97316',
               fontWeight: 700, fontSize: 13, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
             }}>
               {copied ? (
@@ -254,11 +254,11 @@ function ReferidosContent() {
         {/* ── STATS ── */}
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 16, animation: 'fadeUp 0.5s ease 0.25s both' }}>
           <div style={{ background: 'white', borderRadius: 16, padding: '20px 16px', boxShadow: '0 2px 16px rgba(0,0,0,0.05)', textAlign: 'center' }}>
-            <p style={{ fontSize: 42, fontWeight: 900, color: '#2563EB', lineHeight: 1, marginBottom: 4 }}>{data?.count ?? 0}</p>
+            <p style={{ fontSize: 42, fontWeight: 900, color: '#F97316', lineHeight: 1, marginBottom: 4 }}>{data?.count ?? 0}</p>
             <p style={{ fontSize: 12, color: '#64748B', fontWeight: 600 }}>Amigos invitados</p>
           </div>
           <div style={{ background: 'white', borderRadius: 16, padding: '20px 16px', boxShadow: '0 2px 16px rgba(0,0,0,0.05)', textAlign: 'center' }}>
-            <p style={{ fontSize: 42, fontWeight: 900, color: '#0891B2', lineHeight: 1, marginBottom: 4 }}>{rewardsEarned}</p>
+            <p style={{ fontSize: 42, fontWeight: 900, color: '#EA580C', lineHeight: 1, marginBottom: 4 }}>{rewardsEarned}</p>
             <p style={{ fontSize: 12, color: '#64748B', fontWeight: 600 }}>Premios ganados</p>
           </div>
         </div>
@@ -269,11 +269,11 @@ function ReferidosContent() {
             <div>
               <p style={{ fontSize: 15, fontWeight: 800, color: '#1E293B', marginBottom: 2 }}>Próxima recompensa</p>
               <p style={{ fontSize: 13, color: '#64748B' }}>
-                Te faltan <strong style={{ color: '#2563EB' }}>{nextRewardAt}</strong> referido{nextRewardAt !== 1 ? 's' : ''} más
+                Te faltan <strong style={{ color: '#F97316' }}>{nextRewardAt}</strong> referido{nextRewardAt !== 1 ? 's' : ''} más
               </p>
             </div>
             <div style={{ textAlign: 'right' }}>
-              <p style={{ fontSize: 24, fontWeight: 900, color: '#2563EB', lineHeight: 1 }}>
+              <p style={{ fontSize: 24, fontWeight: 900, color: '#F97316', lineHeight: 1 }}>
                 {data ? data.count % REWARD_STEP : 0}
                 <span style={{ fontSize: 13, color: '#94A3B8', fontWeight: 600 }}>/{REWARD_STEP}</span>
               </p>
@@ -320,7 +320,7 @@ function ReferidosContent() {
                       {friend.referred_name}
                     </p>
                     <p style={{ fontSize: 12, color: '#94A3B8' }}>
-                      {new Date(friend.referred_at).toLocaleDateString('es-MX', { day: '2-digit', month: 'short', year: 'numeric' })}
+                      {new Date(friend.referred_at).toLocaleDateString('es-CO', { day: '2-digit', month: 'short', year: 'numeric' })}
                     </p>
                   </div>
                   <div style={{ background: '#F0FDF4', color: '#16A34A', borderRadius: 20, padding: '4px 12px', fontSize: 11, fontWeight: 700, flexShrink: 0 }}>
@@ -348,7 +348,7 @@ function ReferidosContent() {
               }}>
                 <div style={{
                   width: 44, height: 44, borderRadius: 12,
-                  background: 'linear-gradient(135deg,#EFF6FF,#E0F2FE)',
+                  background: 'linear-gradient(135deg,#FFF7ED,#FFEDD5)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   fontSize: 22, flexShrink: 0,
                 }}>
@@ -417,7 +417,7 @@ export default function ReferidosPage() {
     <Suspense fallback={
       <div style={{ minHeight: '100vh', background: '#F8FAFC', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
-        <div style={{ width: 40, height: 40, border: '4px solid #E2E8F0', borderTopColor: '#2563EB', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
+        <div style={{ width: 40, height: 40, border: '4px solid #E2E8F0', borderTopColor: '#F97316', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
       </div>
     }>
       <ReferidosContent />

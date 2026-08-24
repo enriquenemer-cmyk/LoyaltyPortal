@@ -36,9 +36,9 @@ function formatDate(iso: string) {
 
 // ── Tier configuration ──────────────────────────────────────────────────────
 const TIER = {
-  bronze: { label: 'Bronce', emoji: '', gradient: 'linear-gradient(135deg,#1E40AF,#1D4ED8)', bar: '#38BDF8', next: 'Plata', min: 0, max: 100 },
+  bronze: { label: 'Bronce', emoji: '', gradient: 'linear-gradient(135deg,#9A3412,#C2410C)', bar: '#FB923C', next: 'Plata', min: 0, max: 100 },
   silver: { label: 'Plata',  emoji: '', gradient: 'linear-gradient(135deg,#374151,#6b7280)', bar: '#94a3b8', next: 'Oro',   min: 100, max: 300 },
-  gold:   { label: 'Oro',    emoji: '', gradient: 'linear-gradient(135deg,#1E40AF,#ca8a04)', bar: '#fde047', next: '',      min: 300, max: 300 },
+  gold:   { label: 'Oro',    emoji: '', gradient: 'linear-gradient(135deg,#9A3412,#ca8a04)', bar: '#fde047', next: '',      min: 300, max: 300 },
 };
 
 // ── Points card ─────────────────────────────────────────────────────────────
@@ -97,7 +97,7 @@ function PointsCard({ points }: { points: CustomerPoints }) {
         <p className="text-[#78716c] text-xs">
           <span className="font-bold text-[#1C1917]">{points.lifetime_points.toLocaleString('es-ES')}</span> puntos acumulados en total
         </p>
-        <svg className="w-4 h-4" style={{ color: '#38BDF8' }} fill="currentColor" viewBox="0 0 20 20">
+        <svg className="w-4 h-4" style={{ color: '#FB923C' }} fill="currentColor" viewBox="0 0 20 20">
           <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
         </svg>
       </div>
@@ -116,7 +116,7 @@ function PrizeCard({ claim, index }: { claim: ClaimRecord; index: number }) {
     ? { label: 'Entregado', dot: '#16a34a', bg: '#f0fdf4', color: '#15803d', border: '#bbf7d0', stripe: 'linear-gradient(90deg,#16a34a,#4ade80)' }
     : expired
     ? { label: 'Vencido',   dot: '#a8a29e', bg: '#f5f5f4', color: '#78716c', border: '#E8E3DC', stripe: 'linear-gradient(90deg,#d6d3d1,#a8a29e)' }
-    : { label: 'Pendiente', dot: '#2563EB', bg: '#EFF6FF', color: '#0369A1', border: '#BAE6FD', stripe: 'linear-gradient(90deg,#2563EB,#0EA5E9)' };
+    : { label: 'Pendiente', dot: '#F97316', bg: '#FFF7ED', color: '#C2410C', border: '#FED7AA', stripe: 'linear-gradient(90deg,#F97316,#F97316)' };
 
   return (
     <div
@@ -140,7 +140,7 @@ function PrizeCard({ claim, index }: { claim: ClaimRecord; index: number }) {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             ) : (
-              <svg className="w-5 h-5" style={{ color: '#2563EB' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5" style={{ color: '#F97316' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12v10H4V12M22 7H2v5h20V7zM12 22V7M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z" />
               </svg>
             )}
@@ -189,7 +189,7 @@ function StatStrip({ claims }: { claims: ClaimRecord[] }) {
     <div className="grid grid-cols-3 gap-3">
       {[
         { label: 'Total', value: total, color: '#1C1917', bg: '#FAFAF9', border: '#E8E3DC' },
-        { label: 'Pendientes', value: pending, color: '#2563EB', bg: '#EFF6FF', border: '#BAE6FD' },
+        { label: 'Pendientes', value: pending, color: '#F97316', bg: '#FFF7ED', border: '#FED7AA' },
         { label: 'Cobrados', value: delivered, color: '#16a34a', bg: '#f0fdf4', border: '#bbf7d0' },
       ].map(s => (
         <div key={s.label} className="rounded-2xl px-3 py-3.5 text-center"
@@ -248,7 +248,7 @@ export default function MisPremiosPage() {
     <div className="min-h-screen" style={{ background: '#FAFAF9' }}>
 
       {/* ── HERO HEADER ── */}
-      <div className="relative overflow-hidden" style={{ background: 'linear-gradient(145deg,#2563EB 0%,#0891B2 55%,#1E3A8A 100%)' }}>
+      <div className="relative overflow-hidden" style={{ background: 'linear-gradient(145deg,#F97316 0%,#EA580C 55%,#7C2D12 100%)' }}>
         {/* Decorative circles */}
         <div aria-hidden className="absolute -top-16 -right-16 w-64 h-64 rounded-full opacity-[0.08]"
           style={{ background: 'white' }} />
@@ -283,7 +283,7 @@ export default function MisPremiosPage() {
           {/* Nav pills */}
           <div className="flex gap-2 mt-6">
             <span className="px-5 py-2 rounded-full text-sm font-extrabold"
-              style={{ background: 'rgba(255,255,255,0.95)', color: '#2563EB' }}>
+              style={{ background: 'rgba(255,255,255,0.95)', color: '#F97316' }}>
               Premios
             </span>
             <Link href="/mis-mensajes"
@@ -319,7 +319,7 @@ export default function MisPremiosPage() {
                   placeholder="Ej: 612 345 678 o tu@correo.com"
                   required
                   autoComplete="off"
-                  className="w-full border border-[#E8E3DC] rounded-xl pl-10 pr-4 py-3.5 text-sm text-[#1C1917] placeholder-[#a8a29e] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20 focus:border-[#2563EB] transition-all"
+                  className="w-full border border-[#E8E3DC] rounded-xl pl-10 pr-4 py-3.5 text-sm text-[#1C1917] placeholder-[#a8a29e] focus:outline-none focus:ring-2 focus:ring-[#F97316]/20 focus:border-[#F97316] transition-all"
                   style={{ background: '#FAFAF9' }}
                 />
               </div>
@@ -338,8 +338,8 @@ export default function MisPremiosPage() {
                 disabled={loading || !contact.trim()}
                 className="w-full font-extrabold py-4 rounded-xl text-white text-sm flex items-center justify-center gap-2 transition-all disabled:opacity-50"
                 style={{
-                  background: 'linear-gradient(135deg,#2563EB,#0891B2)',
-                  boxShadow: loading || !contact.trim() ? 'none' : '0 6px 20px rgba(37,99,235,0.30)',
+                  background: 'linear-gradient(135deg,#F97316,#EA580C)',
+                  boxShadow: loading || !contact.trim() ? 'none' : '0 6px 20px rgba(249,115,22,0.30)',
                 }}
               >
                 {loading ? (
@@ -379,8 +379,8 @@ export default function MisPremiosPage() {
               <div className="bg-white rounded-3xl border border-[#E8E3DC] p-10 text-center"
                 style={{ boxShadow: '0 2px 16px rgba(28,25,23,0.06)' }}>
                 <div className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-5"
-                  style={{ background: 'linear-gradient(135deg,#EFF6FF,#BAE6FD)' }}>
-                  <svg className="w-10 h-10" style={{ color: '#0EA5E9' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  style={{ background: 'linear-gradient(135deg,#FFF7ED,#FED7AA)' }}>
+                  <svg className="w-10 h-10" style={{ color: '#F97316' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
                       d="M20 12v10H4V12M22 7H2v5h20V7zM12 22V7M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z" />
                   </svg>
@@ -418,7 +418,7 @@ export default function MisPremiosPage() {
         {/* Footer */}
         <div className="flex items-center justify-center gap-2 py-4">
           <div className="w-4 h-4 rounded-md flex items-center justify-center"
-            style={{ background: 'linear-gradient(135deg,#2563EB,#0891B2)' }}>
+            style={{ background: 'linear-gradient(135deg,#F97316,#EA580C)' }}>
             <svg className="w-2.5 h-2.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
                 d="M20 12v10H4V12M22 7H2v5h20V7zM12 22V7" />

@@ -7,13 +7,13 @@ export default function NotFound() {
       <div style={{ textAlign: 'center', maxWidth: 440, width: '100%' }}>
         {/* Brand icon */}
         <div style={{ marginBottom: 16, display: 'flex', justifyContent: 'center' }}>
-          <div style={{ width: 64, height: 64, borderRadius: 16, background: 'linear-gradient(135deg,#2563EB,#0891B2)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 8px 24px rgba(37,99,235,0.25)' }}>
+          <div style={{ width: 64, height: 64, borderRadius: 16, background: 'linear-gradient(135deg,#F97316,#EA580C)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 8px 24px rgba(249,115,22,0.25)' }}>
             <span style={{ fontSize: 32 }}></span>
           </div>
         </div>
 
         {/* Big 404 with gradient */}
-        <div style={{ fontSize: 120, fontWeight: 900, lineHeight: 1, background: 'linear-gradient(135deg,#2563EB,#0EA5E9,#2563EB)', backgroundSize: '200% auto', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', marginBottom: 8 }}>
+        <div style={{ fontSize: 120, fontWeight: 900, lineHeight: 1, background: 'linear-gradient(135deg,#F97316,#F97316,#F97316)', backgroundSize: '200% auto', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', marginBottom: 8 }}>
           404
         </div>
 
@@ -25,7 +25,7 @@ export default function NotFound() {
         </p>
 
         <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-          <Link href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'linear-gradient(135deg,#2563EB,#0891B2)', color: 'white', fontWeight: 700, fontSize: 15, padding: '12px 24px', borderRadius: 14, textDecoration: 'none', boxShadow: '0 8px 24px rgba(37,99,235,0.30)' }}>
+          <Link href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'linear-gradient(135deg,#F97316,#EA580C)', color: 'white', fontWeight: 700, fontSize: 15, padding: '12px 24px', borderRadius: 14, textDecoration: 'none', boxShadow: '0 8px 24px rgba(249,115,22,0.30)' }}>
             ← Volver al inicio
           </Link>
           <Link href="/admin" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'white', color: '#44403c', fontWeight: 700, fontSize: 15, padding: '12px 24px', borderRadius: 14, textDecoration: 'none', border: '1px solid #E8E3DC', boxShadow: '0 1px 4px rgba(28,25,23,0.06)' }}>

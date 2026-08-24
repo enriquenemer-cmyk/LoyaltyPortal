@@ -112,7 +112,7 @@ export default function CalendarioPage() {
 
   const statusDotClass: Record<string, string> = {
     active: 'bg-green-500',
-    expiring: 'bg-[#2563EB]',
+    expiring: 'bg-[#F97316]',
     expired: 'bg-stone-400',
   };
 
@@ -150,7 +150,7 @@ export default function CalendarioPage() {
             <div className="flex items-center justify-between mb-6">
               <button
                 onClick={goToPrevMonth}
-                className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#6b7280] border border-[#E8E3DC] bg-white rounded-full px-4 py-2 hover:border-orange-200 hover:text-[#2563EB] transition-all"
+                className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#6b7280] border border-[#E8E3DC] bg-white rounded-full px-4 py-2 hover:border-orange-200 hover:text-[#F97316] transition-all"
                 aria-label="Mes anterior"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -163,7 +163,7 @@ export default function CalendarioPage() {
               </h2>
               <button
                 onClick={goToNextMonth}
-                className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#6b7280] border border-[#E8E3DC] bg-white rounded-full px-4 py-2 hover:border-orange-200 hover:text-[#2563EB] transition-all"
+                className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#6b7280] border border-[#E8E3DC] bg-white rounded-full px-4 py-2 hover:border-orange-200 hover:text-[#F97316] transition-all"
                 aria-label="Mes siguiente"
               >
                 Siguiente
@@ -185,7 +185,7 @@ export default function CalendarioPage() {
             {/* Day cells */}
             {loading ? (
               <div className="h-56 flex items-center justify-center">
-                <svg className="animate-spin w-8 h-8 text-[#2563EB]" fill="none" viewBox="0 0 24 24">
+                <svg className="animate-spin w-8 h-8 text-[#F97316]" fill="none" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
                 </svg>
@@ -206,14 +206,14 @@ export default function CalendarioPage() {
                       className={`
                         relative min-h-[56px] rounded-xl p-1.5 text-left transition-all border
                         ${todayCell
-                          ? 'bg-[#2563EB] border-[#2563EB] shadow-md shadow-blue-200'
+                          ? 'bg-[#F97316] border-[#F97316] shadow-md shadow-orange-200'
                           : isSelected
-                            ? 'ring-2 ring-[#2563EB] bg-orange-50 border-orange-200'
+                            ? 'ring-2 ring-[#F97316] bg-orange-50 border-orange-200'
                             : 'border-transparent hover:bg-orange-50 hover:border-orange-100'
                         }
                       `}
                     >
-                      <span className={`text-xs font-bold ${todayCell ? 'text-white' : isSelected ? 'text-[#2563EB]' : 'text-[#1C1917]'}`}>
+                      <span className={`text-xs font-bold ${todayCell ? 'text-white' : isSelected ? 'text-[#F97316]' : 'text-[#1C1917]'}`}>
                         {day}
                       </span>
                       {dayPrizes.length > 0 && (
@@ -223,7 +223,7 @@ export default function CalendarioPage() {
                               key={prize.id}
                               className={`w-2 h-2 rounded-full ${status === 'active' ? 'bg-green-500' + (todayCell ? '' : ' ') : statusDotClass[status]} ${status === 'active' && !todayCell ? 'animate-pulse' : ''}`}
                               title={prize.name}
-                              style={{ width: 8, height: 8, borderRadius: 4, display: 'inline-block', backgroundColor: status === 'active' ? '#22c55e' : status === 'expiring' ? '#2563EB' : '#a8a29e' }}
+                              style={{ width: 8, height: 8, borderRadius: 4, display: 'inline-block', backgroundColor: status === 'active' ? '#22c55e' : status === 'expiring' ? '#F97316' : '#a8a29e' }}
                             />
                           ))}
                           {dayPrizes.length > 4 && (
@@ -246,8 +246,8 @@ export default function CalendarioPage() {
                 <span className="w-2 h-2 rounded-full bg-green-500 inline-block animate-pulse" />
                 Activo
               </span>
-              <span className="inline-flex items-center gap-1.5 bg-orange-50 border border-orange-200 rounded-full px-2.5 py-1 text-xs font-semibold text-[#2563EB]">
-                <span className="w-2 h-2 rounded-full bg-[#2563EB] inline-block" />
+              <span className="inline-flex items-center gap-1.5 bg-orange-50 border border-orange-200 rounded-full px-2.5 py-1 text-xs font-semibold text-[#F97316]">
+                <span className="w-2 h-2 rounded-full bg-[#F97316] inline-block" />
                 Por vencer (3 días)
               </span>
               <span className="inline-flex items-center gap-1.5 bg-stone-50 border border-stone-200 rounded-full px-2.5 py-1 text-xs font-semibold text-stone-500">
@@ -303,7 +303,7 @@ export default function CalendarioPage() {
                           className="w-full flex items-center gap-2.5 p-3 text-left hover:bg-[#FAFAF9] transition-colors"
                         >
                           <span
-                            className={`w-2 h-2 rounded-full flex-shrink-0 ${status === 'active' ? 'bg-green-500 animate-pulse' : status === 'expiring' ? 'bg-[#2563EB]' : 'bg-stone-400'}`}
+                            className={`w-2 h-2 rounded-full flex-shrink-0 ${status === 'active' ? 'bg-green-500 animate-pulse' : status === 'expiring' ? 'bg-[#F97316]' : 'bg-stone-400'}`}
                           />
                           <p className="text-sm font-semibold text-[#1C1917] truncate flex-1">{prize.name}</p>
                           <svg
@@ -318,7 +318,7 @@ export default function CalendarioPage() {
                             <div className="pt-2 space-y-1.5">
                               <div className="flex items-center gap-1.5">
                                 <span className="text-[10px] font-bold text-[#6b7280] uppercase tracking-widest">Estado</span>
-                                <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${status === 'active' ? 'bg-green-100 text-green-700' : status === 'expiring' ? 'bg-orange-100 text-[#2563EB]' : 'bg-stone-100 text-stone-500'}`}>
+                                <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${status === 'active' ? 'bg-green-100 text-green-700' : status === 'expiring' ? 'bg-orange-100 text-[#F97316]' : 'bg-stone-100 text-stone-500'}`}>
                                   {statusLabel[status]}
                                 </span>
                               </div>

@@ -33,7 +33,7 @@ function initials(name: string) {
 }
 
 function darken(hex: string): string {
-  if (!/^#[0-9a-fA-F]{6}$/.test(hex)) return '#0891B2';
+  if (!/^#[0-9a-fA-F]{6}$/.test(hex)) return '#EA580C';
   const r = parseInt(hex.slice(1, 3), 16);
   const g = parseInt(hex.slice(3, 5), 16);
   const b = parseInt(hex.slice(5, 7), 16);
@@ -44,7 +44,7 @@ export default function ScannerClient() {
   const router = useRouter();
   const params = useSearchParams();
   const restaurantName = params.get('r') ?? 'Cajero';
-  const accentColor = params.get('color') ?? '#2563EB';
+  const accentColor = params.get('color') ?? '#F97316';
   const accentDark = darken(accentColor);
 
   const codeReaderRef = useRef<import('@zxing/browser').IScannerControls | null>(null);
@@ -431,8 +431,8 @@ export default function ScannerClient() {
                 <h3 className="text-[#1C1917] font-extrabold text-base">Registro de este turno</h3>
               </div>
               <div className="flex items-center gap-1.5 bg-orange-50 border border-orange-200 rounded-full px-3 py-1">
-                <div className="w-1.5 h-1.5 rounded-full bg-[#2563EB] animate-pulse" />
-                <span className="text-[#2563EB] text-xs font-bold">En vivo</span>
+                <div className="w-1.5 h-1.5 rounded-full bg-[#F97316] animate-pulse" />
+                <span className="text-[#F97316] text-xs font-bold">En vivo</span>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-3">

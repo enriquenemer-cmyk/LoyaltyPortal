@@ -120,7 +120,7 @@ export default function BillingPage() {
                         </span>
                       </div>
                       {r.billing_expires_at && (
-                        <p className="text-xs text-stone-400 mt-0.5">Vence: {new Date(r.billing_expires_at).toLocaleDateString('es-MX')}</p>
+                        <p className="text-xs text-stone-400 mt-0.5">Vence: {new Date(r.billing_expires_at).toLocaleDateString('es-CO')}</p>
                       )}
                     </div>
                     <div className="flex flex-col gap-2 items-end">

@@ -14,7 +14,7 @@ type InactiveCustomer = {
 };
 
 function formatDate(dateStr: string) {
-  return new Date(dateStr).toLocaleDateString('es-MX', {
+  return new Date(dateStr).toLocaleDateString('es-CO', {
     year: 'numeric', month: 'short', day: 'numeric',
   });
 }

@@ -105,7 +105,7 @@ function HoursLeaderboard({ leaderboard }: { leaderboard: LeaderboardEntry[] }) 
                 className="h-full rounded-full"
                 style={{
                   width: `${pct}%`,
-                  background: 'linear-gradient(90deg, #2563EB, #0EA5E9)',
+                  background: 'linear-gradient(90deg, #F97316, #F97316)',
                   borderRadius: 4,
                   minWidth: pct > 0 ? 4 : 0,
                   transition: 'width 0.6s cubic-bezier(0.34,1.56,0.64,1)',
@@ -361,7 +361,7 @@ export default function FichajesPage() {
                   value={form.full_name}
                   onChange={(e) => setForm((f) => ({ ...f, full_name: e.target.value }))}
                   placeholder="ej. Juan Pérez"
-                  className="w-full border border-[#E8E3DC] rounded-xl px-3 py-2.5 text-sm text-[#1C1917] placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-[#2563EB]/30 focus:border-[#2563EB] transition-colors"
+                  className="w-full border border-[#E8E3DC] rounded-xl px-3 py-2.5 text-sm text-[#1C1917] placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-[#F97316]/30 focus:border-[#F97316] transition-colors"
                 />
               </div>
               <div>
@@ -376,7 +376,7 @@ export default function FichajesPage() {
                   value={form.pin}
                   onChange={(e) => setForm((f) => ({ ...f, pin: e.target.value.replace(/\D/g, '') }))}
                   placeholder="1234"
-                  className="w-full border border-[#E8E3DC] rounded-xl px-3 py-2.5 text-sm text-[#1C1917] placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-[#2563EB]/30 focus:border-[#2563EB] transition-colors"
+                  className="w-full border border-[#E8E3DC] rounded-xl px-3 py-2.5 text-sm text-[#1C1917] placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-[#F97316]/30 focus:border-[#F97316] transition-colors"
                 />
               </div>
               <div>
@@ -388,14 +388,14 @@ export default function FichajesPage() {
                   value={form.position}
                   onChange={(e) => setForm((f) => ({ ...f, position: e.target.value }))}
                   placeholder="ej. Cajero"
-                  className="w-full border border-[#E8E3DC] rounded-xl px-3 py-2.5 text-sm text-[#1C1917] placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-[#2563EB]/30 focus:border-[#2563EB] transition-colors"
+                  className="w-full border border-[#E8E3DC] rounded-xl px-3 py-2.5 text-sm text-[#1C1917] placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-[#F97316]/30 focus:border-[#F97316] transition-colors"
                 />
               </div>
               <div className="sm:col-span-3 flex gap-3 pt-2">
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="bg-[#2563EB] hover:bg-[#0891B2] disabled:opacity-60 text-white text-sm font-semibold px-5 py-2.5 rounded-xl transition-colors"
+                  className="bg-[#F97316] hover:bg-[#EA580C] disabled:opacity-60 text-white text-sm font-semibold px-5 py-2.5 rounded-xl transition-colors"
                 >
                   {submitting ? 'Creando…' : 'Crear empleado'}
                 </button>
@@ -461,7 +461,7 @@ export default function FichajesPage() {
                               value={resetPinValue}
                               onChange={(e) => setResetPinValue(e.target.value.replace(/\D/g, ''))}
                               placeholder="Nuevo PIN"
-                              className="w-24 border border-[#E8E3DC] rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#2563EB]/30"
+                              className="w-24 border border-[#E8E3DC] rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#F97316]/30"
                             />
                             <button
                               onClick={() => handleResetPin(emp.id)}
@@ -479,7 +479,7 @@ export default function FichajesPage() {
                         ) : (
                           <button
                             onClick={() => { setResettingId(emp.id); setResetPinValue(''); }}
-                            className="text-xs font-semibold text-[#2563EB] hover:text-[#1d4ed8] border border-[#2563EB]/30 hover:border-[#2563EB] px-3 py-1.5 rounded-lg transition-colors"
+                            className="text-xs font-semibold text-[#F97316] hover:text-[#C2410C] border border-[#F97316]/30 hover:border-[#F97316] px-3 py-1.5 rounded-lg transition-colors"
                           >
                             Resetear PIN
                           </button>
@@ -538,13 +538,13 @@ export default function FichajesPage() {
                         {entry.position && <div className="text-xs text-stone-400">{entry.position}</div>}
                       </td>
                       <td className="px-5 py-3.5 text-stone-600">
-                        {new Date(entry.clock_in).toLocaleString('es-MX', {
+                        {new Date(entry.clock_in).toLocaleString('es-CO', {
                           day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit',
                         })}
                       </td>
                       <td className="px-5 py-3.5 text-stone-600">
                         {entry.clock_out
-                          ? new Date(entry.clock_out).toLocaleString('es-MX', {
+                          ? new Date(entry.clock_out).toLocaleString('es-CO', {
                               day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit',
                             })
                           : '—'}

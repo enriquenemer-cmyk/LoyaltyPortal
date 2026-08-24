@@ -19,7 +19,7 @@ export default function PrivacidadPage() {
         </p>
 
         <section style={{ marginBottom: 36 }}>
-          <h2 style={{ fontSize: 18, fontWeight: 800, color: '#2563EB', marginBottom: 12 }}>
+          <h2 style={{ fontSize: 18, fontWeight: 800, color: '#F97316', marginBottom: 12 }}>
             1. Identidad y domicilio del Responsable
           </h2>
           <p style={{ fontSize: 15, lineHeight: 1.7, color: '#1C1917' }}>
@@ -33,7 +33,7 @@ export default function PrivacidadPage() {
         </section>
 
         <section style={{ marginBottom: 36 }}>
-          <h2 style={{ fontSize: 18, fontWeight: 800, color: '#2563EB', marginBottom: 12 }}>
+          <h2 style={{ fontSize: 18, fontWeight: 800, color: '#F97316', marginBottom: 12 }}>
             2. Datos personales que se recaban
           </h2>
           <p style={{ fontSize: 15, lineHeight: 1.7, color: '#1C1917', marginBottom: 12 }}>
@@ -53,7 +53,7 @@ export default function PrivacidadPage() {
         </section>
 
         <section style={{ marginBottom: 36 }}>
-          <h2 style={{ fontSize: 18, fontWeight: 800, color: '#2563EB', marginBottom: 12 }}>
+          <h2 style={{ fontSize: 18, fontWeight: 800, color: '#F97316', marginBottom: 12 }}>
             3. Finalidades del tratamiento
           </h2>
           <p style={{ fontSize: 15, lineHeight: 1.7, color: '#1C1917', marginBottom: 12 }}>
@@ -81,7 +81,7 @@ export default function PrivacidadPage() {
         </section>
 
         <section style={{ marginBottom: 36 }}>
-          <h2 style={{ fontSize: 18, fontWeight: 800, color: '#2563EB', marginBottom: 12 }}>
+          <h2 style={{ fontSize: 18, fontWeight: 800, color: '#F97316', marginBottom: 12 }}>
             4. Transferencias de datos personales
           </h2>
           <p style={{ fontSize: 15, lineHeight: 1.7, color: '#1C1917' }}>
@@ -93,7 +93,7 @@ export default function PrivacidadPage() {
         </section>
 
         <section style={{ marginBottom: 36 }}>
-          <h2 style={{ fontSize: 18, fontWeight: 800, color: '#2563EB', marginBottom: 12 }}>
+          <h2 style={{ fontSize: 18, fontWeight: 800, color: '#F97316', marginBottom: 12 }}>
             5. Derechos ARCO
           </h2>
           <p style={{ fontSize: 15, lineHeight: 1.7, color: '#1C1917', marginBottom: 12 }}>
@@ -116,7 +116,7 @@ export default function PrivacidadPage() {
         </section>
 
         <section style={{ marginBottom: 36 }}>
-          <h2 style={{ fontSize: 18, fontWeight: 800, color: '#2563EB', marginBottom: 12 }}>
+          <h2 style={{ fontSize: 18, fontWeight: 800, color: '#F97316', marginBottom: 12 }}>
             6. Uso de cookies y tecnologías de rastreo
           </h2>
           <p style={{ fontSize: 15, lineHeight: 1.7, color: '#1C1917' }}>
@@ -130,7 +130,7 @@ export default function PrivacidadPage() {
         </section>
 
         <section style={{ marginBottom: 36 }}>
-          <h2 style={{ fontSize: 18, fontWeight: 800, color: '#2563EB', marginBottom: 12 }}>
+          <h2 style={{ fontSize: 18, fontWeight: 800, color: '#F97316', marginBottom: 12 }}>
             7. Vigencia de los datos
           </h2>
           <p style={{ fontSize: 15, lineHeight: 1.7, color: '#1C1917' }}>
@@ -142,7 +142,7 @@ export default function PrivacidadPage() {
         </section>
 
         <section style={{ marginBottom: 36 }}>
-          <h2 style={{ fontSize: 18, fontWeight: 800, color: '#2563EB', marginBottom: 12 }}>
+          <h2 style={{ fontSize: 18, fontWeight: 800, color: '#F97316', marginBottom: 12 }}>
             8. Cambios al aviso de privacidad
           </h2>
           <p style={{ fontSize: 15, lineHeight: 1.7, color: '#1C1917' }}>

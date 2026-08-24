@@ -48,7 +48,7 @@ type SubmitDetail = {
 type View = 'list' | 'quiz' | 'final';
 
 const MODULE_COLORS = [
-  { bg: 'linear-gradient(135deg,#2563EB,#0891B2)', light: '#eff6ff' },
+  { bg: 'linear-gradient(135deg,#F97316,#EA580C)', light: '#FFF7ED' },
   { bg: 'linear-gradient(135deg,#7c3aed,#c026d3)', light: '#faf5ff' },
   { bg: 'linear-gradient(135deg,#059669,#0d9488)', light: '#ecfdf5' },
   { bg: 'linear-gradient(135deg,#d97706,#ea580c)', light: '#fffbeb' },
@@ -201,11 +201,11 @@ export default function CapacitacionPage() {
             <span className="text-xs font-bold text-stone-500">
               Pregunta {currentQ + 1} de {total}
             </span>
-            <span className="text-xs font-bold text-[#2563EB]">{activeModule.module.icon} {activeModule.module.title}</span>
+            <span className="text-xs font-bold text-[#F97316]">{activeModule.module.icon} {activeModule.module.title}</span>
           </div>
           <div className="w-full h-2.5 bg-stone-200 rounded-full overflow-hidden mb-6">
             <div
-              className="h-full bg-gradient-to-r from-[#2563EB] to-[#0891B2] transition-all duration-300"
+              className="h-full bg-gradient-to-r from-[#F97316] to-[#EA580C] transition-all duration-300"
               style={{ width: `${progressPct}%` }}
             />
           </div>
@@ -216,10 +216,10 @@ export default function CapacitacionPage() {
 
           <div className="space-y-3">
             {q.options.map((opt, i) => {
-              let style = 'bg-white border-[#E8E3DC] text-[#1C1917] hover:border-[#2563EB] hover:bg-orange-50/40';
+              let style = 'bg-white border-[#E8E3DC] text-[#1C1917] hover:border-[#F97316] hover:bg-orange-50/40';
               if (revealed) {
                 if (i === selected) {
-                  style = 'bg-orange-50 border-[#2563EB] text-[#1C1917]';
+                  style = 'bg-orange-50 border-[#F97316] text-[#1C1917]';
                 } else {
                   style = 'bg-white border-[#E8E3DC] text-stone-400 opacity-60';
                 }
@@ -245,7 +245,7 @@ export default function CapacitacionPage() {
               <button
                 onClick={advance}
                 disabled={submitting}
-                className="mt-4 w-full px-6 py-3.5 bg-[#2563EB] text-white font-bold rounded-xl hover:bg-[#0891B2] transition-colors disabled:opacity-60"
+                className="mt-4 w-full px-6 py-3.5 bg-[#F97316] text-white font-bold rounded-xl hover:bg-[#EA580C] transition-colors disabled:opacity-60"
               >
                 {submitting ? 'Enviando...' : currentQ + 1 < total ? 'Siguiente pregunta →' : 'Ver resultado'}
               </button>
@@ -302,7 +302,7 @@ export default function CapacitacionPage() {
             <button
               onClick={backToModules}
               className="w-full px-6 py-3.5 text-white font-bold rounded-xl transition-all"
-              style={{ background: 'linear-gradient(135deg,#2563EB,#0891B2)' }}
+              style={{ background: 'linear-gradient(135deg,#F97316,#EA580C)' }}
             >
               Volver a módulos
             </button>
@@ -330,7 +330,7 @@ export default function CapacitacionPage() {
           <div className="flex items-center gap-2 px-5 py-3 rounded-2xl" style={{ background: 'linear-gradient(135deg,#fbbf24,#f59e0b)', boxShadow: '0 4px 16px rgba(0,0,0,0.15)' }}>
             <span className="text-2xl"><TrophyIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></span>
             <div>
-              <p className="text-white font-black text-xl leading-none">{totalPoints.toLocaleString('es-MX')}</p>
+              <p className="text-white font-black text-xl leading-none">{totalPoints.toLocaleString('es-CO')}</p>
               <p className="text-amber-50 text-[10px] font-bold uppercase tracking-wider">puntos totales</p>
             </div>
           </div>

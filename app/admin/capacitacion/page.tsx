@@ -39,7 +39,7 @@ type LeaderboardRow = {
 const ICONS = ['', '', '', '', '️', '', '‍🍳', ''];
 
 const inputClass =
-  'w-full bg-white border border-[#E8E3DC] rounded-lg px-3 py-2.5 text-sm text-[#1C1917] placeholder-[#a8a29e] focus:outline-none focus:ring-1 focus:ring-[#2563EB]/30 focus:border-[#2563EB] transition-colors';
+  'w-full bg-white border border-[#E8E3DC] rounded-lg px-3 py-2.5 text-sm text-[#1C1917] placeholder-[#a8a29e] focus:outline-none focus:ring-1 focus:ring-[#F97316]/30 focus:border-[#F97316] transition-colors';
 
 const labelClass = 'block text-[10px] font-semibold text-[#6b7280] uppercase tracking-widest mb-1.5';
 
@@ -51,12 +51,12 @@ function CompletionBar({ completed, total }: { completed: number; total: number 
     <div className="mt-3">
       <div className="flex items-center justify-between mb-1">
         <span className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">Tasa de finalización</span>
-        <span className="text-[10px] font-bold text-[#2563EB]">{pct}% ({completed}/{total})</span>
+        <span className="text-[10px] font-bold text-[#F97316]">{pct}% ({completed}/{total})</span>
       </div>
       <div className="h-2 bg-[#F5F0EB] rounded-full overflow-hidden">
         <div
           className="h-2 rounded-full transition-all duration-500"
-          style={{ width: `${pct}%`, background: 'linear-gradient(90deg,#2563EB,#0EA5E9)' }}
+          style={{ width: `${pct}%`, background: 'linear-gradient(90deg,#F97316,#F97316)' }}
         />
       </div>
     </div>
@@ -106,7 +106,7 @@ function ModuleCard({
       className={`bg-white border rounded-2xl p-5 shadow-sm transition-all ${
         mod.active ? 'border-orange-200' : 'border-[#E8E3DC] opacity-60'
       }`}
-      style={mod.active ? { borderLeft: '4px solid #2563EB' } : { borderLeft: '4px solid #D6D3D1' }}
+      style={mod.active ? { borderLeft: '4px solid #F97316' } : { borderLeft: '4px solid #D6D3D1' }}
     >
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div className="flex items-start gap-3 flex-1 min-w-0">
@@ -138,7 +138,7 @@ function ModuleCard({
         <div className="flex items-center gap-3 shrink-0">
           <button
             onClick={handleToggleActive}
-            className={`relative w-11 h-6 rounded-full transition-colors ${mod.active ? 'bg-[#2563EB]' : 'bg-stone-200'}`}
+            className={`relative w-11 h-6 rounded-full transition-colors ${mod.active ? 'bg-[#F97316]' : 'bg-stone-200'}`}
             aria-label={mod.active ? 'Desactivar módulo' : 'Activar módulo'}
           >
             <span
@@ -151,8 +151,8 @@ function ModuleCard({
             onClick={() => setExpanded((v) => !v)}
             className={`inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border transition-all ${
               expanded
-                ? 'bg-[#2563EB] text-white border-[#2563EB]'
-                : 'bg-white text-slate-500 border-slate-200 hover:border-[#2563EB] hover:text-[#2563EB]'
+                ? 'bg-[#F97316] text-white border-[#F97316]'
+                : 'bg-white text-slate-500 border-slate-200 hover:border-[#F97316] hover:text-[#F97316]'
             }`}
           >
             Editar preguntas
@@ -288,7 +288,7 @@ function QuestionEditor({ moduleId, onChanged }: { moduleId: string; onChanged: 
             setShowForm((v) => !v);
             setError('');
           }}
-          className="text-xs font-bold text-[#2563EB] hover:underline"
+          className="text-xs font-bold text-[#F97316] hover:underline"
         >
           {showForm ? 'Cancelar' : '+ Agregar pregunta'}
         </button>
@@ -316,7 +316,7 @@ function QuestionEditor({ moduleId, onChanged }: { moduleId: string; onChanged: 
                   name={`correct-${moduleId}`}
                   checked={form.correct_index === i}
                   onChange={() => setForm((f) => ({ ...f, correct_index: i }))}
-                  className="shrink-0 accent-[#2563EB]"
+                  className="shrink-0 accent-[#F97316]"
                   title="Marcar como correcta"
                 />
                 <input
@@ -350,7 +350,7 @@ function QuestionEditor({ moduleId, onChanged }: { moduleId: string; onChanged: 
             <button
               type="submit"
               disabled={saving}
-              className="px-5 py-2.5 bg-[#2563EB] text-white text-sm font-semibold rounded-xl hover:bg-[#0891B2] transition-colors disabled:opacity-60"
+              className="px-5 py-2.5 bg-[#F97316] text-white text-sm font-semibold rounded-xl hover:bg-[#EA580C] transition-colors disabled:opacity-60"
             >
               {saving ? 'Guardando...' : editingId ? 'Actualizar pregunta' : 'Agregar pregunta'}
             </button>
@@ -389,7 +389,7 @@ function QuestionEditor({ moduleId, onChanged }: { moduleId: string; onChanged: 
                   <p className="text-[11px] text-stone-400 mt-1.5">{q.points} pts</p>
                 </div>
                 <div className="flex items-center gap-2 shrink-0">
-                  <button onClick={() => startEdit(q)} className="text-xs font-semibold text-[#2563EB] hover:underline">
+                  <button onClick={() => startEdit(q)} className="text-xs font-semibold text-[#F97316] hover:underline">
                     Editar
                   </button>
                   <button onClick={() => handleDelete(q.id)} className="text-xs font-semibold text-red-500 hover:underline">
@@ -510,7 +510,7 @@ export default function CapacitacionAdminPage() {
         )}
 
         {showForm && (
-          <div className="bg-white border border-[#E8E3DC] rounded-2xl p-6 shadow-sm" style={{ borderTop: '3px solid #2563EB' }}>
+          <div className="bg-white border border-[#E8E3DC] rounded-2xl p-6 shadow-sm" style={{ borderTop: '3px solid #F97316' }}>
             <h2 className="text-base font-bold text-[#1C1917] mb-5">Nuevo módulo de capacitación</h2>
             <form onSubmit={handleSubmit} className="space-y-5">
               <div>
@@ -542,7 +542,7 @@ export default function CapacitacionAdminPage() {
                       type="button"
                       onClick={() => setForm((f) => ({ ...f, icon }))}
                       className={`w-11 h-11 rounded-xl text-xl flex items-center justify-center border transition-all ${
-                        form.icon === icon ? 'border-[#2563EB] bg-orange-50' : 'border-[#E8E3DC] bg-white'
+                        form.icon === icon ? 'border-[#F97316] bg-orange-50' : 'border-[#E8E3DC] bg-white'
                       }`}
                     >
                       {icon}
@@ -554,7 +554,7 @@ export default function CapacitacionAdminPage() {
                 <button
                   type="submit"
                   disabled={saving}
-                  className="px-6 py-2.5 bg-[#2563EB] text-white text-sm font-semibold rounded-xl hover:bg-[#0891B2] transition-colors disabled:opacity-60"
+                  className="px-6 py-2.5 bg-[#F97316] text-white text-sm font-semibold rounded-xl hover:bg-[#EA580C] transition-colors disabled:opacity-60"
                 >
                   {saving ? 'Guardando...' : 'Crear módulo'}
                 </button>
@@ -610,8 +610,8 @@ export default function CapacitacionAdminPage() {
                     {row.position && <p className="text-xs text-stone-400">{row.position}</p>}
                   </div>
                   <div className="text-right shrink-0">
-                    <p className="text-sm font-extrabold text-[#2563EB]">
-                      {row.total_training_points.toLocaleString('es-MX')} pts
+                    <p className="text-sm font-extrabold text-[#F97316]">
+                      {row.total_training_points.toLocaleString('es-CO')} pts
                     </p>
                     <p className="text-[10px] text-stone-400">{row.attempts_count} intentos</p>
                   </div>

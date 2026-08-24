@@ -25,7 +25,7 @@ function timeAgo(dateStr: string) {
 
 function Avatar({ name }: { name: string }) {
   const initials = name.split(' ').slice(0, 2).map(n => n[0]).join('').toUpperCase();
-  const colors = ['from-violet-500 to-purple-600', 'from-blue-500 to-indigo-600', 'from-emerald-500 to-teal-600', 'from-rose-500 to-orange-500', 'from-blue-500 to-blue-600'];
+  const colors = ['from-violet-500 to-purple-600', 'from-orange-500 to-indigo-600', 'from-emerald-500 to-teal-600', 'from-rose-500 to-orange-500', 'from-orange-500 to-orange-600'];
   const color = colors[name.charCodeAt(0) % colors.length];
   return (
     <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${color} flex items-center justify-center text-white text-xs font-bold shrink-0`}>

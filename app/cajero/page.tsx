@@ -11,7 +11,7 @@ type Restaurant = {
   accent_color: string;
 };
 
-const SWATCHES = ['#2563EB', '#7c3aed', '#0ea5e9', '#be185d', '#059669', '#0EA5E9'];
+const SWATCHES = ['#F97316', '#7c3aed', '#F97316', '#be185d', '#059669', '#F97316'];
 
 function initials(name: string) {
   return name.split(' ').slice(0, 2).map((n) => n[0]).join('').toUpperCase();
@@ -55,7 +55,7 @@ export default function CajeroPage() {
         <div className="max-w-5xl mx-auto px-5 py-4 flex items-center gap-3">
           <div
             className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
-            style={{ background: 'linear-gradient(135deg,#2563EB,#0891B2)', boxShadow: '0 4px 12px rgba(37,99,235,0.35)' }}
+            style={{ background: 'linear-gradient(135deg,#F97316,#EA580C)', boxShadow: '0 4px 12px rgba(249,115,22,0.35)' }}
           >
             <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />

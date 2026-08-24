@@ -110,7 +110,7 @@ export default function CashierAction({ claimId, prizeName, defaultCajero = '', 
         {showConfetti && (
           <div style={{ position:'fixed', inset:0, pointerEvents:'none', zIndex:999, overflow:'hidden' }}>
             <style>{`@keyframes cfFall { from { transform: translateY(-20px) rotate(0deg); opacity:1; } to { transform: translateY(110vh) rotate(720deg); opacity:0; } }`}</style>
-            {['#2563EB','#38BDF8','#f9a8d4','#818cf8','#34d399','#2563EB','#38BDF8','#f9a8d4','#818cf8','#34d399','#2563EB','#38BDF8','#f9a8d4','#818cf8','#34d399','#2563EB'].map((c,i) => (
+            {['#F97316','#FB923C','#f9a8d4','#818cf8','#34d399','#F97316','#FB923C','#f9a8d4','#818cf8','#34d399','#F97316','#FB923C','#f9a8d4','#818cf8','#34d399','#F97316'].map((c,i) => (
               <div key={i} style={{ position:'absolute', left:`${6 + i*6}%`, top:-16, width: i%2===0?10:7, height: i%2===0?10:7, borderRadius: i%3===0?'50%':3, background:c, opacity:0.9, animation:`cfFall ${2.2 + (i%4)*0.3}s ${i*0.12}s ease-in forwards` }} />
             ))}
           </div>
@@ -158,7 +158,7 @@ export default function CashierAction({ claimId, prizeName, defaultCajero = '', 
         <div className="bg-stone-50 border border-stone-200 rounded-2xl px-5 py-4 space-y-3">
           <div className="w-full bg-stone-200 rounded-full h-1.5 overflow-hidden">
             <div
-              className="h-1.5 rounded-full bg-[#2563EB] transition-all duration-1000"
+              className="h-1.5 rounded-full bg-[#F97316] transition-all duration-1000"
               style={{ width: `${(countdown / 3) * 100}%` }}
             />
           </div>
@@ -168,7 +168,7 @@ export default function CashierAction({ claimId, prizeName, defaultCajero = '', 
             </p>
             <button
               onClick={() => router.push('/cajero')}
-              className="text-sm font-bold text-[#2563EB] hover:underline"
+              className="text-sm font-bold text-[#F97316] hover:underline"
             >
               Volver ahora →
             </button>
@@ -192,11 +192,11 @@ export default function CashierAction({ claimId, prizeName, defaultCajero = '', 
             style={{
               background: messageSent
                 ? 'linear-gradient(135deg,#059669,#047857)'
-                : 'linear-gradient(135deg,#2563EB,#0891B2)',
+                : 'linear-gradient(135deg,#F97316,#EA580C)',
               color: '#fff',
               boxShadow: messageSent
                 ? '0 4px 16px rgba(5,150,105,0.30)'
-                : '0 4px 16px rgba(37,99,235,0.30)',
+                : '0 4px 16px rgba(249,115,22,0.30)',
             }}
           >
             {messageSent ? (
@@ -288,11 +288,11 @@ export default function CashierAction({ claimId, prizeName, defaultCajero = '', 
       )}
 
       {isExpired && (
-        <div className="bg-orange-50 border border-blue-300 rounded-xl px-4 py-3.5 flex items-start gap-3">
+        <div className="bg-orange-50 border border-orange-300 rounded-xl px-4 py-3.5 flex items-start gap-3">
           <svg className="w-5 h-5 text-orange-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
           </svg>
-          <p className="text-blue-800 text-sm font-semibold leading-snug">
+          <p className="text-orange-800 text-sm font-semibold leading-snug">
             El cliente tardó más de 2 horas. ¿Entregar de todas formas?
           </p>
         </div>
@@ -307,11 +307,11 @@ export default function CashierAction({ claimId, prizeName, defaultCajero = '', 
           className="w-full disabled:opacity-50 text-white font-black py-6 rounded-2xl transition-all text-xl tracking-wide"
           style={{
             background: isExpired
-              ? 'linear-gradient(135deg,#0EA5E9,#1D4ED8)'
-              : 'linear-gradient(135deg,#2563EB,#0891B2)',
+              ? 'linear-gradient(135deg,#F97316,#C2410C)'
+              : 'linear-gradient(135deg,#F97316,#EA580C)',
             boxShadow: isExpired
               ? '0 12px 36px rgba(217,119,6,0.45)'
-              : '0 12px 36px rgba(37,99,235,0.50)',
+              : '0 12px 36px rgba(249,115,22,0.50)',
             letterSpacing: '-0.01em',
           }}
         >

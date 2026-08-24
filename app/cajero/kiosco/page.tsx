@@ -85,7 +85,7 @@ export default function KioscoPage() {
                 type="submit"
                 disabled={phone.length < 10}
                 className="w-full mt-4 py-4 rounded-xl text-white font-bold text-lg disabled:opacity-30 transition-all"
-                style={{ background: '#2563EB' }}
+                style={{ background: '#F97316' }}
               >
                 Acumular puntos
               </button>
@@ -109,11 +109,11 @@ export default function KioscoPage() {
 
             <div className="grid grid-cols-2 gap-3 mb-6">
               <div className="bg-[#FAFAF9] rounded-xl p-3">
-                <p className="text-2xl font-extrabold text-[#2563EB]">{totalPoints.toLocaleString()}</p>
+                <p className="text-2xl font-extrabold text-[#F97316]">{totalPoints.toLocaleString()}</p>
                 <p className="text-xs text-stone-400 mt-0.5">Puntos totales</p>
               </div>
               <div className="bg-[#FAFAF9] rounded-xl p-3">
-                <p className="text-2xl font-extrabold" style={{ color: TIER_COLOR[tier] ?? '#2563EB' }}>
+                <p className="text-2xl font-extrabold" style={{ color: TIER_COLOR[tier] ?? '#F97316' }}>
                   {tier === 'gold' ? '' : tier === 'silver' ? '' : ''}
                 </p>
                 <p className="text-xs text-stone-400 mt-0.5">{TIER_LABEL[tier] ?? tier}</p>

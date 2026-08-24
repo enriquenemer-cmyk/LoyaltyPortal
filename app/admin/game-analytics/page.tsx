@@ -94,7 +94,7 @@ function PrizeDistribution({ data }: { data: PrizeEntry[] }) {
                 </div>
                 <div className="h-1.5 rounded-full bg-stone-100 overflow-hidden">
                   <div
-                    className="h-full rounded-full bg-[#2563EB] transition-all"
+                    className="h-full rounded-full bg-[#F97316] transition-all"
                     style={{ width: `${pct}%` }}
                   />
                 </div>

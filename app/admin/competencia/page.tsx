@@ -28,7 +28,7 @@ type LeaderboardData = {
 };
 
 function formatMoney(n: number): string {
-  return `$${n.toLocaleString('es-MX', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
+  return `$${n.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
 }
 
 const RANK_STYLES: Record<number, { card: string; border: string; emoji: string }> = {
@@ -173,7 +173,7 @@ export default function CompetenciaPage() {
               onClick={() => setPeriod(p)}
               className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
                 period === p
-                  ? 'bg-white text-[#2563EB] shadow-sm border border-[#E8E3DC]'
+                  ? 'bg-white text-[#F97316] shadow-sm border border-[#E8E3DC]'
                   : 'text-stone-500 hover:text-gray-900'
               }`}
             >
@@ -211,7 +211,7 @@ export default function CompetenciaPage() {
                 return (
                   <div
                     key={r.id}
-                    className={`rounded-2xl border-2 ${top.border} ${top.card} p-6 transition-all ${isChanged ? 'ring-2 ring-orange-400' : ''} ${isMine ? 'outline outline-2 outline-offset-2 outline-blue-500' : ''}`}
+                    className={`rounded-2xl border-2 ${top.border} ${top.card} p-6 transition-all ${isChanged ? 'ring-2 ring-orange-400' : ''} ${isMine ? 'outline outline-2 outline-offset-2 outline-orange-500' : ''}`}
                     style={{ boxShadow: '0 4px 20px rgba(0,0,0,0.08)' }}
                   >
                     <div className="flex items-center justify-between flex-wrap gap-3">
@@ -221,7 +221,7 @@ export default function CompetenciaPage() {
                           <div className="flex items-center gap-2">
                             <h3 className="text-xl font-black text-[#1C1917]">{r.name}</h3>
                             {isMine && (
-                              <span className="text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full bg-orange-100 text-orange-700 border border-blue-300">
+                              <span className="text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full bg-orange-100 text-orange-700 border border-orange-300">
                                 Tu sucursal
                               </span>
                             )}
@@ -237,7 +237,7 @@ export default function CompetenciaPage() {
                         </div>
                       </div>
                       <div className="text-right">
-                        <div className="text-4xl font-black tabular-nums" style={{ color: '#92400e' }}>{r.score.toLocaleString('es-MX')}</div>
+                        <div className="text-4xl font-black tabular-nums" style={{ color: '#92400e' }}>{r.score.toLocaleString('es-CO')}</div>
                         <div className="text-[10px] font-bold uppercase tracking-widest text-stone-400">puntos</div>
                       </div>
                     </div>
@@ -248,7 +248,7 @@ export default function CompetenciaPage() {
               return (
                 <div
                   key={r.id}
-                  className={`rounded-xl border border-[#E8E3DC] bg-white p-4 flex items-center justify-between flex-wrap gap-3 transition-all ${isChanged ? 'ring-2 ring-orange-400' : ''} ${isMine ? 'outline outline-2 outline-offset-2 outline-blue-500 bg-orange-50/30' : ''}`}
+                  className={`rounded-xl border border-[#E8E3DC] bg-white p-4 flex items-center justify-between flex-wrap gap-3 transition-all ${isChanged ? 'ring-2 ring-orange-400' : ''} ${isMine ? 'outline outline-2 outline-offset-2 outline-orange-500 bg-orange-50/30' : ''}`}
                 >
                   <div className="flex items-center gap-4">
                     <span className="text-lg font-bold text-stone-400 w-6 text-center">{r.rank}</span>
@@ -256,7 +256,7 @@ export default function CompetenciaPage() {
                       <div className="flex items-center gap-2">
                         <h4 className="font-semibold text-[#1C1917] text-sm">{r.name}</h4>
                         {isMine && (
-                          <span className="text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full bg-orange-100 text-orange-700 border border-blue-300">
+                          <span className="text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full bg-orange-100 text-orange-700 border border-orange-300">
                             Tu sucursal
                           </span>
                         )}
@@ -271,7 +271,7 @@ export default function CompetenciaPage() {
                       </p>
                     </div>
                   </div>
-                  <div className="text-xl font-black tabular-nums text-[#2563EB]">{r.score.toLocaleString('es-MX')}</div>
+                  <div className="text-xl font-black tabular-nums text-[#F97316]">{r.score.toLocaleString('es-CO')}</div>
                 </div>
               );
             })}
@@ -280,7 +280,7 @@ export default function CompetenciaPage() {
 
         {data && (
           <p className="text-center text-[11px] text-stone-400 mt-6">
-            Actualizado: {new Date(data.updated_at).toLocaleTimeString('es-MX')}
+            Actualizado: {new Date(data.updated_at).toLocaleTimeString('es-CO')}
           </p>
         )}
       </div>

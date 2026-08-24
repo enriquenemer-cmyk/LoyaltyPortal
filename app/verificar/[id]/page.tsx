@@ -48,7 +48,7 @@ export default async function VerificarPage({ params }: Props) {
     <div style={{ minHeight: '100vh', background: '#ffffff', fontFamily: 'system-ui,-apple-system,sans-serif' }}>
 
       {/* Header banner */}
-      <div style={{ background: 'linear-gradient(155deg,#2563EB 0%,#0891B2 45%,#1E3A8A 100%)', padding: '40px 24px 80px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+      <div style={{ background: 'linear-gradient(155deg,#F97316 0%,#EA580C 45%,#7C2D12 100%)', padding: '40px 24px 80px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', inset: 0, opacity: 0.05, backgroundImage: 'radial-gradient(circle,white 1.5px,transparent 1.5px)', backgroundSize: '30px 30px' }} />
         <div style={{ position: 'relative', zIndex: 1 }}>
           {/* Verified badge */}
@@ -84,18 +84,18 @@ export default async function VerificarPage({ params }: Props) {
 
           {/* Why */}
           <div style={{ padding: '20px 22px', borderBottom: '1px solid #F3F4F6', display: 'flex', gap: 14 }}>
-            <div style={{ width: 44, height: 44, borderRadius: 12, background: 'linear-gradient(135deg,#fef3c7,#E0F2FE)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, flexShrink: 0 }}><TrophyIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
+            <div style={{ width: 44, height: 44, borderRadius: 12, background: 'linear-gradient(135deg,#fef3c7,#FFEDD5)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, flexShrink: 0 }}><TrophyIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
             <div>
-              <p style={{ color: '#2563EB', fontSize: 10, fontWeight: 800, letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 4, margin: '0 0 4px' }}>Por qué lo ganó</p>
+              <p style={{ color: '#F97316', fontSize: 10, fontWeight: 800, letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 4, margin: '0 0 4px' }}>Por qué lo ganó</p>
               <p style={{ color: '#111', fontSize: 14, fontWeight: 600, lineHeight: 1.55, margin: 0 }}>{prize.reason}</p>
             </div>
           </div>
 
           {/* What */}
           <div style={{ padding: '20px 22px', borderBottom: '1px solid #F3F4F6', display: 'flex', gap: 14 }}>
-            <div style={{ width: 44, height: 44, borderRadius: 12, background: 'linear-gradient(135deg,#BAE6FD,#7DD3FC)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, flexShrink: 0 }}><GiftIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
+            <div style={{ width: 44, height: 44, borderRadius: 12, background: 'linear-gradient(135deg,#FED7AA,#FDBA74)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, flexShrink: 0 }}><GiftIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
             <div>
-              <p style={{ color: '#2563EB', fontSize: 10, fontWeight: 800, letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 4, margin: '0 0 4px' }}>En qué consiste</p>
+              <p style={{ color: '#F97316', fontSize: 10, fontWeight: 800, letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 4, margin: '0 0 4px' }}>En qué consiste</p>
               <p style={{ color: '#444', fontSize: 14, lineHeight: 1.6, margin: 0 }}>{prize.description}</p>
             </div>
           </div>
@@ -122,9 +122,9 @@ export default async function VerificarPage({ params }: Props) {
         </div>
 
         {/* Disclaimer */}
-        <div style={{ background: '#EFF6FF', border: '1px solid #BAE6FD', borderRadius: 14, padding: '14px 18px', display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+        <div style={{ background: '#FFF7ED', border: '1px solid #FED7AA', borderRadius: 14, padding: '14px 18px', display: 'flex', gap: 12, alignItems: 'flex-start' }}>
           <span style={{ fontSize: 18, flexShrink: 0, marginTop: 1 }}>ℹ️</span>
-          <p style={{ color: '#1E40AF', fontSize: 12, lineHeight: 1.6, margin: 0 }}>
+          <p style={{ color: '#9A3412', fontSize: 12, lineHeight: 1.6, margin: 0 }}>
             Esta página solo verifica la autenticidad del premio. Para reclamarlo, usa el QR original.
           </p>
         </div>

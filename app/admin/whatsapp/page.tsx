@@ -508,7 +508,7 @@ export default function WhatsAppPage() {
                 <div className="min-w-0 flex-1">
                   <p className="text-sm font-semibold text-[#1C1917] truncate">{c.prizeName}</p>
                   <p className="text-[10px] text-stone-400">
-                    {new Date(c.date).toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                    {new Date(c.date).toLocaleDateString('es-CO', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
                   </p>
                 </div>
                 <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#E9FBE9] shrink-0">

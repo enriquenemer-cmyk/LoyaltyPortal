@@ -38,12 +38,12 @@ type Summary = {
 const PAGE_SIZE = 15;
 
 function formatCurrency(n: number): string {
-  return n.toLocaleString('es-MX', { style: 'currency', currency: 'MXN', maximumFractionDigits: 0 });
+  return n.toLocaleString('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 });
 }
 
 function formatDateShort(d: string) {
   const [y, m, day] = d.slice(0, 10).split('-').map(Number);
-  return new Date(y, m - 1, day).toLocaleDateString('es-MX', { day: 'numeric', month: 'short', year: 'numeric' });
+  return new Date(y, m - 1, day).toLocaleDateString('es-CO', { day: 'numeric', month: 'short', year: 'numeric' });
 }
 
 function WeeklyComparisonWidget({ summary }: { summary: Summary | null }) {
@@ -94,7 +94,7 @@ function PaymentMethodCards({ breakdown }: { breakdown?: { cash: number; card: n
 
   const methods = [
     { label: 'Efectivo', value: cash, icon: '', color: '#059669', bg: '#d1fae5' },
-    { label: 'Tarjeta', value: card, icon: '', color: '#F97316', bg: '#dbeafe' },
+    { label: 'Tarjeta', value: card, icon: '', color: '#F97316', bg: '#FFEDD5' },
     { label: 'Otros', value: other, icon: '', color: '#7c3aed', bg: '#ede9fe' },
   ];
 
@@ -127,14 +127,14 @@ function BestDayInsight({ bestDay }: { bestDay?: { name: string; average: number
   return (
     <div
       className="rounded-2xl border border-orange-200 bg-orange-50 p-5 flex items-center gap-4"
-      style={{ boxShadow: '0 1px 2px rgba(37,99,235,0.04), 0 4px 12px rgba(37,99,235,0.08)' }}
+      style={{ boxShadow: '0 1px 2px rgba(249,115,22,0.04), 0 4px 12px rgba(249,115,22,0.08)' }}
     >
-      <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 text-xl" style={{ background: '#dbeafe' }}>
+      <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 text-xl" style={{ background: '#FFEDD5' }}>
         <ArrowTrendingUpIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" />
       </div>
       <div className="min-w-0">
         <p className="text-xs font-bold text-orange-700 uppercase tracking-widest mb-0.5">Mejor día de la semana</p>
-        <p className="text-base font-black text-blue-900 leading-snug">
+        <p className="text-base font-black text-orange-900 leading-snug">
           <span style={{ color: '#F97316' }}>{bestDay.name}</span> es tu día más fuerte, con un promedio de {formatCurrency(bestDay.average)} en ventas
         </p>
       </div>
@@ -224,9 +224,9 @@ function RegistrarVentaModal({
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
     >
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden border border-[#E8E3DC] pop-in">
-        <div className="bg-gradient-to-r from-blue-600 to-blue-500 px-5 py-4 flex items-center justify-between">
+        <div className="bg-gradient-to-r from-orange-600 to-orange-500 px-5 py-4 flex items-center justify-between">
           <div>
-            <p className="text-xs font-bold text-blue-100 uppercase tracking-widest mb-0.5">Nueva venta</p>
+            <p className="text-xs font-bold text-orange-100 uppercase tracking-widest mb-0.5">Nueva venta</p>
             <h2 className="text-white font-extrabold text-base leading-tight">Registrar Venta</h2>
           </div>
           <button
@@ -337,7 +337,7 @@ function RegistrarVentaModal({
             onClick={handleSave}
             disabled={saving}
             className="w-full flex items-center justify-center gap-2 font-bold text-sm px-4 py-3 rounded-xl transition-all text-white disabled:opacity-50"
-            style={{ background: 'linear-gradient(135deg,#2563EB,#0891B2)', boxShadow: '0 4px 16px rgba(37,99,235,0.35)' }}
+            style={{ background: 'linear-gradient(135deg,#F97316,#EA580C)', boxShadow: '0 4px 16px rgba(249,115,22,0.35)' }}
           >
             {saving ? (
               <>
@@ -460,9 +460,9 @@ export default function VentasPage() {
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-8">
             <div
               className="bg-white rounded-2xl border border-[#E8E3DC] border-l-4 p-5 flex items-center gap-4"
-              style={{ borderLeftColor: '#2563EB', boxShadow: '0 1px 2px rgba(28,25,23,0.04), 0 4px 16px rgba(28,25,23,0.06)' }}
+              style={{ borderLeftColor: '#F97316', boxShadow: '0 1px 2px rgba(28,25,23,0.04), 0 4px 16px rgba(28,25,23,0.06)' }}
             >
-              <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 text-xl" style={{ backgroundColor: '#dbeafe' }}><CalendarIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
+              <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 text-xl" style={{ backgroundColor: '#FFEDD5' }}><CalendarIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
               <div>
                 <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest mb-0.5">Hoy</p>
                 <p className="text-2xl font-extrabold" style={{ color: '#F97316' }}>{formatCurrency(summary?.today ?? 0)}</p>
@@ -471,12 +471,12 @@ export default function VentasPage() {
 
             <div
               className="bg-white rounded-2xl border border-[#E8E3DC] border-l-4 p-5 flex items-center gap-4"
-              style={{ borderLeftColor: '#0EA5E9', boxShadow: '0 1px 2px rgba(28,25,23,0.04), 0 4px 16px rgba(28,25,23,0.06)' }}
+              style={{ borderLeftColor: '#F97316', boxShadow: '0 1px 2px rgba(28,25,23,0.04), 0 4px 16px rgba(28,25,23,0.06)' }}
             >
-              <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 text-xl" style={{ backgroundColor: '#e0f2fe' }}><ChartBarIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
+              <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 text-xl" style={{ backgroundColor: '#FFEDD5' }}><ChartBarIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
               <div className="flex-1">
                 <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest mb-0.5">Esta semana</p>
-                <p className="text-2xl font-extrabold" style={{ color: '#0EA5E9' }}>{formatCurrency(summary?.week ?? 0)}</p>
+                <p className="text-2xl font-extrabold" style={{ color: '#F97316' }}>{formatCurrency(summary?.week ?? 0)}</p>
                 <div className="mt-1"><ChangeBadge pct={summary?.weekChangePct ?? null} /></div>
               </div>
             </div>

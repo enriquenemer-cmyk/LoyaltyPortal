@@ -18,7 +18,7 @@ export default function Error({
     <div className="min-h-screen bg-[#FAFAF9] flex flex-col items-center justify-center gap-6 px-4 text-center">
       {/* Branding */}
       <div className="flex items-center gap-2 mb-2">
-        <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-black" style={{ background: 'linear-gradient(135deg,#2563EB,#0891B2)' }}>
+        <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-black" style={{ background: 'linear-gradient(135deg,#F97316,#EA580C)' }}>
           P
         </div>
         <span className="text-sm font-bold text-stone-500 uppercase tracking-widest">3E</span>
@@ -27,7 +27,7 @@ export default function Error({
       {/* Error number */}
       <span
         className="text-9xl font-black leading-none select-none"
-        style={{ background: 'linear-gradient(135deg, #2563EB 0%, #0891B2 50%, #38BDF8 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}
+        style={{ background: 'linear-gradient(135deg, #F97316 0%, #EA580C 50%, #FB923C 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}
       >
         500
       </span>
@@ -52,7 +52,7 @@ export default function Error({
         <button
           onClick={() => window.location.reload()}
           className="flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl text-white font-bold text-sm transition-all shadow-sm hover:opacity-90"
-          style={{ background: 'linear-gradient(135deg,#2563EB,#0891B2)', boxShadow: '0 4px 16px rgba(37,99,235,0.3)' }}
+          style={{ background: 'linear-gradient(135deg,#F97316,#EA580C)', boxShadow: '0 4px 16px rgba(249,115,22,0.3)' }}
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />

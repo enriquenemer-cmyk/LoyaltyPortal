@@ -8,7 +8,7 @@ type Props = { prizeId: string; prizeName: string };
 const inp = [
   'w-full bg-white border border-[#E8E3DC] rounded-xl px-4 py-3.5',
   'text-sm text-[#1C1917] placeholder-[#a8a29e]',
-  'focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20 focus:border-[#2563EB]',
+  'focus:outline-none focus:ring-2 focus:ring-[#F97316]/20 focus:border-[#F97316]',
   'transition-all',
 ].join(' ');
 
@@ -122,7 +122,7 @@ export default function ClaimForm({ prizeId, prizeName }: Props) {
         {/* Título */}
         <div>
           <div className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-3"
-            style={{ background: 'linear-gradient(135deg,#2563EB,#0891B2)', boxShadow: '0 8px 24px rgba(37,99,235,0.35)' }}>
+            style={{ background: 'linear-gradient(135deg,#F97316,#EA580C)', boxShadow: '0 8px 24px rgba(249,115,22,0.35)' }}>
             <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
             </svg>
@@ -294,13 +294,13 @@ export default function ClaimForm({ prizeId, prizeName }: Props) {
         <input
           id="privacy-cb" type="checkbox" required checked={privacyAccepted}
           onChange={e => setPrivacyAccepted(e.target.checked)}
-          className="mt-0.5 shrink-0 cursor-pointer accent-[#2563EB]"
+          className="mt-0.5 shrink-0 cursor-pointer accent-[#F97316]"
           style={{ width: 16, height: 16 }}
         />
         <label htmlFor="privacy-cb" className="text-xs text-[#78716c] leading-snug cursor-pointer select-none">
           Acepto el{' '}
           <a href="/privacidad" target="_blank" rel="noopener noreferrer"
-            className="text-[#2563EB] hover:underline font-semibold">
+            className="text-[#F97316] hover:underline font-semibold">
             Aviso de Privacidad
           </a>{' '}
           de 3E
@@ -315,8 +315,8 @@ export default function ClaimForm({ prizeId, prizeName }: Props) {
         style={{
           background: (loading || !privacyAccepted)
             ? '#FED7AA'
-            : 'linear-gradient(135deg,#2563EB,#0891B2)',
-          boxShadow: (loading || !privacyAccepted) ? 'none' : '0 8px 24px rgba(37,99,235,0.35)',
+            : 'linear-gradient(135deg,#F97316,#EA580C)',
+          boxShadow: (loading || !privacyAccepted) ? 'none' : '0 8px 24px rgba(249,115,22,0.35)',
         }}
       >
         {loading

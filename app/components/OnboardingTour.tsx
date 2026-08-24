@@ -16,7 +16,7 @@ interface Particle {
   opacity: number;
 }
 
-const CONFETTI_COLORS = ['#F97316', '#0EA5E9', '#38BDF8', '#34d399', '#60a5fa', '#a78bfa', '#f472b6'];
+const CONFETTI_COLORS = ['#F97316', '#F97316', '#FB923C', '#34d399', '#FB923C', '#a78bfa', '#f472b6'];
 
 function launchConfetti() {
   const canvas = document.createElement('canvas');
@@ -303,7 +303,7 @@ function OnboardingTourInner() {
                 style={{
                   width: i + 1 === tourStep ? 20 : 8,
                   height: 8,
-                  background: i + 1 === tourStep ? '#F97316' : i + 1 < tourStep ? '#0EA5E9' : '#e7e5e4',
+                  background: i + 1 === tourStep ? '#F97316' : i + 1 < tourStep ? '#F97316' : '#e7e5e4',
                 }}
               />
             ))}

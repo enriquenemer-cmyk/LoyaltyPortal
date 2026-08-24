@@ -136,14 +136,14 @@ export default function FichajePage() {
     }
   }
 
-  const timeString = now.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-  const dateString = now.toLocaleDateString('es-MX', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+  const timeString = now.toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  const dateString = now.toLocaleDateString('es-CO', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 
   return (
     <div
       className="min-h-screen flex items-center justify-center px-4 py-8"
       style={{
-        background: 'linear-gradient(135deg, #1e3a8a 0%, #1d4ed8 35%, #2563eb 60%, #7c3aed 100%)',
+        background: 'linear-gradient(135deg, #7C2D12 0%, #C2410C 35%, #F97316 60%, #7c3aed 100%)',
       }}
     >
       <div className="w-full max-w-md">
@@ -155,7 +155,7 @@ export default function FichajePage() {
             <div className="text-center mb-6">
               <div
                 className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-widest mb-3"
-                style={{ background: 'rgba(37,99,235,0.1)', color: '#1d4ed8' }}
+                style={{ background: 'rgba(249,115,22,0.1)', color: '#C2410C' }}
               >
                 ⏰ Control de Horarios
               </div>
@@ -170,7 +170,7 @@ export default function FichajePage() {
                   key={i}
                   className="w-4 h-4 rounded-full transition-all"
                   style={{
-                    background: i < pin.length ? '#2563eb' : '#e5e7eb',
+                    background: i < pin.length ? '#F97316' : '#e5e7eb',
                     transform: i < pin.length ? 'scale(1.15)' : 'scale(1)',
                   }}
                 />
@@ -216,7 +216,7 @@ export default function FichajePage() {
                 type="button"
                 onClick={handleConfirmPin}
                 disabled={loading || pin.length < 4}
-                className="aspect-square rounded-2xl text-lg font-bold text-white bg-[#2563EB] hover:bg-[#1d4ed8] active:scale-95 transition-all disabled:opacity-40 flex items-center justify-center"
+                className="aspect-square rounded-2xl text-lg font-bold text-white bg-[#F97316] hover:bg-[#C2410C] active:scale-95 transition-all disabled:opacity-40 flex items-center justify-center"
               >
                 {loading ? '…' : '✓'}
               </button>
@@ -231,7 +231,7 @@ export default function FichajePage() {
           >
             <div
               className="w-16 h-16 rounded-full mx-auto mb-4 flex items-center justify-center text-2xl font-black"
-              style={{ background: 'rgba(37,99,235,0.1)', color: '#1d4ed8' }}
+              style={{ background: 'rgba(249,115,22,0.1)', color: '#C2410C' }}
             >
               {employee.full_name.slice(0, 1).toUpperCase()}
             </div>

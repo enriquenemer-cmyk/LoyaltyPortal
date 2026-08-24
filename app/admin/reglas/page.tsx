@@ -41,7 +41,7 @@ const TRIGGER_DESCRIPTIONS: Record<string, (v: number) => string> = {
 };
 
 const inputClass =
-  'w-full bg-white border border-[#E8E3DC] rounded-lg px-3 py-2.5 text-sm text-[#1C1917] placeholder-[#a8a29e] focus:outline-none focus:ring-1 focus:ring-[#2563EB]/30 focus:border-[#2563EB] transition-colors';
+  'w-full bg-white border border-[#E8E3DC] rounded-lg px-3 py-2.5 text-sm text-[#1C1917] placeholder-[#a8a29e] focus:outline-none focus:ring-1 focus:ring-[#F97316]/30 focus:border-[#F97316] transition-colors';
 
 const labelClass = 'block text-[10px] font-semibold text-[#6b7280] uppercase tracking-widest mb-1.5';
 
@@ -182,7 +182,7 @@ export default function ReglasPrizePage() {
         {/* Create form */}
         {showForm && (
           <div className="bg-white border border-[#E8E3DC] rounded-2xl p-6 shadow-sm"
-            style={{ borderTop: '3px solid #2563EB' }}>
+            style={{ borderTop: '3px solid #F97316' }}>
             <h2 className="text-base font-bold text-[#1C1917] mb-5">Nueva regla automatica</h2>
             <form onSubmit={handleSubmit} className="space-y-5">
               {/* Name */}
@@ -306,7 +306,7 @@ export default function ReglasPrizePage() {
                 <button
                   type="submit"
                   disabled={saving}
-                  className="px-6 py-2.5 bg-[#2563EB] text-white text-sm font-semibold rounded-xl hover:bg-[#0891B2] transition-colors disabled:opacity-60"
+                  className="px-6 py-2.5 bg-[#F97316] text-white text-sm font-semibold rounded-xl hover:bg-[#EA580C] transition-colors disabled:opacity-60"
                 >
                   {saving ? 'Guardando...' : 'Crear regla'}
                 </button>
@@ -339,7 +339,7 @@ export default function ReglasPrizePage() {
                 <div
                   key={rule.id}
                   className={`bg-white border rounded-2xl p-5 shadow-sm transition-all ${rule.active ? 'border-orange-200' : 'border-[#E8E3DC] opacity-60'}`}
-                  style={rule.active ? { borderLeft: '4px solid #2563EB' } : { borderLeft: '4px solid #D6D3D1' }}
+                  style={rule.active ? { borderLeft: '4px solid #F97316' } : { borderLeft: '4px solid #D6D3D1' }}
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex-1 min-w-0">
@@ -363,14 +363,14 @@ export default function ReglasPrizePage() {
                         ) : (
                           <span>Todos los restaurantes</span>
                         )}
-                        <span>Creada: {new Date(rule.created_at).toLocaleDateString('es-MX')}</span>
+                        <span>Creada: {new Date(rule.created_at).toLocaleDateString('es-CO')}</span>
                       </div>
                     </div>
 
                     {/* Toggle */}
                     <button
                       onClick={() => handleToggle(rule)}
-                      className={`relative shrink-0 w-11 h-6 rounded-full transition-colors ${rule.active ? 'bg-[#2563EB]' : 'bg-stone-200'}`}
+                      className={`relative shrink-0 w-11 h-6 rounded-full transition-colors ${rule.active ? 'bg-[#F97316]' : 'bg-stone-200'}`}
                       aria-label={rule.active ? 'Desactivar regla' : 'Activar regla'}
                     >
                       <span

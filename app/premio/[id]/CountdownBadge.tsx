@@ -51,7 +51,7 @@ function FlipUnit({ value, label }: { value: string; label: string }) {
           height: 52,
           borderRadius: 8,
           background: 'linear-gradient(180deg, #1a0a00 0%, #2d1208 100%)',
-          border: '1px solid rgba(37,99,235,0.4)',
+          border: '1px solid rgba(249,115,22,0.4)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -111,7 +111,7 @@ export default function CountdownBadge({ endDate }: { endDate: string }) {
       <span style={{
         display: 'inline-flex', alignItems: 'center', gap: 4,
         padding: '4px 12px', borderRadius: 99, fontSize: 11, fontWeight: 700,
-        background: '#EFF6FF', color: '#c2410c', border: '1px solid #BAE6FD',
+        background: '#FFF7ED', color: '#c2410c', border: '1px solid #FED7AA',
       }}>
         Vence en {tl.days}d {tl.hours}h
       </span>
@@ -134,16 +134,16 @@ export default function CountdownBadge({ endDate }: { endDate: string }) {
           : 'linear-gradient(135deg, #1c0a00, #431407)',
         border: isUnder2h
           ? '2px solid #ef4444'
-          : '2px solid #2563EB',
+          : '2px solid #F97316',
         boxShadow: isUnder2h
           ? '0 0 0 3px rgba(239,68,68,0.25), 0 4px 20px rgba(239,68,68,0.3)'
-          : '0 0 0 3px rgba(37,99,235,0.2), 0 4px 16px rgba(0,0,0,0.3)',
+          : '0 0 0 3px rgba(249,115,22,0.2), 0 4px 16px rgba(0,0,0,0.3)',
         animation: isUnder2h ? 'pulse-border 1.5s ease-in-out infinite' : undefined,
         minWidth: 200,
       }}>
         {/* Banner */}
         <div style={{
-          background: isUnder2h ? '#ef4444' : '#2563EB',
+          background: isUnder2h ? '#ef4444' : '#F97316',
           borderRadius: 6,
           padding: '2px 10px',
           fontSize: 10,

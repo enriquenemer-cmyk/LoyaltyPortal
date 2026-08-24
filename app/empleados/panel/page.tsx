@@ -79,7 +79,7 @@ export default function EmpleadosPanelPage() {
         showToast(data.error ?? 'Error al registrar fichaje.');
         return;
       }
-      const time = new Date(data.entry.clock_in ?? data.entry.clock_out ?? Date.now()).toLocaleTimeString('es-MX', {
+      const time = new Date(data.entry.clock_in ?? data.entry.clock_out ?? Date.now()).toLocaleTimeString('es-CO', {
         hour: '2-digit',
         minute: '2-digit',
       });
@@ -123,14 +123,14 @@ export default function EmpleadosPanelPage() {
         <div className="max-w-md mx-auto text-center">
           <p className="text-orange-200/80 text-sm font-semibold uppercase tracking-widest mb-1">Bienvenido/a</p>
           <h1 className="text-3xl sm:text-4xl font-black text-white tracking-tight">{employee.full_name}</h1>
-          {employee.position && <p className="text-blue-100/80 text-sm mt-1">{employee.position}</p>}
+          {employee.position && <p className="text-orange-100/80 text-sm mt-1">{employee.position}</p>}
 
           <div className="mt-6 text-white">
             <div className="text-4xl sm:text-5xl font-black tabular-nums tracking-tight">
-              {now.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+              {now.toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
             </div>
             <div className="text-orange-200/70 text-sm mt-1 capitalize">
-              {now.toLocaleDateString('es-MX', { weekday: 'long', day: 'numeric', month: 'long' })}
+              {now.toLocaleDateString('es-CO', { weekday: 'long', day: 'numeric', month: 'long' })}
             </div>
           </div>
         </div>
@@ -155,15 +155,15 @@ export default function EmpleadosPanelPage() {
         {typeof employee.total_training_points === 'number' && (
           <div className="bg-white border border-[#E8E3DC] rounded-2xl px-5 py-4 flex items-center justify-between shadow-sm">
             <span className="text-sm font-semibold text-stone-500">Puntos de capacitación</span>
-            <span className="text-2xl font-black text-[#2563EB]">
-              {employee.total_training_points.toLocaleString('es-MX')}
+            <span className="text-2xl font-black text-[#F97316]">
+              {employee.total_training_points.toLocaleString('es-CO')}
             </span>
           </div>
         )}
 
         <Link
           href="/empleados/capacitacion"
-          className="w-full flex items-center gap-4 bg-white border border-[#E8E3DC] rounded-2xl px-5 shadow-sm hover:border-[#2563EB] transition-colors"
+          className="w-full flex items-center gap-4 bg-white border border-[#E8E3DC] rounded-2xl px-5 shadow-sm hover:border-[#F97316] transition-colors"
           style={{ minHeight: 64 }}
         >
           <span className="text-2xl"><BookOpenIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></span>

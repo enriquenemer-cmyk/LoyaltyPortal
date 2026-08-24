@@ -34,7 +34,7 @@ export default function WeekdayBarChart({ data, valueSuffix = '', formatValue }:
       <defs>
         <linearGradient id="weekdayBarGrad" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" stopColor="#F97316" />
-          <stop offset="100%" stopColor="#0EA5E9" />
+          <stop offset="100%" stopColor="#F97316" />
         </linearGradient>
       </defs>
 
@@ -52,7 +52,7 @@ export default function WeekdayBarChart({ data, valueSuffix = '', formatValue }:
         const y = chartH - barH;
         return (
           <g key={d.label}>
-            <rect x={x} y={0} width={barW} height={chartH} rx={8} fill="#EFF6FF" />
+            <rect x={x} y={0} width={barW} height={chartH} rx={8} fill="#FFF7ED" />
             {barH > 0 && (
               <rect
                 x={x} y={y} width={barW} height={barH} rx={7}

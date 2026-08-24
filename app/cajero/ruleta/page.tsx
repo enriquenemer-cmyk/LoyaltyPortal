@@ -7,13 +7,13 @@ import { Suspense } from 'react';
 type Prize = { label: string; color: string };
 
 const DEFAULT_PRIZES: Prize[] = [
-  { label: '10% descuento', color: '#2563EB' },
+  { label: '10% descuento', color: '#F97316' },
   { label: 'Postre gratis', color: '#7C3AED' },
   { label: 'Bebida gratis', color: '#059669' },
   { label: '¡Inténtalo de nuevo!', color: '#94A3B8' },
   { label: '20% descuento', color: '#D97706' },
   { label: 'Premio sorpresa', color: '#DC2626' },
-  { label: 'Puntos dobles', color: '#0891B2' },
+  { label: 'Puntos dobles', color: '#EA580C' },
   { label: 'Appetizer gratis', color: '#65A30D' },
 ];
 
@@ -130,14 +130,14 @@ function SpinWheel({ prizes }: { prizes: Prize[] }) {
         onClick={spin}
         disabled={spinning}
         className="px-10 py-4 rounded-2xl text-white font-extrabold text-lg shadow-lg disabled:opacity-50 transition-all active:scale-95"
-        style={{ background: spinning ? '#64748B' : '#2563EB' }}
+        style={{ background: spinning ? '#64748B' : '#F97316' }}
       >
         {spinning ? 'Girando...' : result ? 'Girar de nuevo' : '¡Girar!'}
       </button>
 
       {result && !spinning && (
-        <div className="bg-white border-2 border-[#2563EB] rounded-2xl px-8 py-5 text-center shadow-md">
-          <p className="text-xs font-bold text-[#2563EB] uppercase tracking-widest mb-1">Ganaste</p>
+        <div className="bg-white border-2 border-[#F97316] rounded-2xl px-8 py-5 text-center shadow-md">
+          <p className="text-xs font-bold text-[#F97316] uppercase tracking-widest mb-1">Ganaste</p>
           <p className="text-2xl font-extrabold text-[#1C1917]">{result}</p>
           <p className="text-xs text-stone-400 mt-2">Muestra esta pantalla al cajero para reclamar</p>
         </div>
@@ -153,7 +153,7 @@ function RuletaContent() {
   return (
     <div className="min-h-screen bg-[#FAFAF9] flex flex-col items-center justify-center p-6">
       <div className="text-center mb-8">
-        <p className="text-xs font-bold text-[#2563EB] uppercase tracking-widest mb-1">3E</p>
+        <p className="text-xs font-bold text-[#F97316] uppercase tracking-widest mb-1">3E</p>
         <h1 className="text-2xl font-bold text-[#1C1917]">Ruleta de Premios</h1>
         {phone && <p className="text-sm text-stone-400 mt-1">Para: {phone}</p>}
       </div>

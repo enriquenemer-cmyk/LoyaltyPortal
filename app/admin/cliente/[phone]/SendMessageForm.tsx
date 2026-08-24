@@ -47,7 +47,7 @@ export function SendMessageForm({ phone, name }: { phone: string; name: string }
         <button
           onClick={handleSend}
           disabled={sending || !message.trim()}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold text-white bg-[#2563EB] hover:bg-[#0891B2] transition-all shadow-sm disabled:opacity-40 disabled:cursor-not-allowed"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold text-white bg-[#F97316] hover:bg-[#EA580C] transition-all shadow-sm disabled:opacity-40 disabled:cursor-not-allowed"
         >
           {sending ? (
             <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />

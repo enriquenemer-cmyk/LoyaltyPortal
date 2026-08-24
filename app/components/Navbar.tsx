@@ -128,7 +128,7 @@ export default function Navbar() {
               onMouseEnter={() => setLogoHovered(true)}
               onMouseLeave={() => setLogoHovered(false)}
               style={{
-                background: 'linear-gradient(135deg,#F97316,#0891B2)',
+                background: 'linear-gradient(135deg,#F97316,#EA580C)',
                 boxShadow: '0 3px 10px rgba(249,115,22,0.30)',
                 transform: logoHovered ? 'scale(1.12) rotate(-6deg)' : 'scale(1)',
                 transition: 'transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1)',

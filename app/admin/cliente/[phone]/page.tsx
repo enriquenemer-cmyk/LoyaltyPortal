@@ -43,14 +43,14 @@ function tierBadgeClass(tier: string) {
 }
 
 function formatDate(dateStr: string) {
-  return new Date(dateStr).toLocaleString('es-MX', {
+  return new Date(dateStr).toLocaleString('es-CO', {
     year: 'numeric', month: 'short', day: 'numeric',
     hour: '2-digit', minute: '2-digit',
   });
 }
 
 function formatDateShort(dateStr: string) {
-  return new Date(dateStr).toLocaleDateString('es-MX', {
+  return new Date(dateStr).toLocaleDateString('es-CO', {
     year: 'numeric', month: 'short', day: 'numeric',
   });
 }
@@ -159,7 +159,7 @@ function buildTimeline(
       date: t.claimed_at,
       type: 'ticket',
       icon: 'receipt',
-      description: `Ticket $${Number(t.amount).toLocaleString('es-MX')} → ganó: ${t.prize_name}`,
+      description: `Ticket $${Number(t.amount).toLocaleString('es-CO')} → ganó: ${t.prize_name}`,
       meta: t.location ?? undefined,
     });
   }
@@ -275,13 +275,13 @@ export default async function CustomerProfilePage({
 
   return (
     <div className="min-h-screen admin-bg">
-      <div style={{ height: '2px', width: '100%', background: 'linear-gradient(90deg,#2563EB,#0891B2,#38BDF8,#0891B2,#2563EB)' }} />
+      <div style={{ height: '2px', width: '100%', background: 'linear-gradient(90deg,#F97316,#EA580C,#FB923C,#EA580C,#F97316)' }} />
       <div className="max-w-4xl mx-auto px-4 py-10">
 
         {/* Back link */}
         <Link
           href="/admin/registros"
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-stone-500 hover:text-[#2563EB] mb-6 transition-colors"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-stone-500 hover:text-[#F97316] mb-6 transition-colors"
         >
           <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
@@ -295,7 +295,7 @@ export default async function CustomerProfilePage({
             {/* Avatar */}
             <div
               className="w-16 h-16 rounded-2xl flex items-center justify-center text-2xl font-black text-white shrink-0"
-              style={{ background: 'linear-gradient(135deg,#2563EB,#0891B2)', boxShadow: '0 4px 14px rgba(37,99,235,0.30)' }}
+              style={{ background: 'linear-gradient(135deg,#F97316,#EA580C)', boxShadow: '0 4px 14px rgba(249,115,22,0.30)' }}
             >
               {name.charAt(0).toUpperCase()}
             </div>
@@ -336,10 +336,10 @@ export default async function CustomerProfilePage({
 
             {/* Points */}
             <div className="text-right shrink-0">
-              <p className="text-3xl font-black text-[#2563EB]">{totalPoints.toLocaleString('es-MX')}</p>
+              <p className="text-3xl font-black text-[#F97316]">{totalPoints.toLocaleString('es-CO')}</p>
               <p className="text-xs font-bold text-stone-400 uppercase tracking-wider">puntos totales</p>
               {customerPoints && (
-                <p className="text-xs text-stone-400 mt-0.5">{customerPoints.lifetime_points.toLocaleString('es-MX')} de por vida</p>
+                <p className="text-xs text-stone-400 mt-0.5">{customerPoints.lifetime_points.toLocaleString('es-CO')} de por vida</p>
               )}
             </div>
           </div>
@@ -357,7 +357,7 @@ export default async function CustomerProfilePage({
                     key={i}
                     className={`w-7 h-7 rounded-full border-2 flex items-center justify-center text-xs ${
                       i < activeStampCard.stamps_count
-                        ? 'bg-[#2563EB] border-[#2563EB] text-white'
+                        ? 'bg-[#F97316] border-[#F97316] text-white'
                         : 'border-stone-200 text-stone-300'
                     }`}
                   >
@@ -374,7 +374,7 @@ export default async function CustomerProfilePage({
               <p className="text-xs font-bold text-stone-500 uppercase tracking-wider">Nivel {tierLabel(tier)}</p>
               {tierInfo.next ? (
                 <p className="text-xs text-stone-500">
-                  {tierInfo.pointsToNext.toLocaleString('es-MX')} pts para nivel {TIER_LABELS[tierInfo.next]}
+                  {tierInfo.pointsToNext.toLocaleString('es-CO')} pts para nivel {TIER_LABELS[tierInfo.next]}
                 </p>
               ) : (
                 <p className="text-xs text-stone-500">Nivel máximo alcanzado</p>
@@ -383,7 +383,7 @@ export default async function CustomerProfilePage({
             <div className="h-2 rounded-full bg-stone-100 overflow-hidden">
               <div
                 className={`h-full rounded-full ${
-                  tier === 'gold' ? 'bg-yellow-400' : tier === 'silver' ? 'bg-slate-400' : 'bg-[#2563EB]'
+                  tier === 'gold' ? 'bg-yellow-400' : tier === 'silver' ? 'bg-slate-400' : 'bg-[#F97316]'
                 }`}
                 style={{ width: `${tierInfo.progressPct}%` }}
               />
@@ -405,7 +405,7 @@ export default async function CustomerProfilePage({
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
           {[
             { label: 'Visitas totales', value: stats.totalVisits.toString(), color: 'bg-stone-50 border-stone-200 text-stone-700' },
-            { label: 'Total gastado', value: stats.totalSpent > 0 ? `$${stats.totalSpent.toLocaleString('es-MX')}` : '—', color: 'bg-orange-50 border-orange-200 text-orange-700' },
+            { label: 'Total gastado', value: stats.totalSpent > 0 ? `$${stats.totalSpent.toLocaleString('es-CO')}` : '—', color: 'bg-orange-50 border-orange-200 text-orange-700' },
             { label: 'Premio favorito', value: stats.favPrize ?? '—', color: 'bg-orange-50 border-orange-200 text-orange-700' },
             { label: 'Días entre visitas', value: stats.avgDaysBetween != null ? `~${stats.avgDaysBetween}d` : '—', color: 'bg-emerald-50 border-emerald-200 text-emerald-700' },
           ].map((s) => (

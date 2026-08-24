@@ -43,11 +43,11 @@ function getPrizeStatus(p: Prize): StatusInfo {
 
 function formatDate(d: string) {
   const [y, m, day] = d.split('-').map(Number);
-  return new Date(y, m - 1, day).toLocaleDateString('es-MX', { day: 'numeric', month: 'short', year: 'numeric' });
+  return new Date(y, m - 1, day).toLocaleDateString('es-CO', { day: 'numeric', month: 'short', year: 'numeric' });
 }
 
 function formatDatetime(d: string) {
-  return new Date(d).toLocaleDateString('es-MX', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+  return new Date(d).toLocaleDateString('es-CO', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
 }
 
 function StatusPill({ status }: { status: StatusInfo }) {
@@ -124,9 +124,9 @@ function QRModal({ prize, onClose }: { prize: Prize; onClose: () => void }) {
     >
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden border border-[#E8E3DC] pop-in">
         {/* Header */}
-        <div className="bg-gradient-to-r from-orange-500 to-blue-500 px-5 py-4 flex items-center justify-between">
+        <div className="bg-gradient-to-r from-orange-500 to-orange-500 px-5 py-4 flex items-center justify-between">
           <div>
-            <p className="text-xs font-bold text-blue-100 uppercase tracking-widest mb-0.5">Ver QR</p>
+            <p className="text-xs font-bold text-orange-100 uppercase tracking-widest mb-0.5">Ver QR</p>
             <h2 className="text-white font-extrabold text-base leading-tight truncate max-w-[220px]">{prize.name}</h2>
           </div>
           <button
@@ -564,7 +564,7 @@ export default function PremiosPage() {
           {[
             { label: 'Total', value: total, border: 'border-l-stone-400', num: 'text-[#1C1917]', bg: 'bg-stone-50', dot: '#78716c' },
             { label: 'Activos', value: activos, border: 'border-l-emerald-500', num: 'text-emerald-600', bg: 'bg-emerald-50', dot: '#059669' },
-            { label: 'Canjeados', value: canjeados, border: 'border-l-blue-500', num: 'text-orange-600', bg: 'bg-orange-50', dot: '#2563eb' },
+            { label: 'Canjeados', value: canjeados, border: 'border-l-orange-500', num: 'text-orange-600', bg: 'bg-orange-50', dot: '#F97316' },
             { label: 'Expirados', value: expirados, border: 'border-l-stone-300', num: 'text-stone-500', bg: 'bg-stone-50', dot: '#a8a29e' },
             { label: 'Cancelados', value: cancelados, border: 'border-l-red-400', num: 'text-red-500', bg: 'bg-red-50', dot: '#ef4444' },
           ].map(({ label, value, border, num, bg, dot }) => (
@@ -643,7 +643,7 @@ export default function PremiosPage() {
                 <Link
                   href="/admin/generate"
                   className="inline-flex items-center gap-2 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition-all"
-                  style={{ background: 'linear-gradient(135deg,#F97316,#0891B2)', boxShadow: '0 4px 16px rgba(249,115,22,0.35)' }}
+                  style={{ background: 'linear-gradient(135deg,#F97316,#EA580C)', boxShadow: '0 4px 16px rgba(249,115,22,0.35)' }}
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />

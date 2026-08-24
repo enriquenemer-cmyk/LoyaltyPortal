@@ -184,7 +184,7 @@ function SuscripcionesContent() {
                       <td className="px-6 py-3 font-medium">{v.full_name ?? '—'}</td>
                       <td className="px-6 py-3 tabular-nums font-bold text-amber-600">{v.total_points.toLocaleString()}</td>
                       <td className="px-6 py-3 text-stone-400 text-xs">
-                        {new Date(v.updated_at).toLocaleDateString('es-MX', { day: 'numeric', month: 'short' })}
+                        {new Date(v.updated_at).toLocaleDateString('es-CO', { day: 'numeric', month: 'short' })}
                       </td>
                     </tr>
                   ))}

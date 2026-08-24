@@ -136,8 +136,8 @@ export default function CumpleanosPage() {
 
         {/* Auto section */}
         <div style={{
-          background: 'rgba(8,145,178,0.08)',
-          border: '1px solid rgba(8,145,178,0.25)',
+          background: 'rgba(234,88,12,0.08)',
+          border: '1px solid rgba(234,88,12,0.25)',
           borderRadius: 16,
           padding: '18px 22px',
           marginBottom: 24,
@@ -148,7 +148,7 @@ export default function CumpleanosPage() {
           flexWrap: 'wrap',
         }}>
           <div>
-            <p style={{ color: '#7dd3fc', fontSize: 13, fontWeight: 700, margin: '0 0 4px' }}>Cumpleaños automáticos</p>
+            <p style={{ color: '#FDBA74', fontSize: 13, fontWeight: 700, margin: '0 0 4px' }}>Cumpleaños automáticos</p>
             <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: 12, margin: 0 }}>
               El cron corre diariamente. Clientes con campo <code style={{ background: 'rgba(255,255,255,0.08)', padding: '1px 4px', borderRadius: 4 }}>birthday</code> reciben un premio automático.
             </p>
@@ -160,9 +160,9 @@ export default function CumpleanosPage() {
             onClick={runBirthdayCron}
             disabled={cronRunning}
             style={{
-              background: cronRunning ? 'rgba(8,145,178,0.15)' : 'rgba(8,145,178,0.25)',
-              border: '1px solid rgba(8,145,178,0.4)',
-              color: '#7dd3fc',
+              background: cronRunning ? 'rgba(234,88,12,0.15)' : 'rgba(234,88,12,0.25)',
+              border: '1px solid rgba(234,88,12,0.4)',
+              color: '#FDBA74',
               fontWeight: 700,
               fontSize: 12,
               padding: '9px 16px',
@@ -185,7 +185,7 @@ export default function CumpleanosPage() {
           backdropFilter: 'blur(12px)',
         }}>
           <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: 13, marginBottom: 24, lineHeight: 1.6 }}>
-            Ingresa el correo y nombre del cliente. Si tiene registros previos, se generará automáticamente un <strong style={{ color: '#0891B2' }}>postre gratis</strong> válido por 30 días.
+            Ingresa el correo y nombre del cliente. Si tiene registros previos, se generará automáticamente un <strong style={{ color: '#EA580C' }}>postre gratis</strong> válido por 30 días.
           </p>
 
           <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
@@ -243,7 +243,7 @@ export default function CumpleanosPage() {
               type="submit"
               disabled={loading}
               style={{
-                background: loading ? 'rgba(249,115,22,0.25)' : 'linear-gradient(135deg,#0891B2,#0891B2)',
+                background: loading ? 'rgba(249,115,22,0.25)' : 'linear-gradient(135deg,#EA580C,#EA580C)',
                 color: 'white',
                 fontWeight: 800,
                 fontSize: 15,
@@ -294,7 +294,7 @@ export default function CumpleanosPage() {
                   </div>
                   <div style={{ textAlign: 'right', flexShrink: 0 }}>
                     <p style={{ color: 'rgba(255,255,255,0.30)', fontSize: 11, margin: 0, marginBottom: 4 }}>
-                      {new Date(item.generatedAt).toLocaleDateString('es-MX', { day: '2-digit', month: 'short', year: 'numeric' })}
+                      {new Date(item.generatedAt).toLocaleDateString('es-CO', { day: '2-digit', month: 'short', year: 'numeric' })}
                     </p>
                     <a
                       href={item.prizeUrl}
@@ -302,7 +302,7 @@ export default function CumpleanosPage() {
                       rel="noopener noreferrer"
                       style={{
                         background: 'rgba(249,115,22,0.20)',
-                        color: '#0EA5E9',
+                        color: '#F97316',
                         fontSize: 11,
                         fontWeight: 700,
                         padding: '4px 10px',

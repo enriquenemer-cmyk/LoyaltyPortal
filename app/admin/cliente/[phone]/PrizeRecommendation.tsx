@@ -38,7 +38,7 @@ export function PrizeRecommendation({ phone }: { phone: string }) {
         <button
           onClick={handleGenerate}
           disabled={loading}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold text-white bg-[#2563EB] hover:bg-[#0891B2] transition-all shadow-sm disabled:opacity-40 disabled:cursor-not-allowed"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold text-white bg-[#F97316] hover:bg-[#EA580C] transition-all shadow-sm disabled:opacity-40 disabled:cursor-not-allowed"
         >
           {loading ? (
             <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -59,7 +59,7 @@ export function PrizeRecommendation({ phone }: { phone: string }) {
           <button
             onClick={handleGenerate}
             disabled={loading}
-            className="mt-3 text-xs font-bold text-[#2563EB] hover:underline disabled:opacity-40"
+            className="mt-3 text-xs font-bold text-[#F97316] hover:underline disabled:opacity-40"
           >
             {loading ? 'Generando...' : 'Generar de nuevo'}
           </button>

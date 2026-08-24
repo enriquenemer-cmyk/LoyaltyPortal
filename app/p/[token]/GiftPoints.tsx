@@ -112,15 +112,15 @@ export default function GiftPoints({ token, initialBalance }: { token: string; i
           </p>
           <button
             onClick={resetAndCloseSuccess}
-            style={{ marginTop: 10, padding: '8px 18px', borderRadius: 12, border: 'none', background: 'linear-gradient(135deg,#2563EB,#1D4ED8)', color: '#fff', fontSize: 12, fontWeight: 700, cursor: 'pointer', position: 'relative', zIndex: 1 }}
+            style={{ marginTop: 10, padding: '8px 18px', borderRadius: 12, border: 'none', background: 'linear-gradient(135deg,#F97316,#C2410C)', color: '#fff', fontSize: 12, fontWeight: 700, cursor: 'pointer', position: 'relative', zIndex: 1 }}
           >
             Cerrar
           </button>
           <style jsx>{`
             .confetti-wrap { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
             .confetti-piece { position: absolute; top: -10px; width: 7px; height: 12px; opacity: 0.9; animation: confetti-fall 1.8s linear infinite; }
-            .c0 { background: #2563eb; } .c1 { background: #7c3aed; } .c2 { background: #10b981; }
-            .c3 { background: #f59e0b; } .c4 { background: #ef4444; } .c5 { background: #0ea5e9; }
+            .c0 { background: #F97316; } .c1 { background: #7c3aed; } .c2 { background: #10b981; }
+            .c3 { background: #f59e0b; } .c4 { background: #ef4444; } .c5 { background: #F97316; }
             @keyframes confetti-fall {
               0% { transform: translateY(0) rotate(0deg); opacity: 1; }
               100% { transform: translateY(220px) rotate(540deg); opacity: 0; }
@@ -130,7 +130,7 @@ export default function GiftPoints({ token, initialBalance }: { token: string; i
       ) : !open ? (
         <button
           onClick={() => setOpen(true)}
-          style={{ width: '100%', padding: '12px 16px', borderRadius: 14, border: 'none', background: 'linear-gradient(135deg,#2563EB,#1D4ED8)', color: '#fff', fontSize: 13, fontWeight: 700, cursor: 'pointer' }}
+          style={{ width: '100%', padding: '12px 16px', borderRadius: 14, border: 'none', background: 'linear-gradient(135deg,#F97316,#C2410C)', color: '#fff', fontSize: 13, fontWeight: 700, cursor: 'pointer' }}
         >
           Regalar puntos a un amigo
         </button>
@@ -165,8 +165,8 @@ export default function GiftPoints({ token, initialBalance }: { token: string; i
                   style={{
                     padding: '6px 12px',
                     borderRadius: 10,
-                    border: amount === q ? '1px solid #2563EB' : '1px solid #E8E3DC',
-                    background: amount === q ? '#E6F1FB' : '#fff',
+                    border: amount === q ? '1px solid #F97316' : '1px solid #E8E3DC',
+                    background: amount === q ? '#FFF7ED' : '#fff',
                     color: q > balance ? '#A8A29E' : '#1C1917',
                     fontSize: 12,
                     fontWeight: 700,
@@ -225,7 +225,7 @@ export default function GiftPoints({ token, initialBalance }: { token: string; i
                 padding: '10px 16px',
                 borderRadius: 12,
                 border: 'none',
-                background: canSubmit ? 'linear-gradient(135deg,#2563EB,#1D4ED8)' : '#E8E3DC',
+                background: canSubmit ? 'linear-gradient(135deg,#F97316,#C2410C)' : '#E8E3DC',
                 color: canSubmit ? '#fff' : '#A8A29E',
                 fontSize: 13,
                 fontWeight: 700,
@@ -249,7 +249,7 @@ export default function GiftPoints({ token, initialBalance }: { token: string; i
                     {t.direction === 'sent' ? '↑' : '↓'} {t.direction === 'sent' ? 'Enviado a' : 'Recibido de'} {t.other_name}
                   </p>
                   <p style={{ fontSize: 10, color: '#78716C', margin: 0 }}>
-                    {new Date(t.created_at).toLocaleDateString('es-MX', { day: 'numeric', month: 'short', year: 'numeric' })}
+                    {new Date(t.created_at).toLocaleDateString('es-CO', { day: 'numeric', month: 'short', year: 'numeric' })}
                     {t.message ? ` · "${t.message}"` : ''}
                   </p>
                 </div>

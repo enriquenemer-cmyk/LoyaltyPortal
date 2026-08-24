@@ -39,7 +39,7 @@ function weekStartISO() {
 
 function formatDateTime(iso: string | null) {
   if (!iso) return '—';
-  return new Date(iso).toLocaleString('es-MX', {
+  return new Date(iso).toLocaleString('es-CO', {
     day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit',
   });
 }
@@ -114,7 +114,7 @@ export default function CorporativoPage() {
         { label: 'Clientes únicos', value: data.global.clientes_unicos, icon: '', color: 'text-orange-700', bg: 'bg-orange-50', border: 'border-orange-200' },
         {
           label: 'Ticket promedio',
-          value: `$${data.global.ticket_promedio.toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+          value: `$${data.global.ticket_promedio.toLocaleString('es-CO', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
           icon: '', color: 'text-orange-700', bg: 'bg-orange-50', border: 'border-orange-200',
         },
       ]
@@ -132,7 +132,7 @@ export default function CorporativoPage() {
             </div>
             <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Vista Corporativa</h1>
             <p className="text-orange-200/70 mt-1.5 text-sm">
-              {new Date().toLocaleDateString('es-MX', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
+              {new Date().toLocaleDateString('es-CO', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
             </p>
           </div>
           <button
@@ -158,7 +158,7 @@ export default function CorporativoPage() {
             type="date"
             value={from}
             onChange={(e) => setFrom(e.target.value)}
-            className="border border-[#E8E3DC] rounded-xl px-3 py-2 text-sm bg-white text-[#1C1917] focus:outline-none focus:border-[#2563EB]"
+            className="border border-[#E8E3DC] rounded-xl px-3 py-2 text-sm bg-white text-[#1C1917] focus:outline-none focus:border-[#F97316]"
           />
         </div>
         <div>
@@ -167,13 +167,13 @@ export default function CorporativoPage() {
             type="date"
             value={to}
             onChange={(e) => setTo(e.target.value)}
-            className="border border-[#E8E3DC] rounded-xl px-3 py-2 text-sm bg-white text-[#1C1917] focus:outline-none focus:border-[#2563EB]"
+            className="border border-[#E8E3DC] rounded-xl px-3 py-2 text-sm bg-white text-[#1C1917] focus:outline-none focus:border-[#F97316]"
           />
         </div>
         <button
           type="submit"
           className="px-4 py-2 rounded-xl text-sm font-bold text-white"
-          style={{ background: '#0891B2' }}
+          style={{ background: '#EA580C' }}
         >
           Filtrar
         </button>
@@ -219,7 +219,7 @@ export default function CorporativoPage() {
                       <div className="h-2.5 bg-orange-50 rounded-full overflow-hidden border border-orange-100">
                         <div
                           className="h-full rounded-full transition-all duration-500"
-                          style={{ width: `${pct}%`, background: 'linear-gradient(90deg,#2563EB,#0891B2)' }}
+                          style={{ width: `${pct}%`, background: 'linear-gradient(90deg,#F97316,#EA580C)' }}
                         />
                       </div>
                     </div>

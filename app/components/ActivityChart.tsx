@@ -53,7 +53,7 @@ export default function ActivityChart({ data }: Props) {
     ` L${points[points.length - 1].x},${PADDING.top + plotH} Z`;
 
   function formatDay(iso: string) {
-    return new Date(iso + 'T12:00:00').toLocaleDateString('es-MX', {
+    return new Date(iso + 'T12:00:00').toLocaleDateString('es-CO', {
       weekday: 'short', day: 'numeric', month: 'short',
     });
   }
@@ -70,8 +70,8 @@ export default function ActivityChart({ data }: Props) {
       >
         <defs>
           <linearGradient id="actGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="rgba(59,130,246,0.15)" />
-            <stop offset="100%" stopColor="rgba(59,130,246,0)" />
+            <stop offset="0%" stopColor="rgba(249,115,22,0.15)" />
+            <stop offset="100%" stopColor="rgba(249,115,22,0)" />
           </linearGradient>
         </defs>
 
@@ -82,7 +82,7 @@ export default function ActivityChart({ data }: Props) {
         <polyline
           points={polylinePoints}
           fill="none"
-          stroke="#3b82f6"
+          stroke="#F97316"
           strokeWidth="2"
           strokeLinejoin="round"
           strokeLinecap="round"
@@ -96,7 +96,7 @@ export default function ActivityChart({ data }: Props) {
             cy={p.y}
             r="4"
             fill="white"
-            stroke="#3b82f6"
+            stroke="#F97316"
             strokeWidth="2"
             style={{ cursor: 'pointer', opacity: tooltip?.day === p.day ? 1 : 0, transition: 'opacity 0.15s' }}
             onMouseEnter={() => setTooltip({ x: p.x, y: p.y, day: p.day, count: p.count })}
@@ -130,7 +130,7 @@ export default function ActivityChart({ data }: Props) {
             transform: 'translateX(-50%)',
           }}
         >
-          <span className="text-[#3b82f6] font-black">{tooltip.count}</span>{' '}
+          <span className="text-[#F97316] font-black">{tooltip.count}</span>{' '}
           cobro{tooltip.count !== 1 ? 's' : ''} · {formatDay(tooltip.day)}
         </div>
       )}

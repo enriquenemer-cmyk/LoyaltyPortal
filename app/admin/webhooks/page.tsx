@@ -102,13 +102,13 @@ export default function WebhooksPage() {
             Configura esta URL como destino en Zapier, Make o n8n para recibir eventos en tiempo real.
           </p>
           <div className="flex items-center gap-2">
-            <div className="flex-1 bg-orange-50 border border-orange-200 rounded-xl px-4 py-3 font-mono text-sm text-blue-900 break-all">
+            <div className="flex-1 bg-orange-50 border border-orange-200 rounded-xl px-4 py-3 font-mono text-sm text-orange-900 break-all">
               {webhookEndpoint}
             </div>
             <button
               onClick={copyUrl}
               className="shrink-0 px-4 py-3 rounded-xl font-bold text-sm text-white transition-all"
-              style={{ background: copied ? '#22c55e' : 'linear-gradient(135deg,#F97316,#0891B2)' }}
+              style={{ background: copied ? '#22c55e' : 'linear-gradient(135deg,#F97316,#EA580C)' }}
             >
               {copied ? 'Copiado' : 'Copiar'}
             </button>
@@ -120,11 +120,11 @@ export default function WebhooksPage() {
           <div className="flex gap-3">
             <span className="text-xl shrink-0"><Cog6ToothIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></span>
             <div>
-              <p className="font-bold text-blue-800 text-sm mb-1">Configura la variable de entorno</p>
+              <p className="font-bold text-orange-800 text-sm mb-1">Configura la variable de entorno</p>
               <p className="text-orange-700 text-sm mb-2">
                 Para que 3E envíe eventos a tu plataforma, agrega esta variable en Vercel (Settings → Environment Variables):
               </p>
-              <code className="block bg-orange-100 border border-blue-300 rounded-lg px-3 py-2 text-xs font-mono text-blue-900">
+              <code className="block bg-orange-100 border border-orange-300 rounded-lg px-3 py-2 text-xs font-mono text-orange-900">
                 WEBHOOK_URL=https://hooks.zapier.com/hooks/catch/...
               </code>
               <p className="text-orange-600 text-xs mt-2">Reemplaza el valor con la URL que te da Zapier, Make o n8n al crear el trigger.</p>
@@ -162,7 +162,7 @@ export default function WebhooksPage() {
             onClick={sendTest}
             disabled={testing}
             className="w-full font-bold py-3.5 rounded-xl text-white flex items-center justify-center gap-2 disabled:opacity-60"
-            style={{ background: 'linear-gradient(135deg,#F97316,#0891B2)', boxShadow: '0 4px 16px rgba(249,115,22,0.30)' }}
+            style={{ background: 'linear-gradient(135deg,#F97316,#EA580C)', boxShadow: '0 4px 16px rgba(249,115,22,0.30)' }}
           >
             {testing
               ? <><svg className="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/></svg>Enviando...</>
@@ -197,7 +197,7 @@ export default function WebhooksPage() {
                       <span className="text-orange-600 text-xs font-mono">{ev.action}</span>
                       <span className="text-gray-300 text-xs">·</span>
                       <span className="text-stone-400 text-xs">
-                        {new Date(ev.created_at).toLocaleString('es-MX', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                        {new Date(ev.created_at).toLocaleString('es-CO', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
                       </span>
                     </div>
                   </div>

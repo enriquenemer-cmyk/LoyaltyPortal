@@ -46,12 +46,12 @@ export default function FeedbackPage() {
 
   if (submitted) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-[#EFF6FF] to-[#E0F2FE] flex items-center justify-center p-4">
+      <div className="min-h-screen bg-gradient-to-br from-[#FFF7ED] to-[#FFEDD5] flex items-center justify-center p-4">
         <div className="bg-white rounded-3xl shadow-xl p-10 max-w-sm w-full text-center animate-[fadeInUp_0.5s_ease]">
           {/* Animated checkmark */}
           <div
             className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6"
-            style={{ background: 'linear-gradient(135deg, #2563EB, #0891B2)' }}
+            style={{ background: 'linear-gradient(135deg, #F97316, #EA580C)' }}
           >
             <svg
               className="w-10 h-10 text-white animate-[scaleIn_0.4s_ease_0.2s_both]"
@@ -94,13 +94,13 @@ export default function FeedbackPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#EFF6FF] to-[#E0F2FE] flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-[#FFF7ED] to-[#FFEDD5] flex items-center justify-center p-4">
       <div className="bg-white rounded-3xl shadow-xl p-8 max-w-sm w-full">
         {/* Header */}
         <div className="text-center mb-8">
           <div
             className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4"
-            style={{ background: 'linear-gradient(135deg, #2563EB, #0891B2)' }}
+            style={{ background: 'linear-gradient(135deg, #F97316, #EA580C)' }}
           >
             <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
@@ -137,7 +137,7 @@ export default function FeedbackPage() {
               ))}
             </div>
             {(hovered || rating) > 0 && (
-              <p className="text-sm font-semibold text-[#2563EB] h-5 transition-all">
+              <p className="text-sm font-semibold text-[#F97316] h-5 transition-all">
                 {starLabels[hovered || rating]}
               </p>
             )}
@@ -155,7 +155,7 @@ export default function FeedbackPage() {
               onChange={(e) => setComment(e.target.value)}
               placeholder="Tu comentario aquí..."
               rows={3}
-              className="w-full rounded-xl border border-[#E2E8F0] px-4 py-3 text-sm text-[#1C1917] placeholder-stone-300 focus:outline-none focus:ring-2 focus:ring-[#2563EB]/30 focus:border-[#2563EB] resize-none transition-all"
+              className="w-full rounded-xl border border-[#E2E8F0] px-4 py-3 text-sm text-[#1C1917] placeholder-stone-300 focus:outline-none focus:ring-2 focus:ring-[#F97316]/30 focus:border-[#F97316] resize-none transition-all"
             />
           </div>
 
@@ -168,7 +168,7 @@ export default function FeedbackPage() {
             type="submit"
             disabled={rating === 0 || submitting}
             className="w-full py-3 rounded-xl font-semibold text-white text-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:opacity-90 active:scale-[0.98]"
-            style={{ background: 'linear-gradient(135deg, #2563EB, #0891B2)' }}
+            style={{ background: 'linear-gradient(135deg, #F97316, #EA580C)' }}
           >
             {submitting ? (
               <span className="flex items-center justify-center gap-2">

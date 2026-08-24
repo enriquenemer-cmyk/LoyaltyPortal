@@ -61,7 +61,7 @@ export default function PrizeClient({ prize, claimCount, weeklyCount, daysLeft }
 
         {/* ── HERO ── */}
         <div className="s1" style={{
-          background: 'linear-gradient(160deg, #2563EB 0%, #0891B2 50%, #1E3A8A 100%)',
+          background: 'linear-gradient(160deg, #F97316 0%, #EA580C 50%, #7C2D12 100%)',
           padding: '48px 24px 40px',
           textAlign: 'center',
           position: 'relative',
@@ -78,7 +78,7 @@ export default function PrizeClient({ prize, claimCount, weeklyCount, daysLeft }
           <div style={{ position: 'relative', zIndex: 1 }}>
             {/* Verified badge */}
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.25)', borderRadius: 99, padding: '6px 16px', marginBottom: 20 }}>
-              <svg width="13" height="13" viewBox="0 0 20 20" fill="#E0F2FE">
+              <svg width="13" height="13" viewBox="0 0 20 20" fill="#FFEDD5">
                 <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
               </svg>
               <span style={{ color: 'rgba(255,255,255,0.95)', fontSize: 11, fontWeight: 800, letterSpacing: '0.1em', textTransform: 'uppercase' }}>Premio auténtico</span>
@@ -121,7 +121,7 @@ export default function PrizeClient({ prize, claimCount, weeklyCount, daysLeft }
         {!alreadyClaimed && daysLeft <= 3 && daysLeft > 0 && (
           <div className="s1" style={{ background: '#fffbeb', borderBottom: '1px solid #fcd34d', padding: '11px 20px', textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
             <span className="badge-pulse" style={{ fontSize: 16 }}>⏰</span>
-            <span style={{ color: '#1E40AF', fontSize: 13, fontWeight: 700 }}>
+            <span style={{ color: '#9A3412', fontSize: 13, fontWeight: 700 }}>
               Vence en {daysLeft === 1 ? '1 día' : `${daysLeft} días`} — ¡No lo dejes pasar!
             </span>
           </div>
@@ -135,9 +135,9 @@ export default function PrizeClient({ prize, claimCount, weeklyCount, daysLeft }
 
             {prize.reason && (
               <div style={{ padding: '18px 20px', borderBottom: '1px solid #F0EDE8', display: 'flex', alignItems: 'flex-start', gap: 14 }}>
-                <div style={{ width: 42, height: 42, borderRadius: 14, background: '#EFF6FF', border: '1px solid #BAE6FD', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, flexShrink: 0 }}><TrophyIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
+                <div style={{ width: 42, height: 42, borderRadius: 14, background: '#FFF7ED', border: '1px solid #FED7AA', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, flexShrink: 0 }}><TrophyIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
                 <div>
-                  <p style={{ color: '#2563EB', fontSize: 10, fontWeight: 800, letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: 4 }}>Por qué lo ganaste</p>
+                  <p style={{ color: '#F97316', fontSize: 10, fontWeight: 800, letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: 4 }}>Por qué lo ganaste</p>
                   <p style={{ color: '#1C1917', fontSize: 14, fontWeight: 600, lineHeight: 1.5, margin: 0 }}>{prize.reason}</p>
                 </div>
               </div>
@@ -145,9 +145,9 @@ export default function PrizeClient({ prize, claimCount, weeklyCount, daysLeft }
 
             {prize.description && (
               <div style={{ padding: '18px 20px', borderBottom: '1px solid #F0EDE8', display: 'flex', alignItems: 'flex-start', gap: 14 }}>
-                <div style={{ width: 42, height: 42, borderRadius: 14, background: '#EFF6FF', border: '1px solid #BAE6FD', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, flexShrink: 0 }}><GiftIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
+                <div style={{ width: 42, height: 42, borderRadius: 14, background: '#FFF7ED', border: '1px solid #FED7AA', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, flexShrink: 0 }}><GiftIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
                 <div style={{ flex: 1 }}>
-                  <p style={{ color: '#2563EB', fontSize: 10, fontWeight: 800, letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: 4 }}>En qué consiste</p>
+                  <p style={{ color: '#F97316', fontSize: 10, fontWeight: 800, letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: 4 }}>En qué consiste</p>
                   <p style={{ color: '#44403c', fontSize: 14, lineHeight: 1.6, margin: 0 }}>{prize.description}</p>
                   {prize.photo_url && (
                     // eslint-disable-next-line @next/next/no-img-element
@@ -202,12 +202,12 @@ export default function PrizeClient({ prize, claimCount, weeklyCount, daysLeft }
                     ].map(({ n, label, done }, i) => (
                       <div key={n} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
                         {i < 2 && (
-                          <div style={{ position: 'absolute', top: 13, left: '50%', width: '100%', height: 2, background: done ? '#2563EB' : '#E8E3DC', zIndex: 0 }} />
+                          <div style={{ position: 'absolute', top: 13, left: '50%', width: '100%', height: 2, background: done ? '#F97316' : '#E8E3DC', zIndex: 0 }} />
                         )}
-                        <div style={{ position: 'relative', zIndex: 1, width: 26, height: 26, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 800, background: done ? '#2563EB' : 'white', color: done ? 'white' : '#a8a29e', border: done ? 'none' : '2px solid #E8E3DC', marginBottom: 4 }}>
+                        <div style={{ position: 'relative', zIndex: 1, width: 26, height: 26, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 800, background: done ? '#F97316' : 'white', color: done ? 'white' : '#a8a29e', border: done ? 'none' : '2px solid #E8E3DC', marginBottom: 4 }}>
                           {done ? '✓' : n}
                         </div>
-                        <span style={{ fontSize: 10, fontWeight: 700, color: done ? '#2563EB' : '#a8a29e' }}>{label}</span>
+                        <span style={{ fontSize: 10, fontWeight: 700, color: done ? '#F97316' : '#a8a29e' }}>{label}</span>
                       </div>
                     ))}
                   </div>

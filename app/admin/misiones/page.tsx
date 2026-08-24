@@ -91,7 +91,7 @@ export default function MisionesPage() {
                   required value={form.title}
                   onChange={e => setForm(f => ({ ...f, title: e.target.value }))}
                   placeholder="Ej: Visita 3 veces esta semana"
-                  className="w-full border border-[#E8E3DC] rounded-xl px-3 py-2 text-sm bg-white focus:outline-none focus:border-[#2563EB]"
+                  className="w-full border border-[#E8E3DC] rounded-xl px-3 py-2 text-sm bg-white focus:outline-none focus:border-[#F97316]"
                 />
               </div>
               <div>
@@ -100,7 +100,7 @@ export default function MisionesPage() {
                   required value={form.description}
                   onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
                   placeholder="Ej: Registra 3 tickets esta semana"
-                  className="w-full border border-[#E8E3DC] rounded-xl px-3 py-2 text-sm bg-white focus:outline-none focus:border-[#2563EB]"
+                  className="w-full border border-[#E8E3DC] rounded-xl px-3 py-2 text-sm bg-white focus:outline-none focus:border-[#F97316]"
                 />
               </div>
             </div>
@@ -110,7 +110,7 @@ export default function MisionesPage() {
                 <select
                   value={form.goal_type}
                   onChange={e => setForm(f => ({ ...f, goal_type: e.target.value }))}
-                  className="w-full border border-[#E8E3DC] rounded-xl px-3 py-2 text-sm bg-white focus:outline-none focus:border-[#2563EB]"
+                  className="w-full border border-[#E8E3DC] rounded-xl px-3 py-2 text-sm bg-white focus:outline-none focus:border-[#F97316]"
                 >
                   <option value="visits">Visitas</option>
                   <option value="claims">Premios canjeados</option>
@@ -122,7 +122,7 @@ export default function MisionesPage() {
                 <input
                   type="number" min={1} required value={form.goal_value}
                   onChange={e => setForm(f => ({ ...f, goal_value: parseInt(e.target.value) || 1 }))}
-                  className="w-full border border-[#E8E3DC] rounded-xl px-3 py-2 text-sm bg-white focus:outline-none focus:border-[#2563EB]"
+                  className="w-full border border-[#E8E3DC] rounded-xl px-3 py-2 text-sm bg-white focus:outline-none focus:border-[#F97316]"
                 />
               </div>
               <div>
@@ -130,14 +130,14 @@ export default function MisionesPage() {
                 <input
                   type="number" min={1} required value={form.reward_points}
                   onChange={e => setForm(f => ({ ...f, reward_points: parseInt(e.target.value) || 10 }))}
-                  className="w-full border border-[#E8E3DC] rounded-xl px-3 py-2 text-sm bg-white focus:outline-none focus:border-[#2563EB]"
+                  className="w-full border border-[#E8E3DC] rounded-xl px-3 py-2 text-sm bg-white focus:outline-none focus:border-[#F97316]"
                 />
               </div>
             </div>
             <button
               type="submit" disabled={saving}
               className="px-5 py-2.5 rounded-xl text-white text-sm font-bold disabled:opacity-60 transition-opacity hover:opacity-90"
-              style={{ background: '#2563EB' }}
+              style={{ background: '#F97316' }}
             >
               {saving ? 'Guardando...' : '+ Crear misión'}
             </button>
@@ -167,8 +167,8 @@ export default function MisionesPage() {
                     <p className="text-xs text-stone-500">{m.description}</p>
                     <p className="text-xs text-stone-400 mt-1">
                       Meta: {m.goal_value} {GOAL_LABELS[m.goal_type] ?? m.goal_type} ·
-                      Semana {new Date(m.week_start).toLocaleDateString('es-MX', { day: 'numeric', month: 'short' })}–
-                      {new Date(m.week_end).toLocaleDateString('es-MX', { day: 'numeric', month: 'short' })}
+                      Semana {new Date(m.week_start).toLocaleDateString('es-CO', { day: 'numeric', month: 'short' })}–
+                      {new Date(m.week_end).toLocaleDateString('es-CO', { day: 'numeric', month: 'short' })}
                     </p>
                   </div>
                   <div className="text-right shrink-0">

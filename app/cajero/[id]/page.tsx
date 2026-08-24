@@ -57,7 +57,7 @@ export default async function CajeroPage({ params, searchParams }: Props) {
         <div className="max-w-md mx-auto px-4 h-14 flex items-center justify-between gap-3">
           <div className="flex items-center gap-2.5">
             {/* Orange logo icon */}
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style={{ background: 'linear-gradient(135deg, #2563EB, #0891B2)' }}>
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style={{ background: 'linear-gradient(135deg, #F97316, #EA580C)' }}>
               <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
               </svg>
@@ -81,7 +81,7 @@ export default async function CajeroPage({ params, searchParams }: Props) {
         {isExpired && !alreadyDelivered && (
           <div className="bg-orange-50 border border-orange-200 rounded-2xl px-5 py-4 flex items-start gap-3">
             <span className="text-xl shrink-0"><ExclamationTriangleIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></span>
-            <p className="text-blue-800 font-semibold text-sm leading-snug">
+            <p className="text-orange-800 font-semibold text-sm leading-snug">
               Este cobro expiró — el cliente tardó más de 2 horas. Puedes entregarlo de todas formas.
             </p>
           </div>
@@ -91,7 +91,7 @@ export default async function CajeroPage({ params, searchParams }: Props) {
         {recentOtherClaimsCount > 0 && (
           <div className="bg-orange-50 border border-orange-200 rounded-2xl px-5 py-4 flex items-start gap-3 slide-up-sm">
             <span className="text-xl shrink-0"><ExclamationTriangleIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></span>
-            <p className="text-blue-800 font-semibold text-sm leading-snug">
+            <p className="text-orange-800 font-semibold text-sm leading-snug">
               Este cliente tiene {recentOtherClaimsCount} {recentOtherClaimsCount === 1 ? 'premio reclamado recientemente' : 'premios reclamados recientemente'}
             </p>
           </div>
@@ -105,7 +105,7 @@ export default async function CajeroPage({ params, searchParams }: Props) {
           {/* Prize header gradient */}
           <div
             className="px-6 pt-6 pb-6"
-            style={{ background: alreadyDelivered ? 'linear-gradient(135deg,#1C1917,#292524)' : 'linear-gradient(135deg,#2563EB,#0891B2)' }}
+            style={{ background: alreadyDelivered ? 'linear-gradient(135deg,#1C1917,#292524)' : 'linear-gradient(135deg,#F97316,#EA580C)' }}
           >
             <div className="flex items-start gap-4">
               <div
@@ -180,7 +180,7 @@ export default async function CajeroPage({ params, searchParams }: Props) {
               </div>
               <div>
                 <p className="text-orange-600 text-[10px] font-bold uppercase tracking-widest mb-0.5">Sucursal elegida</p>
-                <p className="text-blue-900 font-extrabold text-sm">{claim.location ?? claim.prize_location}</p>
+                <p className="text-orange-900 font-extrabold text-sm">{claim.location ?? claim.prize_location}</p>
               </div>
             </div>
           </div>

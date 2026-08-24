@@ -221,8 +221,8 @@ export default function FlashPage() {
                       <div
                         className="w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 transition-all"
                         style={{
-                          borderColor: active ? '#2563EB' : 'rgba(255,255,255,0.2)',
-                          background: active ? '#2563EB' : 'transparent',
+                          borderColor: active ? '#F97316' : 'rgba(255,255,255,0.2)',
+                          background: active ? '#F97316' : 'transparent',
                         }}
                       >
                         {active && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
@@ -248,7 +248,7 @@ export default function FlashPage() {
                   step={5}
                   value={quantity}
                   onChange={(e) => setQuantity(Number(e.target.value))}
-                  className="flex-1 accent-blue-500"
+                  className="flex-1 accent-orange-500"
                 />
                 <input
                   type="number"
@@ -275,7 +275,7 @@ export default function FlashPage() {
                     onClick={() => setDurationHours(d.hours)}
                     className={`px-4 py-2 rounded-full text-sm font-semibold transition-all border ${
                       durationHours === d.hours
-                        ? 'bg-orange-500 border-orange-500 text-white shadow-lg shadow-blue-500/30'
+                        ? 'bg-orange-500 border-orange-500 text-white shadow-lg shadow-orange-500/30'
                         : 'bg-transparent border-white/20 text-white/60 hover:border-white/40 hover:text-white'
                     }`}
                   >
@@ -344,8 +344,8 @@ export default function FlashPage() {
                 className="h-3 rounded-full transition-all duration-200"
                 style={{
                   width: `${progressPct}%`,
-                  background: 'linear-gradient(90deg, #2563EB, #0891B2)',
-                  boxShadow: '0 0 12px rgba(37,99,235,0.6)',
+                  background: 'linear-gradient(90deg, #F97316, #EA580C)',
+                  boxShadow: '0 0 12px rgba(249,115,22,0.6)',
                 }}
               />
             </div>
@@ -361,8 +361,8 @@ export default function FlashPage() {
             onClick={handleLaunch}
             className="w-full py-5 rounded-2xl text-white text-xl font-black tracking-wide transition-all disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-3"
             style={{
-              background: launching ? '#7c2d12' : 'linear-gradient(135deg, #2563EB 0%, #0369A1 50%, #c2410c 100%)',
-              boxShadow: launching ? 'none' : '0 8px 32px rgba(37,99,235,0.45)',
+              background: launching ? '#7c2d12' : 'linear-gradient(135deg, #F97316 0%, #C2410C 50%, #c2410c 100%)',
+              boxShadow: launching ? 'none' : '0 8px 32px rgba(249,115,22,0.45)',
             }}
           >
             {launching ? (
@@ -421,7 +421,7 @@ export default function FlashPage() {
                 <button
                   onClick={copyAllLinks}
                   className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all"
-                  style={{ background: copied ? '#166534' : 'rgba(37,99,235,0.2)', color: copied ? '#86efac' : '#2563EB', border: `1px solid ${copied ? 'rgba(34,197,94,0.3)' : 'rgba(37,99,235,0.3)'}` }}
+                  style={{ background: copied ? '#166534' : 'rgba(249,115,22,0.2)', color: copied ? '#86efac' : '#F97316', border: `1px solid ${copied ? 'rgba(34,197,94,0.3)' : 'rgba(249,115,22,0.3)'}` }}
                 >
                   {copied ? (
                     <><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg> ¡Copiado!</>

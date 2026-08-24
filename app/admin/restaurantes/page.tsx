@@ -18,7 +18,7 @@ function initials(name: string) {
   return name.split(' ').slice(0, 2).map((n) => n[0]).join('').toUpperCase();
 }
 
-const SWATCHES = ['#2563EB', '#7c3aed', '#0ea5e9', '#be185d', '#059669', '#0EA5E9'];
+const SWATCHES = ['#F97316', '#7c3aed', '#F97316', '#be185d', '#059669', '#F97316'];
 
 function ColorPicker({ value, onChange }: { value: string; onChange: (c: string) => void }) {
   return (
@@ -130,7 +130,7 @@ function QRLinkModal({ restaurant, onClose }: { restaurant: Restaurant; onClose:
     >
       <div className="bg-white rounded-2xl border border-[#E8E3DC] shadow-2xl w-full max-w-sm overflow-hidden">
         {/* Header */}
-        <div style={{ background: 'linear-gradient(135deg,#2563EB,#0891B2)', padding: '20px 22px' }} className="flex items-center justify-between">
+        <div style={{ background: 'linear-gradient(135deg,#F97316,#EA580C)', padding: '20px 22px' }} className="flex items-center justify-between">
           <div>
             <p className="text-white/70 text-xs font-bold uppercase tracking-widest mb-0.5">QR de Cajero</p>
             <h3 className="text-white font-extrabold text-base leading-tight">{restaurant.name}</h3>
@@ -196,7 +196,7 @@ function QRLinkModal({ restaurant, onClose }: { restaurant: Restaurant; onClose:
               onClick={handleDownload}
               disabled={!qrDataUrl}
               className="flex-1 flex items-center justify-center gap-1.5 font-bold py-2.5 rounded-xl text-sm text-white transition-all disabled:opacity-50"
-              style={{ background: 'linear-gradient(135deg,#2563EB,#0891B2)', boxShadow: '0 4px 12px rgba(37,99,235,0.35)' }}
+              style={{ background: 'linear-gradient(135deg,#F97316,#EA580C)', boxShadow: '0 4px 12px rgba(249,115,22,0.35)' }}
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -211,14 +211,14 @@ function QRLinkModal({ restaurant, onClose }: { restaurant: Restaurant; onClose:
 }
 
 const CARD_GRADIENTS: [string, string][] = [
-  ['#2563EB', '#0891B2'],
+  ['#F97316', '#EA580C'],
   ['#0F766E', '#0D9488'],
   ['#7C3AED', '#6D28D9'],
-  ['#0369A1', '#0284C7'],
+  ['#C2410C', '#EA580C'],
   ['#B45309', '#D97706'],
   ['#BE185D', '#DB2777'],
   ['#065F46', '#059669'],
-  ['#1D4ED8', '#2563EB'],
+  ['#C2410C', '#F97316'],
   ['#9F1239', '#E11D48'],
   ['#374151', '#1F2937'],
 ];
@@ -534,7 +534,7 @@ export default function RestaurantesPage() {
                   type="submit"
                   disabled={submitting}
                   className="px-6 py-2.5 disabled:opacity-60 text-white font-bold rounded-xl transition-all text-sm"
-                  style={{ background: 'linear-gradient(135deg,#2563EB,#0891B2)' }}
+                  style={{ background: 'linear-gradient(135deg,#F97316,#EA580C)' }}
                 >
                   {submitting ? 'Guardando...' : 'Guardar Restaurante'}
                 </button>
@@ -563,7 +563,7 @@ export default function RestaurantesPage() {
               <button
                 onClick={() => setShowForm(true)}
                 className="flex items-center gap-2 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition-all"
-                style={{ background: 'linear-gradient(135deg,#2563EB,#0891B2)', boxShadow: '0 4px 14px rgba(37,99,235,0.3)' }}
+                style={{ background: 'linear-gradient(135deg,#F97316,#EA580C)', boxShadow: '0 4px 14px rgba(249,115,22,0.3)' }}
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />

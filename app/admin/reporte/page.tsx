@@ -13,7 +13,7 @@ interface WeeklyStats {
 }
 
 function formatDate(d: Date) {
-  return d.toLocaleDateString('es-MX', { day: 'numeric', month: 'short', year: 'numeric' });
+  return d.toLocaleDateString('es-CO', { day: 'numeric', month: 'short', year: 'numeric' });
 }
 
 function getWeekRange() {
@@ -97,7 +97,7 @@ function WhatsAppAlertsSection() {
             value={number}
             onChange={e => setNumber(e.target.value)}
             placeholder="5215512345678"
-            className="w-full bg-[#FAFAF9] border border-[#E8E3DC] rounded-xl px-4 py-3 text-sm text-[#1C1917] focus:outline-none focus:border-[#2563EB] transition-colors"
+            className="w-full bg-[#FAFAF9] border border-[#E8E3DC] rounded-xl px-4 py-3 text-sm text-[#1C1917] focus:outline-none focus:border-[#F97316] transition-colors"
           />
           <p className="text-xs text-[#6b7280] mt-1">Formato internacional: 52 + 10 dígitos (ej: 5215512345678)</p>
         </div>
@@ -108,7 +108,7 @@ function WhatsAppAlertsSection() {
             aria-checked={enabled}
             onClick={() => setEnabled(v => !v)}
             className="relative w-11 h-6 rounded-full transition-colors"
-            style={{ background: enabled ? '#2563EB' : '#d6d3d1' }}
+            style={{ background: enabled ? '#F97316' : '#d6d3d1' }}
           >
             <span
               className="absolute top-1 left-1 w-4 h-4 rounded-full bg-white shadow transition-transform"
@@ -121,7 +121,7 @@ function WhatsAppAlertsSection() {
           <button
             onClick={handleSave}
             className="flex-1 py-2.5 rounded-xl text-white text-sm font-bold"
-            style={{ background: '#2563EB' }}
+            style={{ background: '#F97316' }}
           >
             {saved ? '✓ Guardado' : 'Guardar configuración'}
           </button>
@@ -184,7 +184,7 @@ function AdvancedFilters({
           <select
             value={filters.sucursal}
             onChange={(e) => setFilters({ ...filters, sucursal: e.target.value })}
-            className="w-full border border-orange-200 rounded-xl px-3 py-2 text-sm bg-white text-[#1C1917] focus:outline-none focus:border-[#2563EB]"
+            className="w-full border border-orange-200 rounded-xl px-3 py-2 text-sm bg-white text-[#1C1917] focus:outline-none focus:border-[#F97316]"
           >
             <option value="">Todas las sucursales</option>
             {sucursales.map((s) => <option key={s} value={s}>{s}</option>)}
@@ -197,7 +197,7 @@ function AdvancedFilters({
           <select
             value={filters.status}
             onChange={(e) => setFilters({ ...filters, status: e.target.value as Filters['status'] })}
-            className="w-full border border-orange-200 rounded-xl px-3 py-2 text-sm bg-white text-[#1C1917] focus:outline-none focus:border-[#2563EB]"
+            className="w-full border border-orange-200 rounded-xl px-3 py-2 text-sm bg-white text-[#1C1917] focus:outline-none focus:border-[#F97316]"
           >
             <option value="">Todos los estados</option>
             <option value="pending">Pendiente</option>
@@ -213,7 +213,7 @@ function AdvancedFilters({
             type="date"
             value={filters.from}
             onChange={(e) => setFilters({ ...filters, from: e.target.value })}
-            className="w-full border border-orange-200 rounded-xl px-3 py-2 text-sm bg-white text-[#1C1917] focus:outline-none focus:border-[#2563EB]"
+            className="w-full border border-orange-200 rounded-xl px-3 py-2 text-sm bg-white text-[#1C1917] focus:outline-none focus:border-[#F97316]"
           />
         </div>
 
@@ -224,7 +224,7 @@ function AdvancedFilters({
             type="date"
             value={filters.to}
             onChange={(e) => setFilters({ ...filters, to: e.target.value })}
-            className="w-full border border-orange-200 rounded-xl px-3 py-2 text-sm bg-white text-[#1C1917] focus:outline-none focus:border-[#2563EB]"
+            className="w-full border border-orange-200 rounded-xl px-3 py-2 text-sm bg-white text-[#1C1917] focus:outline-none focus:border-[#F97316]"
           />
         </div>
 
@@ -234,7 +234,7 @@ function AdvancedFilters({
           <select
             value={filters.premio}
             onChange={(e) => setFilters({ ...filters, premio: e.target.value })}
-            className="w-full border border-orange-200 rounded-xl px-3 py-2 text-sm bg-white text-[#1C1917] focus:outline-none focus:border-[#2563EB]"
+            className="w-full border border-orange-200 rounded-xl px-3 py-2 text-sm bg-white text-[#1C1917] focus:outline-none focus:border-[#F97316]"
           >
             <option value="">Todos los premios</option>
             {premios.map((p) => <option key={p} value={p}>{p}</option>)}
@@ -345,7 +345,7 @@ export default function ReportePage() {
     const claimsToExport = filteredClaims;
     const headers = ['Fecha', 'Cliente', 'Premio', 'Restaurante', 'Estado', 'Cajero'];
     const rows = claimsToExport.map((c) => [
-      new Date(c.claimed_at).toLocaleString('es-MX', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }),
+      new Date(c.claimed_at).toLocaleString('es-CO', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }),
       c.full_name,
       c.prize_name,
       c.restaurant_name ?? '—',
@@ -382,7 +382,7 @@ export default function ReportePage() {
       const marginL = 20;
       const marginR = 20;
       const contentW = pageW - marginL - marginR;
-      const generatedDate = new Date().toLocaleDateString('es-MX', {
+      const generatedDate = new Date().toLocaleDateString('es-CO', {
         day: 'numeric', month: 'long', year: 'numeric',
       });
 
@@ -523,7 +523,7 @@ export default function ReportePage() {
             doc.rect(marginL, y - 3.5, contentW, 7, 'F');
           }
 
-          const dateStr = new Date(c.claimed_at).toLocaleDateString('es-MX', {
+          const dateStr = new Date(c.claimed_at).toLocaleDateString('es-CO', {
             day: '2-digit', month: '2-digit', year: '2-digit',
           });
           const statusLabel = c.status === 'delivered' ? 'Entregado' : c.status === 'cancelled' ? 'Cancelado' : 'Pendiente';
@@ -691,12 +691,12 @@ export default function ReportePage() {
         #print-report h2 { font-size: 18px; font-weight: 900; margin-bottom: 4px; }
         #print-report p.sub { color: #64748b; font-size: 11px; margin-bottom: 16px; }
         #print-report table { width: 100%; border-collapse: collapse; }
-        #print-report thead tr { background: #1e3a8a; }
-        #print-report thead th { color: #bfdbfe; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; padding: 7px 10px; text-align: left; }
+        #print-report thead tr { background: #7C2D12; }
+        #print-report thead th { color: #FED7AA; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; padding: 7px 10px; text-align: left; }
         #print-report tbody tr:nth-child(even) { background: #f8fafc; }
         #print-report tbody td { padding: 6px 10px; border-bottom: 1px solid #e2e8f0; }
         .s-delivered { color: #059669; font-weight: 700; }
-        .s-pending { color: #0EA5E9; font-weight: 700; }
+        .s-pending { color: #F97316; font-weight: 700; }
       `;
       document.head.appendChild(style);
       printStyleRef.current = style;
@@ -713,7 +713,7 @@ export default function ReportePage() {
     const claimsToPrint = filteredClaims;
     const rows = claimsToPrint.map((c) => `
       <tr>
-        <td>${new Date(c.claimed_at).toLocaleString('es-MX', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</td>
+        <td>${new Date(c.claimed_at).toLocaleString('es-CO', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</td>
         <td>${c.full_name}</td>
         <td>${c.prize_name}</td>
         <td>${c.restaurant_name ?? '—'}</td>
@@ -723,7 +723,7 @@ export default function ReportePage() {
 
     container.innerHTML = `
       <h2>3E — Reporte de Cobros</h2>
-      <p class="sub">Generado: ${new Date().toLocaleString('es-MX', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })} · Total: ${claimsToPrint.length} registros</p>
+      <p class="sub">Generado: ${new Date().toLocaleString('es-CO', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })} · Total: ${claimsToPrint.length} registros</p>
       <table>
         <thead><tr><th>Fecha</th><th>Cliente</th><th>Premio</th><th>Restaurante</th><th>Estado</th><th>Cajero</th></tr></thead>
         <tbody>${rows}</tbody>
@@ -810,7 +810,7 @@ export default function ReportePage() {
         <>
           <div className="rounded-2xl border border-[#E8E3DC] bg-white overflow-hidden mb-5"
             style={{ boxShadow: '0 2px 16px rgba(0,0,0,0.06)' }}>
-            <div className="p-4 text-center" style={{ background: 'linear-gradient(135deg, #2563EB, #0891B2)' }}>
+            <div className="p-4 text-center" style={{ background: 'linear-gradient(135deg, #F97316, #EA580C)' }}>
               <p className="text-white/70 text-xs font-bold uppercase tracking-widest mb-0.5">3E</p>
               <p className="text-white font-extrabold text-lg"><ChartBarIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Reporte Semanal</p>
             </div>
@@ -839,7 +839,7 @@ export default function ReportePage() {
             <div className="mb-4 flex items-center gap-2">
               <span className="text-sm text-stone-500">
                 Mostrando{' '}
-                <span className={`font-bold ${hasActiveFilter ? 'text-[#2563EB]' : 'text-stone-700'}`}>
+                <span className={`font-bold ${hasActiveFilter ? 'text-[#F97316]' : 'text-stone-700'}`}>
                   {filteredClaims.length}
                 </span>
                 {' '}de{' '}
@@ -847,7 +847,7 @@ export default function ReportePage() {
                 {' '}cobros
               </span>
               {hasActiveFilter && (
-                <span className="text-[10px] font-bold uppercase tracking-widest text-[#0891B2] bg-orange-50 border border-orange-200 px-2 py-0.5 rounded-full">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-[#EA580C] bg-orange-50 border border-orange-200 px-2 py-0.5 rounded-full">
                   Filtros activos
                 </span>
               )}

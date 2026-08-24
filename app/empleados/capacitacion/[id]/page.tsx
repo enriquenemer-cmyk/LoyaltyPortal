@@ -130,7 +130,7 @@ export default function QuizPage() {
           <p className="text-red-600 font-semibold mb-4">{error}</p>
           <button
             onClick={() => router.push('/empleados/capacitacion')}
-            className="w-full bg-[#2563EB] text-white font-bold rounded-2xl"
+            className="w-full bg-[#F97316] text-white font-bold rounded-2xl"
             style={{ minHeight: 56 }}
           >
             Volver
@@ -168,7 +168,7 @@ export default function QuizPage() {
           </p>
 
           <div className="mt-6 bg-[#FAFAF9] border border-[#E8E3DC] rounded-2xl p-5 relative z-10">
-            <div className="text-4xl font-black text-[#2563EB]">{pct}%</div>
+            <div className="text-4xl font-black text-[#F97316]">{pct}%</div>
             <p className="text-xs text-stone-400 font-semibold uppercase tracking-wide mt-1">Puntaje</p>
             <div className="flex items-center justify-between mt-4 text-sm">
               <span className="text-stone-500">Correctas</span>
@@ -183,7 +183,7 @@ export default function QuizPage() {
             {result.employee_total_points !== null && (
               <div className="flex items-center justify-between mt-1 text-sm">
                 <span className="text-stone-500">Total acumulado</span>
-                <span className="font-bold text-[#2563EB]">{result.employee_total_points} pts</span>
+                <span className="font-bold text-[#F97316]">{result.employee_total_points} pts</span>
               </div>
             )}
           </div>
@@ -192,7 +192,7 @@ export default function QuizPage() {
             {!passed && (
               <button
                 onClick={load}
-                className="w-full bg-[#2563EB] hover:bg-[#1d4ed8] text-white font-bold rounded-2xl transition-colors"
+                className="w-full bg-[#F97316] hover:bg-[#C2410C] text-white font-bold rounded-2xl transition-colors"
                 style={{ minHeight: 56 }}
               >
                 Reintentar
@@ -223,12 +223,12 @@ export default function QuizPage() {
             opacity: 0.9;
             animation: confetti-fall 2.2s linear infinite;
           }
-          .c0 { background: #2563eb; }
+          .c0 { background: #F97316; }
           .c1 { background: #7c3aed; }
           .c2 { background: #10b981; }
           .c3 { background: #f59e0b; }
           .c4 { background: #ef4444; }
-          .c5 { background: #0ea5e9; }
+          .c5 { background: #F97316; }
           @keyframes confetti-fall {
             0% { transform: translateY(0) rotate(0deg); opacity: 1; }
             100% { transform: translateY(420px) rotate(540deg); opacity: 0; }
@@ -246,7 +246,7 @@ export default function QuizPage() {
           <p className="text-stone-500 font-semibold mb-4">Este módulo no tiene preguntas.</p>
           <button
             onClick={() => router.push('/empleados/capacitacion')}
-            className="w-full bg-[#2563EB] text-white font-bold rounded-2xl"
+            className="w-full bg-[#F97316] text-white font-bold rounded-2xl"
             style={{ minHeight: 56 }}
           >
             Volver
@@ -263,8 +263,8 @@ export default function QuizPage() {
       <div className="hero-gradient px-4 pt-6 pb-8">
         <div className="max-w-2xl mx-auto">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-blue-100 text-sm font-semibold">{moduleInfo?.title}</span>
-            <span className="text-blue-100 text-sm font-semibold">
+            <span className="text-orange-100 text-sm font-semibold">{moduleInfo?.title}</span>
+            <span className="text-orange-100 text-sm font-semibold">
               Pregunta {currentIndex + 1} de {questions.length}
             </span>
           </div>
@@ -290,14 +290,14 @@ export default function QuizPage() {
                   onClick={() => handleSelect(idx)}
                   className={`flex items-center gap-3 text-left rounded-2xl border-2 px-4 py-4 transition-all ${
                     isSelected
-                      ? 'border-[#2563EB] bg-orange-50'
+                      ? 'border-[#F97316] bg-orange-50'
                       : 'border-[#E8E3DC] bg-white hover:border-orange-200'
                   }`}
                   style={{ minHeight: 56 }}
                 >
                   <span
                     className={`w-8 h-8 shrink-0 rounded-full flex items-center justify-center font-bold text-sm ${
-                      isSelected ? 'bg-[#2563EB] text-white' : 'bg-stone-100 text-stone-500'
+                      isSelected ? 'bg-[#F97316] text-white' : 'bg-stone-100 text-stone-500'
                     }`}
                   >
                     {LETTERS[idx] ?? idx + 1}
@@ -311,7 +311,7 @@ export default function QuizPage() {
           <button
             onClick={handleNext}
             disabled={selected === null || submitting}
-            className="w-full mt-6 bg-[#2563EB] hover:bg-[#1d4ed8] disabled:opacity-50 text-white font-bold rounded-2xl transition-colors"
+            className="w-full mt-6 bg-[#F97316] hover:bg-[#C2410C] disabled:opacity-50 text-white font-bold rounded-2xl transition-colors"
             style={{ minHeight: 56 }}
           >
             {submitting

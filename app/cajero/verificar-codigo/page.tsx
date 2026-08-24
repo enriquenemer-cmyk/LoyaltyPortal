@@ -29,7 +29,7 @@ export default function VerificarCodigoPage() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const scannerRef = useRef<import('@zxing/browser').IScannerControls | null>(null);
 
-  const accentColor = '#2563EB';
+  const accentColor = '#F97316';
 
   async function stopScanner() {
     if (scannerRef.current) {
@@ -130,7 +130,7 @@ export default function VerificarCodigoPage() {
   return (
     <div className="min-h-screen bg-[#FAFAF9]">
       {/* Header */}
-      <div className="sticky top-0 z-20 shadow-md" style={{ background: `linear-gradient(135deg, #2563EB, #0891B2)` }}>
+      <div className="sticky top-0 z-20 shadow-md" style={{ background: `linear-gradient(135deg, #F97316, #EA580C)` }}>
         <div className="max-w-lg mx-auto px-4 py-3 flex items-center gap-3">
           <Link href="/cajero/escanear" className="text-white/80 hover:text-white rounded-lg p-1.5 transition-all" style={{ background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.25)' }}>
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -203,7 +203,7 @@ export default function VerificarCodigoPage() {
               onClick={() => handleVerify()}
               disabled={!code.trim() || loading}
               className="w-full font-black py-4 rounded-2xl flex items-center justify-center gap-2 text-white transition-all text-base disabled:opacity-50 disabled:cursor-not-allowed"
-              style={{ background: `linear-gradient(135deg, #2563EB, #0891B2)`, boxShadow: '0 10px 32px rgba(37,99,235,0.35)' }}
+              style={{ background: `linear-gradient(135deg, #F97316, #EA580C)`, boxShadow: '0 10px 32px rgba(249,115,22,0.35)' }}
             >
               {loading ? (
                 <svg className="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
@@ -300,7 +300,7 @@ export default function VerificarCodigoPage() {
                   onChange={e => setCashierName(e.target.value)}
                   placeholder="Ej: Maria Garcia"
                   className="w-full bg-[#FAFAF9] border border-[#E8E3DC] rounded-xl px-4 py-3 text-[#1C1917] placeholder-stone-400 text-sm focus:outline-none focus:ring-2 focus:border-orange-500 transition-all"
-                  style={{ '--tw-ring-color': '#2563EB40' } as React.CSSProperties}
+                  style={{ '--tw-ring-color': '#F9731640' } as React.CSSProperties}
                 />
               </div>
 
@@ -308,7 +308,7 @@ export default function VerificarCodigoPage() {
                 onClick={handleRedeem}
                 disabled={redeeming || !cashierName.trim()}
                 className="w-full font-black py-4 rounded-2xl flex items-center justify-center gap-2 text-white text-base transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-                style={{ background: `linear-gradient(135deg, #2563EB, #0891B2)`, boxShadow: '0 10px 32px rgba(37,99,235,0.35)' }}
+                style={{ background: `linear-gradient(135deg, #F97316, #EA580C)`, boxShadow: '0 10px 32px rgba(249,115,22,0.35)' }}
               >
                 {redeeming ? (
                   <svg className="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
@@ -357,7 +357,7 @@ export default function VerificarCodigoPage() {
 
         {/* EXPIRED */}
         {result?.status === 'expired' && (
-          <div className="bg-white rounded-3xl border border-orange-200 overflow-hidden" style={{ boxShadow: '0 8px 32px rgba(37,99,235,0.10)' }}>
+          <div className="bg-white rounded-3xl border border-orange-200 overflow-hidden" style={{ boxShadow: '0 8px 32px rgba(249,115,22,0.10)' }}>
             <div className="px-5 py-4 bg-orange-50 border-b border-orange-200 flex items-center gap-3">
               <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center shrink-0">
                 <svg className="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -365,7 +365,7 @@ export default function VerificarCodigoPage() {
                 </svg>
               </div>
               <div>
-                <p className="text-blue-800 font-extrabold text-base">Codigo expirado</p>
+                <p className="text-orange-800 font-extrabold text-base">Codigo expirado</p>
                 <p className="text-orange-600 text-xs">Este codigo ya no es valido</p>
               </div>
             </div>

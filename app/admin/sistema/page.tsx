@@ -43,7 +43,7 @@ type ActivityEntry = {
 // ── Helpers ───────────────────────────────────────────────────────────────────
 function fmtDate(iso: string): string {
   const d = new Date(iso);
-  return d.toLocaleDateString('es-MX', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+  return d.toLocaleDateString('es-CO', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
 }
 
 function latencyColor(ms: number): string {
@@ -110,7 +110,7 @@ function CleanupButton({ action, label }: { action: string; label: string }) {
             ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
             : status === 'error'
             ? 'bg-red-50 text-red-700 border-red-200'
-            : 'bg-white text-stone-600 border-stone-200 hover:border-blue-300 hover:text-orange-600 hover:bg-orange-50'
+            : 'bg-white text-stone-600 border-stone-200 hover:border-orange-300 hover:text-orange-600 hover:bg-orange-50'
         }`}
       >
         {status === 'loading' ? 'Ejecutando...' : status === 'done' ? 'Listo' : status === 'error' ? 'Error' : 'Ejecutar'}
@@ -179,7 +179,7 @@ export default function SistemaPage() {
             <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Sistema</h1>
             <p className="text-orange-200/70 mt-1.5 text-sm">
               {lastChecked
-                ? `Ultima verificacion: ${lastChecked.toLocaleTimeString('es-MX')}`
+                ? `Ultima verificacion: ${lastChecked.toLocaleTimeString('es-CO')}`
                 : 'Estado del sistema y diagnóstico'}
             </p>
           </div>
@@ -214,7 +214,7 @@ export default function SistemaPage() {
           className={`flex items-center gap-3 px-5 py-4 rounded-2xl border font-semibold text-sm ${
             isHealthy
               ? 'bg-emerald-50 border-emerald-200 text-emerald-800'
-              : 'bg-orange-50 border-orange-200 text-blue-800'
+              : 'bg-orange-50 border-orange-200 text-orange-800'
           }`}
         >
           <span className="text-xl">{isHealthy ? '' : ''}</span>
@@ -287,7 +287,7 @@ export default function SistemaPage() {
               <span className="text-sm text-stone-600">{label}</span>
               {health ? (
                 <span className="text-sm font-semibold text-[#1C1917] tabular-nums">
-                  {health.total_records[key].toLocaleString('es-MX')}
+                  {health.total_records[key].toLocaleString('es-CO')}
                 </span>
               ) : (
                 <div className="w-12 h-4 bg-stone-200 rounded animate-pulse" />

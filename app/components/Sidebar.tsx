@@ -573,7 +573,7 @@ function GlobalSearch({ onSelect }: { onSelect?: (item: SearchResult) => void })
   const typeColor: Record<SearchResult['type'], string> = {
     claim: 'bg-orange-50 text-orange-600', prize: 'bg-orange-50 text-orange-600',
     restaurant: 'bg-emerald-50 text-emerald-600', user: 'bg-purple-50 text-[#1a6b3c]',
-    premio: 'bg-yellow-900/40 text-yellow-300', cliente: 'bg-blue-900/40 text-orange-300',
+    premio: 'bg-yellow-900/40 text-yellow-300', cliente: 'bg-orange-900/40 text-orange-300',
     cobro: 'bg-stone-200/60 text-stone-800',
   };
 

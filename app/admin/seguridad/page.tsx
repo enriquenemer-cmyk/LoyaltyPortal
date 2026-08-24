@@ -159,7 +159,7 @@ export default function SeguridadPage() {
           <select
             value={actionFilter}
             onChange={(e) => setActionFilter(e.target.value)}
-            className="border border-[#E8E3DC] rounded-xl px-3 py-2 text-sm bg-white text-[#1C1917] focus:outline-none focus:border-[#2563EB]"
+            className="border border-[#E8E3DC] rounded-xl px-3 py-2 text-sm bg-white text-[#1C1917] focus:outline-none focus:border-[#F97316]"
           >
             <option value="">Todos los eventos</option>
             {allActions.map((a) => (
@@ -171,7 +171,7 @@ export default function SeguridadPage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Buscar por descripción o usuario..."
-            className="flex-1 min-w-[200px] border border-[#E8E3DC] rounded-xl px-3 py-2 text-sm bg-white text-[#1C1917] focus:outline-none focus:border-[#2563EB]"
+            className="flex-1 min-w-[200px] border border-[#E8E3DC] rounded-xl px-3 py-2 text-sm bg-white text-[#1C1917] focus:outline-none focus:border-[#F97316]"
           />
         </div>
 
@@ -182,7 +182,7 @@ export default function SeguridadPage() {
 
           {loading ? (
             <div className="flex justify-center py-12">
-              <svg className="animate-spin w-7 h-7 text-[#2563EB]" fill="none" viewBox="0 0 24 24">
+              <svg className="animate-spin w-7 h-7 text-[#F97316]" fill="none" viewBox="0 0 24 24">
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
               </svg>
@@ -209,7 +209,7 @@ export default function SeguridadPage() {
                         className="mt-2 flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border transition-all"
                         style={copiedId === log.id
                           ? { background: '#f0fdf4', borderColor: '#86efac', color: '#16a34a' }
-                          : { background: '#EFF6FF', borderColor: '#BAE6FD', color: '#c2410c' }
+                          : { background: '#FFF7ED', borderColor: '#FED7AA', color: '#c2410c' }
                         }
                       >
                         {copiedId === log.id ? (
@@ -232,7 +232,7 @@ export default function SeguridadPage() {
                     )}
                   </div>
                   <time className="text-xs text-[#6b7280] shrink-0 mt-0.5">
-                    {new Date(log.created_at).toLocaleString('es-MX', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}
+                    {new Date(log.created_at).toLocaleString('es-CO', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}
                   </time>
                 </div>
               ))}

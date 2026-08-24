@@ -61,7 +61,7 @@ export default function NPSSurvey({ claimId, onSkip }: Props) {
             className="text-3xl transition-transform hover:scale-110 active:scale-95"
             aria-label={`${star} estrella${star > 1 ? 's' : ''}`}
           >
-            <span style={{ color: star <= display ? '#0891B2' : '#d6d3d1' }}>★</span>
+            <span style={{ color: star <= display ? '#EA580C' : '#d6d3d1' }}>★</span>
           </button>
         ))}
       </div>
@@ -78,7 +78,7 @@ export default function NPSSurvey({ claimId, onSkip }: Props) {
         <button
           onClick={handleSubmit}
           disabled={rating === 0 || loading}
-          className="flex-1 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 disabled:opacity-40 text-white font-bold py-3 rounded-xl transition-all text-sm"
+          className="flex-1 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-400 hover:to-orange-500 disabled:opacity-40 text-white font-bold py-3 rounded-xl transition-all text-sm"
         >
           {loading ? 'Enviando...' : 'Enviar'}
         </button>

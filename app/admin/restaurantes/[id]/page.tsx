@@ -46,7 +46,7 @@ type ActivityEntry = {
 };
 
 function formatDate(dateStr: string) {
-  return new Date(dateStr).toLocaleString('es-MX', {
+  return new Date(dateStr).toLocaleString('es-CO', {
     year: 'numeric', month: 'short', day: 'numeric',
     hour: '2-digit', minute: '2-digit',
   });
@@ -73,7 +73,7 @@ function activityIcon(action: string) {
 
 function Avatar({ name }: { name: string }) {
   const initials = name.split(' ').slice(0, 2).map((n) => n[0]).join('').toUpperCase();
-  const colors = ['from-violet-500 to-purple-600', 'from-blue-500 to-indigo-600', 'from-blue-500 to-blue-700', 'from-rose-500 to-orange-500', 'from-blue-500 to-blue-600'];
+  const colors = ['from-violet-500 to-purple-600', 'from-orange-500 to-indigo-600', 'from-orange-500 to-orange-700', 'from-rose-500 to-orange-500', 'from-orange-500 to-orange-600'];
   const color = colors[name.charCodeAt(0) % colors.length];
   return (
     <div className={`w-9 h-9 rounded-full bg-gradient-to-br ${color} flex items-center justify-center text-white text-xs font-bold shrink-0 shadow-sm`}>
@@ -85,9 +85,9 @@ function Avatar({ name }: { name: string }) {
 function StatCard({ label, value, color, icon }: { label: string; value: number | string; color: 'gray' | 'orange' | 'blue' | 'amber'; icon: React.ReactNode }) {
   const colorMap = {
     gray:    { border: 'border-l-stone-400',   bg: 'bg-stone-50',   text: 'text-stone-600',   num: 'text-stone-700'   },
-    orange: { border: 'border-l-[#2563EB]', bg: 'bg-orange-50', text: 'text-[#2563EB]', num: 'text-[#2563EB]' },
+    orange: { border: 'border-l-[#F97316]', bg: 'bg-orange-50', text: 'text-[#F97316]', num: 'text-[#F97316]' },
     blue:    { border: 'border-l-violet-500',    bg: 'bg-violet-50',    text: 'text-violet-700',    num: 'text-violet-600'   },
-    amber:   { border: 'border-l-blue-500',   bg: 'bg-orange-50',   text: 'text-orange-700',   num: 'text-orange-600'  },
+    amber:   { border: 'border-l-orange-500',   bg: 'bg-orange-50',   text: 'text-orange-700',   num: 'text-orange-600'  },
   };
   const c = colorMap[color];
   return (
@@ -236,7 +236,7 @@ export default function RestaurantProfilePage() {
         <div className="flex items-center gap-3 mb-6">
           <Link
             href="/admin/restaurantes"
-            className="inline-flex items-center gap-1.5 text-sm font-bold text-[#2563EB] bg-orange-50 border border-orange-200 hover:bg-orange-100 px-3 py-1.5 rounded-full transition-colors"
+            className="inline-flex items-center gap-1.5 text-sm font-bold text-[#F97316] bg-orange-50 border border-orange-200 hover:bg-orange-100 px-3 py-1.5 rounded-full transition-colors"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -251,7 +251,7 @@ export default function RestaurantProfilePage() {
         <div className="bg-white rounded-2xl border border-[#E8E3DC] shadow-[0_1px_2px_rgba(28,25,23,0.04),_0_4px_16px_rgba(28,25,23,0.06)] overflow-hidden mb-6">
           <div className="p-6 flex items-center justify-between gap-5 flex-wrap" style={{ background: 'linear-gradient(135deg,#1C1917 0%,#292524 60%,#3c1a10 100%)' }}>
             <div className="flex items-center gap-5">
-              <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-white text-2xl font-extrabold shrink-0 overflow-hidden" style={{ background: 'linear-gradient(135deg,#2563EB,#0891B2)', boxShadow: '0 6px 20px rgba(37,99,235,0.40)' }}>
+              <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-white text-2xl font-extrabold shrink-0 overflow-hidden" style={{ background: 'linear-gradient(135deg,#F97316,#EA580C)', boxShadow: '0 6px 20px rgba(249,115,22,0.40)' }}>
                 {restaurant.logo_url ? (
                   <Image src={restaurant.logo_url} alt={restaurant.name} width={64} height={64} className="w-full h-full object-cover" />
                 ) : (
@@ -382,7 +382,7 @@ export default function RestaurantProfilePage() {
             <h3 className="text-base font-extrabold text-[#1C1917] mb-1">Panel del Cajero</h3>
             <p className="text-sm text-stone-500">Comparte este enlace con el cajero para que pueda escanear y entregar premios.</p>
             <div className="mt-3 flex items-center gap-2 flex-wrap">
-              <code className="text-xs bg-orange-50 border border-orange-200 text-blue-800 rounded-lg px-3 py-1.5 font-mono break-all">
+              <code className="text-xs bg-orange-50 border border-orange-200 text-orange-800 rounded-lg px-3 py-1.5 font-mono break-all">
                 {typeof window !== 'undefined' ? `${window.location.origin}/cajero/${restaurant.id}` : `/cajero/${restaurant.id}`}
               </code>
               <button
@@ -390,7 +390,7 @@ export default function RestaurantProfilePage() {
                   const url = `${window.location.origin}/cajero/${restaurant.id}`;
                   navigator.clipboard.writeText(url);
                 }}
-                className="inline-flex items-center gap-1.5 text-xs font-bold text-[#2563EB] bg-orange-50 border border-orange-200 hover:bg-orange-100 px-3 py-1.5 rounded-lg transition-colors"
+                className="inline-flex items-center gap-1.5 text-xs font-bold text-[#F97316] bg-orange-50 border border-orange-200 hover:bg-orange-100 px-3 py-1.5 rounded-lg transition-colors"
               >
                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
                 Copiar
@@ -398,7 +398,7 @@ export default function RestaurantProfilePage() {
               <Link
                 href={`/cajero/${restaurant.id}`}
                 target="_blank"
-                className="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-[#2563EB] hover:bg-orange-500 px-3 py-1.5 rounded-lg transition-colors"
+                className="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-[#F97316] hover:bg-orange-500 px-3 py-1.5 rounded-lg transition-colors"
               >
                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
                 Abrir
@@ -406,7 +406,7 @@ export default function RestaurantProfilePage() {
             </div>
           </div>
           <div className="shrink-0 w-10 h-10 rounded-xl bg-orange-50 border border-orange-200 flex items-center justify-center">
-            <svg className="w-5 h-5 text-[#2563EB]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4h.01M8 8h.01M16 8h.01M4 12h.01M20 12h.01M8 16h.01M16 16h.01M12 20h.01M4 4h4v4H4zm12 0h4v4h-4zM4 16h4v4H4zm12 0h4v4h-4z" /></svg>
+            <svg className="w-5 h-5 text-[#F97316]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4h.01M8 8h.01M16 8h.01M4 12h.01M20 12h.01M8 16h.01M16 16h.01M12 20h.01M4 4h4v4H4zm12 0h4v4h-4zM4 16h4v4H4zm12 0h4v4h-4z" /></svg>
           </div>
         </div>
 
@@ -472,7 +472,7 @@ export default function RestaurantProfilePage() {
                         )}
                       </td>
                       <td className="px-5 py-4">
-                        <span className="inline-flex bg-orange-50 text-[#2563EB] text-xs font-semibold px-2.5 py-1 rounded-full border border-orange-200">{claim.prize_name}</span>
+                        <span className="inline-flex bg-orange-50 text-[#F97316] text-xs font-semibold px-2.5 py-1 rounded-full border border-orange-200">{claim.prize_name}</span>
                       </td>
                       <td className="px-5 py-4 text-gray-400 text-xs whitespace-nowrap">{formatDate(claim.claimed_at)}</td>
                     </tr>

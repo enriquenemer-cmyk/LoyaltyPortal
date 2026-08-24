@@ -49,7 +49,7 @@ export default function CapacitacionListPage() {
         <div className="max-w-3xl mx-auto">
           <button
             onClick={() => router.push('/empleados/panel')}
-            className="text-blue-100 text-sm font-semibold mb-3 flex items-center gap-1"
+            className="text-orange-100 text-sm font-semibold mb-3 flex items-center gap-1"
           >
             ← Volver
           </button>
@@ -72,7 +72,7 @@ export default function CapacitacionListPage() {
               <Link
                 key={mod.id}
                 href={`/empleados/capacitacion/${mod.id}`}
-                className="relative bg-white border border-[#E8E3DC] rounded-2xl p-5 shadow-sm hover:border-[#2563EB] hover:shadow-md transition-all flex flex-col gap-2"
+                className="relative bg-white border border-[#E8E3DC] rounded-2xl p-5 shadow-sm hover:border-[#F97316] hover:shadow-md transition-all flex flex-col gap-2"
                 style={{ minHeight: 140 }}
               >
                 {mod.completed && (
@@ -88,7 +88,7 @@ export default function CapacitacionListPage() {
                 <div className="flex items-center justify-between text-xs text-stone-400 mt-1">
                   <span>{mod.question_count} {mod.question_count === 1 ? 'pregunta' : 'preguntas'}</span>
                   {mod.best_total_points !== null && (
-                    <span className="font-bold text-[#2563EB]">{mod.best_total_points} pts</span>
+                    <span className="font-bold text-[#F97316]">{mod.best_total_points} pts</span>
                   )}
                 </div>
               </Link>

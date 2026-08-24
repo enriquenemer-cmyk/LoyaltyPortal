@@ -10,9 +10,10 @@
     },
     {
       "name": "MODO Website",
-      "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "4200", "--directory", "/Users/macbook/MODO"],
-      "port": 4200
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["/Users/macbook/MODO/node_modules/next/dist/bin/next", "dev", "/Users/macbook/MODO"],
+      "port": 4200,
+      "autoPort": true
     }
   ]
 }

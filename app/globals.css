@@ -711,7 +711,6 @@ input[type="date"] {
   background: #1a6b3c;
   position: relative;
   overflow: hidden;
-  border-bottom: 4px solid #111;
 }
 @keyframes gradientShift {
   0%   { background-position: 0% 50%; }
@@ -860,11 +859,9 @@ input[type="date"] {
    MAXIMUM AESTHETIC UPGRADE — affects all admin pages
    ══════════════════════════════════════════════════════ */
 
-/* ── Upgrade all white cards across every page ── */
+/* ── White cards keep their white background ── */
 .admin-content .bg-white,
 .admin-content [class*="bg-white"] {
-  background: rgba(255,255,255,0.96) !important;
-  backdrop-filter: blur(8px);
   border-color: rgba(226,232,240,0.7) !important;
 }
 
@@ -1188,11 +1185,10 @@ input[type="date"] {
    MAXIMUM AESTHETIC UPGRADE v2 — Content elements
    ════════════════════════════════════════════════════ */
 
-/* ── White cards get glassmorphism + shadow depth ── */
+/* ── White cards: clean shadow ── */
 .admin-content .bg-white,
 .admin-content .bg-white\/96 {
-  background: rgba(255,255,255,0.97) !important;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 8px 32px rgba(249,115,22,0.06) !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.06) !important;
   border-color: rgba(226,232,240,0.7) !important;
 }
 
@@ -1549,10 +1545,6 @@ input[type="date"] {
 /* Auto-apply comic card to white rounded cards in admin */
 .admin-content .rounded-2xl.bg-white,
 .admin-content .rounded-xl.bg-white,
-.admin-content .rounded-2xl[style*="background: #fff"],
-.admin-content .rounded-2xl[style*="background:#fff"],
-.admin-content .rounded-xl[style*="background: #fff"],
-.admin-content .rounded-xl[style*="background:#fff"],
 .admin-content .rounded-2xl[style*="background: white"],
 .admin-content .rounded-xl[style*="background: white"] {
   border: 2px solid #111 !important;
@@ -1563,26 +1555,6 @@ input[type="date"] {
 .admin-content .rounded-xl.bg-white:hover {
   transform: translate(-2px, -2px) !important;
   box-shadow: 6px 6px 0 #111 !important;
-}
-
-/* ── Comic primary button ── */
-.comic-btn,
-.admin-content button[style*="background: linear-gradient(135deg,#F97316"],
-.admin-content button[style*="background:#F97316"],
-.admin-content a[style*="background: #F97316"] {
-  border: 2px solid #111 !important;
-  box-shadow: 3px 3px 0 #111 !important;
-  transition: transform 0.1s ease, box-shadow 0.1s ease !important;
-}
-.comic-btn:hover,
-.admin-content button[style*="background: linear-gradient(135deg,#F97316"]:hover {
-  transform: translate(-1px, -1px) !important;
-  box-shadow: 5px 5px 0 #111 !important;
-}
-.comic-btn:active,
-.admin-content button[style*="background: linear-gradient(135deg,#F97316"]:active {
-  transform: translate(2px, 2px) !important;
-  box-shadow: 1px 1px 0 #111 !important;
 }
 
 /* ── Comic input fields ── */
@@ -1600,45 +1572,6 @@ input[type="date"] {
   border-color: #F97316 !important;
   box-shadow: 3px 3px 0 rgba(249,115,22,0.4) !important;
   outline: none !important;
-}
-
-/* ── Comic orange accent badge / tag ── */
-.comic-badge {
-  background: #F97316;
-  color: #fff;
-  font-weight: 800;
-  border: 2px solid #111;
-  box-shadow: 2px 2px 0 #111;
-  border-radius: 6px;
-  padding: 2px 8px;
-  font-size: 11px;
-  letter-spacing: 0.05em;
-}
-
-/* ── Comic green accent ── */
-.comic-badge-green {
-  background: #1a6b3c;
-  color: #fff;
-  font-weight: 800;
-  border: 2px solid #111;
-  box-shadow: 2px 2px 0 #111;
-  border-radius: 6px;
-  padding: 2px 8px;
-}
-
-/* ── Comic stat number — super bold ── */
-.comic-stat {
-  font-weight: 900 !important;
-  letter-spacing: -0.04em !important;
-  font-size: 2.25rem !important;
-  line-height: 1 !important;
-}
-
-/* ── Section dividers comic-style ── */
-.admin-content h2,
-.admin-content h3 {
-  font-weight: 800 !important;
-  letter-spacing: -0.02em !important;
 }
 
 /* ── Table — comic border ── */
@@ -1672,6 +1605,7 @@ input[type="date"] {
   border-left-width: 5px !important;
   border-left-style: solid !important;
   box-shadow: 4px 4px 0 #111 !important;
+  border-radius: 14px !important;
 }
 
 /* ── Page title comic treatment ── */
@@ -1680,41 +1614,23 @@ input[type="date"] {
   letter-spacing: -0.04em !important;
   color: #111 !important;
 }
-
-/* ── Sidebar active link — pop accent ── */
-.sidebar-link-active {
-  border-left: 3px solid #F97316 !important;
+.admin-content h2 {
+  font-weight: 800 !important;
+  letter-spacing: -0.02em !important;
+}
+.admin-content h3 {
   font-weight: 700 !important;
 }
 
-/* ── Comic animation for new items ── */
-@keyframes comic-pop {
-  0%   { transform: scale(0.92); opacity: 0; }
-  60%  { transform: scale(1.03); }
-  100% { transform: scale(1); opacity: 1; }
-}
-.comic-pop {
-  animation: comic-pop 0.3s cubic-bezier(0.34,1.56,0.64,1) both;
+/* ── Hero banner: bold border bottom ── */
+.hero-gradient {
+  border-bottom: 4px solid #111 !important;
 }
 
-/* ── Mobile — reduce shadow on small screens ── */
-@media (max-width: 767px) {
-  .admin-content .rounded-2xl.bg-white,
-  .admin-content .rounded-xl.bg-white {
-    box-shadow: 3px 3px 0 #111 !important;
-  }
-}
-
-/* ══ COMIC GLOBAL COHESION — section labels, hero extras, nav ══ */
-
-/* Section labels uppercase — bold orange accent */
-.admin-content [class*="tracking-widest"],
-.admin-content [class*="uppercase"][class*="text-xs"],
-.admin-content [class*="uppercase"][class*="text-[10px]"],
-.admin-content [class*="uppercase"][class*="text-stone"] {
-  color: #111 !important;
-  font-weight: 900 !important;
-  letter-spacing: 0.12em !important;
+/* Hero halftone pattern bigger dots */
+.hero-gradient::after {
+  background-image: radial-gradient(circle, rgba(255,255,255,0.12) 1.5px, transparent 1.5px) !important;
+  background-size: 18px 18px !important;
 }
 
 /* Hero action buttons in banner area */
@@ -1731,13 +1647,67 @@ input[type="date"] {
   font-weight: 800 !important;
 }
 
-/* Hero halftone pattern bigger dots */
-.hero-gradient::after {
-  background-image: radial-gradient(circle, rgba(255,255,255,0.12) 1.5px, transparent 1.5px) !important;
-  background-size: 18px 18px !important;
+/* ── Sidebar active link — pop accent ── */
+.sidebar-link-active {
+  border-left: 3px solid #F97316 !important;
+  font-weight: 700 !important;
 }
 
-/* Quick action cards — comic border */
+/* ── Sidebar nav links ── */
+aside a {
+  border-radius: 10px !important;
+  font-weight: 600 !important;
+  transition: all 0.12s ease !important;
+}
+aside a:hover {
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.15) !important;
+}
+
+/* ── Comic orange glow on focus anywhere ── */
+:focus-visible {
+  outline: 3px solid #F97316 !important;
+  outline-offset: 2px !important;
+}
+
+/* ── Select dropdowns — comic ── */
+.admin-content select {
+  border: 2px solid #111 !important;
+  box-shadow: 3px 3px 0 #111 !important;
+}
+
+/* ── Dashboard hero "Actualizar" button ── */
+.hero-gradient button {
+  border: 2px solid rgba(255,255,255,0.6) !important;
+  font-weight: 700 !important;
+  background: rgba(0,0,0,0.25) !important;
+  color: white !important;
+}
+
+/* ── Alert/notice boxes — comic ── */
+.admin-content [class*="bg-orange-50"],
+.admin-content [class*="bg-amber-50"] {
+  border: 2px solid #F97316 !important;
+  box-shadow: 3px 3px 0 rgba(249,115,22,0.3) !important;
+}
+
+/* ── Comic divider lines ── */
+.admin-content hr {
+  border: none !important;
+  border-top: 2px solid #111 !important;
+  opacity: 0.12 !important;
+}
+
+/* ── Section labels uppercase ── */
+.admin-content [class*="tracking-widest"],
+.admin-content [class*="uppercase"][class*="text-xs"],
+.admin-content [class*="uppercase"][class*="text-[10px]"],
+.admin-content [class*="uppercase"][class*="text-stone"] {
+  color: #111 !important;
+  font-weight: 900 !important;
+  letter-spacing: 0.12em !important;
+}
+
+/* ── Quick action cards — comic border ── */
 .admin-content a[class*="rounded-2xl"],
 .admin-content a[class*="rounded-xl"] {
   border: 2px solid #111 !important;
@@ -1750,12 +1720,7 @@ input[type="date"] {
   box-shadow: 5px 5px 0 #111 !important;
 }
 
-/* Stat card border-left — remove conflicting shadow, keep comic */
-.admin-content .border-l-4 {
-  border-radius: 14px !important;
-}
-
-/* Sidebar section header labels */
+/* ── Sidebar section header labels ── */
 aside .text-\[10px\],
 aside [class*="tracking-widest"] {
   font-weight: 900 !important;
@@ -1763,77 +1728,10 @@ aside [class*="tracking-widest"] {
   letter-spacing: 0.12em !important;
 }
 
-/* Sidebar active item — stronger pop */
-aside a[style*="background: rgba(249,115,22"] {
-  border-left: 3px solid #F97316 !important;
-  font-weight: 700 !important;
-}
-
-/* Comic orange glow on focus anywhere */
-:focus-visible {
-  outline: 3px solid #F97316 !important;
-  outline-offset: 2px !important;
-}
-
-/* Select dropdowns — comic */
-.admin-content select {
-  border: 2px solid #111 !important;
-  box-shadow: 3px 3px 0 #111 !important;
-}
-
-/* Badges / pills — comic treatment */
-.admin-content span[class*="rounded-full"][class*="bg-green"],
-.admin-content span[class*="rounded-full"][class*="bg-emerald"] {
-  border: 1.5px solid #111 !important;
-  font-weight: 800 !important;
-  box-shadow: 2px 2px 0 #111 !important;
-}
-.admin-content span[class*="rounded-full"][class*="bg-orange"],
-.admin-content span[class*="rounded-full"][class*="bg-amber"] {
-  border: 1.5px solid #111 !important;
-  font-weight: 800 !important;
-  box-shadow: 2px 2px 0 #111 !important;
-}
-
-/* Dashboard hero "Actualizar" button comic style */
-.hero-gradient button {
-  border: 2px solid rgba(255,255,255,0.6) !important;
-  font-weight: 700 !important;
-  background: rgba(0,0,0,0.25) !important;
-  color: white !important;
-}
-
-/* Page icon boxes (orange gradient icon header) */
-.admin-content [style*="linear-gradient(135deg,#F97316"] {
-  border: 2px solid #111 !important;
-  box-shadow: 3px 3px 0 #111 !important;
-}
-
-/* Comic divider lines */
-.admin-content hr {
-  border: none !important;
-  border-top: 2px solid #111 !important;
-  opacity: 0.12 !important;
-}
-
-/* Alert/notice boxes — comic */
-.admin-content [class*="bg-orange-50"],
-.admin-content [class*="bg-amber-50"] {
-  border: 2px solid #F97316 !important;
-  box-shadow: 3px 3px 0 rgba(249,115,22,0.3) !important;
-}
-
-/* Skeleton loading — warm dots background visible through */
-.skeleton-neutral {
-  border: 2px solid rgba(0,0,0,0.06) !important;
-}
-
 /* ══════════════════════════════════════════════════════
    COMIC BUTTONS — EVERY BUTTON/INTERACTIVE ELEMENT
-   Bold border · Offset shadow · Press on click · Hover lift
    ══════════════════════════════════════════════════════ */
 
-/* BASE: every button in the admin area gets comic treatment */
 .admin-content button,
 .admin-content a[class*="rounded"],
 aside button,
@@ -1842,7 +1740,7 @@ aside a[class*="rounded"] {
   transition: transform 0.1s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.1s ease !important;
 }
 
-/* ── PRIMARY orange buttons ── */
+/* PRIMARY orange buttons */
 .admin-content button[style*="background: linear-gradient(135deg,#F97316"],
 .admin-content button[style*="background:#F97316"],
 .admin-content button[style*="background: #F97316"],
@@ -1850,34 +1748,26 @@ aside a[class*="rounded"] {
 .admin-content button[class*="bg-orange"],
 .admin-content a[style*="background: #F97316"],
 .admin-content a[style*="background:#F97316"],
-.admin-content a[class*="bg-orange"],
-.hero-gradient a[style*="background: #F97316"],
-.hero-gradient a[style*="background:#F97316"] {
+.hero-gradient a[style*="background: #F97316"] {
   border: 2.5px solid #111 !important;
   box-shadow: 4px 4px 0 #111 !important;
   font-weight: 800 !important;
-  letter-spacing: 0.01em !important;
   border-radius: 12px !important;
 }
 .admin-content button[style*="background: linear-gradient(135deg,#F97316"]:not(:disabled):hover,
-.admin-content button[style*="background:#F97316"]:not(:disabled):hover,
 .admin-content button[style*="background: #F97316"]:not(:disabled):hover,
-.admin-content button[class*="bg-[#F97316]"]:not(:disabled):hover,
-.admin-content button[class*="bg-orange"]:not(:disabled):hover,
-.admin-content a[style*="background: #F97316"]:not(:disabled):hover,
-.admin-content a[style*="background:#F97316"]:not(:disabled):hover {
+.admin-content a[style*="background: #F97316"]:not(:disabled):hover {
   transform: translate(-2px, -2px) !important;
   box-shadow: 6px 6px 0 #111 !important;
 }
 .admin-content button[style*="background: linear-gradient(135deg,#F97316"]:not(:disabled):active,
 .admin-content button[style*="background: #F97316"]:not(:disabled):active,
-.admin-content button[class*="bg-[#F97316]"]:not(:disabled):active,
 .admin-content a[style*="background: #F97316"]:not(:disabled):active {
   transform: translate(2px, 2px) !important;
   box-shadow: 1px 1px 0 #111 !important;
 }
 
-/* ── GREEN buttons ── */
+/* GREEN buttons */
 .admin-content button[style*="background: #1a6b3c"],
 .admin-content button[style*="background:#1a6b3c"],
 .admin-content button[class*="bg-[#1a6b3c]"],
@@ -1901,13 +1791,10 @@ aside a[class*="rounded"] {
   box-shadow: 1px 1px 0 #111 !important;
 }
 
-/* ── WHITE / GHOST / OUTLINE buttons ── */
+/* WHITE / GHOST buttons */
 .admin-content button[style*="background: white"],
-.admin-content button[style*="background:#fff"],
-.admin-content button[style*="background: #fff"],
 .admin-content button[class*="bg-white"]:not([class*="rounded-full"]),
 .admin-content a[style*="background: white"],
-.admin-content a[style*="background: #fff"],
 .admin-content a[class*="bg-white"]:not([class*="rounded-full"]) {
   border: 2px solid #111 !important;
   box-shadow: 3px 3px 0 #111 !important;
@@ -1915,39 +1802,17 @@ aside a[class*="rounded"] {
   border-radius: 12px !important;
 }
 .admin-content button[style*="background: white"]:not(:disabled):hover,
-.admin-content button[class*="bg-white"]:not([class*="rounded-full"]):not(:disabled):hover,
-.admin-content a[style*="background: white"]:not(:disabled):hover,
-.admin-content a[class*="bg-white"]:not([class*="rounded-full"]):not(:disabled):hover {
+.admin-content button[class*="bg-white"]:not([class*="rounded-full"]):not(:disabled):hover {
   transform: translate(-2px, -2px) !important;
   box-shadow: 5px 5px 0 #111 !important;
 }
-.admin-content button[style*="background: white"]:not(:disabled):active,
-.admin-content a[style*="background: white"]:not(:disabled):active {
+.admin-content button[style*="background: white"]:not(:disabled):active {
   transform: translate(2px, 2px) !important;
   box-shadow: 0px 0px 0 #111 !important;
 }
 
-/* ── GHOST / text buttons — subtle comic outline on hover ── */
-.admin-content button[class*="text-stone"],
-.admin-content button[class*="text-gray"],
-.admin-content button[class*="text-[#6b7280]"],
-.admin-content button[class*="text-[#111111]"],
-.admin-content button[class*="hover:bg-stone"],
-.admin-content button[class*="hover:bg-black"] {
-  border: 2px solid transparent !important;
-  font-weight: 700 !important;
-  border-radius: 10px !important;
-}
-.admin-content button[class*="hover:bg-stone"]:hover,
-.admin-content button[class*="hover:bg-black"]:hover {
-  border-color: #111 !important;
-  box-shadow: 2px 2px 0 #111 !important;
-}
-
-/* ── DANGER / red buttons ── */
-.admin-content button[class*="bg-red"],
-.admin-content button[style*="background: #ef4444"],
-.admin-content button[style*="background: red"] {
+/* DANGER / red buttons */
+.admin-content button[class*="bg-red"] {
   border: 2.5px solid #111 !important;
   box-shadow: 4px 4px 0 #111 !important;
   font-weight: 800 !important;
@@ -1962,29 +1827,7 @@ aside a[class*="rounded"] {
   box-shadow: 1px 1px 0 #111 !important;
 }
 
-/* ── TAB / filter buttons — pill style with comic border ── */
-.admin-content button[class*="rounded-full"],
-.admin-content button[class*="rounded-lg"][class*="text-xs"] {
-  border: 2px solid transparent !important;
-  font-weight: 700 !important;
-}
-.admin-content button[class*="rounded-full"]:hover,
-.admin-content button[class*="rounded-lg"][class*="text-xs"]:hover {
-  border-color: #111 !important;
-  box-shadow: 2px 2px 0 #111 !important;
-}
-
-/* ── SIDEBAR NAV LINKS — comic hover ── */
-aside a {
-  border-radius: 10px !important;
-  font-weight: 600 !important;
-  transition: all 0.12s ease !important;
-}
-aside a:hover {
-  box-shadow: 2px 2px 0 rgba(0,0,0,0.15) !important;
-}
-
-/* ── FORM INPUTS + TEXTAREA + SELECT — comic 3D feel ── */
+/* FORM INPUTS comic 3D */
 .admin-content input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
 .admin-content textarea,
 .admin-content select {
@@ -1992,7 +1835,7 @@ aside a:hover {
   border-radius: 10px !important;
   box-shadow: 3px 3px 0 rgba(0,0,0,0.15) !important;
   font-weight: 500 !important;
-  transition: border-color 0.1s, box-shadow 0.1s, transform 0.1s !important;
+  transition: border-color 0.1s, box-shadow 0.1s !important;
 }
 .admin-content input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):focus,
 .admin-content textarea:focus,
@@ -2000,10 +1843,9 @@ aside a:hover {
   border-color: #F97316 !important;
   box-shadow: 3px 3px 0 rgba(249,115,22,0.5) !important;
   outline: none !important;
-  transform: translate(-1px, -1px) !important;
 }
 
-/* ── CHECKBOXES — comic square with orange check ── */
+/* CHECKBOXES */
 .admin-content input[type="checkbox"] {
   width: 18px !important;
   height: 18px !important;
@@ -2014,7 +1856,7 @@ aside a:hover {
   cursor: pointer !important;
 }
 
-/* ── STATUS BADGES — comic pill ── */
+/* STATUS BADGES */
 .admin-content .rounded-full[class*="bg-"] {
   border: 1.5px solid rgba(0,0,0,0.2) !important;
   font-weight: 800 !important;
@@ -2022,20 +1864,7 @@ aside a:hover {
   letter-spacing: 0.04em !important;
 }
 
-/* ── ICON BUTTONS (circle icons, small actions) ── */
-.admin-content button[class*="rounded-full"][class*="p-"],
-.admin-content button[class*="rounded-lg"][class*="p-1"] {
-  border: 2px solid transparent !important;
-  box-shadow: none !important;
-}
-.admin-content button[class*="rounded-full"][class*="p-"]:hover,
-.admin-content button[class*="rounded-lg"][class*="p-1"]:hover {
-  border-color: #111 !important;
-  box-shadow: 2px 2px 0 #111 !important;
-  transform: translate(-1px, -1px) !important;
-}
-
-/* ── DISABLED buttons — desaturated, no hover ── */
+/* DISABLED buttons */
 .admin-content button:disabled {
   opacity: 0.5 !important;
   cursor: not-allowed !important;
@@ -2043,35 +1872,38 @@ aside a:hover {
   box-shadow: 2px 2px 0 rgba(0,0,0,0.15) !important;
 }
 
-/* ── GLOBAL CURSOR for clickable things ── */
+/* Spring bounce on button click */
+.admin-content button:not(:disabled):active,
+.admin-content a[class*="rounded"]:active {
+  animation: none !important;
+  transform: translate(3px, 3px) scale(0.96) !important;
+  box-shadow: 1px 1px 0 #111 !important;
+  transition: transform 0.06s ease, box-shadow 0.06s ease !important;
+}
+
+/* Cursor */
 .admin-content button,
 .admin-content [role="button"],
-.admin-content [onClick],
 aside button,
 aside a {
   cursor: pointer !important;
 }
 
 /* ══════════════════════════════════════════════════════
-   COMIC ANIMATIONS — POP · SPRING · WIGGLE · BURST · FLOAT
+   COMIC ANIMATIONS
    ══════════════════════════════════════════════════════ */
 
-/* ── 1. POP-IN: cards appear with spring bounce ── */
 @keyframes comic-pop-in {
   0%   { opacity: 0; transform: scale(0.7) rotate(-2deg); }
   55%  { opacity: 1; transform: scale(1.06) rotate(1deg); }
   75%  { transform: scale(0.97) rotate(-0.5deg); }
   100% { opacity: 1; transform: scale(1) rotate(0deg); }
 }
-
-/* ── 2. SLIDE-UP-POP: list items enter from below ── */
 @keyframes comic-slide-up {
   0%   { opacity: 0; transform: translateY(24px) scale(0.95); }
   60%  { opacity: 1; transform: translateY(-4px) scale(1.02); }
   100% { opacity: 1; transform: translateY(0) scale(1); }
 }
-
-/* ── 3. WIGGLE: hover on sidebar items, tabs ── */
 @keyframes comic-wiggle {
   0%,100% { transform: rotate(0deg); }
   20%     { transform: rotate(-3deg); }
@@ -2079,22 +1911,16 @@ aside a {
   60%     { transform: rotate(-2deg); }
   80%     { transform: rotate(2deg); }
 }
-
-/* ── 4. STAMP: badges/tags appear with a stamp effect ── */
 @keyframes comic-stamp {
   0%   { opacity: 0; transform: scale(2.5) rotate(-12deg); filter: blur(2px); }
   60%  { opacity: 1; transform: scale(0.92) rotate(2deg); filter: blur(0); }
   80%  { transform: scale(1.05) rotate(-1deg); }
   100% { transform: scale(1) rotate(0deg); }
 }
-
-/* ── 5. FLOAT: subtle up-down for hero elements ── */
 @keyframes comic-float {
   0%,100% { transform: translateY(0px); }
   50%     { transform: translateY(-6px); }
 }
-
-/* ── 6. SHAKE: error animation ── */
 @keyframes comic-shake {
   0%,100% { transform: translateX(0); }
   15%     { transform: translateX(-6px) rotate(-1deg); }
@@ -2104,52 +1930,35 @@ aside a {
   75%     { transform: translateX(-3px); }
   90%     { transform: translateX(3px); }
 }
-
-/* ── 7. PULSE BORDER: call-to-action pulsing outline ── */
 @keyframes comic-pulse-border {
   0%,100% { box-shadow: 4px 4px 0 #111, 0 0 0 0 rgba(249,115,22,0); }
   50%     { box-shadow: 4px 4px 0 #111, 0 0 0 6px rgba(249,115,22,0.25); }
 }
-
-/* ── 8. COUNTER TICK: number counting up animation ── */
-@keyframes comic-tick {
-  0%   { transform: translateY(8px); opacity: 0; }
-  100% { transform: translateY(0); opacity: 1; }
+@keyframes comic-badge-float {
+  0%,100% { transform: translateY(0) rotate(-1deg); }
+  50%     { transform: translateY(-5px) rotate(1deg); }
 }
-
-/* ── 9. BORDER DRAW: border appears drawn on (for cards) ── */
 @keyframes comic-border-draw {
   0%   { box-shadow: 0 0 0 #111; border-color: transparent; }
   100% { box-shadow: 4px 4px 0 #111; border-color: #111; }
 }
 
-/* ── 10. HERO BADGE FLOAT ── */
-@keyframes comic-badge-float {
-  0%,100% { transform: translateY(0) rotate(-1deg); }
-  50%     { transform: translateY(-5px) rotate(1deg); }
-}
-
-/* ═══ APPLY ANIMATIONS TO ELEMENTS ═══ */
-
-/* Cards pop in when page loads */
+/* Apply animations */
 .admin-content .rounded-2xl,
 .admin-content .rounded-xl {
   animation: comic-border-draw 0.3s ease forwards;
 }
 
-/* Stat cards pop in with stagger */
-.scroll-reveal-children-visible > *:nth-child(1) { animation: comic-pop-in 0.4s cubic-bezier(0.34,1.56,0.64,1) both, scroll-reveal-in 0s; animation-delay: 0ms; }
+.scroll-reveal-children-visible > *:nth-child(1) { animation: comic-pop-in 0.4s cubic-bezier(0.34,1.56,0.64,1) both; animation-delay: 0ms; }
 .scroll-reveal-children-visible > *:nth-child(2) { animation: comic-pop-in 0.4s cubic-bezier(0.34,1.56,0.64,1) both; animation-delay: 60ms; }
 .scroll-reveal-children-visible > *:nth-child(3) { animation: comic-pop-in 0.4s cubic-bezier(0.34,1.56,0.64,1) both; animation-delay: 120ms; }
 .scroll-reveal-children-visible > *:nth-child(4) { animation: comic-pop-in 0.4s cubic-bezier(0.34,1.56,0.64,1) both; animation-delay: 180ms; }
 .scroll-reveal-children-visible > *:nth-child(5) { animation: comic-pop-in 0.4s cubic-bezier(0.34,1.56,0.64,1) both; animation-delay: 240ms; }
 
-/* Scroll reveal uses slide-up-pop */
 .scroll-reveal.scroll-reveal-visible {
   animation: comic-slide-up 0.45s cubic-bezier(0.34,1.56,0.64,1) both !important;
 }
 
-/* Hero stat badges float */
 .hero-gradient .rounded-full,
 .hero-gradient [class*="rounded-full"] {
   animation: comic-badge-float 3s ease-in-out infinite;
@@ -2157,43 +1966,28 @@ aside a {
 .hero-gradient .rounded-full:nth-child(2) { animation-delay: 0.8s; }
 .hero-gradient .rounded-full:nth-child(3) { animation-delay: 1.6s; }
 
-/* Primary buttons: pulse when idle to draw attention */
 .admin-content button[style*="background: linear-gradient(135deg,#F97316"]:not(:hover):not(:active),
 .admin-content a[style*="background: #F97316"]:not(:hover) {
   animation: comic-pulse-border 2.5s ease-in-out infinite;
 }
 
-/* Spring bounce on button click — via CSS :active */
-.admin-content button:not(:disabled):active,
-.admin-content a[class*="rounded"]:active {
-  animation: none !important;
-  transform: translate(3px, 3px) scale(0.96) !important;
-  box-shadow: 1px 1px 0 #111 !important;
-  transition: transform 0.06s ease, box-shadow 0.06s ease !important;
-}
-
-/* Sidebar section icons wiggle on hover */
 aside button:hover svg,
 aside a:hover svg {
   animation: comic-wiggle 0.4s ease;
 }
 
-/* Status badges stamp in */
 .admin-content .rounded-full[class*="bg-"] {
   animation: comic-stamp 0.35s cubic-bezier(0.34,1.56,0.64,1) both;
 }
 
-/* Error shake — apply via JS by adding class .shake */
 .comic-shake {
   animation: comic-shake 0.5s cubic-bezier(0.36,0.07,0.19,0.97) both !important;
 }
 
-/* Floating action icon in page headers */
 .admin-content [style*="linear-gradient(135deg,#F97316"] {
   animation: comic-float 4s ease-in-out infinite;
 }
 
-/* Table rows slide in */
 .admin-content table tbody tr {
   animation: comic-slide-up 0.3s cubic-bezier(0.34,1.56,0.64,1) both;
 }
@@ -2208,7 +2002,6 @@ aside a:hover svg {
 .admin-content table tbody tr:nth-child(9)  { animation-delay: 260ms; }
 .admin-content table tbody tr:nth-child(10) { animation-delay: 290ms; }
 
-/* Sidebar nav items: slide in from left on mount */
 @keyframes sidebar-slide-in {
   0%   { opacity: 0; transform: translateX(-12px); }
   100% { opacity: 1; transform: translateX(0); }
@@ -2221,7 +2014,7 @@ aside nav a:nth-child(2) { animation-delay: 60ms; }
 aside nav a:nth-child(3) { animation-delay: 90ms; }
 aside nav a:nth-child(4) { animation-delay: 120ms; }
 
-/* ── Reduced motion: respect user preference ── */
+/* ── Reduced motion ── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;

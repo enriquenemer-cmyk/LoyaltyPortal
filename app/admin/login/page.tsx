@@ -1,63 +1,14 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
-function Particles() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d')!;
-    let raf: number;
-    const resize = () => { canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight; };
-    resize();
-    window.addEventListener('resize', resize);
-    const count = 55;
-    const dots = Array.from({ length: count }, () => ({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      r: Math.random() * 2 + 0.5,
-      vx: (Math.random() - 0.5) * 0.35,
-      vy: (Math.random() - 0.5) * 0.35,
-      o: Math.random() * 0.5 + 0.15,
-    }));
-    const draw = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      for (const d of dots) {
-        d.x += d.vx; d.y += d.vy;
-        if (d.x < 0) d.x = canvas.width;
-        if (d.x > canvas.width) d.x = 0;
-        if (d.y < 0) d.y = canvas.height;
-        if (d.y > canvas.height) d.y = 0;
-        ctx.beginPath();
-        ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255,255,255,${d.o})`;
-        ctx.fill();
-      }
-      for (let i = 0; i < dots.length; i++) {
-        for (let j = i + 1; j < dots.length; j++) {
-          const dx = dots[i].x - dots[j].x;
-          const dy = dots[i].y - dots[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 90) {
-            ctx.beginPath();
-            ctx.moveTo(dots[i].x, dots[i].y);
-            ctx.lineTo(dots[j].x, dots[j].y);
-            ctx.strokeStyle = `rgba(255,255,255,${0.12 * (1 - dist / 90)})`;
-            ctx.lineWidth = 0.6;
-            ctx.stroke();
-          }
-        }
-      }
-      raf = requestAnimationFrame(draw);
-    };
-    draw();
-    return () => { cancelAnimationFrame(raf); window.removeEventListener('resize', resize); };
-  }, []);
-  return <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none" />;
-}
+const BENEFITS = [
+  { text: 'Genera y gestiona premios QR', svg: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" /> },
+  { text: 'Panel de cajero por sucursal', svg: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /> },
+  { text: 'Reportes y estadísticas en vivo', svg: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /> },
+];
 
 export default function LoginPage() {
   const router = useRouter();
@@ -88,172 +39,126 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex">
-      {/* LEFT COLUMN — orange brand side, hidden on mobile */}
+    <div
+      className="min-h-screen flex"
+      style={{
+        background: '#FAFAF9',
+        backgroundImage: 'radial-gradient(circle, rgba(0,0,0,0.06) 1px, transparent 1px)',
+        backgroundSize: '20px 20px',
+      }}
+    >
+
+      {/* LEFT COLUMN — brand panel */}
       <div
-        className="hidden md:flex md:w-[40%] flex-col justify-between p-12 relative overflow-hidden"
-        style={{ background: 'linear-gradient(160deg,#0a2218 0%,#1a6b3c 60%,#0a2218 100%)' }}
+        className="hidden md:flex md:w-[42%] flex-col justify-between relative overflow-hidden"
+        style={{ background: '#1a6b3c', borderRight: '4px solid #111' }}
       >
-        {/* Animated particles */}
-        <Particles />
-
-        {/* Decorative circles */}
+        {/* Halftone texture */}
         <div
-          className="absolute pointer-events-none rounded-full"
-          style={{ width: 384, height: 384, background: 'rgba(255,255,255,0.05)', bottom: -80, right: -80 }}
+          className="absolute inset-0 pointer-events-none"
+          style={{ backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.14) 1.5px, transparent 1.5px)', backgroundSize: '18px 18px' }}
         />
-        <div
-          className="absolute pointer-events-none rounded-full"
-          style={{ width: 256, height: 256, background: 'rgba(255,255,255,0.05)', top: -60, left: -60 }}
-        />
+        {/* Bold sticker shapes */}
+        <div className="absolute pointer-events-none" style={{ width: 180, height: 180, borderRadius: 32, background: '#F97316', border: '3px solid #111', top: -50, right: -50, transform: 'rotate(18deg)' }} />
+        <div className="absolute pointer-events-none" style={{ width: 90, height: 90, borderRadius: '50%', background: '#fff', border: '3px solid #111', bottom: 60, left: -40 }} />
 
-        {/* Decorative geometric pattern — abstract QR/rewards motif */}
-        <svg
-          className="absolute inset-0 w-full h-full pointer-events-none"
-          viewBox="0 0 400 800"
-          preserveAspectRatio="xMidYMid slice"
-          aria-hidden="true"
-        >
-          {/* Rounded squares suggesting QR modules */}
-          <rect x="40" y="90" width="46" height="46" rx="10" fill="rgba(255,255,255,0.06)" />
-          <rect x="100" y="90" width="46" height="46" rx="10" fill="rgba(255,255,255,0.04)" />
-          <rect x="40" y="150" width="46" height="46" rx="10" fill="rgba(255,255,255,0.04)" />
-          <rect x="290" y="120" width="60" height="60" rx="14" fill="rgba(255,255,255,0.05)" />
-          {/* Translucent circles suggesting data points / coins */}
-          <circle cx="330" cy="560" r="70" fill="rgba(255,255,255,0.04)" />
-          <circle cx="60" cy="640" r="44" fill="rgba(255,255,255,0.05)" />
-          <circle cx="350" cy="680" r="20" fill="rgba(255,255,255,0.07)" />
-          {/* Thin outlined rounded square — like a QR frame corner */}
-          <rect x="250" y="600" width="90" height="90" rx="18" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="2" />
-          <rect x="270" y="620" width="50" height="50" rx="10" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="1.5" />
-        </svg>
-
-        {/* Top spacer */}
-        <div />
+        {/* Top logo mark */}
+        <div className="relative z-10 p-8 flex items-center gap-2.5">
+          <span style={{ width: 10, height: 10, borderRadius: 3, background: '#F97316', border: '2px solid #111' }} />
+          <span style={{ color: '#fff', fontSize: 12, fontWeight: 800, letterSpacing: '0.14em', textTransform: 'uppercase' }}>3E by ENM</span>
+        </div>
 
         {/* Centered content */}
-        <div className="relative z-10 flex flex-col items-center text-center gap-6">
-          {/* Logo ST */}
-          <div className="relative flex items-center justify-center" style={{ animation: 'float 4s ease-in-out infinite' }}>
+        <div className="relative z-10 flex flex-col items-center text-center gap-7 px-10">
+          <div style={{ background: '#fff', borderRadius: 20, padding: 22, border: '2px solid #111', boxShadow: '4px 4px 0 #111' }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/logo-3e-oficial.webp" alt="3E by ENM" width={220} height={220} style={{ objectFit: 'contain', mixBlendMode: 'multiply' }} />
+            <img src="/logo-3e-oficial.webp" alt="3E by ENM" width={130} height={130} style={{ objectFit: 'contain', display: 'block' }} />
           </div>
 
           <div>
-            <p className="text-white font-black text-3xl leading-tight">3E</p>
-            <p className="text-white/60 text-base mt-1">Plataforma de Premios QR</p>
+            <h2 style={{ color: 'white', fontSize: 32, fontWeight: 900, letterSpacing: '-0.03em', lineHeight: 1.08, marginBottom: 10 }}>
+              Plataforma de<br />Premios QR
+            </h2>
+            <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: 14, fontWeight: 500, lineHeight: 1.6 }}>
+              Gestiona, genera y monitorea<br />tus premios en tiempo real.
+            </p>
           </div>
 
-          {/* Divider */}
-          <div className="w-16 h-px bg-white/20" />
-
-          {/* Benefit bullets */}
-          <ul className="text-white/80 text-sm space-y-3 text-left">
-            {[
-              'Genera y gestiona premios QR',
-              'Panel de cajero por sucursal',
-              'Reportes y estadísticas en tiempo real',
-            ].map((benefit) => (
-              <li key={benefit} className="flex items-center gap-3">
-                <span
-                  className="shrink-0 w-6 h-6 rounded-full flex items-center justify-center"
-                  style={{ background: 'rgba(255,255,255,0.18)', border: '1px solid rgba(255,255,255,0.25)' }}
-                >
-                  <svg
-                    className="w-3.5 h-3.5 text-white"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2.5}
-                      d="M5 13l4 4L19 7"
-                    />
-                  </svg>
+          <ul className="text-left space-y-3.5 w-full max-w-[280px]">
+            {BENEFITS.map((b) => (
+              <li key={b.text} className="flex items-center gap-3" style={{ background: 'rgba(255,255,255,0.1)', border: '2px solid rgba(17,17,17,0.4)', borderRadius: 10, padding: '8px 12px' }}>
+                <span style={{ width: 26, height: 26, borderRadius: 7, background: '#F97316', border: '2px solid #111', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <svg width="14" height="14" fill="none" stroke="#111" viewBox="0 0 24 24">{b.svg}</svg>
                 </span>
-                {benefit}
+                <span style={{ color: '#fff', fontSize: 13, fontWeight: 700 }}>{b.text}</span>
               </li>
             ))}
           </ul>
         </div>
 
-        {/* Bottom copyright */}
-        <p className="relative z-10 text-white/30 text-xs text-center">
-          {new Date().getFullYear()} · 3E
+        <p className="relative z-10 text-center pb-8" style={{ color: 'rgba(255,255,255,0.6)', fontSize: 11, fontWeight: 600 }}>
+          © {new Date().getFullYear()} 3E by ENM · Todos los derechos reservados
         </p>
       </div>
 
-      {/* RIGHT COLUMN — white form side */}
-      <div className="flex-1 md:w-[60%] bg-white flex flex-col items-center justify-between py-12 px-8">
-        {/* Top spacer (keeps content vertically centered) */}
-        <div />
+      {/* RIGHT COLUMN — form */}
+      <div className="flex-1 flex flex-col items-center justify-center py-12 px-6 md:px-16">
 
-        {/* Form content */}
-        <div className="w-full max-w-sm mx-auto">
-          {/* Logo + heading */}
-          <div className="mb-8 flex flex-col items-center gap-3">
-            {/* Show logo on mobile (left panel is hidden) */}
-            <div className="md:hidden">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/logo-3e-oficial.webp" alt="3E by ENM" width={110} height={110} style={{ objectFit: 'contain' }} />
-            </div>
+        {/* Mobile logo */}
+        <div className="md:hidden flex flex-col items-center mb-8 gap-3">
+          <div style={{ background: '#fff', borderRadius: 16, padding: 14, border: '2px solid #111', boxShadow: '3px 3px 0 #111' }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo-3e-oficial.webp" alt="3E" width={56} height={56} style={{ objectFit: 'contain', display: 'block' }} />
+          </div>
+          <span style={{ color: '#111', fontSize: 13, fontWeight: 800 }}>3E by ENM</span>
+        </div>
 
-            <div className="text-center">
-              <h1 className="text-2xl font-black text-[#1C1917] leading-tight">
-                Bienvenido de vuelta
-              </h1>
-              <p className="text-stone-400 text-sm mt-1">
-                Ingresa tus credenciales para continuar
-              </p>
-            </div>
+        <div className="w-full max-w-sm" style={{ background: '#fff', border: '2px solid #111', borderRadius: 20, boxShadow: '6px 6px 0 #111', padding: '2.25rem' }}>
+          {/* Heading */}
+          <div className="mb-7">
+            <h1 style={{ fontSize: 26, fontWeight: 900, color: '#111', letterSpacing: '-0.03em', lineHeight: 1.15, marginBottom: 8 }}>
+              Bienvenido de vuelta
+            </h1>
+            <p style={{ color: '#6b7280', fontSize: 14, fontWeight: 500 }}>
+              Ingresa tus credenciales para acceder al panel.
+            </p>
           </div>
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-5">
+
+            {/* Username */}
             <div>
-              <label className="block text-sm font-semibold text-[#1C1917] mb-2">Usuario</label>
+              <label style={{ display: 'block', fontSize: 13, fontWeight: 800, color: '#111', marginBottom: 6 }}>Usuario</label>
               <div className="relative">
-                <svg
-                  className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                  />
+                <svg className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: '#111', opacity: 0.5 }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                 </svg>
                 <input
                   type="text"
                   value={form.username}
                   onChange={(e) => setForm((p) => ({ ...p, username: e.target.value }))}
                   required
-                  placeholder="admin"
-                  className="w-full bg-[#FAFAF9] border border-[#E8E3DC] rounded-xl pl-10 pr-4 py-3.5 text-sm text-[#1C1917] placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-[#F97316]/20 focus:border-[#F97316] focus:bg-white transition-all"
+                  placeholder="Nombre de usuario"
+                  className="w-full pl-10 pr-4 py-2.5 text-sm rounded-[10px] transition-all focus:outline-none"
+                  style={{ border: '2px solid #111', color: '#111', boxShadow: '3px 3px 0 rgba(0,0,0,0.12)', fontWeight: 600 }}
+                  onFocus={e => { e.currentTarget.style.borderColor = '#F97316'; e.currentTarget.style.boxShadow = '3px 3px 0 rgba(249,115,22,0.4)'; }}
+                  onBlur={e => { e.currentTarget.style.borderColor = '#111'; e.currentTarget.style.boxShadow = '3px 3px 0 rgba(0,0,0,0.12)'; }}
                 />
               </div>
             </div>
 
+            {/* Password */}
             <div>
-              <label className="block text-sm font-semibold text-[#1C1917] mb-2">Contraseña</label>
+              <div className="flex items-center justify-between mb-1.5">
+                <label style={{ fontSize: 13, fontWeight: 800, color: '#111' }}>Contraseña</label>
+                <Link href="/admin/forgot-password" style={{ fontSize: 12, color: '#F97316', fontWeight: 700, textDecoration: 'none' }}>
+                  ¿Olvidaste tu contraseña?
+                </Link>
+              </div>
               <div className="relative">
-                <svg
-                  className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                  />
+                <svg className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: '#111', opacity: 0.5 }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                 </svg>
                 <input
                   type="password"
@@ -261,45 +166,56 @@ export default function LoginPage() {
                   onChange={(e) => setForm((p) => ({ ...p, password: e.target.value }))}
                   required
                   placeholder="••••••••"
-                  className="w-full bg-[#FAFAF9] border border-[#E8E3DC] rounded-xl pl-10 pr-4 py-3.5 text-sm text-[#1C1917] placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-[#F97316]/20 focus:border-[#F97316] focus:bg-white transition-all"
+                  className="w-full pl-10 pr-4 py-2.5 text-sm rounded-[10px] transition-all focus:outline-none"
+                  style={{ border: '2px solid #111', color: '#111', boxShadow: '3px 3px 0 rgba(0,0,0,0.12)', fontWeight: 600 }}
+                  onFocus={e => { e.currentTarget.style.borderColor = '#F97316'; e.currentTarget.style.boxShadow = '3px 3px 0 rgba(249,115,22,0.4)'; }}
+                  onBlur={e => { e.currentTarget.style.borderColor = '#111'; e.currentTarget.style.boxShadow = '3px 3px 0 rgba(0,0,0,0.12)'; }}
                 />
               </div>
             </div>
 
-            <div className="flex items-center gap-2">
+            {/* Remember me */}
+            <div className="flex items-center gap-2.5">
               <input
                 type="checkbox"
                 id="rememberMe"
                 checked={rememberMe}
                 onChange={(e) => setRememberMe(e.target.checked)}
-                className="w-4 h-4 accent-[#F97316] cursor-pointer"
+                className="w-[18px] h-[18px] cursor-pointer"
+                style={{ accentColor: '#F97316', border: '2px solid #111', borderRadius: 4, boxShadow: '2px 2px 0 #111' }}
               />
-              <label htmlFor="rememberMe" className="text-sm text-[#1C1917] cursor-pointer select-none">
-                Recordarme por 30 días
+              <label htmlFor="rememberMe" style={{ fontSize: 13, color: '#374151', fontWeight: 600, cursor: 'pointer' }}>
+                Mantener sesión iniciada
               </label>
             </div>
 
+            {/* Error */}
             {error && (
-              <div className="bg-red-50 border border-red-200 text-red-700 rounded-xl px-4 py-3 text-sm flex items-center gap-2.5">
-                <svg className="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                  <path
-                    fillRule="evenodd"
-                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
-                    clipRule="evenodd"
-                  />
+              <div className="flex items-center gap-2.5 px-4 py-3 rounded-[10px]" style={{ background: '#fef2f2', border: '2px solid #111', boxShadow: '3px 3px 0 rgba(220,38,38,0.3)' }}>
+                <svg style={{ width: 16, height: 16, color: '#dc2626', flexShrink: 0 }} fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
                 </svg>
-                {error}
+                <span style={{ fontSize: 13, color: '#dc2626', fontWeight: 700 }}>{error}</span>
               </div>
             )}
 
+            {/* Submit */}
             <button
               type="submit"
               disabled={loading}
-              className="w-full text-white font-bold py-4 rounded-xl transition-all text-base disabled:opacity-60 mt-2"
+              className="w-full py-3 rounded-[12px] text-white text-sm transition-all"
               style={{
-                background: 'linear-gradient(135deg,#F97316,#ea6a0a)',
-                boxShadow: loading ? 'none' : '0 8px 24px rgba(249,115,22,0.40)',
+                background: loading ? '#6b9e7e' : '#F97316',
+                border: '2.5px solid #111',
+                boxShadow: loading ? 'none' : '4px 4px 0 #111',
+                fontWeight: 800,
+                cursor: loading ? 'not-allowed' : 'pointer',
+                marginTop: 4,
               }}
+              onMouseEnter={e => { if (!loading) { (e.currentTarget as HTMLButtonElement).style.transform = 'translate(-2px, -2px)'; (e.currentTarget as HTMLButtonElement).style.boxShadow = '6px 6px 0 #111'; } }}
+              onMouseLeave={e => { if (!loading) { (e.currentTarget as HTMLButtonElement).style.transform = 'translate(0, 0)'; (e.currentTarget as HTMLButtonElement).style.boxShadow = '4px 4px 0 #111'; } }}
+              onMouseDown={e => { if (!loading) { (e.currentTarget as HTMLButtonElement).style.transform = 'translate(2px, 2px)'; (e.currentTarget as HTMLButtonElement).style.boxShadow = '1px 1px 0 #111'; } }}
+              onMouseUp={e => { if (!loading) { (e.currentTarget as HTMLButtonElement).style.transform = 'translate(-2px, -2px)'; (e.currentTarget as HTMLButtonElement).style.boxShadow = '6px 6px 0 #111'; } }}
             >
               {loading ? (
                 <span className="flex items-center justify-center gap-2">
@@ -310,25 +226,18 @@ export default function LoginPage() {
                   Iniciando sesión...
                 </span>
               ) : (
-                'Entrar al panel →'
+                'Iniciar sesión'
               )}
             </button>
-
-            <div className="text-center">
-              <Link
-                href="/admin/forgot-password"
-                className="text-sm text-[#6b7280] hover:text-[#F97316] transition-colors"
-              >
-                ¿Olvidaste tu contraseña?
-              </Link>
-            </div>
           </form>
-        </div>
 
-        {/* Bottom copyright */}
-        <p className="text-stone-300 text-xs mt-8">
-          © {new Date().getFullYear()} 3E
-        </p>
+          {/* Divider */}
+          <div className="mt-7 pt-5" style={{ borderTop: '2px dashed rgba(17,17,17,0.15)' }}>
+            <p style={{ fontSize: 11, color: '#9ca3af', textAlign: 'center', fontWeight: 600 }}>
+              © {new Date().getFullYear()} 3E by ENM · Acceso restringido al personal autorizado
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );

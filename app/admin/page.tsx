@@ -315,8 +315,8 @@ function PeriodComparisonChart({ claims }: { claims: Claim[] }) {
   const allVals = [...currentCounts.slice(1, maxDays + 1), ...prevCounts.slice(1, maxDays + 1)];
   const maxVal = Math.max(...allVals, 1);
 
-  const currentMonthName = now.toLocaleDateString('es-MX', { month: 'long' });
-  const prevMonthName = prevMonthDate.toLocaleDateString('es-MX', { month: 'long' });
+  const currentMonthName = now.toLocaleDateString('es-CO', { month: 'long' });
+  const prevMonthName = prevMonthDate.toLocaleDateString('es-CO', { month: 'long' });
 
   return (
     <div className="bg-white rounded-2xl border border-[#E8E3DC] p-6" style={{ boxShadow: cardShadow }}>
@@ -598,25 +598,25 @@ function CustomerLifecycleFunnel({ claims }: { claims: Claim[] }) {
       label: 'Nuevos este mes',
       sublabel: 'Primera visita en el mes actual',
       count: firstTimers,
-      color: '#BAE6FD',
-      textColor: '#1E3A8A',
-      accentColor: '#0EA5E9',
+      color: '#FED7AA',
+      textColor: '#9A3412',
+      accentColor: '#F97316',
     },
     {
       label: 'Recurrentes',
       sublabel: '2+ cobros en total',
       count: returned,
-      color: '#7DD3FC',
-      textColor: '#7c2d12',
-      accentColor: '#0891B2',
+      color: '#86EFAC',
+      textColor: '#14532D',
+      accentColor: '#22C55E',
     },
     {
       label: 'Leales',
       sublabel: '3+ cobros en total',
       count: loyal,
-      color: '#0891B2',
-      textColor: '#EFF6FF',
-      accentColor: '#0369A1',
+      color: '#1a6b3c',
+      textColor: '#F0FDF4',
+      accentColor: '#F97316',
     },
     {
       label: 'Dormidos',
@@ -844,7 +844,7 @@ function ExpiringAlert({ prizes }: { prizes: ExpiringPrize[] }) {
       </div>
       <ul className="flex flex-col gap-1.5">
         {prizes.map((p) => {
-          const date = new Date(p.end_date + 'T00:00:00').toLocaleDateString('es-MX', {
+          const date = new Date(p.end_date + 'T00:00:00').toLocaleDateString('es-CO', {
             weekday: 'short',
             day: 'numeric',
             month: 'short',
@@ -1021,10 +1021,10 @@ function ROIEstimateCard({ claims }: { claims: Claim[] }) {
   const deliveredTotal = claims.filter((c) => c.status === 'delivered').length;
   if (deliveredTotal === 0) return null;
 
-  const ESTIMATED_TICKET = 180; // MXN — approximate average ticket
+  const ESTIMATED_TICKET = 28000; // COP — approximate average ticket
   const additionalRevenue = thisMonthDelivered * ESTIMATED_TICKET;
-  const formatted = new Intl.NumberFormat('es-MX', {
-    style: 'currency', currency: 'MXN', maximumFractionDigits: 0,
+  const formatted = new Intl.NumberFormat('es-CO', {
+    style: 'currency', currency: 'COP', maximumFractionDigits: 0,
   }).format(additionalRevenue);
 
   return (
@@ -1043,7 +1043,7 @@ function ROIEstimateCard({ claims }: { claims: Claim[] }) {
           Este mes generaste aprox. <span style={{ color: '#059669' }}>{formatted}</span> adicionales gracias a los premios
         </p>
         <p className="text-[11px] text-orange-600 mt-0.5">
-          Aproximación: {thisMonthDelivered} premios entregados este mes × $180 MXN ticket promedio
+          Aproximación: {thisMonthDelivered} premios entregados este mes × $28.000 COP ticket promedio
         </p>
       </div>
     </div>
@@ -1523,7 +1523,7 @@ export default function AdminDashboard() {
     else setGreeting('Buenas noches');
 
     setTodayLabel(
-      new Date().toLocaleDateString('es-MX', { weekday: 'long', day: 'numeric', month: 'long' })
+      new Date().toLocaleDateString('es-CO', { weekday: 'long', day: 'numeric', month: 'long' })
     );
   }, []);
 
@@ -1667,7 +1667,7 @@ export default function AdminDashboard() {
     const d = new Date();
     d.setDate(d.getDate() - (6 - i));
     const iso = d.toISOString().split('T')[0];
-    const label = d.toLocaleDateString('es-MX', { weekday: 'short' }).slice(0, 2);
+    const label = d.toLocaleDateString('es-CO', { weekday: 'short' }).slice(0, 2);
     const count = filteredClaims.filter((c) => (c.claimed_at ?? '').startsWith(iso)).length;
     return { label, count };
   });

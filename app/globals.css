@@ -1697,11 +1697,14 @@ aside a:hover {
   opacity: 0.12 !important;
 }
 
-/* ── Section labels uppercase ── */
-.admin-content [class*="tracking-widest"],
-.admin-content [class*="uppercase"][class*="text-xs"],
-.admin-content [class*="uppercase"][class*="text-[10px]"],
-.admin-content [class*="uppercase"][class*="text-stone"] {
+/* ── Section labels uppercase (excludes table headers, which have their
+   own light-on-dark styling above — this rule used to also match any
+   <th> combining "uppercase" + "text-xs", turning header text invisible
+   black-on-black) ── */
+.admin-content [class*="tracking-widest"]:not(th),
+.admin-content [class*="uppercase"][class*="text-xs"]:not(th),
+.admin-content [class*="uppercase"][class*="text-[10px]"]:not(th),
+.admin-content [class*="uppercase"][class*="text-stone"]:not(th) {
   color: #111 !important;
   font-weight: 900 !important;
   letter-spacing: 0.12em !important;

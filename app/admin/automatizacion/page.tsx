@@ -11,6 +11,15 @@ type InactiveCustomer = {
   last_claim_date: string;
   days_inactive: number;
   wa_url: string;
+  message: string;
+  prize_url: string;
+};
+
+type RunSummary = {
+  executed: boolean;
+  ai_messaged: number;
+  skipped_cooldown: number;
+  failed: number;
 };
 
 function formatDate(dateStr: string) {
@@ -35,18 +44,20 @@ function DaysChip({ days }: { days: number }) {
 export default function AutomatizacionPage() {
   const [customers, setCustomers] = useState<InactiveCustomer[]>([]);
   const [loading, setLoading] = useState(false);
+  const [executing, setExecuting] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [daysThreshold, setDaysThreshold] = useState(30);
   const [pendingDays, setPendingDays] = useState(30);
   const [total, setTotal] = useState(0);
+  const [summary, setSummary] = useState<RunSummary | null>(null);
 
-  async function fetchInactive(days: number) {
-    setLoading(true);
+  async function fetchInactive(days: number, execute = false) {
+    if (execute) setExecuting(true); else setLoading(true);
     try {
       const res = await fetch('/api/automation/inactive', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ days }),
+        body: JSON.stringify({ days, execute }),
       });
       const data = await res.json();
       if (res.ok) {
@@ -54,17 +65,33 @@ export default function AutomatizacionPage() {
         setTotal(data.total ?? 0);
         setDaysThreshold(days);
         setLoaded(true);
+        setSummary(execute ? {
+          executed: data.executed,
+          ai_messaged: data.ai_messaged ?? 0,
+          skipped_cooldown: data.skipped_cooldown ?? 0,
+          failed: data.failed ?? 0,
+        } : null);
       }
     } catch {
       // silent
     } finally {
       setLoading(false);
+      setExecuting(false);
     }
   }
 
   useEffect(() => {
     fetchInactive(30);
   }, []);
+
+  function handleRunAI() {
+    if (customers.length === 0) return;
+    const confirmed = window.confirm(
+      `Esto va a generar con IA un premio y mensaje personalizado para hasta 20 clientes, y enviarlo YA por email y notificación push. ¿Continuar?`
+    );
+    if (!confirmed) return;
+    fetchInactive(daysThreshold, true);
+  }
 
   function handleSendAll() {
     if (customers.length === 0) return;
@@ -126,7 +153,21 @@ export default function AutomatizacionPage() {
                   {loading ? 'Cargando…' : 'Filtrar'}
                 </button>
               </div>
-              {/* Send all */}
+              {/* Run AI winback engine */}
+              {customers.length > 0 && (
+                <button
+                  onClick={handleRunAI}
+                  disabled={executing}
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold text-white transition-all shadow-sm disabled:opacity-60"
+                  style={{ background: '#F97316' }}
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                  {executing ? 'Generando y enviando…' : `Ejecutar reactivación IA (${Math.min(customers.length, 20)})`}
+                </button>
+              )}
+              {/* Send all via manual WhatsApp */}
               {customers.length > 0 && (
                 <button
                   onClick={handleSendAll}
@@ -140,6 +181,14 @@ export default function AutomatizacionPage() {
               )}
             </div>
           </div>
+
+          {summary && (
+            <div className="mx-6 mt-4 px-4 py-3 rounded-xl flex items-center gap-4 flex-wrap text-sm font-semibold" style={{ background: '#FFF7ED', border: '1px solid #FED7AA', color: '#9A3412' }}>
+              <span>✅ {summary.ai_messaged} clientes recibieron premio + mensaje IA por email y push</span>
+              {summary.skipped_cooldown > 0 && <span className="text-stone-500 font-medium">· {summary.skipped_cooldown} ya habían recibido uno hace poco</span>}
+              {summary.failed > 0 && <span className="text-red-600 font-medium">· {summary.failed} fallaron</span>}
+            </div>
+          )}
 
           {loading && (
             <div className="flex items-center justify-center py-16 text-stone-400 gap-3">

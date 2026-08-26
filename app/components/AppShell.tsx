@@ -11,7 +11,10 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
   const isStandaloneAuthPage = pathname === '/admin/login' || pathname === '/admin/forgot-password' || pathname === '/admin/reset-password';
-  const isAdminPage = pathname.startsWith('/admin') && !isStandaloneAuthPage;
+  // Scanned from a phone camera (QR sticker on a physical inventory unit) —
+  // needs a minimal mobile-first page, not the full desktop sidebar shell.
+  const isInventoryUnitPage = pathname.startsWith('/admin/inventario/unidad/');
+  const isAdminPage = pathname.startsWith('/admin') && !isStandaloneAuthPage && !isInventoryUnitPage;
   const isCajeroPage = pathname.startsWith('/cajero');
   const isEmpleadosPage = pathname.startsWith('/empleados');
 
@@ -35,7 +38,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     );
   }
 
-  if (isStandaloneAuthPage || isEmpleadosPage) {
+  if (isStandaloneAuthPage || isInventoryUnitPage || isEmpleadosPage) {
     return <>{children}</>;
   }
 

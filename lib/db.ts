@@ -320,6 +320,38 @@ export async function ensureSchema(): Promise<void> {
       );
       CREATE INDEX IF NOT EXISTS inventory_movements_product_idx ON inventory_movements(product_id);
 
+      -- ── Inventario por unidad: cada bulto/bolsa que llega tiene su propio
+      -- peso real y su propio QR. Se retira entera de una sola vez (no se
+      -- fracciona), descontando exactamente su peso del producto. ──────────
+      CREATE TABLE IF NOT EXISTS inventory_units (
+        id TEXT PRIMARY KEY,
+        product_id TEXT NOT NULL REFERENCES inventory_products(id) ON DELETE CASCADE,
+        order_number TEXT NOT NULL,
+        weight NUMERIC NOT NULL,
+        status TEXT NOT NULL DEFAULT 'available',
+        received_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+        retired_at TIMESTAMPTZ,
+        retired_by TEXT
+      );
+      CREATE INDEX IF NOT EXISTS inventory_units_product_idx ON inventory_units(product_id, status);
+
+      -- ── Proveedores: cada producto de inventario pertenece a un proveedor,
+      -- así cada proveedor tiene su propio "perfil" con los productos que
+      -- provee. ──────────────────────────────────────────────────────────
+      CREATE TABLE IF NOT EXISTS suppliers (
+        id TEXT PRIMARY KEY,
+        restaurant_id TEXT REFERENCES restaurants(id),
+        name TEXT NOT NULL,
+        contact_name TEXT,
+        contact_phone TEXT,
+        contact_email TEXT,
+        notes TEXT,
+        active BOOLEAN NOT NULL DEFAULT TRUE,
+        created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      );
+      ALTER TABLE inventory_products ADD COLUMN IF NOT EXISTS supplier_id TEXT REFERENCES suppliers(id);
+      CREATE INDEX IF NOT EXISTS inventory_products_supplier_idx ON inventory_products(supplier_id);
+
       -- ── Empleados + fichajes (PIN-based clock in/out) ──────────────────
       CREATE TABLE IF NOT EXISTS employees (
         id TEXT PRIMARY KEY,

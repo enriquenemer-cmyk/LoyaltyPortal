@@ -324,7 +324,13 @@ const STATUS_TABS: { key: StatusFilter; label: string }[] = [
 ];
 
 async function fetchWithRetry(url: string, retries = 2): Promise<Response> {
-  try { return await fetch(url); }
+  try {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 10000);
+    const res = await fetch(url, { signal: controller.signal });
+    clearTimeout(timer);
+    return res;
+  }
   catch (err) {
     if (retries > 0) {
       await new Promise(r => setTimeout(r, 1000));

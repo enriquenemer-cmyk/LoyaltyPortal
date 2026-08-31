@@ -389,7 +389,7 @@ export default function AutomatizacionPage() {
         <div className="bg-white rounded-2xl border border-[#E8E3DC] shadow-[0_1px_2px_rgba(28,25,23,0.04),_0_4px_16px_rgba(28,25,23,0.06)] overflow-hidden">
           <div className="px-6 py-4 border-b border-[#E8E3DC]">
             <h2 className="text-lg font-bold text-stone-900">Programar Mensaje</h2>
-            <p className="text-xs text-stone-400 mt-0.5">Programa envíos masivos de mensajes (push y/o email) para una fecha y hora futura.</p>
+            <p className="text-xs text-stone-400 mt-0.5">Programa envíos masivos de mensajes (push y/o email) para una fecha y hora futura. El envío se procesa una vez al día, así que puede salir hasta 24h después de la hora elegida.</p>
           </div>
 
           <form onSubmit={handleCreateScheduled} className="px-6 py-5 border-b border-[#F0EDE8] space-y-4">

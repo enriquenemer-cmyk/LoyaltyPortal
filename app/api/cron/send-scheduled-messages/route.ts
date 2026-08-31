@@ -94,10 +94,12 @@ async function sendDueMessage(msg: {
   }
 }
 
-// Called periodically (e.g. hourly via Vercel Cron) to send any scheduled
-// broadcast messages whose send_at has arrived. Each due message is sent
-// at most once — status flips from 'pending' to 'sent'/'failed' immediately
-// so a retriggered run never double-sends.
+// Called once daily via Vercel Cron (Hobby plan allows at most one run/day
+// per cron job) to send any scheduled broadcast messages whose send_at has
+// arrived. Each due message is sent at most once — status flips from
+// 'pending' to 'sent'/'failed' immediately so a retriggered run never
+// double-sends. Because this only runs once a day, a message's actual send
+// time can lag its configured send_at by up to ~24h.
 export async function GET(request: NextRequest) {
   if (!isCronAuthorized(request)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });

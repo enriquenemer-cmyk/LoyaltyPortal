@@ -7,6 +7,6 @@
     { "path": "/api/cron/run-rules", "schedule": "0 12 * * *" },
     { "path": "/api/cron/weather-events", "schedule": "0 13 * * *" },
     { "path": "/api/cron/detect-fraud", "schedule": "0 14 * * *" },
-    { "path": "/api/cron/send-scheduled-messages", "schedule": "0 * * * *" }
+    { "path": "/api/cron/send-scheduled-messages", "schedule": "0 15 * * *" }
   ]
 }

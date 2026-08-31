@@ -329,11 +329,15 @@ export async function ensureSchema(): Promise<void> {
         order_number TEXT NOT NULL,
         weight NUMERIC NOT NULL,
         status TEXT NOT NULL DEFAULT 'available',
+        location TEXT,
         received_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
         retired_at TIMESTAMPTZ,
         retired_by TEXT
       );
       CREATE INDEX IF NOT EXISTS inventory_units_product_idx ON inventory_units(product_id, status);
+      ALTER TABLE inventory_units ADD COLUMN IF NOT EXISTS location TEXT;
+      ALTER TABLE inventory_products ADD COLUMN IF NOT EXISTS description TEXT;
+      ALTER TABLE inventory_products ADD COLUMN IF NOT EXISTS code TEXT;
 
       -- ── Proveedores: cada producto de inventario pertenece a un proveedor,
       -- así cada proveedor tiene su propio "perfil" con los productos que
@@ -387,9 +391,17 @@ export async function ensureSchema(): Promise<void> {
         employee_id TEXT NOT NULL REFERENCES employees(id) ON DELETE CASCADE,
         clock_in TIMESTAMPTZ NOT NULL,
         clock_out TIMESTAMPTZ,
+        clock_in_lat NUMERIC,
+        clock_in_lng NUMERIC,
+        clock_out_lat NUMERIC,
+        clock_out_lng NUMERIC,
         created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
       );
       CREATE INDEX IF NOT EXISTS time_clock_employee_idx ON time_clock_entries(employee_id);
+      ALTER TABLE time_clock_entries ADD COLUMN IF NOT EXISTS clock_in_lat NUMERIC;
+      ALTER TABLE time_clock_entries ADD COLUMN IF NOT EXISTS clock_in_lng NUMERIC;
+      ALTER TABLE time_clock_entries ADD COLUMN IF NOT EXISTS clock_out_lat NUMERIC;
+      ALTER TABLE time_clock_entries ADD COLUMN IF NOT EXISTS clock_out_lng NUMERIC;
 
       -- ── Capacitación gamificada (quiz con puntos) ──────────────────────
       CREATE TABLE IF NOT EXISTS training_modules (

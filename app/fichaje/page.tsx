@@ -102,14 +102,29 @@ export default function FichajePage() {
     }
   }
 
+  function getLocation(): Promise<{ latitude: number; longitude: number } | null> {
+    return new Promise((resolve) => {
+      if (!('geolocation' in navigator)) {
+        resolve(null);
+        return;
+      }
+      navigator.geolocation.getCurrentPosition(
+        (pos) => resolve({ latitude: pos.coords.latitude, longitude: pos.coords.longitude }),
+        () => resolve(null),
+        { enableHighAccuracy: true, timeout: 5000, maximumAge: 60000 }
+      );
+    });
+  }
+
   async function handleClockAction(action: 'in' | 'out') {
     setLoading(true);
     setError(null);
     try {
+      const location = await getLocation();
       const res = await fetch('/api/employees/clock', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action }),
+        body: JSON.stringify({ action, ...(location ?? {}) }),
       });
       const data = await res.json();
       if (!res.ok) {

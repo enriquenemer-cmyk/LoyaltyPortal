@@ -8,7 +8,9 @@ type InventoryProduct = {
   id: string;
   restaurant_id: string | null;
   name: string;
+  code: string | null;
   unit: string;
+  description: string | null;
   current_stock: string;
   min_stock_alert: string;
   active: boolean;
@@ -25,7 +27,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
 
   try {
     const body = await req.json();
-    const { name, unit, min_stock_alert, active } = body ?? {};
+    const { name, unit, min_stock_alert, active, description, code } = body ?? {};
 
     const fields: string[] = [];
     const values: unknown[] = [];
@@ -38,6 +40,14 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
     if (unit !== undefined) {
       fields.push(`unit = $${idx++}`);
       values.push(unit);
+    }
+    if (description !== undefined) {
+      fields.push(`description = $${idx++}`);
+      values.push(description);
+    }
+    if (code !== undefined) {
+      fields.push(`code = $${idx++}`);
+      values.push(code);
     }
     if (min_stock_alert !== undefined) {
       fields.push(`min_stock_alert = $${idx++}`);
@@ -56,7 +66,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
 
     const pool = getPool();
     const result = await pool.query<InventoryProduct>(
-      `UPDATE inventory_products SET ${fields.join(', ')} WHERE id = $${idx} RETURNING id, restaurant_id, name, unit, current_stock, min_stock_alert, active, created_at`,
+      `UPDATE inventory_products SET ${fields.join(', ')} WHERE id = $${idx} RETURNING id, restaurant_id, name, code, unit, description, current_stock, min_stock_alert, active, created_at`,
       values
     );
 

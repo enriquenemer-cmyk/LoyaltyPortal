@@ -11,7 +11,9 @@ type InventoryProduct = {
   supplier_id: string | null;
   supplier_name: string | null;
   name: string;
+  code: string | null;
   unit: string;
+  description: string | null;
   current_stock: string;
   min_stock_alert: string;
   active: boolean;
@@ -37,7 +39,7 @@ export async function GET(req: NextRequest) {
 
   try {
     const result = await getPool().query<InventoryProduct>(
-      `SELECT p.id, p.restaurant_id, p.supplier_id, s.name as supplier_name, p.name, p.unit,
+      `SELECT p.id, p.restaurant_id, p.supplier_id, s.name as supplier_name, p.name, p.code, p.unit, p.description,
               p.current_stock, p.min_stock_alert, p.active, p.created_at
        FROM inventory_products p
        LEFT JOIN suppliers s ON s.id = p.supplier_id
@@ -61,7 +63,7 @@ export async function POST(req: NextRequest) {
 
   try {
     const body = await req.json();
-    const { restaurant_id, supplier_id, name, unit, min_stock_alert } = body ?? {};
+    const { restaurant_id, supplier_id, name, unit, min_stock_alert, description, code } = body ?? {};
 
     if (!name || typeof name !== 'string' || !name.trim()) {
       return NextResponse.json({ error: 'El nombre es requerido' }, { status: 400 });
@@ -70,10 +72,16 @@ export async function POST(req: NextRequest) {
     const pool = getPool();
     const id = randomUUID();
     const result = await pool.query<InventoryProduct>(
-      `INSERT INTO inventory_products (id, restaurant_id, supplier_id, name, unit, current_stock, min_stock_alert, active)
-       VALUES ($1, $2, $3, $4, $5, 0, $6, true)
-       RETURNING id, restaurant_id, supplier_id, name, unit, current_stock, min_stock_alert, active, created_at`,
-      [id, restaurant_id ?? null, supplier_id ?? null, name.trim(), unit && typeof unit === 'string' && unit.trim() ? unit.trim() : 'unidad', min_stock_alert ?? 0]
+      `INSERT INTO inventory_products (id, restaurant_id, supplier_id, name, code, unit, description, current_stock, min_stock_alert, active)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, 0, $8, true)
+       RETURNING id, restaurant_id, supplier_id, name, code, unit, description, current_stock, min_stock_alert, active, created_at`,
+      [
+        id, restaurant_id ?? null, supplier_id ?? null, name.trim(),
+        code && typeof code === 'string' && code.trim() ? code.trim() : null,
+        unit && typeof unit === 'string' && unit.trim() ? unit.trim() : 'unidad',
+        description && typeof description === 'string' && description.trim() ? description.trim() : null,
+        min_stock_alert ?? 0,
+      ]
     );
 
     return NextResponse.json({ product: result.rows[0] }, { status: 201 });

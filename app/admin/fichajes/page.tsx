@@ -23,9 +23,17 @@ type TimeClockEntry = {
   position: string | null;
   clock_in: string;
   clock_out: string | null;
+  clock_in_lat: number | null;
+  clock_in_lng: number | null;
+  clock_out_lat: number | null;
+  clock_out_lng: number | null;
   duration_seconds: number | null;
   is_active: boolean;
 };
+
+function mapsLink(lat: number, lng: number) {
+  return `https://www.google.com/maps?q=${lat},${lng}`;
+}
 
 function formatDuration(seconds: number | null): string {
   if (seconds === null) return '—';
@@ -545,6 +553,16 @@ export default function FichajesPage() {
                         {new Date(entry.clock_in).toLocaleString('es-CO', {
                           day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit',
                         })}
+                        {entry.clock_in_lat != null && entry.clock_in_lng != null && (
+                          <a
+                            href={mapsLink(entry.clock_in_lat, entry.clock_in_lng)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="block text-[11px] font-semibold text-[#F97316] hover:underline mt-0.5"
+                          >
+                            📍 Ver ubicación
+                          </a>
+                        )}
                       </td>
                       <td className="px-5 py-3.5 text-stone-600">
                         {entry.clock_out
@@ -552,6 +570,16 @@ export default function FichajesPage() {
                               day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit',
                             })
                           : '—'}
+                        {entry.clock_out_lat != null && entry.clock_out_lng != null && (
+                          <a
+                            href={mapsLink(entry.clock_out_lat, entry.clock_out_lng)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="block text-[11px] font-semibold text-[#F97316] hover:underline mt-0.5"
+                          >
+                            📍 Ver ubicación
+                          </a>
+                        )}
                       </td>
                       <td className="px-5 py-3.5 text-stone-600">{formatDuration(entry.duration_seconds)}</td>
                       <td className="px-5 py-3.5">

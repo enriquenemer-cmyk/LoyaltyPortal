@@ -12,6 +12,7 @@ type InventoryUnit = {
   order_number: string;
   weight: string;
   status: 'available' | 'retired';
+  location: string | null;
   received_at: string;
   retired_at: string | null;
   retired_by: string | null;
@@ -23,7 +24,9 @@ type InventoryProduct = {
   supplier_id: string | null;
   supplier_name: string | null;
   name: string;
+  code: string | null;
   unit: string;
+  description: string | null;
   current_stock: string;
   min_stock_alert: string;
   active: boolean;
@@ -63,7 +66,17 @@ type TopConsumedItem = {
   percentage: number;
 };
 
-type Tab = 'productos' | 'movimientos' | 'proveedores';
+type Tab = 'productos' | 'movimientos' | 'proveedores' | 'resumen';
+
+type InventorySummaryRow = {
+  id: string;
+  name: string;
+  code: string | null;
+  unit: string;
+  current_stock: string;
+  total_in: string;
+  total_out: string;
+};
 
 function formatDateTime(dateStr: string) {
   const date = new Date(dateStr);
@@ -185,7 +198,9 @@ function NewProductModal({
   const [restaurantId, setRestaurantId] = useState('');
   const [supplierId, setSupplierId] = useState('');
   const [name, setName] = useState('');
+  const [code, setCode] = useState('');
   const [unit, setUnit] = useState('unidad');
+  const [description, setDescription] = useState('');
   const [minStockAlert, setMinStockAlert] = useState('0');
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
@@ -205,7 +220,9 @@ function NewProductModal({
           restaurant_id: restaurantId || null,
           supplier_id: supplierId || null,
           name: name.trim(),
+          code: code.trim() || null,
           unit: unit.trim() || 'unidad',
+          description: description.trim() || null,
           min_stock_alert: Number(minStockAlert) || 0,
         }),
       });
@@ -257,15 +274,29 @@ function NewProductModal({
             </select>
           </div>
 
-          <div>
-            <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">Nombre</label>
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Ej. Servilletas"
-              className="w-full px-3 py-2.5 border border-[#E8E3DC] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#F97316]/20 focus:border-[#F97316]"
-            />
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">Nombre</label>
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Ej. Servilletas"
+                className="w-full px-3 py-2.5 border border-[#E8E3DC] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#F97316]/20 focus:border-[#F97316]"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">
+                Código <span className="normal-case font-normal text-slate-400">(opcional)</span>
+              </label>
+              <input
+                type="text"
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
+                placeholder="Ej. POL-001"
+                className="w-full px-3 py-2.5 border border-[#E8E3DC] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#F97316]/20 focus:border-[#F97316]"
+              />
+            </div>
           </div>
 
           <div className="grid grid-cols-2 gap-3">
@@ -289,6 +320,20 @@ function NewProductModal({
                 className="w-full px-3 py-2.5 border border-[#E8E3DC] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#F97316]/20 focus:border-[#F97316]"
               />
             </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">
+              Ficha técnica <span className="normal-case font-normal text-slate-400">(opcional)</span>
+            </label>
+            <textarea
+              rows={2}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Ej. Pechuga de pollo congelada, importada, para asados"
+              className="w-full px-3 py-2.5 border border-[#E8E3DC] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#F97316]/20 focus:border-[#F97316] resize-none"
+            />
+            <p className="text-[11px] text-slate-400 mt-1">Se muestra al escanear el QR de cada unidad.</p>
           </div>
         </div>
 
@@ -431,6 +476,7 @@ function UnitsEntryModal({
 }) {
   const [orderNumber, setOrderNumber] = useState('');
   const [weights, setWeights] = useState<string[]>(['']);
+  const [location, setLocation] = useState('');
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const [createdUnits, setCreatedUnits] = useState<InventoryUnit[] | null>(null);
@@ -461,7 +507,7 @@ function UnitsEntryModal({
       const res = await fetch('/api/admin/inventory/units', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ product_id: product.id, order_number: orderNumber.trim(), weights: parsed }),
+        body: JSON.stringify({ product_id: product.id, order_number: orderNumber.trim(), weights: parsed, location: location.trim() || null }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Error al registrar las unidades');
@@ -560,6 +606,22 @@ function UnitsEntryModal({
               + Agregar otra unidad
             </button>
           </div>
+
+          <div>
+            <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">
+              Ubicación de almacenamiento <span className="normal-case font-normal text-slate-400">(opcional)</span>
+            </label>
+            <input
+              type="text"
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+              placeholder="Ej. Congelador 2 - Estante B"
+              className="w-full px-3 py-2.5 border border-[#E8E3DC] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#F97316]/20 focus:border-[#F97316]"
+            />
+            <p className="text-[11px] text-slate-400 mt-1">
+              Si aún no sabes dónde va a quedar, déjalo vacío — se puede asignar después escaneando el QR ya colocado en su lugar.
+            </p>
+          </div>
         </div>
 
         {error && <p className="text-red-600 text-xs font-semibold mt-3">{error}</p>}
@@ -645,6 +707,9 @@ function UnitsListModal({
                 <div>
                   <p className="text-sm font-bold text-slate-800">{u.weight} {product.unit}</p>
                   <p className="text-xs text-slate-400">Pedido #{u.order_number} · {new Date(u.received_at).toLocaleDateString('es-CO')}</p>
+                  <p className="text-xs mt-0.5" style={{ color: u.location ? '#1a6b3c' : '#cbd5e1' }}>
+                    {u.location ? `📍 ${u.location}` : 'Sin ubicación asignada'}
+                  </p>
                 </div>
                 <button
                   onClick={() => handleRetirar(u.id)}
@@ -814,6 +879,10 @@ export default function InventarioPage() {
   const [movementModal, setMovementModal] = useState<{ product: InventoryProduct; type: 'entrada' | 'salida' } | null>(null);
   const [unitsEntryModal, setUnitsEntryModal] = useState<InventoryProduct | null>(null);
   const [unitsListModal, setUnitsListModal] = useState<InventoryProduct | null>(null);
+  const [summary, setSummary] = useState<InventorySummaryRow[]>([]);
+  const [editingCodeId, setEditingCodeId] = useState<string | null>(null);
+  const [codeInput, setCodeInput] = useState('');
+  const [savingCode, setSavingCode] = useState(false);
 
   const fetchProducts = useCallback(async () => {
     try {
@@ -848,6 +917,17 @@ export default function InventarioPage() {
     }
   }, []);
 
+  const fetchSummary = useCallback(async () => {
+    try {
+      const res = await fetch('/api/admin/inventory/summary');
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      setSummary(data.summary ?? []);
+    } catch {
+      // non-critical
+    }
+  }, []);
+
   useEffect(() => {
     async function loadAll() {
       setLoading(true);
@@ -855,6 +935,7 @@ export default function InventarioPage() {
         fetchProducts(),
         fetchMovements(),
         fetchSuppliers(),
+        fetchSummary(),
         fetch('/api/restaurants')
           .then((r) => r.json())
           .then((d) => setRestaurants(d.restaurants ?? []))
@@ -867,7 +948,25 @@ export default function InventarioPage() {
       setLoading(false);
     }
     loadAll();
-  }, [fetchProducts, fetchMovements, fetchSuppliers]);
+  }, [fetchProducts, fetchMovements, fetchSuppliers, fetchSummary]);
+
+  async function handleSaveCode(productId: string) {
+    setSavingCode(true);
+    try {
+      const res = await fetch(`/api/admin/inventory/products/${productId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code: codeInput.trim() || null }),
+      });
+      if (!res.ok) throw new Error();
+      await fetchSummary();
+      setEditingCodeId(null);
+    } catch {
+      setError('No se pudo guardar el código.');
+    } finally {
+      setSavingCode(false);
+    }
+  }
 
   const activeProducts = useMemo(() => {
     const active = products.filter((p) => p.active);
@@ -997,6 +1096,16 @@ export default function InventarioPage() {
           >
             Proveedores
           </button>
+          <button
+            onClick={() => setTab('resumen')}
+            className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-bold border transition-all ${
+              tab === 'resumen'
+                ? 'bg-[#F97316] text-white border-[#F97316] shadow-md shadow-orange-200'
+                : 'bg-white text-slate-600 border-slate-200 hover:border-[#F97316] hover:text-[#F97316]'
+            }`}
+          >
+            Resumen
+          </button>
         </div>
 
         {supplierFilter && tab === 'productos' && (
@@ -1120,6 +1229,73 @@ export default function InventarioPage() {
                   </button>
                 </div>
               ))}
+            </div>
+          )
+        ) : tab === 'resumen' ? (
+          summary.length === 0 ? (
+            <div className="bg-white rounded-2xl border border-[#E8E3DC] shadow-sm">
+              <EmptyState
+                icon="clipboard"
+                title="Sin productos activos"
+                description="Crea un producto para ver aquí su resumen de entradas y salidas."
+              />
+            </div>
+          ) : (
+            <div className="bg-white rounded-2xl border border-[#E8E3DC] shadow-sm overflow-hidden">
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="bg-[#FAFAF9] border-b border-[#E8E3DC]">
+                      <th className="text-left px-5 py-3.5 font-bold text-slate-500 text-xs uppercase tracking-wider">Producto</th>
+                      <th className="text-left px-5 py-3.5 font-bold text-slate-500 text-xs uppercase tracking-wider">Código</th>
+                      <th className="text-right px-5 py-3.5 font-bold text-slate-500 text-xs uppercase tracking-wider">Total ingresado</th>
+                      <th className="text-right px-5 py-3.5 font-bold text-slate-500 text-xs uppercase tracking-wider">Total salida</th>
+                      <th className="text-right px-5 py-3.5 font-bold text-slate-500 text-xs uppercase tracking-wider">Stock actual</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-50">
+                    {summary.map((row) => (
+                      <tr key={row.id} className="hover:bg-orange-50/40 transition-colors">
+                        <td className="px-5 py-4 font-medium text-slate-900">{row.name}</td>
+                        <td className="px-5 py-4">
+                          {editingCodeId === row.id ? (
+                            <div className="flex items-center gap-1.5">
+                              <input
+                                autoFocus
+                                type="text"
+                                value={codeInput}
+                                onChange={(e) => setCodeInput(e.target.value)}
+                                placeholder="Ej. POL-001"
+                                className="w-28 px-2 py-1 border border-[#E8E3DC] rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-[#F97316]/20 focus:border-[#F97316]"
+                              />
+                              <button
+                                onClick={() => handleSaveCode(row.id)}
+                                disabled={savingCode}
+                                className="text-xs font-bold text-white px-2 py-1 rounded-lg disabled:opacity-50"
+                                style={{ background: '#F97316' }}
+                              >
+                                ✓
+                              </button>
+                              <button onClick={() => setEditingCodeId(null)} className="text-xs text-slate-400 px-1">✕</button>
+                            </div>
+                          ) : (
+                            <button
+                              onClick={() => { setEditingCodeId(row.id); setCodeInput(row.code ?? ''); }}
+                              className="text-xs font-mono px-2 py-1 rounded-lg border border-dashed transition-colors"
+                              style={{ borderColor: row.code ? 'transparent' : '#D6D0C4', color: row.code ? '#1C1917' : '#a8a29e', background: row.code ? '#F5F5F4' : 'transparent' }}
+                            >
+                              {row.code || 'Asignar código'}
+                            </button>
+                          )}
+                        </td>
+                        <td className="px-5 py-4 text-right font-semibold text-emerald-700">+{row.total_in} {row.unit}</td>
+                        <td className="px-5 py-4 text-right font-semibold text-red-600">−{row.total_out} {row.unit}</td>
+                        <td className="px-5 py-4 text-right font-black text-slate-900">{row.current_stock} {row.unit}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           )
         ) : movements.length === 0 ? (

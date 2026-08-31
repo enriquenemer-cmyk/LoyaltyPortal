@@ -51,6 +51,10 @@ export async function GET(request: NextRequest) {
        e.position,
        tce.clock_in,
        tce.clock_out,
+       tce.clock_in_lat,
+       tce.clock_in_lng,
+       tce.clock_out_lat,
+       tce.clock_out_lng,
        CASE WHEN tce.clock_out IS NULL THEN NULL
             ELSE EXTRACT(EPOCH FROM (tce.clock_out - tce.clock_in))::int
        END AS duration_seconds,

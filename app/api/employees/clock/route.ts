@@ -12,9 +12,15 @@ export async function POST(request: NextRequest) {
   }
 
   let action: 'in' | 'out' | undefined;
+  let latitude: number | null = null;
+  let longitude: number | null = null;
   try {
     const body = await request.json();
     action = body?.action;
+    if (typeof body?.latitude === 'number' && typeof body?.longitude === 'number') {
+      latitude = body.latitude;
+      longitude = body.longitude;
+    }
   } catch {
     // ignore, validated below
   }
@@ -38,8 +44,9 @@ export async function POST(request: NextRequest) {
 
       const id = crypto.randomUUID();
       const { rows } = await pool.query<{ id: string; clock_in: string }>(
-        `INSERT INTO time_clock_entries (id, employee_id, clock_in) VALUES ($1, $2, NOW()) RETURNING id, clock_in`,
-        [id, employeeId]
+        `INSERT INTO time_clock_entries (id, employee_id, clock_in, clock_in_lat, clock_in_lng)
+         VALUES ($1, $2, NOW(), $3, $4) RETURNING id, clock_in`,
+        [id, employeeId, latitude, longitude]
       );
 
       return NextResponse.json({
@@ -64,10 +71,10 @@ export async function POST(request: NextRequest) {
         duration_seconds: number;
       }>(
         `UPDATE time_clock_entries
-         SET clock_out = NOW()
+         SET clock_out = NOW(), clock_out_lat = $2, clock_out_lng = $3
          WHERE id = $1
          RETURNING id, clock_in, clock_out, EXTRACT(EPOCH FROM (clock_out - clock_in))::int AS duration_seconds`,
-        [openRows[0].id]
+        [openRows[0].id, latitude, longitude]
       );
 
       return NextResponse.json({

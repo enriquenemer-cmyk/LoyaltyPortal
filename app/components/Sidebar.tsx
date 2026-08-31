@@ -1071,7 +1071,6 @@ function SidebarContent({
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/logo-3e-oficial.webp" alt="3E by ENM" width={compact ? 36 : 44} height={compact ? 36 : 44} style={{ objectFit: 'contain', display: 'block' }} />
           </div>
-          {!compact && <span className="text-sm font-black text-black tracking-tight leading-none">3E</span>}
         </Link>
         <div className={`flex items-center gap-1 ${compact ? 'flex-col' : ''}`}>
           {!compact && <NotificationBell />}

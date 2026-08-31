@@ -121,7 +121,7 @@ export async function POST(req: NextRequest) {
         [movementId, product_id, type, qty, note ?? null, session.username]
       );
 
-      const newStock = type === 'entrada' ? currentStock + qty : currentStock - qty;
+      const newStock = Math.round((type === 'entrada' ? currentStock + qty : currentStock - qty) * 1000) / 1000;
 
       await client.query(
         `UPDATE inventory_products SET current_stock = $1 WHERE id = $2`,

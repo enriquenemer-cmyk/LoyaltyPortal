@@ -14,6 +14,8 @@ export type InventoryUnit = {
   weight: string;
   status: 'available' | 'retired';
   location: string | null;
+  unit_price: string | null;
+  expires_at: string | null;
   received_at: string;
   retired_at: string | null;
   retired_by: string | null;
@@ -47,7 +49,7 @@ export async function GET(req: NextRequest) {
 
   try {
     const { rows } = await getPool().query<InventoryUnit>(
-      `SELECT u.id, u.product_id, p.name as product_name, p.unit, u.order_number, u.weight, u.status, u.location,
+      `SELECT u.id, u.product_id, p.name as product_name, p.unit, u.order_number, u.weight, u.status, u.location, u.unit_price, u.expires_at,
               u.received_at, u.retired_at, u.retired_by
        FROM inventory_units u
        JOIN inventory_products p ON p.id = u.product_id
@@ -72,8 +74,10 @@ export async function POST(req: NextRequest) {
 
   try {
     const body = await req.json();
-    const { product_id, order_number, weights, location } = body ?? {};
+    const { product_id, order_number, weights, location, unit_price, expires_at } = body ?? {};
     const trimmedLocation = location && typeof location === 'string' && location.trim() ? location.trim() : null;
+    const parsedUnitPrice = typeof unit_price === 'number' && Number.isFinite(unit_price) && unit_price > 0 ? unit_price : null;
+    const parsedExpiresAt = expires_at && typeof expires_at === 'string' && expires_at.trim() ? expires_at.trim() : null;
 
     if (!product_id || typeof product_id !== 'string') {
       return NextResponse.json({ error: 'product_id es requerido' }, { status: 400 });
@@ -109,16 +113,16 @@ export async function POST(req: NextRequest) {
       for (const weight of parsedWeights) {
         const id = randomUUID();
         const { rows } = await client.query<InventoryUnit>(
-          `INSERT INTO inventory_units (id, product_id, order_number, weight, status, location)
-           VALUES ($1, $2, $3, $4, 'available', $5)
-           RETURNING id, product_id, order_number, weight, status, location, received_at, retired_at, retired_by`,
-          [id, product_id, order_number.trim(), weight, trimmedLocation]
+          `INSERT INTO inventory_units (id, product_id, order_number, weight, status, location, unit_price, expires_at)
+           VALUES ($1, $2, $3, $4, 'available', $5, $6, $7)
+           RETURNING id, product_id, order_number, weight, status, location, unit_price, expires_at, received_at, retired_at, retired_by`,
+          [id, product_id, order_number.trim(), weight, trimmedLocation, parsedUnitPrice, parsedExpiresAt]
         );
         createdUnits.push({ ...rows[0], product_name: product.name, unit: product.unit });
       }
 
       const totalWeight = parsedWeights.reduce((sum, w) => sum + w, 0);
-      const newStock = Number(product.current_stock) + totalWeight;
+      const newStock = Math.round((Number(product.current_stock) + totalWeight) * 1000) / 1000;
 
       await client.query(`UPDATE inventory_products SET current_stock = $1 WHERE id = $2`, [newStock, product_id]);
 

@@ -17,7 +17,7 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
   try {
     const { rows } = await getPool().query<InventoryUnit & { product_description: string | null }>(
       `SELECT u.id, u.product_id, p.name as product_name, p.unit, p.description as product_description,
-              u.order_number, u.weight, u.status, u.location,
+              u.order_number, u.weight, u.status, u.location, u.expires_at,
               u.received_at, u.retired_at, u.retired_by
        FROM inventory_units u
        JOIN inventory_products p ON p.id = u.product_id
@@ -56,7 +56,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
 
     const { rows } = await getPool().query<InventoryUnit & { product_description: string | null }>(
       `SELECT u.id, u.product_id, p.name as product_name, p.unit, p.description as product_description,
-              u.order_number, u.weight, u.status, u.location,
+              u.order_number, u.weight, u.status, u.location, u.expires_at,
               u.received_at, u.retired_at, u.retired_by
        FROM inventory_units u
        JOIN inventory_products p ON p.id = u.product_id

@@ -50,7 +50,7 @@ export async function POST(_req: NextRequest, { params }: { params: Promise<{ id
     }
     const product = productResult.rows[0];
     const weight = Number(unit.weight);
-    const newStock = Math.max(0, Number(product.current_stock) - weight);
+    const newStock = Math.max(0, Math.round((Number(product.current_stock) - weight) * 1000) / 1000);
 
     await client.query(
       `UPDATE inventory_units SET status = 'retired', retired_at = NOW(), retired_by = $1 WHERE id = $2`,

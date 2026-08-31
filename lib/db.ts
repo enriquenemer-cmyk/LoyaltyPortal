@@ -336,6 +336,9 @@ export async function ensureSchema(): Promise<void> {
       );
       CREATE INDEX IF NOT EXISTS inventory_units_product_idx ON inventory_units(product_id, status);
       ALTER TABLE inventory_units ADD COLUMN IF NOT EXISTS location TEXT;
+      ALTER TABLE inventory_units ADD COLUMN IF NOT EXISTS unit_price NUMERIC;
+      ALTER TABLE inventory_units ADD COLUMN IF NOT EXISTS expires_at DATE;
+      CREATE INDEX IF NOT EXISTS inventory_units_expires_idx ON inventory_units(expires_at) WHERE status = 'available';
       ALTER TABLE inventory_products ADD COLUMN IF NOT EXISTS description TEXT;
       ALTER TABLE inventory_products ADD COLUMN IF NOT EXISTS code TEXT;
 
@@ -384,8 +387,14 @@ export async function ensureSchema(): Promise<void> {
         photo_url TEXT,
         active BOOLEAN NOT NULL DEFAULT TRUE,
         total_training_points INTEGER NOT NULL DEFAULT 0,
+        hourly_rate NUMERIC,
+        scheduled_hours_per_day NUMERIC,
+        scheduled_start_time TIME,
         created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
       );
+      ALTER TABLE employees ADD COLUMN IF NOT EXISTS hourly_rate NUMERIC;
+      ALTER TABLE employees ADD COLUMN IF NOT EXISTS scheduled_hours_per_day NUMERIC;
+      ALTER TABLE employees ADD COLUMN IF NOT EXISTS scheduled_start_time TIME;
       CREATE TABLE IF NOT EXISTS time_clock_entries (
         id TEXT PRIMARY KEY,
         employee_id TEXT NOT NULL REFERENCES employees(id) ON DELETE CASCADE,
@@ -464,6 +473,18 @@ export async function ensureSchema(): Promise<void> {
       );
       CREATE INDEX IF NOT EXISTS point_transfers_from_idx ON point_transfers(from_phone);
       CREATE INDEX IF NOT EXISTS point_transfers_to_idx ON point_transfers(to_phone);
+
+      -- ── Notas de preferencias del cliente: lo que el personal anota en
+      -- cada visita (qué pidió, gustos, alergias, etc.) para dar un trato
+      -- personalizado y agilizar pedidos futuros. ────────────────────────
+      CREATE TABLE IF NOT EXISTS customer_notes (
+        id TEXT PRIMARY KEY,
+        phone TEXT NOT NULL,
+        note TEXT NOT NULL,
+        created_by TEXT,
+        created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      );
+      CREATE INDEX IF NOT EXISTS customer_notes_phone_idx ON customer_notes(phone);
 
       -- ── Battle pass / temporadas gamificadas ───────────────────────────
       CREATE TABLE IF NOT EXISTS seasons (
@@ -1464,6 +1485,9 @@ export type GamePlay = {
   phone: string;
   email: string;
   location: string | null;
+  folio: string | null;
+  redeemed_at: string | null;
+  redeemed_by: string | null;
   played_at: string;
 };
 
@@ -1498,8 +1522,15 @@ async function ensureGameSchema(): Promise<void> {
         phone TEXT NOT NULL,
         email TEXT NOT NULL,
         location TEXT,
+        folio TEXT,
+        redeemed_at TIMESTAMPTZ,
+        redeemed_by TEXT,
         played_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
       );
+      ALTER TABLE game_plays ADD COLUMN IF NOT EXISTS folio TEXT;
+      ALTER TABLE game_plays ADD COLUMN IF NOT EXISTS redeemed_at TIMESTAMPTZ;
+      ALTER TABLE game_plays ADD COLUMN IF NOT EXISTS redeemed_by TEXT;
+      CREATE UNIQUE INDEX IF NOT EXISTS game_plays_folio_idx ON game_plays(folio) WHERE folio IS NOT NULL;
     `);
   } finally {
     client.release();
@@ -1549,12 +1580,36 @@ export async function getGamePrizesForBundle(bundleId: string): Promise<GamePriz
   return rows;
 }
 
-export async function insertGamePlay(play: Omit<GamePlay, 'played_at'>): Promise<GamePlay> {
+export async function insertGamePlay(play: Omit<GamePlay, 'played_at' | 'folio' | 'redeemed_at' | 'redeemed_by'>): Promise<GamePlay> {
+  await ensureGameSchema();
+  const folio = `PT-${play.id.slice(0, 8).toUpperCase()}`;
+  const { rows } = await getPool().query<GamePlay>(
+    `INSERT INTO game_plays (id, bundle_id, game_prize_id, full_name, phone, email, location, folio)
+     VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *`,
+    [play.id, play.bundle_id, play.game_prize_id, play.full_name, play.phone, play.email, play.location ?? null, folio]
+  );
+  return rows[0];
+}
+
+export async function getGamePlayByFolio(folio: string): Promise<(GamePlay & { prize_name: string; bundle_name: string }) | undefined> {
+  await ensureGameSchema();
+  const { rows } = await getPool().query<GamePlay & { prize_name: string; bundle_name: string }>(
+    `SELECT gp.*, gpr.name as prize_name, gb.name as bundle_name
+     FROM game_plays gp
+     JOIN game_prizes gpr ON gpr.id = gp.game_prize_id
+     JOIN game_bundles gb ON gb.id = gp.bundle_id
+     WHERE gp.folio = $1`,
+    [folio.trim().toUpperCase()]
+  );
+  return rows[0];
+}
+
+export async function redeemGamePlay(folio: string, redeemedBy: string): Promise<GamePlay | undefined> {
   await ensureGameSchema();
   const { rows } = await getPool().query<GamePlay>(
-    `INSERT INTO game_plays (id, bundle_id, game_prize_id, full_name, phone, email, location)
-     VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING *`,
-    [play.id, play.bundle_id, play.game_prize_id, play.full_name, play.phone, play.email, play.location ?? null]
+    `UPDATE game_plays SET redeemed_at = NOW(), redeemed_by = $2
+     WHERE folio = $1 AND redeemed_at IS NULL RETURNING *`,
+    [folio.trim().toUpperCase(), redeemedBy]
   );
   return rows[0];
 }
@@ -1588,6 +1643,53 @@ export async function toggleGameBundle(id: string, active: boolean): Promise<Gam
     [id, active]
   );
   return rows[0];
+}
+
+export type GameBundleAnalytics = {
+  total_plays: number;
+  total_redemptions: number;
+  prizes: {
+    id: string;
+    name: string;
+    probability: number;
+    max_winners: number | null;
+    winners_count: number;
+    play_count: number;
+    redemption_count: number;
+  }[];
+};
+
+export async function getGameBundleAnalytics(bundleId: string): Promise<GameBundleAnalytics> {
+  await ensureGameSchema();
+  const { rows: prizeRows } = await getPool().query<{
+    id: string; name: string; probability: number; max_winners: number | null; winners_count: number;
+    play_count: string; redemption_count: string;
+  }>(
+    `SELECT gpr.id, gpr.name, gpr.probability, gpr.max_winners, gpr.winners_count,
+            COUNT(gpl.id)::text AS play_count,
+            COUNT(gpl.id) FILTER (WHERE gpl.redeemed_at IS NOT NULL)::text AS redemption_count
+     FROM game_prizes gpr
+     LEFT JOIN game_plays gpl ON gpl.game_prize_id = gpr.id
+     WHERE gpr.bundle_id = $1
+     GROUP BY gpr.id
+     ORDER BY gpr.sort_order ASC`,
+    [bundleId]
+  );
+
+  const prizes = prizeRows.map((p) => ({
+    id: p.id,
+    name: p.name,
+    probability: p.probability,
+    max_winners: p.max_winners,
+    winners_count: p.winners_count,
+    play_count: Number(p.play_count),
+    redemption_count: Number(p.redemption_count),
+  }));
+
+  const total_plays = prizes.reduce((sum, p) => sum + p.play_count, 0);
+  const total_redemptions = prizes.reduce((sum, p) => sum + p.redemption_count, 0);
+
+  return { total_plays, total_redemptions, prizes };
 }
 
 // ── Ticket Tiers ──────────────────────────────────────────────────────────────
@@ -2205,7 +2307,7 @@ export async function updateUserPassword(username: string, passwordHash: string)
 
 // ── Notifications ─────────────────────────────────────────────────────────────
 
-export type NotificationType = 'new_claim' | 'prize_expiring' | 'vip_customer' | 'new_delivery' | 'low_prizes' | 'daily_summary' | 'platform_update';
+export type NotificationType = 'new_claim' | 'prize_expiring' | 'vip_customer' | 'new_delivery' | 'low_prizes' | 'daily_summary' | 'platform_update' | 'forgotten_clock_out';
 
 export type Notification = {
   id: string;

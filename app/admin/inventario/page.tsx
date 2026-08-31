@@ -13,9 +13,21 @@ type InventoryUnit = {
   weight: string;
   status: 'available' | 'retired';
   location: string | null;
+  expires_at: string | null;
   received_at: string;
   retired_at: string | null;
   retired_by: string | null;
+};
+
+type ExpiringUnit = {
+  id: string;
+  product_id: string;
+  product_name: string;
+  unit: string;
+  weight: string;
+  order_number: string;
+  location: string | null;
+  expires_at: string;
 };
 
 type InventoryProduct = {
@@ -89,6 +101,13 @@ function formatDateTime(dateStr: string) {
   });
 }
 
+// Strips floating-point rounding dust (e.g. 4.999999999999999) so quantities
+// always render as the clean number a human actually entered.
+function fmtQty(value: string | number): string {
+  const n = Math.round(Number(value) * 1000) / 1000;
+  return n.toString();
+}
+
 function isToday(dateStr: string) {
   const d = new Date(dateStr);
   const now = new Date();
@@ -111,7 +130,7 @@ function StockBadge({ stock, minAlert }: { stock: number; minAlert: number }) {
   }
   return (
     <span className={`inline-flex items-center gap-1.5 text-xs font-bold px-2.5 py-1 rounded-full border ${cls}`}>
-      {stock} <span className="opacity-60 font-medium">· {label}</span>
+      {fmtQty(stock)} <span className="opacity-60 font-medium">· {label}</span>
     </span>
   );
 }
@@ -149,7 +168,7 @@ function LowStockBanner({ products }: { products: InventoryProduct[] }) {
           <ul className="flex flex-col gap-1">
             {lowStockProducts.slice(0, 6).map((p) => (
               <li key={p.id} className="text-xs text-red-700">
-                <span className="font-semibold">{p.name}</span>: {p.current_stock} {p.unit} (mínimo {p.min_stock_alert})
+                <span className="font-semibold">{p.name}</span>: {fmtQty(p.current_stock)} {p.unit} (mínimo {fmtQty(p.min_stock_alert)})
               </li>
             ))}
             {lowStockProducts.length > 6 && (
@@ -162,6 +181,63 @@ function LowStockBanner({ products }: { products: InventoryProduct[] }) {
         onClick={dismiss}
         className="text-red-400 hover:text-red-600 transition-colors text-sm font-bold leading-none shrink-0"
         aria-label="Descartar alerta de stock bajo"
+      >
+        ✕
+      </button>
+    </div>
+  );
+}
+
+function ExpiringBanner({ units }: { units: ExpiringUnit[] }) {
+  const [dismissed, setDismissed] = useState(() => {
+    try { return typeof window !== 'undefined' && !!sessionStorage.getItem('inv_expiring_dismissed'); }
+    catch { return false; }
+  });
+
+  if (dismissed || units.length === 0) return null;
+
+  function dismiss() {
+    try { sessionStorage.setItem('inv_expiring_dismissed', '1'); } catch { /* ignore */ }
+    setDismissed(true);
+  }
+
+  const today = new Date().toISOString().split('T')[0];
+
+  return (
+    <div
+      className="rounded-2xl border border-amber-200 bg-amber-50 p-5 flex items-start justify-between gap-3 mb-6"
+      style={{ boxShadow: '0 1px 2px rgba(217,119,6,0.05), 0 4px 12px rgba(217,119,6,0.08)' }}
+    >
+      <div className="flex items-start gap-3 min-w-0">
+        <span className="text-lg leading-none shrink-0">⏳</span>
+        <div className="min-w-0">
+          <p className="font-bold text-amber-800 text-sm mb-1.5">
+            {units.length === 1 ? '1 unidad por vencer' : `${units.length} unidades por vencer`}
+          </p>
+          <ul className="flex flex-col gap-1">
+            {units.slice(0, 6).map((u) => {
+              const isPast = u.expires_at < today;
+              return (
+                <li key={u.id} className="text-xs text-amber-700">
+                  <span className="font-semibold">{u.product_name}</span>: {fmtQty(u.weight)} {u.unit} · Pedido #{u.order_number}
+                  {' · '}
+                  <span className={isPast ? 'font-bold text-red-600' : ''}>
+                    {isPast ? 'venció' : 'vence'} {new Date(u.expires_at).toLocaleDateString('es-CO', { day: 'numeric', month: 'short' })}
+                  </span>
+                  {u.location && ` · ${u.location}`}
+                </li>
+              );
+            })}
+            {units.length > 6 && (
+              <li className="text-xs text-amber-600">y {units.length - 6} más...</li>
+            )}
+          </ul>
+        </div>
+      </div>
+      <button
+        onClick={dismiss}
+        className="text-amber-400 hover:text-amber-600 transition-colors text-sm font-bold leading-none shrink-0"
+        aria-label="Descartar alerta de vencimiento"
       >
         ✕
       </button>
@@ -410,7 +486,7 @@ function MovementModal({
         <h2 className="text-lg font-extrabold text-slate-800 mb-1">
           {type === 'entrada' ? '+ Entrada' : '− Salida'}
         </h2>
-        <p className="text-sm text-slate-400 mb-4">{product.name} · stock actual: {product.current_stock} {product.unit}</p>
+        <p className="text-sm text-slate-400 mb-4">{product.name} · stock actual: {fmtQty(product.current_stock)} {product.unit}</p>
 
         <div className="space-y-3">
           <div>
@@ -477,6 +553,8 @@ function UnitsEntryModal({
   const [orderNumber, setOrderNumber] = useState('');
   const [weights, setWeights] = useState<string[]>(['']);
   const [location, setLocation] = useState('');
+  const [unitPrice, setUnitPrice] = useState('');
+  const [expiresAt, setExpiresAt] = useState('');
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const [createdUnits, setCreatedUnits] = useState<InventoryUnit[] | null>(null);
@@ -507,7 +585,12 @@ function UnitsEntryModal({
       const res = await fetch('/api/admin/inventory/units', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ product_id: product.id, order_number: orderNumber.trim(), weights: parsed, location: location.trim() || null }),
+        body: JSON.stringify({
+          product_id: product.id, order_number: orderNumber.trim(), weights: parsed,
+          location: location.trim() || null,
+          unit_price: unitPrice ? Number(unitPrice) : null,
+          expires_at: expiresAt || null,
+        }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Error al registrar las unidades');
@@ -620,6 +703,39 @@ function UnitsEntryModal({
             />
             <p className="text-[11px] text-slate-400 mt-1">
               Si aún no sabes dónde va a quedar, déjalo vacío — se puede asignar después escaneando el QR ya colocado en su lugar.
+            </p>
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">
+              Precio por {product.unit} de este pedido <span className="normal-case font-normal text-slate-400">(opcional)</span>
+            </label>
+            <input
+              type="number"
+              min="0"
+              step="any"
+              value={unitPrice}
+              onChange={(e) => setUnitPrice(e.target.value)}
+              placeholder="Ej. 12000"
+              className="w-full px-3 py-2.5 border border-[#E8E3DC] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#F97316]/20 focus:border-[#F97316]"
+            />
+            <p className="text-[11px] text-slate-400 mt-1">
+              Se guarda para ver el historial de precios del proveedor a lo largo del tiempo.
+            </p>
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">
+              Fecha de vencimiento <span className="normal-case font-normal text-slate-400">(opcional)</span>
+            </label>
+            <input
+              type="date"
+              value={expiresAt}
+              onChange={(e) => setExpiresAt(e.target.value)}
+              className="w-full px-3 py-2.5 border border-[#E8E3DC] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#F97316]/20 focus:border-[#F97316]"
+            />
+            <p className="text-[11px] text-slate-400 mt-1">
+              Útil para perecederos — avisa antes de que se venza este pedido.
             </p>
           </div>
         </div>
@@ -864,12 +980,107 @@ function NewSupplierModal({
   );
 }
 
+type PriceHistoryEntry = {
+  id: string;
+  product_id: string;
+  product_name: string;
+  unit: string;
+  order_number: string;
+  weight: string;
+  unit_price: string;
+  received_at: string;
+};
+
+function PriceHistoryModal({ supplier, onClose }: { supplier: Supplier; onClose: () => void }) {
+  const [history, setHistory] = useState<PriceHistoryEntry[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch(`/api/admin/inventory/suppliers/${supplier.id}/price-history`)
+      .then((r) => r.json())
+      .then((d) => setHistory(d.history ?? []))
+      .finally(() => setLoading(false));
+  }, [supplier.id]);
+
+  // Group by product so a price jump is easy to spot per item
+  const byProduct = useMemo(() => {
+    const map = new Map<string, PriceHistoryEntry[]>();
+    for (const entry of history) {
+      const list = map.get(entry.product_id) ?? [];
+      list.push(entry);
+      map.set(entry.product_id, list);
+    }
+    return Array.from(map.entries()).map(([productId, entries]) => ({
+      productId,
+      productName: entries[0].product_name,
+      unit: entries[0].unit,
+      entries,
+    }));
+  }, [history]);
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4" onClick={onClose}>
+      <div className="bg-white rounded-2xl shadow-xl w-full max-w-lg p-6 max-h-[80vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+        <h2 className="text-lg font-extrabold text-slate-800 mb-1">Historial de precios</h2>
+        <p className="text-sm text-slate-400 mb-4">{supplier.name}</p>
+
+        {loading ? (
+          <p className="text-sm text-slate-400 text-center py-8">Cargando…</p>
+        ) : byProduct.length === 0 ? (
+          <p className="text-sm text-slate-400 text-center py-8">
+            Sin precios registrados aún. Se guardan al ingresar unidades con el campo &quot;Precio&quot; lleno.
+          </p>
+        ) : (
+          <div className="space-y-5">
+            {byProduct.map(({ productId, productName, unit, entries }) => {
+              const latest = Number(entries[0].unit_price);
+              const previous = entries[1] ? Number(entries[1].unit_price) : null;
+              const delta = previous != null ? latest - previous : null;
+              return (
+                <div key={productId}>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <p className="text-sm font-bold text-slate-800">{productName}</p>
+                    {delta != null && delta !== 0 && (
+                      <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${delta > 0 ? 'bg-red-50 text-red-600' : 'bg-emerald-50 text-emerald-600'}`}>
+                        {delta > 0 ? '▲' : '▼'} {Math.abs(delta).toLocaleString('es-CO', { maximumFractionDigits: 0 })} / {unit}
+                      </span>
+                    )}
+                  </div>
+                  <div className="divide-y divide-slate-100 border border-slate-100 rounded-xl overflow-hidden">
+                    {entries.slice(0, 8).map((e) => (
+                      <div key={e.id} className="flex items-center justify-between px-3 py-2 text-xs">
+                        <span className="text-slate-500">
+                          {new Date(e.received_at).toLocaleDateString('es-CO', { day: '2-digit', month: 'short', year: 'numeric' })} · Pedido #{e.order_number}
+                        </span>
+                        <span className="font-bold text-slate-800">
+                          ${Number(e.unit_price).toLocaleString('es-CO', { maximumFractionDigits: 0 })} / {unit}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        <div className="flex items-center justify-end mt-6">
+          <button onClick={onClose} className="px-4 py-2.5 rounded-xl text-sm font-bold text-slate-500 hover:bg-slate-100 transition-colors">
+            Cerrar
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function InventarioPage() {
   const [products, setProducts] = useState<InventoryProduct[]>([]);
   const [movements, setMovements] = useState<InventoryMovement[]>([]);
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
   const [suppliers, setSuppliers] = useState<Supplier[]>([]);
   const [topConsumed, setTopConsumed] = useState<TopConsumedItem[]>([]);
+  const [expiringUnits, setExpiringUnits] = useState<ExpiringUnit[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [tab, setTab] = useState<Tab>('productos');
@@ -879,6 +1090,7 @@ export default function InventarioPage() {
   const [movementModal, setMovementModal] = useState<{ product: InventoryProduct; type: 'entrada' | 'salida' } | null>(null);
   const [unitsEntryModal, setUnitsEntryModal] = useState<InventoryProduct | null>(null);
   const [unitsListModal, setUnitsListModal] = useState<InventoryProduct | null>(null);
+  const [priceHistorySupplier, setPriceHistorySupplier] = useState<Supplier | null>(null);
   const [summary, setSummary] = useState<InventorySummaryRow[]>([]);
   const [editingCodeId, setEditingCodeId] = useState<string | null>(null);
   const [codeInput, setCodeInput] = useState('');
@@ -944,6 +1156,10 @@ export default function InventarioPage() {
           .then((r) => r.json())
           .then((d) => setTopConsumed(d.items ?? []))
           .catch(() => {}),
+        fetch('/api/admin/inventory/expiring?days=3')
+          .then((r) => r.json())
+          .then((d) => setExpiringUnits(d.units ?? []))
+          .catch(() => {}),
       ]);
       setLoading(false);
     }
@@ -990,6 +1206,28 @@ export default function InventarioPage() {
     fetchSuppliers();
   }
 
+  function exportSummaryCSV() {
+    const headers = ['Producto', 'Código', 'Unidad', 'Total ingresado', 'Total salida', 'Stock actual'];
+    const rows = summary.map((row) => [
+      row.name,
+      row.code ?? '',
+      row.unit,
+      fmtQty(row.total_in),
+      fmtQty(row.total_out),
+      fmtQty(row.current_stock),
+    ]);
+    const csv = [headers, ...rows]
+      .map((row) => row.map((cell) => `"${String(cell).replace(/"/g, '""')}"`).join(','))
+      .join('\n');
+    const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `inventario-resumen-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
   return (
     <div className="min-h-screen">
       {/* Hero */}
@@ -1028,6 +1266,7 @@ export default function InventarioPage() {
       <div className="max-w-7xl mx-auto px-4 md:px-10 py-6">
         {/* Low stock alert banner */}
         {!loading && <LowStockBanner products={activeProducts} />}
+        {!loading && <ExpiringBanner units={expiringUnits} />}
 
         {/* KPI cards */}
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-8">
@@ -1221,12 +1460,20 @@ export default function InventarioPage() {
                   {(s.contact_phone || s.contact_email) && (
                     <p className="text-xs text-slate-400 mt-0.5">{[s.contact_phone, s.contact_email].filter(Boolean).join(' · ')}</p>
                   )}
-                  <button
-                    onClick={() => { setSupplierFilter(s); setTab('productos'); }}
-                    className="mt-4 w-full text-xs font-bold px-3 py-2 rounded-lg border border-orange-200 text-[#F97316] bg-orange-50 hover:bg-orange-100 transition-colors"
-                  >
-                    Ver sus productos →
-                  </button>
+                  <div className="flex gap-2 mt-4">
+                    <button
+                      onClick={() => { setSupplierFilter(s); setTab('productos'); }}
+                      className="flex-1 text-xs font-bold px-3 py-2 rounded-lg border border-orange-200 text-[#F97316] bg-orange-50 hover:bg-orange-100 transition-colors"
+                    >
+                      Ver productos →
+                    </button>
+                    <button
+                      onClick={() => setPriceHistorySupplier(s)}
+                      className="flex-1 text-xs font-bold px-3 py-2 rounded-lg border border-slate-200 text-slate-600 bg-slate-50 hover:bg-slate-100 transition-colors"
+                    >
+                      Historial de precios
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
@@ -1242,6 +1489,14 @@ export default function InventarioPage() {
             </div>
           ) : (
             <div className="bg-white rounded-2xl border border-[#E8E3DC] shadow-sm overflow-hidden">
+              <div className="px-5 py-3 border-b border-[#E8E3DC] flex justify-end">
+                <button
+                  onClick={exportSummaryCSV}
+                  className="text-xs font-bold px-3 py-1.5 rounded-lg border border-orange-200 text-[#F97316] bg-orange-50 hover:bg-orange-100 transition-colors"
+                >
+                  Exportar CSV
+                </button>
+              </div>
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
@@ -1288,9 +1543,9 @@ export default function InventarioPage() {
                             </button>
                           )}
                         </td>
-                        <td className="px-5 py-4 text-right font-semibold text-emerald-700">+{row.total_in} {row.unit}</td>
-                        <td className="px-5 py-4 text-right font-semibold text-red-600">−{row.total_out} {row.unit}</td>
-                        <td className="px-5 py-4 text-right font-black text-slate-900">{row.current_stock} {row.unit}</td>
+                        <td className="px-5 py-4 text-right font-semibold text-emerald-700">+{fmtQty(row.total_in)} {row.unit}</td>
+                        <td className="px-5 py-4 text-right font-semibold text-red-600">−{fmtQty(row.total_out)} {row.unit}</td>
+                        <td className="px-5 py-4 text-right font-black text-slate-900">{fmtQty(row.current_stock)} {row.unit}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -1377,6 +1632,13 @@ export default function InventarioPage() {
           product={unitsListModal}
           onClose={() => setUnitsListModal(null)}
           onChanged={refreshAfterMovement}
+        />
+      )}
+
+      {priceHistorySupplier && (
+        <PriceHistoryModal
+          supplier={priceHistorySupplier}
+          onClose={() => setPriceHistorySupplier(null)}
         />
       )}
     </div>

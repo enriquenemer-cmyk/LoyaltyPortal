@@ -14,6 +14,7 @@ type UnitDetail = {
   weight: string;
   status: 'available' | 'retired';
   location: string | null;
+  expires_at: string | null;
   received_at: string;
   retired_at: string | null;
   retired_by: string | null;
@@ -125,7 +126,13 @@ export default function UnidadPage({ params }: { params: Promise<{ id: string }>
                 <span className="text-sm text-stone-500">Peso de esta unidad</span>
                 <span className="text-2xl font-black text-[#111]">{unit.weight} {unit.unit}</span>
               </div>
-              <p className="text-xs text-stone-400 mt-2 mb-4">Recibido: {formatDateTime(unit.received_at)}</p>
+              <p className="text-xs text-stone-400 mt-2 mb-1">Recibido: {formatDateTime(unit.received_at)}</p>
+              {unit.expires_at && (
+                <p className={`text-xs font-bold mb-4 ${new Date(unit.expires_at) < new Date() ? 'text-red-600' : 'text-amber-600'}`}>
+                  {new Date(unit.expires_at) < new Date() ? '⚠️ Venció el' : 'Vence el'} {new Date(unit.expires_at).toLocaleDateString('es-CO', { day: 'numeric', month: 'short', year: 'numeric' })}
+                </p>
+              )}
+              {!unit.expires_at && <div className="mb-4" />}
 
               <div className="mb-5">
                 {editingLocation ? (

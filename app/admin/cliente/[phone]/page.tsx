@@ -2,6 +2,7 @@ import { CheckCircleIcon, GiftIcon, ReceiptPercentIcon, RectangleGroupIcon } fro
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { SendMessageForm } from './SendMessageForm';
+import { CustomerNotes } from './CustomerNotes';
 import { PrizeRecommendation } from './PrizeRecommendation';
 import { AiCardGenerator } from './AiCardGenerator';
 import {
@@ -414,6 +415,13 @@ export default async function CustomerProfilePage({
               <p className="text-lg font-extrabold leading-tight truncate">{s.value}</p>
             </div>
           ))}
+        </div>
+
+        {/* ── Preferencias del cliente ── */}
+        <div className="bg-white rounded-2xl border border-[#E8E3DC] shadow-[0_1px_2px_rgba(28,25,23,0.04),_0_4px_16px_rgba(28,25,23,0.06)] p-5 mb-6">
+          <h2 className="text-sm font-extrabold text-[#1C1917] uppercase tracking-wider mb-1">Preferencias del cliente</h2>
+          <p className="text-xs text-stone-400 mb-3">Lo que el equipo anota en cada visita — para tratarlo personalizado y agilizar sus pedidos.</p>
+          <CustomerNotes phone={phone} />
         </div>
 
         {/* ── Timeline ── */}

@@ -17,11 +17,18 @@ type MerchItem = {
 type Redemption = {
   id: string;
   merch_item_id: string;
+  item_name: string;
   phone: string;
   points_spent: number;
   status: string;
   created_at: string;
 };
+
+function formatDateTime(dateStr: string) {
+  return new Date(dateStr).toLocaleString('es-CO', {
+    day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit',
+  });
+}
 
 export default function MerchPage() {
   const [items, setItems] = useState<MerchItem[]>([]);
@@ -203,6 +210,33 @@ export default function MerchPage() {
                   <button onClick={() => handleDelete(item.id)} className="px-3 py-1.5 rounded-lg text-xs font-bold border border-red-100 text-red-500 hover:bg-red-50">
                     Eliminar
                   </button>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Redemptions history */}
+        <div className="bg-white rounded-2xl border border-[#E8E3DC] overflow-hidden mt-6">
+          <div className="px-6 py-4 border-b border-[#E8E3DC]">
+            <h2 className="text-sm font-bold text-[#1C1917]">Canjes recientes</h2>
+          </div>
+          {loading ? (
+            <div className="py-10 text-center text-stone-400 text-sm">Cargando...</div>
+          ) : redemptions.length === 0 ? (
+            <div className="py-10 text-center text-stone-400 text-sm">Sin canjes registrados aún.</div>
+          ) : (
+            <div className="divide-y divide-[#F3EFE9]">
+              {redemptions.map((r) => (
+                <div key={r.id} className="px-6 py-3 flex items-center gap-4">
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-semibold text-[#1C1917] truncate">{r.item_name}</p>
+                    <p className="text-xs text-stone-400 font-mono">{r.phone}</p>
+                  </div>
+                  <span className="text-xs bg-orange-50 text-orange-700 px-2 py-0.5 rounded-full font-semibold whitespace-nowrap">
+                    −{r.points_spent} pts
+                  </span>
+                  <span className="text-xs text-stone-400 whitespace-nowrap">{formatDateTime(r.created_at)}</span>
                 </div>
               ))}
             </div>

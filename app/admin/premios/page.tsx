@@ -355,10 +355,16 @@ export default function PremiosPage() {
   const [bulkCancelling, setBulkCancelling] = useState(false);
 
   async function fetchPrizes() {
-    const res = await fetchWithRetry('/api/prizes/list');
-    const data = await res.json();
-    if (data.prizes) setPrizes(data.prizes);
-    setLoading(false);
+    setLoading(true);
+    try {
+      const res = await fetchWithRetry('/api/prizes/list');
+      const data = await res.json();
+      if (data.prizes) setPrizes(data.prizes);
+    } catch {
+      toast.error('No se pudieron cargar los premios. Intenta recargar la página.');
+    } finally {
+      setLoading(false);
+    }
   }
 
   useEffect(() => {

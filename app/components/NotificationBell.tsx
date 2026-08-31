@@ -1,10 +1,20 @@
 'use client';
-import { BellIcon } from '@heroicons/react/24/outline';
+import {
+  BellIcon,
+  GiftIcon,
+  ClockIcon,
+  StarIcon,
+  TruckIcon,
+  ExclamationTriangleIcon,
+  ChartBarIcon,
+  SparklesIcon,
+  ExclamationCircleIcon,
+} from '@heroicons/react/24/outline';
 
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 
-type NotificationType = 'new_claim' | 'prize_expiring' | 'vip_customer' | 'new_delivery' | 'low_prizes' | 'daily_summary' | 'platform_update';
+type NotificationType = 'new_claim' | 'prize_expiring' | 'vip_customer' | 'new_delivery' | 'low_prizes' | 'daily_summary' | 'platform_update' | 'forgotten_clock_out';
 
 type Notification = {
   id: string;
@@ -17,16 +27,18 @@ type Notification = {
   created_at: string;
 };
 
-function typeIcon(type: NotificationType): string {
+function typeIcon(type: NotificationType) {
+  const cls = 'w-4 h-4';
   switch (type) {
-    case 'new_claim': return '';
-    case 'prize_expiring': return '';
-    case 'vip_customer': return '';
-    case 'new_delivery': return '';
-    case 'low_prizes': return '';
-    case 'daily_summary': return '';
-    case 'platform_update': return '';
-    default: return '';
+    case 'new_claim': return <GiftIcon className={`${cls} text-orange-500`} />;
+    case 'prize_expiring': return <ClockIcon className={`${cls} text-amber-500`} />;
+    case 'vip_customer': return <StarIcon className={`${cls} text-yellow-500`} />;
+    case 'new_delivery': return <TruckIcon className={`${cls} text-blue-500`} />;
+    case 'low_prizes': return <ExclamationTriangleIcon className={`${cls} text-red-500`} />;
+    case 'daily_summary': return <ChartBarIcon className={`${cls} text-[#1a6b3c]`} />;
+    case 'platform_update': return <SparklesIcon className={`${cls} text-purple-500`} />;
+    case 'forgotten_clock_out': return <ExclamationCircleIcon className={`${cls} text-red-500`} />;
+    default: return <BellIcon className={`${cls} text-stone-400`} />;
   }
 }
 
@@ -191,45 +203,74 @@ export default function NotificationBell() {
       {open && (
         <div
           ref={panelRef}
-          className="absolute left-0 top-full mt-2 w-72 bg-white border border-[#E8E3DC] rounded-xl shadow-xl z-50 overflow-hidden"
-          style={{ boxShadow: '0 8px 32px rgba(28,25,23,0.14)' }}
+          className="absolute top-full mt-2 w-80 z-50 overflow-hidden"
+          style={{
+            left: 0,
+            background: '#fff',
+            border: '2px solid #111',
+            boxShadow: '5px 5px 0 #111',
+            borderRadius: 16,
+            animation: 'comic-pop-in 0.25s cubic-bezier(0.34,1.56,0.64,1) both',
+          }}
         >
           {/* Header */}
-          <div className="flex items-center justify-between px-4 py-3 border-b border-[#E8E3DC]">
-            <span className="text-xs font-bold text-[#1C1917] uppercase tracking-wider">Notificaciones</span>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 16px', background: '#111', borderBottom: '2px solid #111' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <BellIcon style={{ width: 14, height: 14, color: '#F97316' }} />
+              <span style={{ fontSize: 11, fontWeight: 900, color: '#fff', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Notificaciones</span>
+              {count > 0 && (
+                <span style={{ background: '#F97316', color: '#fff', fontSize: 10, fontWeight: 800, borderRadius: 4, padding: '1px 6px', border: '1.5px solid #fff' }}>{count}</span>
+              )}
+            </div>
             {count > 0 && (
               <button
                 onClick={markAllRead}
                 disabled={marking}
-                className="text-[10px] font-semibold text-orange-500 hover:text-orange-700 transition-colors disabled:opacity-50"
+                style={{ fontSize: 10, fontWeight: 700, color: '#F97316', background: 'none', border: 'none', cursor: 'pointer', opacity: marking ? 0.5 : 1 }}
               >
-                {marking ? 'Marcando...' : 'Marcar todo como leido'}
+                {marking ? 'Marcando...' : 'Leer todo'}
               </button>
             )}
           </div>
 
           {/* Notification list */}
-          <div className="max-h-[340px] overflow-y-auto divide-y divide-[#F5F3F0]">
+          <div style={{ maxHeight: 340, overflowY: 'auto' }}>
             {visible.length === 0 ? (
-              <div className="px-4 py-8 text-center">
-                <p className="text-2xl mb-1"><BellIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></p>
-                <p className="text-xs text-stone-400">Sin notificaciones nuevas</p>
+              <div style={{ padding: '32px 16px', textAlign: 'center' }}>
+                <div style={{ width: 48, height: 48, background: '#f5f5f5', border: '2px solid #111', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 12px' }}>
+                  <BellIcon style={{ width: 22, height: 22, color: '#9ca3af' }} />
+                </div>
+                <p style={{ fontSize: 13, fontWeight: 700, color: '#111', marginBottom: 4 }}>Todo al día</p>
+                <p style={{ fontSize: 12, color: '#9ca3af' }}>No hay notificaciones nuevas</p>
               </div>
             ) : (
-              visible.map((n) => {
+              visible.map((n, i) => {
                 const inner = (
-                  <div className="flex items-start gap-3 px-4 py-3 hover:bg-[#FAFAF9] transition-colors cursor-pointer">
-                    <span className="text-base shrink-0 mt-0.5">{typeIcon(n.type)}</span>
-                    <div className="min-w-0 flex-1">
-                      <p className="text-xs font-semibold text-[#1C1917] truncate">{n.title}</p>
-                      <p className="text-[11px] text-stone-500 mt-0.5 line-clamp-2">{n.body}</p>
-                      <p className="text-[10px] text-stone-300 mt-1">{timeAgo(n.created_at)}</p>
+                  <div
+                    style={{
+                      display: 'flex', alignItems: 'flex-start', gap: 12,
+                      padding: '12px 16px',
+                      borderBottom: '1px solid #f0f0f0',
+                      cursor: 'pointer',
+                      transition: 'background 0.1s',
+                      animationDelay: `${i * 40}ms`,
+                    }}
+                    onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.background = '#fafafa'; }}
+                    onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.background = ''; }}
+                  >
+                    <span style={{ flexShrink: 0, marginTop: 2, width: 28, height: 28, background: '#f5f5f5', border: '1.5px solid #e5e5e5', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      {typeIcon(n.type)}
+                    </span>
+                    <div style={{ minWidth: 0, flex: 1 }}>
+                      <p style={{ fontSize: 12, fontWeight: 700, color: '#111', marginBottom: 2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{n.title}</p>
+                      <p style={{ fontSize: 11, color: '#6b7280', lineHeight: 1.4, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{n.body}</p>
+                      <p style={{ fontSize: 10, color: '#d1d5db', marginTop: 4, fontWeight: 600 }}>{timeAgo(n.created_at)}</p>
                     </div>
                   </div>
                 );
 
                 return n.link ? (
-                  <Link key={n.id} href={n.link} onClick={() => setOpen(false)}>
+                  <Link key={n.id} href={n.link} onClick={() => setOpen(false)} style={{ textDecoration: 'none', display: 'block' }}>
                     {inner}
                   </Link>
                 ) : (
@@ -241,13 +282,13 @@ export default function NotificationBell() {
 
           {/* Footer */}
           {count > 8 && (
-            <div className="border-t border-[#E8E3DC] px-4 py-2.5 text-center">
+            <div style={{ borderTop: '2px solid #111', padding: '10px 16px', textAlign: 'center' }}>
               <Link
                 href="/admin/registros"
                 onClick={() => setOpen(false)}
-                className="text-[11px] font-semibold text-orange-500 hover:text-orange-700 transition-colors"
+                style={{ fontSize: 11, fontWeight: 800, color: '#F97316', textDecoration: 'none' }}
               >
-                Ver todos ({count}) &rarr;
+                Ver todos ({count}) →
               </Link>
             </div>
           )}

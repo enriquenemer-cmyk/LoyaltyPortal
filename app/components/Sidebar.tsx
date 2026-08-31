@@ -1065,7 +1065,7 @@ function SidebarContent({
   return (
     <div className="flex flex-col h-full" onClick={onLinkClick ? undefined : undefined}>
       {/* Logo header */}
-      <div className={`border-b-2 border-black flex items-center overflow-hidden ${compact ? 'flex-col gap-2 px-2 py-2 justify-center' : 'px-4 py-3 justify-between'}`}>
+      <div className={`border-b-2 border-black flex items-center ${compact ? 'flex-col gap-2 px-2 py-2 justify-center' : 'px-4 py-3 justify-between'}`}>
         <Link href="/admin" className="flex items-center gap-2 min-w-0" onClick={onLinkClick}>
           <div className="shrink-0 flex items-center justify-center">
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -1084,7 +1084,7 @@ function SidebarContent({
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             {pendingCount > 0 && (
-              <span className="absolute -top-0.5 -right-0.5 min-w-[16px] h-4 px-0.5 rounded-full bg-red-500 text-black text-[9px] font-bold flex items-center justify-center leading-none">
+              <span className="absolute -top-0.5 -right-0.5 min-w-[16px] h-4 px-0.5 rounded-full bg-red-500 text-white text-[9px] font-bold flex items-center justify-center leading-none">
                 {pendingCount > 99 ? '99+' : pendingCount}
               </span>
             )}

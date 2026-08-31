@@ -64,8 +64,9 @@ export async function POST(
     }
 
     // If player data provided, record the play
+    let folio: string | null = null;
     if (full_name && phone && email) {
-      await insertGamePlay({
+      const play = await insertGamePlay({
         id: crypto.randomUUID(),
         bundle_id: id,
         game_prize_id: selected.id,
@@ -74,6 +75,7 @@ export async function POST(
         email,
         location: location ?? null,
       });
+      folio = play.folio;
       await incrementWinnersCount(selected.id);
     }
 
@@ -81,6 +83,7 @@ export async function POST(
       game_prize_id: selected.id,
       prize_name: selected.name,
       prize_description: selected.description,
+      folio,
     });
   } catch (e) {
     console.error(e);

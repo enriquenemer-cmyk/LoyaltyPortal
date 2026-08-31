@@ -371,8 +371,8 @@ export default function GamePlayer({
         }),
       });
       if (res.ok) {
-        const f = `PT-${Date.now().toString(36).toUpperCase()}`;
-        setFolio(f);
+        const data = await res.json();
+        setFolio(data.folio ?? '—');
         setSubmittedAt(new Date().toLocaleString('es-ES'));
         setGameState('done');
       }

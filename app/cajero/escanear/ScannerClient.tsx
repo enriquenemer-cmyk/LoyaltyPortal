@@ -225,6 +225,17 @@ export default function ScannerClient() {
             Verificar
           </a>
 
+          <a
+            href="/cajero/verificar-juego"
+            className="text-white/80 hover:text-white text-xs font-bold rounded-lg px-3 py-1.5 transition-all shrink-0 flex items-center gap-1"
+            style={{ background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.25)' }}
+          >
+            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4h.01M8 8h.01M16 8h.01M4 12h.01M20 12h.01M8 16h.01M16 16h.01M12 20h.01M4 4h4v4H4zm12 0h4v4h-4zM4 16h4v4H4zm12 0h4v4h-4z" />
+            </svg>
+            Juegos
+          </a>
+
           <button
             onClick={() => setShowManual(!showManual)}
             className="text-white/80 hover:text-white text-xs font-bold rounded-lg px-3 py-1.5 transition-all shrink-0"

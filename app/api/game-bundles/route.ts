@@ -5,8 +5,13 @@ import {
   insertGamePrize,
   getGamePrizesForBundle,
 } from '@/lib/db';
+import { getSession } from '@/lib/session';
 
 export async function GET() {
+  const session = await getSession();
+  if (!session.username) {
+    return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
+  }
   try {
     const bundles = await getAllGameBundles();
     // Attach prizes for each bundle
@@ -24,6 +29,10 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
+  const session = await getSession();
+  if (!session.username) {
+    return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
+  }
   try {
     const body = await req.json();
     const { name, game_type, restaurant_id, prizes } = body as {

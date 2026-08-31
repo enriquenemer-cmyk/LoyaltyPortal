@@ -13,6 +13,9 @@ type Employee = {
   photo_url: string | null;
   active: boolean;
   total_training_points: number;
+  hourly_rate: number | null;
+  scheduled_hours_per_day: number | null;
+  scheduled_start_time: string | null;
   created_at: string;
 };
 
@@ -40,6 +43,18 @@ function formatDuration(seconds: number | null): string {
   const h = Math.floor(seconds / 3600);
   const m = Math.floor((seconds % 3600) / 60);
   return `${h}h ${m}m`;
+}
+
+// Minutes late vs. the employee's expected start time, or null if not
+// configured / not late. Compares local time-of-day only (not the date).
+function lateMinutes(clockInIso: string, scheduledStartTime: string | null): number | null {
+  if (!scheduledStartTime) return null;
+  const clockIn = new Date(clockInIso);
+  const [h, m] = scheduledStartTime.split(':').map(Number);
+  const expected = new Date(clockIn);
+  expected.setHours(h, m, 0, 0);
+  const diffMin = Math.round((clockIn.getTime() - expected.getTime()) / 60000);
+  return diffMin > 5 ? diffMin : null;
 }
 
 type LeaderboardEntry = {
@@ -139,7 +154,12 @@ export default function FichajesPage() {
 
   const [showForm, setShowForm] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  const [form, setForm] = useState({ full_name: '', pin: '', position: '' });
+  const [form, setForm] = useState({ full_name: '', pin: '', position: '', hourly_rate: '', scheduled_hours_per_day: '8', scheduled_start_time: '09:00' });
+  const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
+  const [detailRate, setDetailRate] = useState('');
+  const [detailHours, setDetailHours] = useState('');
+  const [detailStartTime, setDetailStartTime] = useState('');
+  const [savingDetail, setSavingDetail] = useState(false);
 
   const [resettingId, setResettingId] = useState<string | null>(null);
   const [resetPinValue, setResetPinValue] = useState('');
@@ -210,13 +230,20 @@ export default function FichajesPage() {
       const res = await fetch('/api/admin/employees', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ full_name: form.full_name, pin: form.pin, position: form.position }),
+        body: JSON.stringify({
+          full_name: form.full_name,
+          pin: form.pin,
+          position: form.position,
+          hourly_rate: form.hourly_rate ? Number(form.hourly_rate) : null,
+          scheduled_hours_per_day: form.scheduled_hours_per_day ? Number(form.scheduled_hours_per_day) : null,
+          scheduled_start_time: form.scheduled_start_time || null,
+        }),
       });
       const data = await res.json();
       if (!res.ok) {
         setError(data.error ?? 'Error al crear empleado.');
       } else {
-        setForm({ full_name: '', pin: '', position: '' });
+        setForm({ full_name: '', pin: '', position: '', hourly_rate: '', scheduled_hours_per_day: '8', scheduled_start_time: '09:00' });
         setShowForm(false);
         await loadEmployees();
         setSuccess('Empleado creado exitosamente.');
@@ -273,6 +300,85 @@ export default function FichajesPage() {
     } finally {
       setDeletingId(null);
     }
+  }
+
+  async function handleSaveDetail() {
+    if (!selectedEmployee) return;
+    setSavingDetail(true);
+    try {
+      const res = await fetch(`/api/admin/employees/${selectedEmployee.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          hourly_rate: detailRate ? Number(detailRate) : null,
+          scheduled_hours_per_day: detailHours ? Number(detailHours) : null,
+          scheduled_start_time: detailStartTime || null,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error ?? 'No se pudo guardar.');
+        return;
+      }
+      setSelectedEmployee(data.employee);
+      await loadEmployees();
+    } catch {
+      setError('Error de conexión.');
+    } finally {
+      setSavingDetail(false);
+    }
+  }
+
+  const selectedEntry = selectedEmployee
+    ? entries.filter((e) => e.employee_id === selectedEmployee.id).sort((a, b) => new Date(b.clock_in).getTime() - new Date(a.clock_in).getTime())[0]
+    : undefined;
+
+  const selectedWorkedHours = selectedEntry
+    ? selectedEntry.is_active
+      ? (Date.now() - new Date(selectedEntry.clock_in).getTime()) / 3600000
+      : (selectedEntry.duration_seconds ?? 0) / 3600
+    : 0;
+
+  const selectedScheduledHours = selectedEmployee?.scheduled_hours_per_day ? Number(selectedEmployee.scheduled_hours_per_day) : null;
+  const selectedExpectedExit = selectedEntry && selectedScheduledHours
+    ? new Date(new Date(selectedEntry.clock_in).getTime() + selectedScheduledHours * 3600000)
+    : null;
+  const selectedOvertimeHours = selectedScheduledHours != null ? Math.max(0, selectedWorkedHours - selectedScheduledHours) : 0;
+  const selectedLateMinutes = selectedEntry ? lateMinutes(selectedEntry.clock_in, selectedEmployee?.scheduled_start_time ?? null) : null;
+  const selectedHourlyRate = selectedEmployee?.hourly_rate != null ? Number(selectedEmployee.hourly_rate) : null;
+  const selectedOvertimePay = selectedHourlyRate != null ? selectedOvertimeHours * selectedHourlyRate : null;
+  const selectedRegularPay = selectedHourlyRate != null ? Math.min(selectedWorkedHours, selectedScheduledHours ?? selectedWorkedHours) * selectedHourlyRate : null;
+
+  function exportPayrollCSV() {
+    const headers = ['Empleado', 'Puesto', 'Entrada', 'Salida', 'Horas trabajadas', 'Minutos tarde', 'Pago por hora', 'Pago estimado'];
+    const rows = entries.map((entry) => {
+      const emp = employees.find((e) => e.id === entry.employee_id);
+      const hours = entry.duration_seconds != null
+        ? entry.duration_seconds / 3600
+        : entry.is_active ? (Date.now() - new Date(entry.clock_in).getTime()) / 3600000 : 0;
+      const rate = emp?.hourly_rate != null ? Number(emp.hourly_rate) : null;
+      const late = lateMinutes(entry.clock_in, emp?.scheduled_start_time ?? null);
+      return [
+        entry.full_name,
+        entry.position ?? '',
+        new Date(entry.clock_in).toLocaleString('es-CO'),
+        entry.clock_out ? new Date(entry.clock_out).toLocaleString('es-CO') : 'En curso',
+        hours.toFixed(2),
+        late != null ? String(late) : '0',
+        rate != null ? rate.toFixed(0) : '',
+        rate != null ? (hours * rate).toFixed(0) : '',
+      ];
+    });
+    const csv = [headers, ...rows]
+      .map((row) => row.map((cell) => `"${String(cell).replace(/"/g, '""')}"`).join(','))
+      .join('\n');
+    const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `nomina-fichajes-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
   }
 
   return (
@@ -403,6 +509,45 @@ export default function FichajesPage() {
                   className="w-full border border-[#E8E3DC] rounded-xl px-3 py-2.5 text-sm text-[#1C1917] placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-[#F97316]/30 focus:border-[#F97316] transition-colors"
                 />
               </div>
+              <div>
+                <label className="block text-xs font-semibold text-stone-500 uppercase tracking-wide mb-1.5">
+                  Pago por hora <span className="normal-case font-normal text-stone-400">(opcional)</span>
+                </label>
+                <input
+                  type="number"
+                  min={0}
+                  step="any"
+                  value={form.hourly_rate}
+                  onChange={(e) => setForm((f) => ({ ...f, hourly_rate: e.target.value }))}
+                  placeholder="Ej. 8000"
+                  className="w-full border border-[#E8E3DC] rounded-xl px-3 py-2.5 text-sm text-[#1C1917] placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-[#F97316]/30 focus:border-[#F97316] transition-colors"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-stone-500 uppercase tracking-wide mb-1.5">
+                  Horas programadas al día
+                </label>
+                <input
+                  type="number"
+                  min={0}
+                  step="any"
+                  value={form.scheduled_hours_per_day}
+                  onChange={(e) => setForm((f) => ({ ...f, scheduled_hours_per_day: e.target.value }))}
+                  placeholder="Ej. 8"
+                  className="w-full border border-[#E8E3DC] rounded-xl px-3 py-2.5 text-sm text-[#1C1917] placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-[#F97316]/30 focus:border-[#F97316] transition-colors"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-stone-500 uppercase tracking-wide mb-1.5">
+                  Hora de entrada esperada
+                </label>
+                <input
+                  type="time"
+                  value={form.scheduled_start_time}
+                  onChange={(e) => setForm((f) => ({ ...f, scheduled_start_time: e.target.value }))}
+                  className="w-full border border-[#E8E3DC] rounded-xl px-3 py-2.5 text-sm text-[#1C1917] placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-[#F97316]/30 focus:border-[#F97316] transition-colors"
+                />
+              </div>
               <div className="sm:col-span-3 flex gap-3 pt-2">
                 <button
                   type="submit"
@@ -452,7 +597,19 @@ export default function FichajesPage() {
                       key={emp.id}
                       className={`border-b border-[#E8E3DC] last:border-0 ${i % 2 === 0 ? 'bg-white' : 'bg-[#FAFAF9]/50'} hover:bg-orange-50/30 transition-colors`}
                     >
-                      <td className="px-5 py-3.5 font-medium text-[#1C1917]">{emp.full_name}</td>
+                      <td className="px-5 py-3.5 font-medium text-[#1C1917]">
+                        <button
+                          onClick={() => {
+                            setSelectedEmployee(emp);
+                            setDetailRate(emp.hourly_rate != null ? String(emp.hourly_rate) : '');
+                            setDetailHours(emp.scheduled_hours_per_day != null ? String(emp.scheduled_hours_per_day) : '');
+                            setDetailStartTime(emp.scheduled_start_time ? emp.scheduled_start_time.slice(0, 5) : '');
+                          }}
+                          className="hover:text-[#F97316] hover:underline transition-colors text-left"
+                        >
+                          {emp.full_name}
+                        </button>
+                      </td>
                       <td className="px-5 py-3.5 text-stone-600">{emp.position ?? '—'}</td>
                       <td className="px-5 py-3.5">
                         <span
@@ -518,8 +675,14 @@ export default function FichajesPage() {
 
         {/* Time clock history */}
         <div className="bg-white border border-[#E8E3DC] rounded-2xl shadow-sm overflow-hidden">
-          <div className="px-5 py-3.5 border-b border-[#E8E3DC] bg-[#FAFAF9]">
+          <div className="px-5 py-3.5 border-b border-[#E8E3DC] bg-[#FAFAF9] flex items-center justify-between">
             <h2 className="text-sm font-semibold text-[#1C1917]">Historial de fichajes</h2>
+            <button
+              onClick={exportPayrollCSV}
+              className="text-xs font-bold px-3 py-1.5 rounded-lg border border-orange-200 text-[#F97316] bg-orange-50 hover:bg-orange-100 transition-colors"
+            >
+              Exportar nómina CSV
+            </button>
           </div>
           {loading ? (
             <div className="flex items-center justify-center py-16 text-stone-400 text-sm">Cargando…</div>
@@ -553,6 +716,15 @@ export default function FichajesPage() {
                         {new Date(entry.clock_in).toLocaleString('es-CO', {
                           day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit',
                         })}
+                        {(() => {
+                          const emp = employees.find((e) => e.id === entry.employee_id);
+                          const late = lateMinutes(entry.clock_in, emp?.scheduled_start_time ?? null);
+                          return late != null ? (
+                            <span className="ml-1.5 text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-red-50 text-red-600 border border-red-200">
+                              {late}min tarde
+                            </span>
+                          ) : null;
+                        })()}
                         {entry.clock_in_lat != null && entry.clock_in_lng != null && (
                           <a
                             href={mapsLink(entry.clock_in_lat, entry.clock_in_lng)}
@@ -601,6 +773,136 @@ export default function FichajesPage() {
           )}
         </div>
       </div>
+
+      {selectedEmployee && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4" onClick={() => setSelectedEmployee(null)}>
+          <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-6 max-h-[85vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-start justify-between mb-4">
+              <div>
+                <h2 className="text-lg font-extrabold text-[#1C1917]">{selectedEmployee.full_name}</h2>
+                <p className="text-xs text-stone-400">{selectedEmployee.position ?? 'Sin puesto'}</p>
+              </div>
+              <button onClick={() => setSelectedEmployee(null)} className="text-stone-400 hover:text-stone-600 text-xl leading-none">✕</button>
+            </div>
+
+            {!selectedEntry ? (
+              <p className="text-sm text-stone-400 py-6 text-center">Este empleado aún no tiene fichajes registrados.</p>
+            ) : (
+              <div className="space-y-4">
+                <div className="flex items-center justify-between py-2 border-b border-[#F0EDE8]">
+                  <span className="text-xs font-semibold text-stone-500 uppercase tracking-wide">Fichó entrada</span>
+                  <span className="text-sm font-bold text-[#1C1917] flex items-center gap-2">
+                    {new Date(selectedEntry.clock_in).toLocaleString('es-CO', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })}
+                    {selectedLateMinutes != null && (
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-red-50 text-red-600 border border-red-200">
+                        {selectedLateMinutes}min tarde
+                      </span>
+                    )}
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-between py-2 border-b border-[#F0EDE8]">
+                  <span className="text-xs font-semibold text-stone-500 uppercase tracking-wide">Tiempo trabajado</span>
+                  <span className="text-sm font-bold text-[#1C1917]">
+                    {formatDuration(Math.round(selectedWorkedHours * 3600))}
+                    {selectedEntry.is_active && <span className="ml-1.5 text-emerald-600 text-xs font-semibold">● en curso</span>}
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-between py-2 border-b border-[#F0EDE8]">
+                  <span className="text-xs font-semibold text-stone-500 uppercase tracking-wide">Hora de salida esperada</span>
+                  <span className="text-sm font-bold text-[#1C1917]">
+                    {selectedExpectedExit
+                      ? selectedExpectedExit.toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' })
+                      : '—'}
+                  </span>
+                </div>
+
+                {selectedOvertimeHours > 0 && (
+                  <div className="rounded-xl px-3 py-2.5 bg-amber-50 border border-amber-200">
+                    <p className="text-xs font-bold text-amber-800">
+                      +{selectedOvertimeHours.toFixed(1)}h de horas extra
+                      {selectedOvertimePay != null && <> · estimado ${selectedOvertimePay.toLocaleString('es-CO', { maximumFractionDigits: 0 })}</>}
+                    </p>
+                  </div>
+                )}
+
+                {selectedRegularPay != null && (
+                  <div className="flex items-center justify-between py-2 border-b border-[#F0EDE8]">
+                    <span className="text-xs font-semibold text-stone-500 uppercase tracking-wide">Ganado hasta ahora</span>
+                    <span className="text-sm font-bold text-[#1C1917]">
+                      ${((selectedRegularPay ?? 0) + (selectedOvertimePay ?? 0)).toLocaleString('es-CO', { maximumFractionDigits: 0 })}
+                    </span>
+                  </div>
+                )}
+
+                <div className="flex items-center justify-between py-2 border-b border-[#F0EDE8]">
+                  <span className="text-xs font-semibold text-stone-500 uppercase tracking-wide">Ubicación exacta</span>
+                  {selectedEntry.clock_in_lat != null && selectedEntry.clock_in_lng != null ? (
+                    <a
+                      href={mapsLink(selectedEntry.clock_in_lat, selectedEntry.clock_in_lng)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm font-bold text-[#F97316] hover:underline"
+                    >
+                      📍 Ver en el mapa
+                    </a>
+                  ) : (
+                    <span className="text-sm text-stone-400">No disponible</span>
+                  )}
+                </div>
+              </div>
+            )}
+
+            <div className="mt-5 pt-4 border-t border-[#F0EDE8]">
+              <p className="text-xs font-bold text-stone-500 uppercase tracking-wide mb-2">Configuración de pago y horario</p>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-[11px] font-semibold text-stone-400 mb-1">Pago por hora</label>
+                  <input
+                    type="number"
+                    min={0}
+                    step="any"
+                    value={detailRate}
+                    onChange={(e) => setDetailRate(e.target.value)}
+                    placeholder="Ej. 8000"
+                    className="w-full border border-[#E8E3DC] rounded-lg px-2.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#F97316]/30 focus:border-[#F97316]"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[11px] font-semibold text-stone-400 mb-1">Horas programadas/día</label>
+                  <input
+                    type="number"
+                    min={0}
+                    step="any"
+                    value={detailHours}
+                    onChange={(e) => setDetailHours(e.target.value)}
+                    placeholder="Ej. 8"
+                    className="w-full border border-[#E8E3DC] rounded-lg px-2.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#F97316]/30 focus:border-[#F97316]"
+                  />
+                </div>
+                <div className="col-span-2">
+                  <label className="block text-[11px] font-semibold text-stone-400 mb-1">Hora de entrada esperada</label>
+                  <input
+                    type="time"
+                    value={detailStartTime}
+                    onChange={(e) => setDetailStartTime(e.target.value)}
+                    className="w-full border border-[#E8E3DC] rounded-lg px-2.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#F97316]/30 focus:border-[#F97316]"
+                  />
+                </div>
+              </div>
+              <button
+                onClick={handleSaveDetail}
+                disabled={savingDetail}
+                className="mt-3 w-full py-2.5 rounded-xl text-white text-sm font-bold disabled:opacity-60"
+                style={{ background: '#F97316' }}
+              >
+                {savingDetail ? 'Guardando…' : 'Guardar'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

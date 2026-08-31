@@ -1,6 +1,7 @@
 import { BoltIcon, DevicePhoneMobileIcon, FireIcon, LockClosedIcon, MagnifyingGlassIcon, SparklesIcon, TrophyIcon } from '@heroicons/react/24/outline';
 import { notFound } from 'next/navigation';
 import GiftPoints from './GiftPoints';
+import BoostPurchase from './BoostPurchase';
 
 const TIER_LABEL: Record<string, string> = { bronze: 'Bronce', silver: 'Plata', gold: 'Oro' };
 const TIER_COLOR: Record<string, string> = { bronze: '#CD7F32', silver: '#94A3B8', gold: '#F59E0B' };
@@ -173,9 +174,19 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
             <p style={{ fontSize: 22, fontWeight: 800, color: profile.boost_active ? '#3B6D11' : '#78716C', margin: '0 0 2px' }}>
               {profile.boost_active ? ` ${profile.point_multiplier}×` : '—'}
             </p>
-            <p style={{ fontSize: 11, color: '#78716C', margin: 0 }}>{profile.boost_active ? 'Boost activo' : 'Sin boost'}</p>
+            <p style={{ fontSize: 11, color: '#78716C', margin: 0 }}>
+              {profile.boost_active
+                ? `Boost activo${profile.boost_expires_at ? ` · hasta ${new Date(profile.boost_expires_at).toLocaleDateString('es-CO', { day: 'numeric', month: 'short' })}` : ''}`
+                : 'Sin boost'}
+            </p>
           </div>
         </div>
+
+        {!profile.boost_active && (
+          <div style={{ marginBottom: 16 }}>
+            <BoostPurchase token={token} />
+          </div>
+        )}
 
         {/* Stamp card */}
         {stamp_card && (

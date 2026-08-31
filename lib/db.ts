@@ -352,6 +352,24 @@ export async function ensureSchema(): Promise<void> {
       ALTER TABLE inventory_products ADD COLUMN IF NOT EXISTS supplier_id TEXT REFERENCES suppliers(id);
       CREATE INDEX IF NOT EXISTS inventory_products_supplier_idx ON inventory_products(supplier_id);
 
+      -- ── Mensajes programados (broadcast a clientes en fecha futura) ────
+      CREATE TABLE IF NOT EXISTS scheduled_messages (
+        id TEXT PRIMARY KEY,
+        title TEXT NOT NULL,
+        message TEXT NOT NULL,
+        target_type TEXT NOT NULL DEFAULT 'all',
+        inactive_days INTEGER,
+        channels TEXT[] NOT NULL DEFAULT ARRAY['push','email'],
+        send_at TIMESTAMPTZ NOT NULL,
+        status TEXT NOT NULL DEFAULT 'pending',
+        sent_count INTEGER,
+        error TEXT,
+        created_by TEXT,
+        created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+        sent_at TIMESTAMPTZ
+      );
+      CREATE INDEX IF NOT EXISTS scheduled_messages_due_idx ON scheduled_messages(status, send_at);
+
       -- ── Empleados + fichajes (PIN-based clock in/out) ──────────────────
       CREATE TABLE IF NOT EXISTS employees (
         id TEXT PRIMARY KEY,

@@ -2,6 +2,7 @@
 import { GiftIcon } from '@heroicons/react/24/outline';
 
 import { useEffect, useState } from 'react';
+import { useToast } from '@/app/components/Toast';
 
 type GiftCard = {
   id: string;
@@ -16,6 +17,7 @@ type GiftCard = {
 };
 
 export default function GiftCardsPage() {
+  const toast = useToast();
   const [cards, setCards] = useState<GiftCard[]>([]);
   const [loading, setLoading] = useState(true);
   const [creating, setCreating] = useState(false);
@@ -24,10 +26,15 @@ export default function GiftCardsPage() {
   const [copied, setCopied] = useState(false);
 
   async function load() {
-    const res = await fetch('/api/gift-cards');
-    const d = await res.json();
-    setCards(d.gift_cards ?? []);
-    setLoading(false);
+    try {
+      const res = await fetch('/api/gift-cards');
+      const d = await res.json();
+      setCards(d.gift_cards ?? []);
+    } catch {
+      toast.error('Error al cargar las gift cards');
+    } finally {
+      setLoading(false);
+    }
   }
 
   useEffect(() => { load(); }, []);
@@ -36,21 +43,33 @@ export default function GiftCardsPage() {
     e.preventDefault();
     setCreating(true);
     setNewCard(null);
-    const res = await fetch('/api/gift-cards', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'create', ...form, points: Math.round(form.amount_mxn / 2) }),
-    });
-    const d = await res.json();
-    if (d.gift_card) {
-      setNewCard(d.gift_card);
-      await load();
+    try {
+      const res = await fetch('/api/gift-cards', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'create', ...form, points: Math.round(form.amount_mxn / 2) }),
+      });
+      const d = await res.json();
+      if (d.gift_card) {
+        setNewCard(d.gift_card);
+        await load();
+      } else {
+        toast.error(d.error ?? 'Error al crear la gift card');
+      }
+    } catch {
+      toast.error('Error de conexión al crear la gift card');
+    } finally {
+      setCreating(false);
     }
-    setCreating(false);
   }
 
   function copyCode(code: string) {
-    navigator.clipboard.writeText(code).then(() => { setCopied(true); setTimeout(() => setCopied(false), 2000); });
+    navigator.clipboard.writeText(code).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }).catch(() => {
+      toast.error('No se pudo copiar el código');
+    });
   }
 
   const active = cards.filter(c => !c.redeemed_at);

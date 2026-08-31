@@ -2,6 +2,7 @@
 import { LockClosedIcon } from '@heroicons/react/24/outline';
 
 import { useEffect, useMemo, useState } from 'react';
+import { useToast } from '@/app/components/Toast';
 
 type LogEntry = {
   id: string;
@@ -34,6 +35,7 @@ const actionLabel: Record<string, string> = {
 };
 
 export default function SeguridadPage() {
+  const toast = useToast();
   const [logs, setLogs] = useState<LogEntry[]>([]);
   const [allActions, setAllActions] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
@@ -89,6 +91,8 @@ export default function SeguridadPage() {
       a.download = `backup-${date}.json`;
       a.click();
       URL.revokeObjectURL(url);
+    } catch {
+      toast.error('Error al exportar los datos');
     } finally { setExporting(false); }
   }
 
@@ -101,6 +105,8 @@ export default function SeguridadPage() {
     navigator.clipboard.writeText(url).then(() => {
       setCopiedId(log.id);
       setTimeout(() => setCopiedId(null), 2000);
+    }).catch(() => {
+      toast.error('No se pudo copiar el link');
     });
   }
 

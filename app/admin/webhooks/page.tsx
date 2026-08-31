@@ -2,6 +2,7 @@
 import { Cog6ToothIcon, LinkIcon } from '@heroicons/react/24/outline';
 
 import { useState, useEffect } from 'react';
+import { useToast } from '@/app/components/Toast';
 
 const EVENTS = [
   { event: 'prize.generated', description: 'Se genera un nuevo premio QR' },
@@ -17,6 +18,7 @@ export default function WebhooksPage() {
   const [testing, setTesting] = useState(false);
   const [testResult, setTestResult] = useState<{ ok: boolean; message: string } | null>(null);
   const [recentEvents, setRecentEvents] = useState<Array<{ id: string; action: string; description: string; created_at: string; user_name: string | null }>>([]);
+  const toast = useToast();
 
   useEffect(() => {
     fetch('/api/webhooks')
@@ -42,9 +44,13 @@ export default function WebhooksPage() {
   }, []);
 
   async function copyUrl() {
-    await navigator.clipboard.writeText(webhookEndpoint).catch(() => {});
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    try {
+      await navigator.clipboard.writeText(webhookEndpoint);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      toast.error('No se pudo copiar la URL. Cópiala manualmente.');
+    }
   }
 
   async function sendTest() {

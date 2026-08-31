@@ -22,6 +22,39 @@ type RunSummary = {
   failed: number;
 };
 
+type ScheduledMessage = {
+  id: string;
+  title: string;
+  message: string;
+  target_type: 'all' | 'inactive';
+  inactive_days: number | null;
+  channels: string[];
+  send_at: string;
+  status: 'pending' | 'sent' | 'cancelled' | 'failed';
+  sent_count: number | null;
+  error: string | null;
+};
+
+function formatDateTime(dateStr: string) {
+  return new Date(dateStr).toLocaleString('es-CO', {
+    year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit',
+  });
+}
+
+const SCHEDULED_STATUS_STYLES: Record<string, string> = {
+  pending: 'bg-orange-50 text-orange-700 border-orange-200',
+  sent: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+  cancelled: 'bg-stone-100 text-stone-500 border-stone-200',
+  failed: 'bg-red-50 text-red-700 border-red-200',
+};
+
+const SCHEDULED_STATUS_LABELS: Record<string, string> = {
+  pending: 'Programado',
+  sent: 'Enviado',
+  cancelled: 'Cancelado',
+  failed: 'Falló',
+};
+
 function formatDate(dateStr: string) {
   return new Date(dateStr).toLocaleDateString('es-CO', {
     year: 'numeric', month: 'short', day: 'numeric',
@@ -50,16 +83,94 @@ export default function AutomatizacionPage() {
   const [pendingDays, setPendingDays] = useState(30);
   const [total, setTotal] = useState(0);
   const [summary, setSummary] = useState<RunSummary | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  const [scheduled, setScheduled] = useState<ScheduledMessage[]>([]);
+  const [loadingScheduled, setLoadingScheduled] = useState(true);
+  const [schedError, setSchedError] = useState<string | null>(null);
+  const [creatingSched, setCreatingSched] = useState(false);
+  const [schedForm, setSchedForm] = useState({
+    title: '',
+    message: '',
+    target_type: 'all' as 'all' | 'inactive',
+    inactive_days: 30,
+    channels: ['push', 'email'] as string[],
+    send_at: '',
+  });
+
+  async function fetchScheduled() {
+    setLoadingScheduled(true);
+    try {
+      const res = await fetch('/api/admin/scheduled-messages');
+      const data = await res.json().catch(() => ({}));
+      if (res.ok) setScheduled(data.messages ?? []);
+    } catch {
+      // ignore — non-critical background list
+    } finally {
+      setLoadingScheduled(false);
+    }
+  }
+
+  useEffect(() => { fetchScheduled(); }, []);
+
+  function toggleChannel(channel: string) {
+    setSchedForm((f) => ({
+      ...f,
+      channels: f.channels.includes(channel) ? f.channels.filter((c) => c !== channel) : [...f.channels, channel],
+    }));
+  }
+
+  async function handleCreateScheduled(e: React.FormEvent) {
+    e.preventDefault();
+    setSchedError(null);
+    if (!schedForm.title.trim() || !schedForm.message.trim() || !schedForm.send_at) {
+      setSchedError('Completa el título, el mensaje y la fecha de envío.');
+      return;
+    }
+    setCreatingSched(true);
+    try {
+      const res = await fetch('/api/admin/scheduled-messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title: schedForm.title,
+          message: schedForm.message,
+          target_type: schedForm.target_type,
+          inactive_days: schedForm.inactive_days,
+          channels: schedForm.channels,
+          send_at: new Date(schedForm.send_at).toISOString(),
+        }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setSchedError(data.error || 'No se pudo programar el mensaje.');
+        return;
+      }
+      setSchedForm({ title: '', message: '', target_type: 'all', inactive_days: 30, channels: ['push', 'email'], send_at: '' });
+      await fetchScheduled();
+    } catch {
+      setSchedError('Error de conexión. Intenta de nuevo.');
+    } finally {
+      setCreatingSched(false);
+    }
+  }
+
+  async function handleCancelScheduled(id: string) {
+    if (!confirm('¿Cancelar este mensaje programado?')) return;
+    await fetch(`/api/admin/scheduled-messages?id=${id}`, { method: 'DELETE' });
+    await fetchScheduled();
+  }
 
   async function fetchInactive(days: number, execute = false) {
     if (execute) setExecuting(true); else setLoading(true);
+    setError(null);
     try {
       const res = await fetch('/api/automation/inactive', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ days, execute }),
       });
-      const data = await res.json();
+      const data = await res.json().catch(() => ({}));
       if (res.ok) {
         setCustomers(data.customers ?? []);
         setTotal(data.total ?? 0);
@@ -71,9 +182,11 @@ export default function AutomatizacionPage() {
           skipped_cooldown: data.skipped_cooldown ?? 0,
           failed: data.failed ?? 0,
         } : null);
+      } else {
+        setError(data.error || (execute ? 'No se pudo ejecutar la reactivación. Intenta de nuevo.' : 'No se pudo cargar la lista de clientes inactivos.'));
       }
     } catch {
-      // silent
+      setError('Error de conexión. Revisa tu internet e intenta de nuevo.');
     } finally {
       setLoading(false);
       setExecuting(false);
@@ -182,6 +295,12 @@ export default function AutomatizacionPage() {
             </div>
           </div>
 
+          {error && (
+            <div className="mx-6 mt-4 px-4 py-3 rounded-xl flex items-center gap-2 text-sm font-semibold bg-red-50 border border-red-200 text-red-700">
+              ⚠️ {error}
+            </div>
+          )}
+
           {summary && (
             <div className="mx-6 mt-4 px-4 py-3 rounded-xl flex items-center gap-4 flex-wrap text-sm font-semibold" style={{ background: '#FFF7ED', border: '1px solid #FED7AA', color: '#9A3412' }}>
               <span>✅ {summary.ai_messaged} clientes recibieron premio + mensaje IA por email y push</span>
@@ -266,23 +385,133 @@ export default function AutomatizacionPage() {
           </div>
         </div>
 
-        {/* Section 3: Programar mensaje (coming soon) */}
-        <div className="bg-stone-50 rounded-2xl border border-[#E8E3DC] border-dashed overflow-hidden opacity-60">
+        {/* Section 3: Programar mensaje */}
+        <div className="bg-white rounded-2xl border border-[#E8E3DC] shadow-[0_1px_2px_rgba(28,25,23,0.04),_0_4px_16px_rgba(28,25,23,0.06)] overflow-hidden">
           <div className="px-6 py-4 border-b border-[#E8E3DC]">
-            <div className="flex items-center gap-2">
-              <h2 className="text-lg font-bold text-stone-500">Programar Mensaje</h2>
-              <span className="inline-flex items-center text-xs font-bold px-2 py-0.5 rounded-full bg-stone-200 text-stone-500">
-                Proximamente
-              </span>
+            <h2 className="text-lg font-bold text-stone-900">Programar Mensaje</h2>
+            <p className="text-xs text-stone-400 mt-0.5">Programa envíos masivos de mensajes (push y/o email) para una fecha y hora futura.</p>
+          </div>
+
+          <form onSubmit={handleCreateScheduled} className="px-6 py-5 border-b border-[#F0EDE8] space-y-4">
+            {schedError && (
+              <div className="px-4 py-3 rounded-xl text-sm font-semibold bg-red-50 border border-red-200 text-red-700">
+                ⚠️ {schedError}
+              </div>
+            )}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-xs font-semibold text-stone-500 mb-1">Título interno</label>
+                <input
+                  value={schedForm.title}
+                  onChange={(e) => setSchedForm((f) => ({ ...f, title: e.target.value }))}
+                  placeholder="Ej: Promo fin de semana"
+                  className="w-full border border-[#E8E3DC] rounded-xl px-3 py-2 text-sm bg-white focus:outline-none focus:border-[#F97316]"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-stone-500 mb-1">Fecha y hora de envío</label>
+                <input
+                  type="datetime-local"
+                  value={schedForm.send_at}
+                  onChange={(e) => setSchedForm((f) => ({ ...f, send_at: e.target.value }))}
+                  className="w-full border border-[#E8E3DC] rounded-xl px-3 py-2 text-sm bg-white focus:outline-none focus:border-[#F97316]"
+                />
+              </div>
             </div>
-            <p className="text-xs text-stone-400 mt-0.5">Programa envios masivos de mensajes en fechas especificas.</p>
-          </div>
-          <div className="px-6 py-8 flex flex-col items-center justify-center gap-3 text-stone-400">
-            <svg className="w-10 h-10 text-stone-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
-            <p className="text-sm font-medium">Esta funcion estara disponible pronto.</p>
-          </div>
+            <div>
+              <label className="block text-xs font-semibold text-stone-500 mb-1">Mensaje</label>
+              <textarea
+                rows={3}
+                value={schedForm.message}
+                onChange={(e) => setSchedForm((f) => ({ ...f, message: e.target.value }))}
+                placeholder="Escribe el mensaje que recibirán los clientes..."
+                className="w-full border border-[#E8E3DC] rounded-xl px-3 py-2 text-sm bg-white focus:outline-none focus:border-[#F97316] resize-none"
+              />
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-xs font-semibold text-stone-500 mb-1">Destinatarios</label>
+                <select
+                  value={schedForm.target_type}
+                  onChange={(e) => setSchedForm((f) => ({ ...f, target_type: e.target.value as 'all' | 'inactive' }))}
+                  className="w-full border border-[#E8E3DC] rounded-xl px-3 py-2 text-sm bg-white focus:outline-none focus:border-[#F97316]"
+                >
+                  <option value="all">Todos los clientes</option>
+                  <option value="inactive">Clientes inactivos</option>
+                </select>
+              </div>
+              {schedForm.target_type === 'inactive' ? (
+                <div>
+                  <label className="block text-xs font-semibold text-stone-500 mb-1">Sin visita hace más de (días)</label>
+                  <input
+                    type="number"
+                    min={1}
+                    value={schedForm.inactive_days}
+                    onChange={(e) => setSchedForm((f) => ({ ...f, inactive_days: parseInt(e.target.value) || 1 }))}
+                    className="w-full border border-[#E8E3DC] rounded-xl px-3 py-2 text-sm bg-white focus:outline-none focus:border-[#F97316]"
+                  />
+                </div>
+              ) : (
+                <div />
+              )}
+            </div>
+            <div>
+              <label className="block text-xs font-semibold text-stone-500 mb-1">Canales de envío</label>
+              <div className="flex gap-3 pt-1">
+                <label className="flex items-center gap-1.5 text-sm text-stone-600">
+                  <input type="checkbox" checked={schedForm.channels.includes('push')} onChange={() => toggleChannel('push')} className="rounded" style={{ accentColor: '#F97316' }} />
+                  Push
+                </label>
+                <label className="flex items-center gap-1.5 text-sm text-stone-600">
+                  <input type="checkbox" checked={schedForm.channels.includes('email')} onChange={() => toggleChannel('email')} className="rounded" style={{ accentColor: '#F97316' }} />
+                  Email
+                </label>
+              </div>
+            </div>
+            <button
+              type="submit"
+              disabled={creatingSched}
+              className="px-5 py-2.5 rounded-xl text-white text-sm font-bold disabled:opacity-60 transition-opacity hover:opacity-90"
+              style={{ background: '#F97316' }}
+            >
+              {creatingSched ? 'Programando...' : '+ Programar mensaje'}
+            </button>
+          </form>
+
+          {loadingScheduled ? (
+            <div className="py-10 text-center text-stone-400 text-sm">Cargando mensajes programados...</div>
+          ) : scheduled.length === 0 ? (
+            <div className="py-10 text-center text-stone-400 text-sm">Sin mensajes programados todavía.</div>
+          ) : (
+            <div className="divide-y divide-[#F0EDE8]">
+              {scheduled.map((m) => (
+                <div key={m.id} className="flex items-start gap-4 px-6 py-4">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 flex-wrap mb-0.5">
+                      <span className="text-sm font-semibold text-stone-900">{m.title}</span>
+                      <span className={`text-xs font-bold px-2 py-0.5 rounded-full border ${SCHEDULED_STATUS_STYLES[m.status]}`}>
+                        {SCHEDULED_STATUS_LABELS[m.status]}
+                      </span>
+                    </div>
+                    <p className="text-xs text-stone-500 truncate">{m.message}</p>
+                    <p className="text-xs text-stone-400 mt-1">
+                      {formatDateTime(m.send_at)} · {m.target_type === 'inactive' ? `Inactivos +${m.inactive_days}d` : 'Todos los clientes'} · {m.channels.join(' + ')}
+                      {m.status === 'sent' && m.sent_count != null && <> · {m.sent_count} enviados</>}
+                      {m.status === 'failed' && m.error && <span className="text-red-600"> · {m.error}</span>}
+                    </p>
+                  </div>
+                  {m.status === 'pending' && (
+                    <button
+                      onClick={() => handleCancelScheduled(m.id)}
+                      className="text-xs font-semibold text-red-500 hover:text-red-700 shrink-0"
+                    >
+                      Cancelar
+                    </button>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useToast } from '@/app/components/Toast';
 
 type MerchItem = {
   id: string;
@@ -30,6 +31,7 @@ export default function MerchPage() {
   const [form, setForm] = useState({ name: '', description: '', points_cost: 200, stock: '' });
   const [redeemPhone, setRedeemPhone] = useState('');
   const [redeemResult, setRedeemResult] = useState('');
+  const toast = useToast();
 
   async function load() {
     const [itemsRes, redRes] = await Promise.all([
@@ -50,38 +52,64 @@ export default function MerchPage() {
   async function handleCreate(e: React.FormEvent) {
     e.preventDefault();
     setSaving(true);
-    await fetch('/api/merch', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        action: 'create',
-        name: form.name,
-        description: form.description || null,
-        points_cost: form.points_cost,
-        stock: form.stock ? parseInt(form.stock) : null,
-      }),
-    });
-    setForm({ name: '', description: '', points_cost: 200, stock: '' });
-    await load();
-    setSaving(false);
+    try {
+      const res = await fetch('/api/merch', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'create',
+          name: form.name,
+          description: form.description || null,
+          points_cost: form.points_cost,
+          stock: form.stock ? parseInt(form.stock) : null,
+        }),
+      });
+      if (!res.ok) {
+        const d = await res.json().catch(() => ({}));
+        toast.error(d.error ?? 'No se pudo crear el producto.');
+        return;
+      }
+      setForm({ name: '', description: '', points_cost: 200, stock: '' });
+      await load();
+    } catch {
+      toast.error('Error de conexión. No se pudo crear el producto.');
+    } finally {
+      setSaving(false);
+    }
   }
 
   async function handleDelete(id: string) {
-    await fetch('/api/merch', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'delete', id }) });
-    await load();
+    try {
+      const res = await fetch('/api/merch', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'delete', id }) });
+      if (!res.ok) {
+        toast.error('No se pudo eliminar el producto.');
+        return;
+      }
+      await load();
+    } catch {
+      toast.error('Error de conexión. No se pudo eliminar el producto.');
+    }
   }
 
   async function handleRedeem(itemId: string) {
-    if (!redeemPhone) return;
+    if (!redeemPhone) {
+      toast.error('Ingresa el teléfono del cliente primero.');
+      return;
+    }
     setRedeemResult('');
-    const res = await fetch('/api/merch', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'redeem', id: itemId, phone: redeemPhone }),
-    });
-    const d = await res.json();
-    setRedeemResult(d.ok ? `Canjeado correctamente para ${redeemPhone}` : (d.error ?? 'Error'));
-    if (d.ok) await load();
+    try {
+      const res = await fetch('/api/merch', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'redeem', id: itemId, phone: redeemPhone }),
+      });
+      const d = await res.json();
+      setRedeemResult(d.ok ? `Canjeado correctamente para ${redeemPhone}` : (d.error ?? 'Error'));
+      if (d.ok) await load();
+    } catch {
+      setRedeemResult('Error de conexión');
+      toast.error('Error de conexión. No se pudo canjear.');
+    }
   }
 
   return (

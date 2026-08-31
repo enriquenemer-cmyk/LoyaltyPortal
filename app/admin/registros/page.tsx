@@ -5,6 +5,7 @@ import { Avatar } from '@/app/components/Avatar';
 import { EmptyState } from '@/app/components/EmptyState';
 import Tooltip from '@/app/components/Tooltip';
 import RelativeDate from '@/app/components/RelativeDate';
+import { useToast } from '@/app/components/Toast';
 
 type Claim = {
   id: string;
@@ -225,6 +226,7 @@ export default function RegistrosPage() {
   const [resendSuccess, setResendSuccess] = useState<string | null>(null);
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const sentinelRef = useRef<HTMLDivElement>(null);
+  const toast = useToast();
 
   function toggleExpand(id: string) {
     setExpandedId((prev) => (prev === id ? null : id));
@@ -237,9 +239,11 @@ export default function RegistrosPage() {
       if (res.ok) {
         setResendSuccess(claimId);
         setTimeout(() => setResendSuccess(null), 3000);
+      } else {
+        toast.error('No se pudo reenviar el comprobante. Intenta de nuevo.');
       }
     } catch {
-      // silent
+      toast.error('Error de conexión. No se pudo reenviar el comprobante.');
     } finally {
       setResending(null);
     }

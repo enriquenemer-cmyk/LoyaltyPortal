@@ -1,7 +1,7 @@
 'use client';
 import { GiftIcon } from '@heroicons/react/24/outline';
 
-import { useEffect, useState, useRef, useCallback } from 'react';
+import { Fragment, useEffect, useState, useRef, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { EmptyState } from '@/app/components/EmptyState';
@@ -686,9 +686,8 @@ export default function PremiosPage() {
                     const isSelected = selectedIds.has(p.id);
                     const isExpanded = expandedPrizeId === p.id;
                     return (
-                      <>
+                      <Fragment key={p.id}>
                         <tr
-                          key={p.id}
                           className={`hover:bg-[#faf7f5] transition-colors cursor-pointer ${isSelected ? 'bg-orange-50/60' : ''} ${isExpanded ? 'bg-orange-50/30' : ''}`}
                           onClick={(e) => handleToggleExpand(p.id, e)}
                         >
@@ -782,8 +781,8 @@ export default function PremiosPage() {
                             </div>
                           </td>
                         </tr>
-                        {isExpanded && <ExpandedDetail key={`${p.id}-detail`} prize={p} />}
-                      </>
+                        {isExpanded && <ExpandedDetail prize={p} />}
+                      </Fragment>
                     );
                   })}
                 </tbody>

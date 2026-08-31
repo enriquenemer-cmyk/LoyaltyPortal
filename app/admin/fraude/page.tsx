@@ -24,9 +24,9 @@ const TYPE_ICON: Record<string, string> = {
 };
 
 const SEVERITY_STYLES: Record<string, { border: string; bg: string; badge: string; label: string }> = {
-  high: { border: '#ef4444', bg: 'rgba(239,68,68,0.06)', badge: 'bg-red-500/20 text-red-300', label: 'Alta' },
-  medium: { border: '#f59e0b', bg: 'rgba(245,158,11,0.06)', badge: 'bg-amber-500/20 text-amber-300', label: 'Media' },
-  low: { border: '#94a3b8', bg: 'rgba(148,163,184,0.06)', badge: 'bg-slate-500/20 text-slate-300', label: 'Baja' },
+  high: { border: '#ef4444', bg: '#fef2f2', badge: 'bg-red-50 text-red-700 border border-red-200', label: 'Alta' },
+  medium: { border: '#f59e0b', bg: '#fffbeb', badge: 'bg-amber-50 text-amber-700 border border-amber-200', label: 'Media' },
+  low: { border: '#94a3b8', bg: '#f8fafc', badge: 'bg-slate-100 text-slate-600 border border-slate-200', label: 'Baja' },
 };
 
 function timeAgo(dateStr: string): string {
@@ -78,7 +78,7 @@ export default function FraudePage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0F0F0F]">
+    <div className="min-h-screen">
       {/* Hero */}
       <div className="hero-gradient px-4 md:px-10 pt-6 pb-8">
         <div className="hero-blobs" aria-hidden="true"><span key="b1" /><span key="b2" /><span key="b3" /></div>
@@ -99,7 +99,7 @@ export default function FraudePage() {
           <button
             onClick={() => setFilter('unresolved')}
             className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
-              filter === 'unresolved' ? 'bg-orange-500/20 text-orange-300 border border-orange-500/40' : 'bg-white/5 text-slate-400 border border-white/10 hover:bg-white/8'
+              filter === 'unresolved' ? 'bg-orange-50 text-[#F97316] border border-orange-200' : 'bg-white text-slate-500 border border-[#E8E3DC] hover:bg-slate-50'
             }`}
           >
             Sin resolver
@@ -107,7 +107,7 @@ export default function FraudePage() {
           <button
             onClick={() => setFilter('all')}
             className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
-              filter === 'all' ? 'bg-orange-500/20 text-orange-300 border border-orange-500/40' : 'bg-white/5 text-slate-400 border border-white/10 hover:bg-white/8'
+              filter === 'all' ? 'bg-orange-50 text-[#F97316] border border-orange-200' : 'bg-white text-slate-500 border border-[#E8E3DC] hover:bg-slate-50'
             }`}
           >
             Todas
@@ -115,11 +115,11 @@ export default function FraudePage() {
         </div>
 
         {loading ? (
-          <div className="py-16 text-center text-slate-500 text-sm">Cargando alertas...</div>
+          <div className="py-16 text-center text-slate-400 text-sm">Cargando alertas...</div>
         ) : alerts.length === 0 ? (
-          <div className="bg-[#1A1A1A] rounded-2xl border border-white/10 py-16 px-6 text-center">
-            <p className="text-2xl mb-2"><CheckCircleIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></p>
-            <p className="text-white font-bold text-base">Todo en orden, sin actividad sospechosa detectada</p>
+          <div className="bg-white rounded-2xl border border-[#E8E3DC] shadow-sm py-16 px-6 text-center">
+            <p className="text-emerald-500 mb-2 flex justify-center"><CheckCircleIcon className="w-10 h-10" aria-hidden="true" /></p>
+            <p className="text-[#1C1917] font-bold text-base">Todo en orden, sin actividad sospechosa detectada</p>
           </div>
         ) : (
           <div className="space-y-3">
@@ -129,8 +129,8 @@ export default function FraudePage() {
               return (
                 <div
                   key={alert.id}
-                  className="rounded-2xl p-4 border-l-4 bg-[#1A1A1A]"
-                  style={{ borderLeftColor: sev.border, background: `${sev.bg}, #1A1A1A` }}
+                  className="rounded-2xl p-4 border-l-4 bg-white border border-[#E8E3DC] shadow-sm"
+                  style={{ borderLeftColor: sev.border, background: sev.bg }}
                 >
                   <div className="flex items-start gap-3">
                     <span className="text-xl shrink-0">{icon}</span>
@@ -140,14 +140,14 @@ export default function FraudePage() {
                           {sev.label}
                         </span>
                         {alert.phone && (
-                          <span className="text-xs text-slate-400"><PhoneIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> {alert.phone}</span>
+                          <span className="text-xs text-slate-500"><PhoneIcon className="w-4 h-4 inline-block align-middle" aria-hidden="true" /> {alert.phone}</span>
                         )}
                         {alert.restaurant_name && (
-                          <span className="text-xs text-slate-400"><HomeIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> {alert.restaurant_name}</span>
+                          <span className="text-xs text-slate-500"><HomeIcon className="w-4 h-4 inline-block align-middle" aria-hidden="true" /> {alert.restaurant_name}</span>
                         )}
-                        <span className="text-xs text-slate-500 ml-auto">{timeAgo(alert.created_at)}</span>
+                        <span className="text-xs text-slate-400 ml-auto">{timeAgo(alert.created_at)}</span>
                       </div>
-                      <p className="text-sm text-slate-200">{alert.description}</p>
+                      <p className="text-sm text-[#1C1917]">{alert.description}</p>
                     </div>
                   </div>
                   {!alert.resolved && (
@@ -155,7 +155,7 @@ export default function FraudePage() {
                       <button
                         onClick={() => resolveAlert(alert.id)}
                         disabled={resolving === alert.id}
-                        className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/25 transition-all disabled:opacity-50"
+                        className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100 transition-all disabled:opacity-50"
                       >
                         {resolving === alert.id ? 'Resolviendo...' : 'Marcar como resuelta'}
                       </button>

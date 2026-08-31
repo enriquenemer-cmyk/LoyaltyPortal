@@ -3,6 +3,7 @@ import { AcademicCapIcon } from '@heroicons/react/24/outline';
 
 import { useEffect, useState } from 'react';
 import { EmptyState } from '@/app/components/EmptyState';
+import { useToast } from '@/app/components/Toast';
 
 type Module = {
   id: string;
@@ -75,6 +76,7 @@ function ModuleCard({
   onDeleted: (id: string) => void;
 }) {
   const [expanded, setExpanded] = useState(false);
+  const toast = useToast();
 
   async function handleToggleActive() {
     const next = !mod.active;
@@ -96,8 +98,9 @@ function ModuleCard({
     try {
       const res = await fetch(`/api/admin/training/modules/${mod.id}`, { method: 'DELETE' });
       if (res.ok) onDeleted(mod.id);
+      else toast.error('No se pudo eliminar el módulo. Intenta de nuevo.');
     } catch {
-      // ignore
+      toast.error('Error de conexión. No se pudo eliminar el módulo.');
     }
   }
 
@@ -263,12 +266,15 @@ function QuestionEditor({ moduleId, onChanged }: { moduleId: string; onChanged: 
   }
 
   async function handleDelete(id: string) {
+    const removed = questions.find((q) => q.id === id);
     setQuestions((prev) => prev.filter((q) => q.id !== id));
     try {
-      await fetch(`/api/admin/training/questions/${id}`, { method: 'DELETE' });
+      const res = await fetch(`/api/admin/training/questions/${id}`, { method: 'DELETE' });
+      if (!res.ok) throw new Error('delete failed');
       onChanged();
     } catch {
-      // ignore
+      if (removed) setQuestions((prev) => [...prev, removed].sort((a, b) => a.id.localeCompare(b.id)));
+      setError('No se pudo eliminar la pregunta. Intenta de nuevo.');
     }
   }
 

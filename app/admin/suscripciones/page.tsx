@@ -4,6 +4,7 @@ import { DevicePhoneMobileIcon } from '@heroicons/react/24/outline';
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
+import { useToast } from '@/app/components/Toast';
 
 type VIPCustomer = {
   phone: string;
@@ -14,6 +15,7 @@ type VIPCustomer = {
 };
 
 function SuscripcionesContent() {
+  const toast = useToast();
   const params = useSearchParams();
   const success = params.get('success');
   const cancelled = params.get('cancelled');
@@ -146,7 +148,7 @@ function SuscripcionesContent() {
               <div className="flex items-center gap-2">
                 <a href={link} target="_blank" rel="noopener noreferrer" className="text-xs text-orange-600 underline break-all">{link}</a>
                 <button
-                  onClick={() => navigator.clipboard.writeText(link)}
+                  onClick={() => navigator.clipboard.writeText(link).catch(() => toast.error('No se pudo copiar el link'))}
                   className="shrink-0 text-xs bg-white border border-orange-200 px-2 py-1 rounded-lg text-orange-700 hover:bg-orange-50"
                 >
                   Copiar

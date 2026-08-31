@@ -151,3 +151,37 @@ export async function sendWinbackEmail(opts: {
     html,
   });
 }
+
+export async function sendBroadcastEmail(opts: {
+  to: string;
+  full_name: string;
+  title: string;
+  message: string;
+}): Promise<void> {
+  const html = `
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body style="margin:0;padding:0;background:#FAFAF9;font-family:system-ui,Arial,sans-serif;">
+  <div style="max-width:480px;margin:40px auto;background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08);">
+    <div style="background:linear-gradient(135deg,#F97316,#EA580C);padding:28px 32px;">
+      <p style="margin:0;color:rgba(255,255,255,0.8);font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;">3E</p>
+      <h1 style="margin:8px 0 0;color:#fff;font-size:22px;font-weight:900;">${opts.title}</h1>
+    </div>
+    <div style="padding:32px;">
+      <p style="color:#334155;font-size:15px;margin-bottom:8px;">Hola <strong>${opts.full_name.split(' ')[0]}</strong>,</p>
+      <p style="color:#334155;font-size:15px;line-height:1.6;white-space:pre-wrap;">${opts.message}</p>
+    </div>
+    <div style="background:#FAFAF9;padding:16px 32px;border-top:1px solid #E8E3DC;">
+      <p style="margin:0;color:#94a3b8;font-size:11px;text-align:center;">© ${new Date().getFullYear()} 3E by ENM</p>
+    </div>
+  </div>
+</body>
+</html>`;
+
+  await sendEmail({
+    to: opts.to,
+    subject: opts.title,
+    html,
+  });
+}

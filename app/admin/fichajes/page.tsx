@@ -214,6 +214,8 @@ export default function FichajesPage() {
         setSuccess('Empleado creado exitosamente.');
         setTimeout(() => setSuccess(null), 4000);
       }
+    } catch {
+      setError('Error de conexión.');
     } finally {
       setSubmitting(false);
     }
@@ -258,6 +260,8 @@ export default function FichajesPage() {
         const data = await res.json();
         setError(data.error ?? 'Error al desactivar empleado.');
       }
+    } catch {
+      setError('Error de conexión.');
     } finally {
       setDeletingId(null);
     }

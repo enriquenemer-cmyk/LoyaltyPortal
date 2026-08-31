@@ -2,6 +2,7 @@
 import { PaperAirplaneIcon } from '@heroicons/react/24/outline';
 
 import { useEffect, useState } from 'react';
+import { useToast } from '@/app/components/Toast';
 
 type Webhook = {
   id: string;
@@ -27,6 +28,7 @@ export default function WebhooksSalientesPage() {
   const [testing, setTesting] = useState<string | null>(null);
   const [testResult, setTestResult] = useState<Record<string, string>>({});
   const [form, setForm] = useState({ name: '', url: '', secret: '', events: [] as string[] });
+  const toast = useToast();
 
   async function load() {
     const res = await fetch('/api/webhooks-outgoing');
@@ -41,27 +43,51 @@ export default function WebhooksSalientesPage() {
     e.preventDefault();
     if (!form.name || !form.url) return;
     setSaving(true);
-    await fetch('/api/webhooks-outgoing', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name: form.name, url: form.url, secret: form.secret || null, events: form.events }),
-    });
-    setForm({ name: '', url: '', secret: '', events: [] });
-    await load();
-    setSaving(false);
+    try {
+      const res = await fetch('/api/webhooks-outgoing', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: form.name, url: form.url, secret: form.secret || null, events: form.events }),
+      });
+      if (!res.ok) {
+        const d = await res.json().catch(() => ({}));
+        toast.error(d.error ?? 'No se pudo crear el webhook.');
+        return;
+      }
+      setForm({ name: '', url: '', secret: '', events: [] });
+      await load();
+    } catch {
+      toast.error('Error de conexión. No se pudo crear el webhook.');
+    } finally {
+      setSaving(false);
+    }
   }
 
   async function handleDelete(id: string) {
-    await fetch('/api/webhooks-outgoing', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'delete', id }) });
-    await load();
+    try {
+      const res = await fetch('/api/webhooks-outgoing', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'delete', id }) });
+      if (!res.ok) {
+        toast.error('No se pudo eliminar el webhook.');
+        return;
+      }
+      await load();
+    } catch {
+      toast.error('Error de conexión. No se pudo eliminar el webhook.');
+    }
   }
 
   async function handleTest(id: string) {
     setTesting(id);
-    const res = await fetch('/api/webhooks-outgoing', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'test', id }) });
-    const d = await res.json();
-    setTestResult(r => ({ ...r, [id]: d.ok ? `OK (HTTP ${d.status})` : `Error: ${d.error ?? d.status}` }));
-    setTesting(null);
+    try {
+      const res = await fetch('/api/webhooks-outgoing', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'test', id }) });
+      const d = await res.json();
+      setTestResult(r => ({ ...r, [id]: d.ok ? `OK (HTTP ${d.status})` : `Error: ${d.error ?? d.status}` }));
+    } catch {
+      setTestResult(r => ({ ...r, [id]: 'Error: conexión fallida' }));
+      toast.error('Error de conexión. No se pudo probar el webhook.');
+    } finally {
+      setTesting(null);
+    }
   }
 
   function toggleEvent(ev: string) {

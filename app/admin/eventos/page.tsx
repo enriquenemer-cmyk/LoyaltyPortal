@@ -2,6 +2,7 @@
 import { BoltIcon, CalendarIcon } from '@heroicons/react/24/outline';
 
 import { useEffect, useState } from 'react';
+import { useToast } from '@/app/components/Toast';
 
 type EventType = 'double_points' | 'first_N' | 'min_amount_boost';
 
@@ -55,6 +56,7 @@ function formatDt(iso: string) {
 }
 
 export default function EventosPage() {
+  const toast = useToast();
   const [events, setEvents] = useState<RestaurantEvent[]>([]);
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
   const [loading, setLoading] = useState(true);
@@ -135,6 +137,8 @@ export default function EventosPage() {
       }
       setShowForm(false);
       await loadData();
+    } catch {
+      setError('Error de conexión. No se pudo crear el evento.');
     } finally {
       setSubmitting(false);
     }
@@ -143,12 +147,19 @@ export default function EventosPage() {
   async function handleEnd(id: string) {
     setEnding(id);
     try {
-      await fetch('/api/events', {
+      const res = await fetch('/api/events', {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id, action: 'end' }),
       });
+      if (!res.ok) {
+        const d = await res.json().catch(() => ({}));
+        toast.error(d.error ?? 'No se pudo terminar el evento.');
+        return;
+      }
       await loadData();
+    } catch {
+      toast.error('Error de conexión. No se pudo terminar el evento.');
     } finally {
       setEnding(null);
     }

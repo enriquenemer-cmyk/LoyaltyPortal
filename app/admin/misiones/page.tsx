@@ -31,6 +31,9 @@ export default function MisionesPage() {
     title: '', description: '',
     goal_type: 'visits', goal_value: 3, reward_points: 50,
   });
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editForm, setEditForm] = useState({ title: '', description: '' });
+  const [savingEdit, setSavingEdit] = useState(false);
 
   async function load() {
     setLoading(true);
@@ -58,6 +61,23 @@ export default function MisionesPage() {
   async function handleDelete(id: string) {
     if (!confirm('¿Desactivar esta misión?')) return;
     await fetch(`/api/missions?id=${id}`, { method: 'DELETE' });
+    await load();
+  }
+
+  function startEdit(m: Mission) {
+    setEditingId(m.id);
+    setEditForm({ title: m.title, description: m.description });
+  }
+
+  async function saveEdit(id: string) {
+    setSavingEdit(true);
+    await fetch('/api/missions', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id, title: editForm.title, description: editForm.description }),
+    });
+    setSavingEdit(false);
+    setEditingId(null);
     await load();
   }
 
@@ -158,29 +178,73 @@ export default function MisionesPage() {
               {activeMissions.map(m => (
                 <div key={m.id} className="flex items-start gap-4 px-6 py-4">
                   <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-0.5">
-                      <span className="text-sm font-semibold text-[#1C1917]">{m.title}</span>
-                      <span className="text-xs bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-full font-semibold">
-                        +{m.reward_points} pts
-                      </span>
+                    {editingId === m.id ? (
+                      <div className="space-y-2">
+                        <input
+                          autoFocus
+                          value={editForm.title}
+                          onChange={e => setEditForm(f => ({ ...f, title: e.target.value }))}
+                          className="w-full border border-orange-300 rounded-lg px-2.5 py-1.5 text-sm font-semibold bg-white focus:outline-none focus:border-[#F97316]"
+                        />
+                        <input
+                          value={editForm.description}
+                          onChange={e => setEditForm(f => ({ ...f, description: e.target.value }))}
+                          className="w-full border border-[#E8E3DC] rounded-lg px-2.5 py-1.5 text-xs bg-white focus:outline-none focus:border-[#F97316]"
+                        />
+                        <div className="flex gap-2">
+                          <button
+                            onClick={() => saveEdit(m.id)}
+                            disabled={savingEdit}
+                            className="text-xs font-bold px-3 py-1.5 rounded-lg text-white disabled:opacity-60"
+                            style={{ background: '#F97316' }}
+                          >
+                            {savingEdit ? 'Guardando...' : 'Guardar'}
+                          </button>
+                          <button
+                            onClick={() => setEditingId(null)}
+                            className="text-xs font-semibold px-3 py-1.5 rounded-lg text-stone-500 hover:text-stone-700"
+                          >
+                            Cancelar
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <>
+                        <div className="flex items-center gap-2 mb-0.5">
+                          <span className="text-sm font-semibold text-[#1C1917]">{m.title}</span>
+                          <span className="text-xs bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-full font-semibold">
+                            +{m.reward_points} pts
+                          </span>
+                        </div>
+                        <p className="text-xs text-stone-500">{m.description}</p>
+                        <p className="text-xs text-stone-400 mt-1">
+                          Meta: {m.goal_value} {GOAL_LABELS[m.goal_type] ?? m.goal_type} ·
+                          Semana {new Date(m.week_start).toLocaleDateString('es-CO', { day: 'numeric', month: 'short' })}–
+                          {new Date(m.week_end).toLocaleDateString('es-CO', { day: 'numeric', month: 'short' })}
+                        </p>
+                      </>
+                    )}
+                  </div>
+                  {editingId !== m.id && (
+                    <div className="text-right shrink-0">
+                      <p className="text-lg font-extrabold text-[#1C1917] tabular-nums">{m.completions}<span className="text-sm font-normal text-stone-400">/{m.participants}</span></p>
+                      <p className="text-xs text-stone-400">completados</p>
+                      <div className="flex gap-2 justify-end mt-2">
+                        <button
+                          onClick={() => startEdit(m)}
+                          className="text-xs text-stone-500 hover:text-stone-700"
+                        >
+                          Editar
+                        </button>
+                        <button
+                          onClick={() => handleDelete(m.id)}
+                          className="text-xs text-red-500 hover:text-red-700"
+                        >
+                          Desactivar
+                        </button>
+                      </div>
                     </div>
-                    <p className="text-xs text-stone-500">{m.description}</p>
-                    <p className="text-xs text-stone-400 mt-1">
-                      Meta: {m.goal_value} {GOAL_LABELS[m.goal_type] ?? m.goal_type} ·
-                      Semana {new Date(m.week_start).toLocaleDateString('es-CO', { day: 'numeric', month: 'short' })}–
-                      {new Date(m.week_end).toLocaleDateString('es-CO', { day: 'numeric', month: 'short' })}
-                    </p>
-                  </div>
-                  <div className="text-right shrink-0">
-                    <p className="text-lg font-extrabold text-[#1C1917] tabular-nums">{m.completions}<span className="text-sm font-normal text-stone-400">/{m.participants}</span></p>
-                    <p className="text-xs text-stone-400">completados</p>
-                    <button
-                      onClick={() => handleDelete(m.id)}
-                      className="mt-2 text-xs text-red-500 hover:text-red-700"
-                    >
-                      Desactivar
-                    </button>
-                  </div>
+                  )}
                 </div>
               ))}
             </div>

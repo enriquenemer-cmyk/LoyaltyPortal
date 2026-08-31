@@ -88,6 +88,39 @@ export async function POST(req: NextRequest) {
   return NextResponse.json({ mission: rows[0] }, { status: 201 });
 }
 
+export async function PATCH(req: NextRequest) {
+  const cookieStore = await cookies();
+  const session = await getIronSession<SessionData>(cookieStore, sessionOptions);
+  if (!session.username) return NextResponse.json({ error: 'No autorizado.' }, { status: 401 });
+
+  const body = await req.json() as {
+    id: string;
+    title?: string;
+    description?: string;
+    goal_type?: string;
+    goal_value?: number;
+    reward_points?: number;
+  };
+
+  if (!body.id) return NextResponse.json({ error: 'id requerido.' }, { status: 400 });
+
+  const pool = getPool();
+  const { rows } = await pool.query(
+    `UPDATE weekly_missions SET
+       title = COALESCE($2, title),
+       description = COALESCE($3, description),
+       goal_type = COALESCE($4, goal_type),
+       goal_value = COALESCE($5, goal_value),
+       reward_points = COALESCE($6, reward_points)
+     WHERE id = $1
+     RETURNING *`,
+    [body.id, body.title ?? null, body.description ?? null, body.goal_type ?? null, body.goal_value ?? null, body.reward_points ?? null]
+  );
+
+  if (rows.length === 0) return NextResponse.json({ error: 'Misión no encontrada.' }, { status: 404 });
+  return NextResponse.json({ mission: rows[0] });
+}
+
 export async function DELETE(req: NextRequest) {
   const cookieStore = await cookies();
   const session = await getIronSession<SessionData>(cookieStore, sessionOptions);

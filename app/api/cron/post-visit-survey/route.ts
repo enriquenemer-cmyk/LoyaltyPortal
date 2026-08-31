@@ -96,7 +96,7 @@ export async function GET(req: NextRequest) {
     </div>
     <p style="font-size:12px;color:#9ca3af;text-align:center">Solo toma 30 segundos 🙏</p>
   </div>
-  <div style="font-size:11px;color:#9ca3af;text-align:center">3E by ENM · <a href="${appUrl}" style="color:#9ca3af">supertierra.mx</a></div>
+  <div style="font-size:11px;color:#9ca3af;text-align:center">3E · <a href="${appUrl}" style="color:#9ca3af">supertierra.mx</a></div>
 </div>
 </body></html>`,
         });

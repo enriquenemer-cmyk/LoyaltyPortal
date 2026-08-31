@@ -65,14 +65,14 @@ export default function LoginPage() {
         {/* Top logo mark */}
         <div className="relative z-10 p-8 flex items-center gap-2.5">
           <span style={{ width: 10, height: 10, borderRadius: 3, background: '#F97316', border: '2px solid #111' }} />
-          <span style={{ color: '#fff', fontSize: 12, fontWeight: 800, letterSpacing: '0.14em', textTransform: 'uppercase' }}>3E by ENM</span>
+          <span style={{ color: '#fff', fontSize: 12, fontWeight: 800, letterSpacing: '0.14em', textTransform: 'uppercase' }}>3E</span>
         </div>
 
         {/* Centered content */}
         <div className="relative z-10 flex flex-col items-center text-center gap-7 px-10">
           <div style={{ background: '#fff', borderRadius: 20, padding: 22, border: '2px solid #111', boxShadow: '4px 4px 0 #111' }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/logo-3e-oficial.webp" alt="3E by ENM" width={130} height={130} style={{ objectFit: 'contain', display: 'block' }} />
+            <img src="/logo-3e-oficial.webp" alt="3E" width={130} height={130} style={{ objectFit: 'contain', display: 'block' }} />
           </div>
 
           <div>
@@ -97,7 +97,7 @@ export default function LoginPage() {
         </div>
 
         <p className="relative z-10 text-center pb-8" style={{ color: 'rgba(255,255,255,0.6)', fontSize: 11, fontWeight: 600 }}>
-          © {new Date().getFullYear()} 3E by ENM · Todos los derechos reservados
+          © {new Date().getFullYear()} 3E · Todos los derechos reservados
         </p>
       </div>
 
@@ -110,7 +110,7 @@ export default function LoginPage() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/logo-3e-oficial.webp" alt="3E" width={56} height={56} style={{ objectFit: 'contain', display: 'block' }} />
           </div>
-          <span style={{ color: '#111', fontSize: 13, fontWeight: 800 }}>3E by ENM</span>
+          <span style={{ color: '#111', fontSize: 13, fontWeight: 800 }}>3E</span>
         </div>
 
         <div className="w-full max-w-sm" style={{ background: '#fff', border: '2px solid #111', borderRadius: 20, boxShadow: '6px 6px 0 #111', padding: '2.25rem' }}>
@@ -234,7 +234,7 @@ export default function LoginPage() {
           {/* Divider */}
           <div className="mt-7 pt-5" style={{ borderTop: '2px dashed rgba(17,17,17,0.15)' }}>
             <p style={{ fontSize: 11, color: '#9ca3af', textAlign: 'center', fontWeight: 600 }}>
-              © {new Date().getFullYear()} 3E by ENM · Acceso restringido al personal autorizado
+              © {new Date().getFullYear()} 3E · Acceso restringido al personal autorizado
             </p>
           </div>
         </div>

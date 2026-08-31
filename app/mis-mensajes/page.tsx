@@ -350,7 +350,7 @@ export default function MisMensajesPage() {
 
         {/* Footer */}
         <p className="text-center text-gray-400 text-xs pb-6">
-          3E · by ENM
+          3E
         </p>
       </div>
     </div>

@@ -31,7 +31,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title: ' ' + prize.name,
       description: 'Gané un premio en 3E: ' + prize.description,
-      siteName: '3E · by ENM',
+      siteName: '3E',
       type: 'website',
     },
     twitter: {

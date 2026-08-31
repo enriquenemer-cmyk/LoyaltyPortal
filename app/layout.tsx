@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     title: "3E",
   },
   openGraph: {
-    siteName: "3E · by ENM",
+    siteName: "3E",
     type: "website",
     title: "3E",
     description: "Plataforma de premios QR de 3E",

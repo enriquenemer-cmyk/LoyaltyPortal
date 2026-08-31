@@ -168,7 +168,7 @@ export async function GET(req: NextRequest) {
   <div class="header">
     <div style="font-size:11px;color:rgba(255,255,255,0.6);font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">Resumen semanal</div>
     <div style="font-size:22px;font-weight:900;color:#fff">${weekLabel} — ${todayLabel}</div>
-    <div style="margin-top:12px;font-size:13px;color:rgba(255,255,255,0.7)">Plataforma 3E by ENM</div>
+    <div style="margin-top:12px;font-size:13px;color:rgba(255,255,255,0.7)">Plataforma 3E</div>
   </div>
 
   ${inventoryAlerts > 0 ? `

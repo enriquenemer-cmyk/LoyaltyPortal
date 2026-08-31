@@ -887,7 +887,7 @@ function CompactGroupIcon({
 const LOGO = (
   <div className="shrink-0 flex items-center justify-center">
     {/* eslint-disable-next-line @next/next/no-img-element */}
-    <img src="/logo-3e-oficial.webp" alt="3E by ENM" width={64} height={64} style={{ objectFit: 'contain' }} />
+    <img src="/logo-3e-oficial.webp" alt="3E" width={64} height={64} style={{ objectFit: 'contain' }} />
   </div>
 );
 
@@ -1071,7 +1071,7 @@ function SidebarContent({
         <Link href="/admin" className="flex items-center gap-2 min-w-0" onClick={onLinkClick}>
           <div className="shrink-0 flex items-center justify-center">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/logo-3e-oficial.webp" alt="3E by ENM" width={compact ? 36 : 44} height={compact ? 36 : 44} style={{ objectFit: 'contain', display: 'block' }} />
+            <img src="/logo-3e-oficial.webp" alt="3E" width={compact ? 36 : 44} height={compact ? 36 : 44} style={{ objectFit: 'contain', display: 'block' }} />
           </div>
         </Link>
         <div className={`flex items-center gap-1 ${compact ? 'flex-col' : ''}`}>
@@ -1233,7 +1233,7 @@ export default function Sidebar() {
       <div className="md:hidden fixed top-0 left-0 right-0 h-14 flex items-center justify-between px-4 z-40 bg-white overflow-hidden" style={{ borderBottom: '2px solid #000000', width: '100vw' }}>
         <Link href="/admin" className="flex items-center gap-2">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo-3e-oficial.webp" alt="3E by ENM" width={40} height={40} style={{ objectFit: 'contain', display: 'block' }} />
+          <img src="/logo-3e-oficial.webp" alt="3E" width={40} height={40} style={{ objectFit: 'contain', display: 'block' }} />
         </Link>
         <button
           onClick={() => setMobileOpen((v) => !v)}

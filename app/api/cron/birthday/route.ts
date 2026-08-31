@@ -118,7 +118,7 @@ export async function GET(req: NextRequest) {
       Ir a canjear mi regalo →
     </a>
   </div>
-  <div style="font-size:11px;color:#9ca3af;text-align:center">3E by ENM · Con cariño, tu restaurante favorito 💚</div>
+  <div style="font-size:11px;color:#9ca3af;text-align:center">3E · Con cariño, tu restaurante favorito 💚</div>
 </div>
 </body></html>`,
         }).catch(() => {});

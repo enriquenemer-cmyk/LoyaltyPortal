@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { insertClaim, getAllClaims, getPrizeById, getPrizeClaimCount, logActivity, getRecentClaimsByContact, getAllPrizeRules, insertPrize, countClaimsByContact, createNotification, upsertCustomerPoints, getPool } from '@/lib/db';
 import { sendBroadcastEmail } from '@/lib/email';
+import { alertVipClaim } from '@/lib/admin-alerts';
 import { checkRateLimit, getClientIp } from '@/lib/rateLimit';
 import { getSession } from '@/lib/session';
 import { randomUUID } from 'crypto';
@@ -329,6 +330,16 @@ export async function POST(request: NextRequest) {
         restaurant_id: prize.restaurant_id,
       }).catch(() => {});
     }
+
+    // Alert admin if VIP customer
+    getPool().query<{ tier: string }>(
+      `SELECT tier FROM customer_points WHERE phone = $1 OR email = $2 LIMIT 1`,
+      [phone, email]
+    ).then(({ rows }) => {
+      if (rows[0]?.tier === 'gold') {
+        alertVipClaim({ customerName: full_name, phone, prizeName: prize.name });
+      }
+    }).catch(() => {});
 
     const response: { claim: typeof claim; warning?: string; recent_claims_count?: number } = { claim };
 

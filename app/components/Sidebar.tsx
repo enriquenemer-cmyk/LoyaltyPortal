@@ -304,6 +304,7 @@ const ALL_SECTIONS: SectionDef[] = [
     accent: '#F97316',
     links: [
       { href: '/admin', label: 'Dashboard', exact: true, icon: Icons.dashboard },
+      { href: '/admin/radar', label: 'Radar en Vivo', icon: Icons.analitica },
       { href: '/admin/generate', label: 'Generar Premio', icon: Icons.generate },
     ],
   },

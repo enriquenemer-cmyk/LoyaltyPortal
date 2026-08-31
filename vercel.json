@@ -8,6 +8,8 @@
     { "path": "/api/cron/weather-events", "schedule": "0 13 * * *" },
     { "path": "/api/cron/detect-fraud", "schedule": "0 14 * * *" },
     { "path": "/api/cron/send-scheduled-messages", "schedule": "0 15 * * *" },
-    { "path": "/api/cron/check-fichajes", "schedule": "0 16 * * *" }
+    { "path": "/api/cron/check-fichajes", "schedule": "0 16 * * *" },
+    { "path": "/api/cron/weekly-report", "schedule": "0 8 * * 1" },
+    { "path": "/api/cron/post-visit-survey", "schedule": "0 * * * *" }
   ]
 }

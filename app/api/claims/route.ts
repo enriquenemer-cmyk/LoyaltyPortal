@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { insertClaim, getAllClaims, getPrizeById, getPrizeClaimCount, logActivity, getRecentClaimsByContact, getAllPrizeRules, insertPrize, countClaimsByContact, createNotification, upsertCustomerPoints, getPool } from '@/lib/db';
+import { sendBroadcastEmail } from '@/lib/email';
 import { checkRateLimit, getClientIp } from '@/lib/rateLimit';
 import { getSession } from '@/lib/session';
 import { randomUUID } from 'crypto';
@@ -217,6 +218,77 @@ export async function POST(request: NextRequest) {
         } catch { /* ignore */ }
       })();
     }
+
+    // Weekly missions: bump progress for any active mission this claim
+    // counts toward, and reward + notify the customer the moment they
+    // complete one (never fails the claim itself).
+    (async () => {
+      try {
+        const { rows: missions } = await getPool().query<{
+          id: string; title: string; goal_type: string; goal_value: number;
+          reward_points: number; restaurant_id: string | null;
+        }>(
+          `SELECT id, title, goal_type, goal_value, reward_points, restaurant_id
+           FROM weekly_missions
+           WHERE active = true AND week_start <= CURRENT_DATE AND week_end >= CURRENT_DATE`
+        );
+
+        for (const mission of missions) {
+          if (mission.restaurant_id && prize.restaurant_id && mission.restaurant_id !== prize.restaurant_id) continue;
+
+          let increment = 0;
+          if (mission.goal_type === 'visits' || mission.goal_type === 'claims') increment = 1;
+          else if (mission.goal_type === 'points') increment = claim.points_earned ?? 0;
+          if (increment <= 0) continue;
+
+          const { rows: progressRows } = await getPool().query<{ progress: number; completed: boolean }>(
+            `INSERT INTO mission_progress (id, mission_id, phone, progress)
+             VALUES ($1, $2, $3, $4)
+             ON CONFLICT (mission_id, phone)
+             DO UPDATE SET progress = mission_progress.progress + $4
+             RETURNING progress, completed`,
+            [randomUUID(), mission.id, phone, increment]
+          );
+
+          const justCompleted = !progressRows[0].completed && progressRows[0].progress >= mission.goal_value;
+          if (!justCompleted) continue;
+
+          await getPool().query(
+            `UPDATE mission_progress SET completed = true, completed_at = NOW() WHERE mission_id = $1 AND phone = $2`,
+            [mission.id, phone]
+          );
+          await upsertCustomerPoints(phone, email, mission.reward_points);
+          await getPool().query(
+            `UPDATE mission_progress SET reward_granted = true WHERE mission_id = $1 AND phone = $2`,
+            [mission.id, phone]
+          );
+
+          const baseUrl = process.env.NEXT_PUBLIC_BASE_URL ?? process.env.NEXT_PUBLIC_APP_URL ?? 'https://premia-tierra.vercel.app';
+          const notifTitle = `¡Misión completada, ${full_name.split(' ')[0]}! 🎉`;
+          const notifBody = `Completaste "${mission.title}" y ganaste +${mission.reward_points} puntos.`;
+          fetch(`${baseUrl}/api/push/send`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              ...(process.env.CRON_SECRET ? { 'x-internal-secret': process.env.CRON_SECRET } : {}),
+            },
+            body: JSON.stringify({ phone, title: notifTitle, body: notifBody, url: '/mis-premios' }),
+          }).catch(() => {});
+          sendBroadcastEmail({ to: email, full_name, title: notifTitle, message: notifBody }).catch(() => {});
+
+          logActivity({
+            id: randomUUID(),
+            restaurant_id: mission.restaurant_id ?? prize.restaurant_id ?? null,
+            action: 'mission_completed',
+            description: `${full_name} completó la misión "${mission.title}" (+${mission.reward_points} pts)`,
+            user_name: full_name,
+            metadata: { mission_id: mission.id, phone, reward_points: mission.reward_points },
+          }).catch(() => {});
+        }
+      } catch (err) {
+        console.error('Mission progress tracking error:', err);
+      }
+    })();
 
     // Non-blocking webhook trigger
     if (process.env.WEBHOOK_URL) {

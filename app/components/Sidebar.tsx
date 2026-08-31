@@ -407,6 +407,7 @@ const ALL_SECTIONS: SectionDef[] = [
       { href: '/admin/webhooks', label: 'Webhooks', icon: Icons.webhooks },
       { href: '/admin/api-docs', label: 'API Docs', icon: Icons.apidocs },
       { href: '/admin/sistema', label: 'Sistema', icon: Icons.sistema },
+      { href: '/admin/configuracion', label: 'Integraciones', icon: Icons.permisos },
       { href: '/admin/auditoria', label: 'Auditoría', icon: Icons.auditoria },
       { href: '/admin/fraude', label: 'Detector de Fraude', icon: Icons.fraude },
     ],

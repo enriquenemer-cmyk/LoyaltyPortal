@@ -14,6 +14,23 @@ async function getRestaurantId(): Promise<string | null> {
   }
 }
 
+// Autorizado por sesión de admin (uso manual desde el panel) o por el
+// CRON_SECRET compartido (llamadas server-to-server, ej. el anuncio de
+// actualizaciones de la plataforma) — antes este endpoint no verificaba
+// nada y cualquiera en internet podía crear notificaciones falsas.
+async function isAuthorized(req: NextRequest): Promise<boolean> {
+  try {
+    const cookieStore = await cookies();
+    const session = await getIronSession<SessionData>(cookieStore, sessionOptions);
+    if (session.username) return true;
+  } catch {
+    // ignore
+  }
+  if (!process.env.CRON_SECRET) return false;
+  const internalSecret = req.headers.get('x-internal-secret');
+  return internalSecret === process.env.CRON_SECRET;
+}
+
 export async function GET() {
   try {
     const restaurantId = await getRestaurantId();
@@ -26,6 +43,9 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
+  if (!await isAuthorized(request)) {
+    return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
+  }
   try {
     const body = await request.json();
     const { type, title, body: bodyText, link, restaurant_id } = body;

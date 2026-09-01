@@ -204,6 +204,26 @@ export async function getCurrentInventoryAlerts(): Promise<InventoryAlert[]> {
   }));
 }
 
+export async function getTotalCustomersCount(): Promise<number> {
+  const pool = getPool();
+  const { rows } = await pool.query<{ count: string }>(`SELECT COUNT(*)::text AS count FROM customer_points`);
+  return Number(rows[0]?.count ?? 0);
+}
+
+// "Nuevo" = su primer premio reclamado cayó dentro del rango (customer_points
+// no guarda fecha de alta, así que se deriva del primer claim por teléfono).
+export async function getNewCustomersCount(startDate: string, endDate: string): Promise<number> {
+  const pool = getPool();
+  const { rows } = await pool.query<{ count: string }>(
+    `SELECT COUNT(*)::text AS count FROM (
+       SELECT phone, MIN(claimed_at) AS first_claim FROM claims GROUP BY phone
+     ) sub
+     WHERE first_claim >= $1 AND first_claim <= $2::date + INTERVAL '1 day'`,
+    [startDate, endDate]
+  );
+  return Number(rows[0]?.count ?? 0);
+}
+
 export type SystemHealthCheck = {
   active_game_bundles: number;
   products_without_sale_price: number;

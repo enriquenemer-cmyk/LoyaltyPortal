@@ -8,6 +8,7 @@ import ScrollToTop from "./components/ScrollToTop";
 import InactivityLogout from "./components/InactivityLogout";
 import OnboardingTour from "./components/OnboardingTour";
 import OfflineIndicator from "./components/OfflineIndicator";
+import InstallBanner from "./components/InstallBanner";
 
 const plusJakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -26,10 +27,12 @@ export const metadata: Metadata = {
   manifest: "/manifest.json",
   icons: {
     icon: [
+      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icon-512.png", sizes: "512x512", type: "image/png" },
       { url: "/favicon.svg", type: "image/svg+xml" },
     ],
-    apple: "/favicon.svg",
-    shortcut: "/favicon.svg",
+    apple: "/icon-192.png",
+    shortcut: "/icon-192.png",
   },
   appleWebApp: {
     capable: true,
@@ -75,6 +78,7 @@ export default function RootLayout({
           <ServiceWorkerRegister />
           <InactivityLogout />
           <OnboardingTour />
+          <InstallBanner />
           <AppShell>{children}</AppShell>
         </ToastProvider>
       </body>

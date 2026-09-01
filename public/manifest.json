@@ -1,24 +1,25 @@
 {
-  "name": "3E",
+  "name": "3E Plataforma",
   "short_name": "3E",
-  "description": "Plataforma de Premios QR",
+  "description": "Plataforma de Premios QR — Contabilidad, POS, Clientes y más",
   "start_url": "/admin",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#FAFAF9",
-  "theme_color": "#2563EB",
-  "orientation": "portrait",
+  "theme_color": "#111111",
+  "orientation": "any",
   "categories": ["business", "food"],
   "prefer_related_applications": false,
   "icons": [
-    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" },
-    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml" }
   ],
   "shortcuts": [
-    {
-      "name": "Generar Premio",
-      "url": "/admin/generate",
-      "description": "Crear nuevo QR"
-    }
+    { "name": "Contabilidad", "url": "/admin/contabilidad", "description": "Ingresos y gastos", "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Punto de Venta", "url": "/venta", "description": "POS", "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Generar Premio", "url": "/admin/generate", "description": "Crear nuevo QR", "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }] }
   ],
   "screenshots": []
 }

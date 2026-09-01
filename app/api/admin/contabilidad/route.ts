@@ -4,7 +4,8 @@ import { getSession } from '@/lib/session';
 
 export async function GET(req: NextRequest) {
   const session = await getSession();
-  if (!session.restaurantId) return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
+  if (!session.username) return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
+  const restaurantId = session.restaurantId ?? null;
 
   const pool = getPool();
   const url = new URL(req.url);
@@ -18,12 +19,12 @@ export async function GET(req: NextRequest) {
     pool.query<{ total: string }>(
       `SELECT COALESCE(SUM(amount),0)::text AS total FROM accounting_entries
        WHERE restaurant_id=$1 AND type='income' AND date >= CURRENT_DATE - $2::interval`,
-      [session.restaurantId, interval]
+      [restaurantId, interval]
     ),
     pool.query<{ total: string }>(
       `SELECT COALESCE(SUM(amount),0)::text AS total FROM accounting_entries
        WHERE restaurant_id=$1 AND type='expense' AND date >= CURRENT_DATE - $2::interval`,
-      [session.restaurantId, interval]
+      [restaurantId, interval]
     ),
     pool.query<{ date: string; income: string; expense: string }>(
       `SELECT date::text,
@@ -32,21 +33,21 @@ export async function GET(req: NextRequest) {
        FROM accounting_entries
        WHERE restaurant_id=$1 AND date >= CURRENT_DATE - $2::interval
        GROUP BY date ORDER BY date`,
-      [session.restaurantId, interval]
+      [restaurantId, interval]
     ),
     pool.query<{ category: string; type: string; total: string }>(
       `SELECT category, type, COALESCE(SUM(amount),0)::text AS total
        FROM accounting_entries
        WHERE restaurant_id=$1 AND date >= CURRENT_DATE - $2::interval
        GROUP BY category, type ORDER BY total DESC`,
-      [session.restaurantId, interval]
+      [restaurantId, interval]
     ),
     pool.query<{ id: string; date: string; type: string; category: string; amount: string; description: string }>(
       `SELECT id, date::text, type, category, amount::text, description
        FROM accounting_entries
        WHERE restaurant_id=$1
        ORDER BY date DESC, created_at DESC LIMIT 30`,
-      [session.restaurantId]
+      [restaurantId]
     ),
   ]);
 
@@ -69,7 +70,8 @@ export async function GET(req: NextRequest) {
 // Manual income/expense entry
 export async function POST(req: NextRequest) {
   const session = await getSession();
-  if (!session.restaurantId) return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
+  if (!session.username) return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
+  const restaurantId = session.restaurantId ?? null;
 
   const body = await req.json();
   const pool = getPool();
@@ -77,7 +79,7 @@ export async function POST(req: NextRequest) {
     `INSERT INTO accounting_entries (restaurant_id, date, type, category, amount, description)
      VALUES ($1,$2,$3,$4,$5,$6) RETURNING *`,
     [
-      session.restaurantId,
+      restaurantId,
       body.date ?? new Date().toISOString().slice(0, 10),
       body.type,
       body.category ?? 'general',

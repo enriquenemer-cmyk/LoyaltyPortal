@@ -4,16 +4,18 @@ import { getSession } from '@/lib/session';
 
 export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const session = await getSession();
-  if (!session.restaurantId) return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
+  if (!session.username) return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
+  const restaurantId = session.restaurantId ?? null;
   const { id } = await params;
   const pool = getPool();
-  await pool.query(`DELETE FROM product_cost_cards WHERE id=$1 AND restaurant_id=$2`, [id, session.restaurantId]);
+  await pool.query(`DELETE FROM product_cost_cards WHERE id=$1 AND restaurant_id=$2`, [id, restaurantId]);
   return NextResponse.json({ ok: true });
 }
 
 export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const session = await getSession();
-  if (!session.restaurantId) return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
+  if (!session.username) return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
+  const restaurantId = session.restaurantId ?? null;
   const { id } = await params;
   const body = await req.json();
   const pool = getPool();
@@ -41,7 +43,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
          selling_price=$6, margin_pct=$7, notes=$8, updated_at=NOW()
        WHERE id=$9 AND restaurant_id=$10 RETURNING *`,
       [body.name, body.category ?? null, body.type ?? 'simple', body.unit ?? 'pza',
-       costPerUnit, sellingPrice, marginPct, body.notes ?? null, id, session.restaurantId]
+       costPerUnit, sellingPrice, marginPct, body.notes ?? null, id, restaurantId]
     );
 
     if (body.ingredients !== undefined) {

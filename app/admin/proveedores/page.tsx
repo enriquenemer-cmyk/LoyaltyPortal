@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 
-type Supplier = { id: string; name: string; contact_name?: string; phone?: string; email?: string; notes?: string; purchase_count: number; total_spent: string };
+type Supplier = { id: string; name: string; contact_name?: string; contact_phone?: string; contact_email?: string; notes?: string; purchase_count: number; total_spent: string };
 type PurchaseItem = { product_name: string; quantity: number; unit: string; unit_cost: number };
 type Purchase = { id: string; date: string; supplier_name: string; invoice_number?: string; total: string; notes?: string; items: PurchaseItem[] };
 
@@ -17,7 +17,7 @@ export default function ProveedoresPage() {
   const [tab, setTab] = useState<'suppliers' | 'purchases'>('suppliers');
   const [showSupForm, setShowSupForm] = useState(false);
   const [showPurchForm, setShowPurchForm] = useState(false);
-  const [supForm, setSupForm] = useState({ name: '', contact_name: '', phone: '', email: '', notes: '' });
+  const [supForm, setSupForm] = useState({ name: '', contact_name: '', contact_phone: '', contact_email: '', notes: '' });
   const [purchForm, setPurchForm] = useState({
     supplier_id: '', supplier_name: '', invoice_number: '', date: new Date().toISOString().slice(0, 10), notes: '',
     items: [{ product_name: '', quantity: 1, unit: 'pza', unit_cost: 0 }],
@@ -44,7 +44,7 @@ export default function ProveedoresPage() {
     await fetch('/api/admin/proveedores', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(supForm) });
     setSaving(false);
     setShowSupForm(false);
-    setSupForm({ name: '', contact_name: '', phone: '', email: '', notes: '' });
+    setSupForm({ name: '', contact_name: '', contact_phone: '', contact_email: '', notes: '' });
     loadAll();
   }
 
@@ -121,8 +121,8 @@ export default function ProveedoresPage() {
                 <button onClick={() => deleteSupplier(s.id)} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 16, color: '#9ca3af' }}>✕</button>
               </div>
               {s.contact_name && <div style={{ fontSize: 12, color: '#374151', marginTop: 4 }}>👤 {s.contact_name}</div>}
-              {s.phone && <div style={{ fontSize: 12, color: '#374151' }}>📞 {s.phone}</div>}
-              {s.email && <div style={{ fontSize: 12, color: '#374151' }}>📧 {s.email}</div>}
+              {s.contact_phone && <div style={{ fontSize: 12, color: '#374151' }}>📞 {s.contact_phone}</div>}
+              {s.contact_email && <div style={{ fontSize: 12, color: '#374151' }}>📧 {s.contact_email}</div>}
               {s.notes && <div style={{ fontSize: 11, color: '#9ca3af', marginTop: 6, fontStyle: 'italic' }}>{s.notes}</div>}
               <div style={{ marginTop: 12, paddingTop: 10, borderTop: '1px solid #f3f4f6', display: 'flex', gap: 16 }}>
                 <div><div style={{ fontSize: 18, fontWeight: 900, color: '#111' }}>{s.purchase_count}</div><div style={{ fontSize: 10, color: '#9ca3af', fontWeight: 700 }}>COMPRAS</div></div>

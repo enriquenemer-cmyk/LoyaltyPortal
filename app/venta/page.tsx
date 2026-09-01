@@ -372,12 +372,17 @@ export default function VentaPage() {
           <p className="text-sm font-black text-[#1C1917]">{employee?.full_name}</p>
           <p className="text-xs text-stone-400">Ventas de hoy: <span className="font-bold text-emerald-600">{formatCurrency(todayTotal)}</span></p>
         </div>
-        <button
-          onClick={resetToPin}
-          className="text-xs font-semibold text-stone-400 hover:text-stone-600"
-        >
-          Cambiar de usuario
-        </button>
+        <div className="flex items-center gap-4">
+          <Link href="/comanda" target="_blank" className="text-xs font-semibold text-orange-600 hover:underline">
+            Abrir comanda
+          </Link>
+          <button
+            onClick={resetToPin}
+            className="text-xs font-semibold text-stone-400 hover:text-stone-600"
+          >
+            Cambiar de usuario
+          </button>
+        </div>
       </div>
 
       <div className="flex-1 flex flex-col md:flex-row overflow-hidden">

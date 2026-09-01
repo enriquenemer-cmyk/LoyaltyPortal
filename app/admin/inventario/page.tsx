@@ -1319,6 +1319,14 @@ export default function InventarioPage() {
             >
               Abrir punto de venta
             </Link>
+            <Link
+              href="/comanda"
+              target="_blank"
+              className="flex items-center gap-2 font-bold px-5 py-3 rounded-xl text-sm"
+              style={{ background: 'rgba(255,255,255,0.12)', color: 'white', border: '1px solid rgba(255,255,255,0.25)' }}
+            >
+              Abrir comanda
+            </Link>
             <button
               onClick={() => setShowNewSupplier(true)}
               className="flex items-center gap-2 font-bold px-5 py-3 rounded-xl text-sm transition-all"

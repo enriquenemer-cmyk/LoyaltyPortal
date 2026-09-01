@@ -118,6 +118,16 @@ export async function POST(req: NextRequest) {
 
       await client.query(`UPDATE pos_sales SET total_amount = $1 WHERE id = $2`, [total, saleId]);
 
+      // Auto-register income in accounting
+      if (session.restaurantId && total > 0) {
+        const productNames = lineItems.map(l => l.product_name).join(', ');
+        await client.query(
+          `INSERT INTO accounting_entries (restaurant_id, date, type, category, amount, description, reference_id)
+           VALUES ($1, CURRENT_DATE, 'income', 'venta', $2, $3, $4)`,
+          [session.restaurantId, total, `Venta POS: ${productNames} (${paymentMethod})`, saleId]
+        ).catch(() => {});
+      }
+
       await client.query('COMMIT');
 
       return NextResponse.json({ ok: true, sale: { id: saleId, total_amount: total, payment_method: paymentMethod, items: lineItems } }, { status: 201 });

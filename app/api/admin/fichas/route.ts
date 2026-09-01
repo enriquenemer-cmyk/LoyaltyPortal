@@ -4,7 +4,8 @@ import { getSession } from '@/lib/session';
 
 export async function GET(_req: NextRequest) {
   const session = await getSession();
-  if (!session.restaurantId) return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
+  if (!session.username) return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
+  const restaurantId = session.restaurantId ?? null;
 
   const pool = getPool();
   const { rows } = await pool.query(
@@ -24,14 +25,15 @@ export async function GET(_req: NextRequest) {
      WHERE pc.restaurant_id = $1
      GROUP BY pc.id
      ORDER BY pc.category, pc.name`,
-    [session.restaurantId]
+    [restaurantId]
   );
   return NextResponse.json(rows);
 }
 
 export async function POST(req: NextRequest) {
   const session = await getSession();
-  if (!session.restaurantId) return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
+  if (!session.username) return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
+  const restaurantId = session.restaurantId ?? null;
 
   const body = await req.json();
   const pool = getPool();
@@ -59,7 +61,7 @@ export async function POST(req: NextRequest) {
          (restaurant_id, name, category, type, unit, cost_per_unit, selling_price, margin_pct, notes)
        VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING *`,
       [
-        session.restaurantId,
+        restaurantId,
         body.name,
         body.category ?? null,
         body.type ?? 'simple',

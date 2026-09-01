@@ -4,7 +4,8 @@ import { getSession } from '@/lib/session';
 
 export async function GET(req: NextRequest) {
   const session = await getSession();
-  if (!session.restaurantId) return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
+  if (!session.username) return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
+  const restaurantId = session.restaurantId ?? null;
 
   const pool = getPool();
   const url = new URL(req.url);
@@ -29,14 +30,15 @@ export async function GET(req: NextRequest) {
      GROUP BY sp.id, s.name
      ORDER BY sp.date DESC, sp.created_at DESC
      LIMIT $2`,
-    [session.restaurantId, limit]
+    [restaurantId, limit]
   );
   return NextResponse.json(rows);
 }
 
 export async function POST(req: NextRequest) {
   const session = await getSession();
-  if (!session.restaurantId) return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
+  if (!session.username) return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
+  const restaurantId = session.restaurantId ?? null;
 
   const body = await req.json();
   const pool = getPool();
@@ -56,7 +58,7 @@ export async function POST(req: NextRequest) {
          (restaurant_id, supplier_id, supplier_name, invoice_number, date, total, notes)
        VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING *`,
       [
-        session.restaurantId,
+        restaurantId,
         body.supplier_id ?? null,
         body.supplier_name ?? null,
         body.invoice_number ?? null,
@@ -79,7 +81,7 @@ export async function POST(req: NextRequest) {
       `INSERT INTO accounting_entries (restaurant_id, date, type, category, amount, description, reference_id)
        VALUES ($1,$2,'expense','compra_proveedor',$3,$4,$5)`,
       [
-        session.restaurantId,
+        restaurantId,
         purchase.date,
         total,
         `Compra a ${body.supplier_name ?? 'proveedor'}${body.invoice_number ? ` — Factura ${body.invoice_number}` : ''}`,

@@ -313,6 +313,17 @@ export async function POST(request: NextRequest) {
     }
 
     if (prize.restaurant_id) {
+      // Auto-register income in accounting
+      const prizeValue = parseFloat(String(prize.value ?? prize.points_cost ?? 0));
+      if (prizeValue > 0) {
+        getPool().query(
+          `INSERT INTO accounting_entries (restaurant_id, date, type, category, amount, description, reference_id)
+           VALUES ($1, CURRENT_DATE, 'income', 'venta', $2, $3, $4)
+           ON CONFLICT DO NOTHING`,
+          [prize.restaurant_id, prizeValue, `Canje: ${prize.name} — ${full_name}`, id]
+        ).catch(() => {});
+      }
+
       logActivity({
         id: randomUUID(),
         restaurant_id: prize.restaurant_id,

@@ -365,6 +365,7 @@ const ALL_SECTIONS: SectionDef[] = [
     accent: '#1a6b3c',
     links: [
       { href: '/admin/ventas', label: 'Ventas Diarias', icon: Icons.ventas },
+      { href: '/venta', label: 'Punto de Venta (POS)', icon: Icons.ventas },
       { href: '/admin/inventario', label: 'Inventario', icon: Icons.inventario },
       { href: '/admin/fichajes', label: 'Fichajes', icon: Icons.fichajes },
       { href: '/admin/capacitacion', label: 'Capacitación', icon: Icons.capacitacion },
@@ -379,6 +380,7 @@ const ALL_SECTIONS: SectionDef[] = [
     links: [
       { href: '/admin/contabilidad', label: 'Resumen Contable', icon: Icons.contabilidad },
       { href: '/admin/proveedores', label: 'Proveedores y Compras', icon: Icons.proveedores },
+      { href: '/admin/ordenes-compra', label: 'Órdenes de Compra', icon: Icons.inventario },
       { href: '/admin/fichas', label: 'Fichas de Costo', icon: Icons.fichas },
     ],
   },

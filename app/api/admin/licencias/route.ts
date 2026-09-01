@@ -6,15 +6,16 @@ import { randomUUID } from 'crypto';
 
 async function ensureLicenseCols() {
   const pool = getPool();
-  await pool.query(`
-    ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS billing_plan TEXT DEFAULT 'basic';
-    ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS billing_status TEXT DEFAULT 'active';
-    ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS trial_ends_at DATE;
-    ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS owner_email TEXT;
-    ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS owner_name TEXT;
-    ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS notes TEXT;
-    ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS monthly_price NUMERIC(10,2) DEFAULT 0;
-  `).catch(() => {});
+  const cols = [
+    `ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS billing_plan TEXT DEFAULT 'basic'`,
+    `ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS billing_status TEXT DEFAULT 'active'`,
+    `ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS trial_ends_at DATE`,
+    `ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS owner_email TEXT`,
+    `ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS owner_name TEXT`,
+    `ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS notes TEXT`,
+    `ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS monthly_price NUMERIC(10,2) DEFAULT 0`,
+  ];
+  for (const sql of cols) await pool.query(sql).catch(() => {});
 }
 
 // GET — list all tenants (super admin only)

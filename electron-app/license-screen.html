@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3E Plataforma — Activación</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, 'Segoe UI', sans-serif;
+    background: #FAFAF9;
+    display: flex; align-items: center; justify-content: center;
+    min-height: 100vh; padding: 24px;
+  }
+  .card {
+    background: #fff; border: 2px solid #111; border-radius: 16px;
+    box-shadow: 6px 6px 0 #111; padding: 40px; width: 100%; max-width: 400px;
+    text-align: center;
+  }
+  .logo { font-size: 52px; margin-bottom: 12px; }
+  h1 { font-size: 22px; font-weight: 800; margin-bottom: 6px; color: #111; }
+  .subtitle { color: #666; font-size: 14px; margin-bottom: 28px; line-height: 1.5; }
+  label { display: block; text-align: left; font-weight: 700; font-size: 12px; margin-bottom: 6px; color: #111; }
+  input {
+    width: 100%; padding: 12px 14px; border: 2px solid #111; border-radius: 10px;
+    font-size: 14px; font-family: monospace; letter-spacing: 1px;
+    margin-bottom: 16px; outline: none; transition: border-color 0.2s;
+  }
+  input:focus { border-color: #F97316; }
+  button {
+    width: 100%; padding: 13px; background: #F97316; color: #fff;
+    border: 2px solid #111; border-radius: 10px; font-size: 15px; font-weight: 800;
+    cursor: pointer; box-shadow: 3px 3px 0 #111; transition: transform 0.1s;
+  }
+  button:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 #111; }
+  button:disabled { opacity: 0.6; cursor: not-allowed; }
+  .error {
+    background: #fee2e2; border: 1px solid #fca5a5; border-radius: 8px;
+    padding: 10px 14px; color: #dc2626; font-size: 13px; margin-bottom: 14px;
+    text-align: left; display: none;
+  }
+  .help { margin-top: 20px; font-size: 12px; color: #999; }
+  .help a { color: #F97316; text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="logo">🔑</div>
+  <h1>3E Plataforma</h1>
+  <p class="subtitle">Ingresa tu clave de licencia para activar el software en este equipo.</p>
+
+  <div class="error" id="error"></div>
+
+  <label for="key">Clave de licencia</label>
+  <input type="text" id="key" placeholder="3E-XXXXXXXX-XXXXXX" autocomplete="off" spellcheck="false">
+
+  <button id="btn" onclick="activate()">Activar</button>
+
+  <p class="help">
+    ¿No tienes tu clave? Contacta a<br>
+    <a href="mailto:enriquenemer@gmail.com">enriquenemer@gmail.com</a>
+  </p>
+</div>
+
+<script>
+  document.getElementById('key').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') activate();
+  });
+
+  async function activate() {
+    const key = document.getElementById('key').value.trim();
+    const btn = document.getElementById('btn');
+    const err = document.getElementById('error');
+
+    if (!key) { showError('Ingresa tu clave de licencia.'); return; }
+
+    btn.disabled = true;
+    btn.textContent = 'Validando...';
+    err.style.display = 'none';
+
+    try {
+      const result = await window.electronAPI.validateLicense(key);
+      if (!result.ok) {
+        showError(result.reason || 'Clave inválida. Verifica e intenta de nuevo.');
+        btn.disabled = false;
+        btn.textContent = 'Activar';
+      }
+      // If ok, main.js closes this window and opens the main app
+    } catch (e) {
+      showError('Error de conexión. Verifica tu internet e intenta de nuevo.');
+      btn.disabled = false;
+      btn.textContent = 'Activar';
+    }
+  }
+
+  function showError(msg) {
+    const err = document.getElementById('error');
+    err.textContent = msg;
+    err.style.display = 'block';
+  }
+</script>
+</body>
+</html>

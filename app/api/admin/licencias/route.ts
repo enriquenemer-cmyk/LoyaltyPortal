@@ -33,7 +33,7 @@ export async function GET() {
     SELECT
       r.id, r.name, r.phone, r.owner_name, r.owner_email,
       r.billing_plan, r.billing_status, r.trial_ends_at,
-      r.monthly_price, r.notes, r.created_at,
+      r.monthly_price, r.notes, r.created_at, r.license_key,
       COUNT(DISTINCT u.id)::int AS user_count,
       COUNT(DISTINCT c.id)::int AS client_count,
       COUNT(DISTINCT cl.id)::int AS claim_count,
@@ -77,12 +77,15 @@ export async function POST(req: NextRequest) {
   const client = await pool.connect();
   try {
     await client.query('BEGIN');
+    // Ensure license_key column exists
+    await client.query(`ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS license_key TEXT UNIQUE`).catch(() => {});
+    const licenseKey = `3E-${restaurantId.slice(0, 8).toUpperCase()}-${Date.now().toString(36).toUpperCase()}`;
     await client.query(
-      `INSERT INTO restaurants (id, name, address, phone, owner_name, owner_email, billing_plan, billing_status, trial_ends_at, monthly_price, notes)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,'active',$8,$9,$10)`,
+      `INSERT INTO restaurants (id, name, address, phone, owner_name, owner_email, billing_plan, billing_status, trial_ends_at, monthly_price, notes, license_key)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,'active',$8,$9,$10,$11)`,
       [restaurantId, restaurant_name, address ?? '', phone ?? null,
        owner_name ?? null, owner_email ?? null, billing_plan,
-       trial_ends_at ?? null, monthly_price, notes ?? null]
+       trial_ends_at ?? null, monthly_price, notes ?? null, licenseKey]
     );
     await client.query(
       `INSERT INTO users (id, username, password_hash, role, restaurant_id)

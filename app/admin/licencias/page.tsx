@@ -6,7 +6,7 @@ type Tenant = {
   owner_name: string | null; owner_email: string | null;
   billing_plan: string; billing_status: string;
   trial_ends_at: string | null; monthly_price: string;
-  notes: string | null; created_at: string;
+  notes: string | null; created_at: string; license_key: string | null;
   user_count: number; client_count: number; claim_count: number;
   main_username: string | null;
 };
@@ -260,7 +260,17 @@ export default function LicenciasPage() {
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16 }}>
           <div style={{ background: '#fff', border: '2px solid #111', borderRadius: 16, boxShadow: '6px 6px 0 #111', padding: 28, width: '100%', maxWidth: 480, maxHeight: '90vh', overflowY: 'auto' }}>
             <h2 style={{ margin: '0 0 4px', fontSize: 18, fontWeight: 800 }}>{selected.name}</h2>
-            <p style={{ margin: '0 0 20px', color: '#666', fontSize: 13 }}>Usuario: <strong>{selected.main_username}</strong></p>
+            <p style={{ margin: '0 0 8px', color: '#666', fontSize: 13 }}>Usuario: <strong>{selected.main_username}</strong></p>
+            {selected.license_key && (
+              <div style={{ background: '#f0fdf4', border: '2px solid #16a34a', borderRadius: 8, padding: '8px 12px', marginBottom: 16, display: 'flex', alignItems: 'center', gap: 8 }}>
+                <span style={{ fontSize: 12, color: '#15803d', fontWeight: 700 }}>🔑 Clave de licencia:</span>
+                <code style={{ fontSize: 13, fontFamily: 'monospace', color: '#166534', flex: 1 }}>{selected.license_key}</code>
+                <button onClick={() => { navigator.clipboard.writeText(selected.license_key!); alert('¡Copiado!'); }}
+                  style={{ background: '#16a34a', color: '#fff', border: 'none', borderRadius: 6, padding: '4px 8px', fontSize: 11, fontWeight: 700, cursor: 'pointer' }}>
+                  Copiar
+                </button>
+              </div>
+            )}
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 12 }}>
               <div>

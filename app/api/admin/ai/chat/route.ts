@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import { randomUUID } from 'crypto';
 import { getSession } from '@/lib/session';
 import { getPool, ensureSchema } from '@/lib/db';
-import { generateWithTools, ChatMessage, ToolDefinition } from '@/lib/openai';
 import {
   getSalesForDateRange,
   getTopCustomers,
@@ -11,170 +10,211 @@ import {
   getInactiveCustomersCount,
   getConversionRate,
   getCurrentInventoryAlerts,
+  getSystemHealthCheck,
 } from '@/lib/aiDataTools';
 
 export const runtime = 'nodejs';
 
-const SYSTEM_PROMPT =
-  'Eres un asistente de datos para el dueño de "3E", un restaurante con programa de lealtad. ' +
-  'Responde en español, de forma breve y concreta, usando SOLO los datos que obtengas de las herramientas disponibles. ' +
-  'Si no tienes una herramienta para responder algo, dilo honestamente. ' +
-  'Usa números y porcentajes concretos cuando los tengas.';
+// ── Asistente gratuito, solo de la plataforma ───────────────────────────────
+// No llama a ningún modelo de lenguaje externo (sin costo, sin límite de
+// cuota). Detecta la intención por palabras clave en español y responde
+// usando SOLO datos reales obtenidos de las herramientas de lib/aiDataTools —
+// nunca inventa números ni responde temas ajenos al negocio.
 
-const TOOLS: ToolDefinition[] = [
-  {
-    type: 'function',
-    function: {
-      name: 'getSalesForDateRange',
-      description: 'Obtiene el total de ventas, desglose de efectivo/tarjeta/otro y cantidad de tickets para un rango de fechas.',
-      parameters: {
-        type: 'object',
-        properties: {
-          startDate: { type: 'string', description: 'Fecha de inicio en formato YYYY-MM-DD' },
-          endDate: { type: 'string', description: 'Fecha de fin en formato YYYY-MM-DD' },
-          restaurantId: { type: 'string', description: 'ID de restaurante opcional para filtrar' },
-        },
-        required: ['startDate', 'endDate'],
-      },
-    },
-  },
-  {
-    type: 'function',
-    function: {
-      name: 'getTopCustomers',
-      description: 'Obtiene los mejores clientes ordenados por puntos acumulados de por vida.',
-      parameters: {
-        type: 'object',
-        properties: {
-          limit: { type: 'number', description: 'Cantidad de clientes a devolver (máximo 50)' },
-        },
-        required: ['limit'],
-      },
-    },
-  },
-  {
-    type: 'function',
-    function: {
-      name: 'getClaimsCountForDateRange',
-      description: 'Cuenta los cobros/canjes de premios en un rango de fechas, desglosados por estado.',
-      parameters: {
-        type: 'object',
-        properties: {
-          startDate: { type: 'string', description: 'Fecha de inicio en formato YYYY-MM-DD' },
-          endDate: { type: 'string', description: 'Fecha de fin en formato YYYY-MM-DD' },
-        },
-        required: ['startDate', 'endDate'],
-      },
-    },
-  },
-  {
-    type: 'function',
-    function: {
-      name: 'getTopPrizes',
-      description: 'Obtiene los premios más canjeados en los últimos 30 días.',
-      parameters: {
-        type: 'object',
-        properties: {
-          limit: { type: 'number', description: 'Cantidad de premios a devolver (máximo 50)' },
-        },
-        required: ['limit'],
-      },
-    },
-  },
-  {
-    type: 'function',
-    function: {
-      name: 'getInactiveCustomersCount',
-      description: 'Cuenta cuántos clientes no han hecho un cobro/visita en N días.',
-      parameters: {
-        type: 'object',
-        properties: {
-          daysThreshold: { type: 'number', description: 'Cantidad de días sin actividad' },
-        },
-        required: ['daysThreshold'],
-      },
-    },
-  },
-  {
-    type: 'function',
-    function: {
-      name: 'getConversionRate',
-      description: 'Obtiene la tasa de conversión: premios generados vs. canjeados en los últimos 30 días.',
-      parameters: { type: 'object', properties: {}, required: [] },
-    },
-  },
-  {
-    type: 'function',
-    function: {
-      name: 'getCurrentInventoryAlerts',
-      description: 'Obtiene los productos de inventario que están por debajo de su nivel mínimo de stock.',
-      parameters: { type: 'object', properties: {}, required: [] },
-    },
-  },
-];
-
-const MAX_DAYS_RANGE = 366;
-
-function clampDate(dateStr: unknown): string {
-  if (typeof dateStr !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
-    return new Date().toISOString().slice(0, 10);
-  }
-  return dateStr;
+function fmtMoney(n: number): string {
+  return n.toLocaleString('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 });
 }
 
-function clampLimit(n: unknown, fallback = 5): number {
-  const num = typeof n === 'number' ? n : parseInt(String(n), 10);
-  if (!Number.isFinite(num) || num <= 0) return fallback;
-  return Math.min(Math.floor(num), 50);
+function toISODate(d: Date): string {
+  return d.toISOString().slice(0, 10);
 }
 
-async function executeTool(name: string, rawArgs: string): Promise<unknown> {
-  let args: Record<string, unknown> = {};
-  try {
-    args = JSON.parse(rawArgs || '{}');
-  } catch {
-    args = {};
+function startOfWeek(d: Date): Date {
+  const date = new Date(d);
+  const day = date.getDay(); // 0=domingo
+  const diff = day === 0 ? 6 : day - 1; // lunes como inicio
+  date.setDate(date.getDate() - diff);
+  date.setHours(0, 0, 0, 0);
+  return date;
+}
+
+// Extrae un rango de fechas a partir de expresiones relativas en español.
+// Si no se menciona ninguna, usa los últimos 30 días por defecto.
+function parseDateRange(text: string): { start: string; end: string; label: string } {
+  const now = new Date();
+  const today = toISODate(now);
+
+  if (/\bhoy\b/.test(text)) {
+    return { start: today, end: today, label: 'hoy' };
+  }
+  if (/\bayer\b/.test(text)) {
+    const y = new Date(now);
+    y.setDate(y.getDate() - 1);
+    return { start: toISODate(y), end: toISODate(y), label: 'ayer' };
+  }
+  if (/semana pasada|semana anterior/.test(text)) {
+    const startThis = startOfWeek(now);
+    const endLast = new Date(startThis);
+    endLast.setDate(endLast.getDate() - 1);
+    const startLast = new Date(endLast);
+    startLast.setDate(startLast.getDate() - 6);
+    return { start: toISODate(startLast), end: toISODate(endLast), label: 'la semana pasada' };
+  }
+  if (/esta semana/.test(text)) {
+    return { start: toISODate(startOfWeek(now)), end: today, label: 'esta semana' };
+  }
+  if (/mes pasado|mes anterior/.test(text)) {
+    const firstThis = new Date(now.getFullYear(), now.getMonth(), 1);
+    const lastPrev = new Date(firstThis);
+    lastPrev.setDate(lastPrev.getDate() - 1);
+    const firstPrev = new Date(lastPrev.getFullYear(), lastPrev.getMonth(), 1);
+    return { start: toISODate(firstPrev), end: toISODate(lastPrev), label: 'el mes pasado' };
+  }
+  if (/este mes/.test(text)) {
+    const first = new Date(now.getFullYear(), now.getMonth(), 1);
+    return { start: toISODate(first), end: today, label: 'este mes' };
+  }
+  const nDays = text.match(/(?:[uú]ltimos?|pasados?)\s+(\d{1,3})\s*d[ií]as/);
+  if (nDays) {
+    const n = Math.min(parseInt(nDays[1], 10), 366);
+    const start = new Date(now);
+    start.setDate(start.getDate() - n);
+    return { start: toISODate(start), end: today, label: `los últimos ${n} días` };
   }
 
-  switch (name) {
-    case 'getSalesForDateRange': {
-      const start = clampDate(args.startDate);
-      const end = clampDate(args.endDate);
-      const startD = new Date(start);
-      const endD = new Date(end);
-      const diffDays = Math.abs((endD.getTime() - startD.getTime()) / 86400000);
-      if (diffDays > MAX_DAYS_RANGE) {
-        return { error: 'Rango de fechas demasiado amplio (máximo 366 días).' };
-      }
-      const restaurantId = typeof args.restaurantId === 'string' ? args.restaurantId : undefined;
-      return getSalesForDateRange(start, end, restaurantId);
-    }
-    case 'getTopCustomers':
-      return getTopCustomers(clampLimit(args.limit));
-    case 'getClaimsCountForDateRange': {
-      const start = clampDate(args.startDate);
-      const end = clampDate(args.endDate);
-      const startD = new Date(start);
-      const endD = new Date(end);
-      const diffDays = Math.abs((endD.getTime() - startD.getTime()) / 86400000);
-      if (diffDays > MAX_DAYS_RANGE) {
-        return { error: 'Rango de fechas demasiado amplio (máximo 366 días).' };
-      }
-      return getClaimsCountForDateRange(start, end);
-    }
-    case 'getTopPrizes':
-      return getTopPrizes(clampLimit(args.limit));
-    case 'getInactiveCustomersCount': {
-      const days = clampLimit(args.daysThreshold, 30);
-      return getInactiveCustomersCount(Math.min(days, 730) || 30);
-    }
-    case 'getConversionRate':
-      return getConversionRate();
-    case 'getCurrentInventoryAlerts':
-      return getCurrentInventoryAlerts();
-    default:
-      return { error: `Herramienta desconocida: ${name}` };
+  const start = new Date(now);
+  start.setDate(start.getDate() - 30);
+  return { start: toISODate(start), end: today, label: 'los últimos 30 días' };
+}
+
+type Reply = { text: string; tool: string };
+
+async function answerSales(text: string): Promise<Reply> {
+  const { start, end, label } = parseDateRange(text);
+  const data = await getSalesForDateRange(start, end);
+  if (data.days === 0) {
+    return { text: `No encontré ventas registradas para ${label}.`, tool: 'getSalesForDateRange' };
   }
+  return {
+    text:
+      `Ventas de ${label}: ${fmtMoney(data.total)} en total ` +
+      `(${fmtMoney(data.cash)} efectivo, ${fmtMoney(data.card)} tarjeta, ${fmtMoney(data.other)} otros), ` +
+      `con ${data.ticket_count} tickets registrados.`,
+    tool: 'getSalesForDateRange',
+  };
+}
+
+async function answerTopCustomers(text: string): Promise<Reply> {
+  const nMatch = text.match(/top\s*(\d{1,2})|mejores\s*(\d{1,2})/);
+  const limit = nMatch ? parseInt(nMatch[1] ?? nMatch[2], 10) : 5;
+  const customers = await getTopCustomers(limit);
+  if (customers.length === 0) {
+    return { text: 'Todavía no tienes clientes con puntos acumulados.', tool: 'getTopCustomers' };
+  }
+  const list = customers
+    .map((c, i) => `${i + 1}. ${c.full_name || c.phone} — ${c.lifetime_points} pts (${c.tier})`)
+    .join('\n');
+  return { text: `Tus mejores clientes por puntos de por vida:\n${list}`, tool: 'getTopCustomers' };
+}
+
+async function answerClaims(text: string): Promise<Reply> {
+  const { start, end, label } = parseDateRange(text);
+  const data = await getClaimsCountForDateRange(start, end);
+  if (data.total === 0) {
+    return { text: `No hubo cobros de premios en ${label}.`, tool: 'getClaimsCountForDateRange' };
+  }
+  const breakdown = data.by_status.map((s) => `${s.count} ${s.status}`).join(', ');
+  return { text: `En ${label} hubo ${data.total} cobros de premios (${breakdown}).`, tool: 'getClaimsCountForDateRange' };
+}
+
+async function answerTopPrizes(): Promise<Reply> {
+  const prizes = await getTopPrizes(5);
+  if (prizes.length === 0) {
+    return { text: 'No hay premios canjeados en los últimos 30 días.', tool: 'getTopPrizes' };
+  }
+  const list = prizes.map((p, i) => `${i + 1}. ${p.name} — ${p.count} canjes`).join('\n');
+  return { text: `Premios más canjeados (últimos 30 días):\n${list}`, tool: 'getTopPrizes' };
+}
+
+async function answerInactiveCustomers(text: string): Promise<Reply> {
+  const nMatch = text.match(/(\d{1,3})\s*d[ií]as/);
+  const days = nMatch ? parseInt(nMatch[1], 10) : 30;
+  const data = await getInactiveCustomersCount(days);
+  return {
+    text: `${data.count} clientes no han cobrado ningún premio en los últimos ${data.days_threshold} días.`,
+    tool: 'getInactiveCustomersCount',
+  };
+}
+
+async function answerConversionRate(): Promise<Reply> {
+  const data = await getConversionRate();
+  if (data.total_prizes === 0) {
+    return { text: 'No se generaron premios en los últimos 30 días para calcular una tasa de conversión.', tool: 'getConversionRate' };
+  }
+  return {
+    text: `De ${data.total_prizes} premios generados en los últimos 30 días, se cobraron ${data.total_claims} — una tasa de conversión del ${data.rate}%.`,
+    tool: 'getConversionRate',
+  };
+}
+
+async function answerInventory(): Promise<Reply> {
+  const alerts = await getCurrentInventoryAlerts();
+  if (alerts.length === 0) {
+    return { text: 'Todo tu inventario está por encima del nivel mínimo. Nada por reabastecer ahora mismo.', tool: 'getCurrentInventoryAlerts' };
+  }
+  const list = alerts.slice(0, 10).map((a) => `${a.name}: ${a.current_stock} ${a.unit} (mínimo ${a.min_stock_alert})`).join('\n');
+  return { text: `Productos con stock bajo:\n${list}`, tool: 'getCurrentInventoryAlerts' };
+}
+
+async function answerHealthCheck(): Promise<Reply> {
+  const h = await getSystemHealthCheck();
+  const items: string[] = [];
+  if (h.active_game_bundles === 0) items.push('No tienes ninguna campaña de juego activa (Juegos y Tickets).');
+  if (h.products_without_sale_price > 0) items.push(`${h.products_without_sale_price} producto(s) de inventario sin precio de venta asignado, así que no aparecen en el Punto de Venta.`);
+  if (h.low_stock_products > 0) items.push(`${h.low_stock_products} producto(s) con stock por debajo del mínimo.`);
+  if (h.employees_without_schedule > 0) items.push(`${h.employees_without_schedule} empleado(s) sin hora de entrada configurada, así que no se detectan llegadas tarde.`);
+
+  if (items.length === 0) {
+    return { text: 'No encontré nada pendiente de configurar: campañas de juego activas, precios de venta puestos, stock e horarios de empleados en orden.', tool: 'getSystemHealthCheck' };
+  }
+  return { text: `Esto es lo que te falta configurar:\n${items.map((i) => `• ${i}`).join('\n')}`, tool: 'getSystemHealthCheck' };
+}
+
+const HELP_TEXT =
+  'Solo puedo responder preguntas sobre tu negocio en esta plataforma: ventas, clientes, premios, canjes, inventario y qué te falta configurar. ' +
+  'Prueba con algo como "¿cuánto vendí esta semana?", "¿quién es mi mejor cliente?" o "¿qué me falta configurar?".';
+
+async function routeMessage(rawText: string): Promise<Reply> {
+  const text = rawText.toLowerCase();
+
+  // Salud del sistema / cosas que faltan — se revisa primero porque es lo
+  // más específico y evita que "premio"/"inventario" lo desvíen a otra rama.
+  if (/qu[eé] (me )?falta|falta configurar|cosas? (que )?faltan|pendiente(s)? de configurar|salud del sistema/.test(text)) {
+    return answerHealthCheck();
+  }
+  if (/tasa de conversi[oó]n|convers[ií]on/.test(text)) {
+    return answerConversionRate();
+  }
+  if (/inactiv|no ha vuelto|no ha regresado|dej(ó|o) de venir/.test(text)) {
+    return answerInactiveCustomers(text);
+  }
+  if (/mejor(es)? cliente|top cliente|clientes? frecuente/.test(text)) {
+    return answerTopCustomers(text);
+  }
+  if (/premio(s)? m[aá]s|qu[eé] premio se canje|premio.*popular/.test(text)) {
+    return answerTopPrizes();
+  }
+  if (/canje|cobr(o|os|é|e)\b.*premio|premios?.*cobr/.test(text)) {
+    return answerClaims(text);
+  }
+  if (/stock|inventario|reabastec|se est[aá] acabando/.test(text)) {
+    return answerInventory();
+  }
+  if (/vend|venta|ingreso|factur/.test(text)) {
+    return answerSales(text);
+  }
+
+  return { text: HELP_TEXT, tool: 'help' };
 }
 
 export async function POST(req: NextRequest) {
@@ -200,57 +240,8 @@ export async function POST(req: NextRequest) {
   const pool = getPool();
 
   try {
-    // Cargar historial reciente de la conversación
-    const historyResult = await pool.query<{ role: 'user' | 'assistant'; content: string }>(
-      `SELECT role, content FROM ai_chat_messages
-       WHERE session_id = $1 AND role IN ('user', 'assistant')
-       ORDER BY created_at DESC
-       LIMIT 10`,
-      [sessionId]
-    );
-    const history = historyResult.rows.reverse();
+    const { text: finalContent, tool } = await routeMessage(userMessage);
 
-    const messages: ChatMessage[] = [
-      { role: 'system', content: SYSTEM_PROMPT },
-      ...history.map((h) => ({ role: h.role, content: h.content } as ChatMessage)),
-      { role: 'user', content: userMessage },
-    ];
-
-    const usedTools: string[] = [];
-
-    // Primera llamada: GPT decide si necesita herramientas
-    const first = await generateWithTools(messages, TOOLS);
-    let finalContent = first.message.content ?? '';
-
-    if (first.message.tool_calls && first.message.tool_calls.length > 0) {
-      const assistantMsg: ChatMessage = {
-        role: 'assistant',
-        content: first.message.content ?? null,
-        tool_calls: first.message.tool_calls,
-      };
-      messages.push(assistantMsg);
-
-      for (const call of first.message.tool_calls) {
-        const result = await executeTool(call.function.name, call.function.arguments);
-        usedTools.push(call.function.name);
-        messages.push({
-          role: 'tool',
-          tool_call_id: call.id,
-          name: call.function.name,
-          content: JSON.stringify(result),
-        });
-      }
-
-      // Segunda llamada: GPT resume los resultados en español natural
-      const second = await generateWithTools(messages, TOOLS);
-      finalContent = second.message.content ?? '';
-    }
-
-    if (!finalContent.trim()) {
-      finalContent = 'No pude generar una respuesta en este momento. Intenta reformular tu pregunta.';
-    }
-
-    // Guardar mensajes en el historial
     const userId = randomUUID();
     const assistantId = randomUUID();
     await pool.query(
@@ -262,14 +253,9 @@ export async function POST(req: NextRequest) {
       [assistantId, sessionId, session.username, finalContent]
     );
 
-    return NextResponse.json({ reply: finalContent, used_tools: usedTools });
+    return NextResponse.json({ reply: finalContent, used_tools: tool === 'help' ? [] : [tool] });
   } catch (err) {
     console.error('[/api/admin/ai/chat POST]', err);
-    const message = err instanceof Error ? err.message : '';
-    const isQuota = /quota|429|insufficient/i.test(message);
-    const fallback = isQuota
-      ? 'El servicio de IA alcanzó su límite de uso. Intenta de nuevo más tarde.'
-      : 'Ocurrió un error al consultar el asistente de datos. Intenta de nuevo.';
-    return NextResponse.json({ error: fallback }, { status: 500 });
+    return NextResponse.json({ error: 'Ocurrió un error al consultar el asistente. Intenta de nuevo.' }, { status: 500 });
   }
 }

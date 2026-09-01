@@ -203,3 +203,28 @@ export async function getCurrentInventoryAlerts(): Promise<InventoryAlert[]> {
     unit: r.unit,
   }));
 }
+
+export type SystemHealthCheck = {
+  active_game_bundles: number;
+  products_without_sale_price: number;
+  low_stock_products: number;
+  employees_without_schedule: number;
+};
+
+// Revisa configuraciones a medio terminar en la plataforma: campañas de
+// juego, precios de venta del TPV, stock bajo, horarios de empleados.
+export async function getSystemHealthCheck(): Promise<SystemHealthCheck> {
+  const pool = getPool();
+  const [gameBundles, unpriced, lowStock, noSchedule] = await Promise.all([
+    pool.query<{ count: string }>(`SELECT COUNT(*)::text AS count FROM game_bundles WHERE active = true`),
+    pool.query<{ count: string }>(`SELECT COUNT(*)::text AS count FROM inventory_products WHERE active = true AND sale_price IS NULL`),
+    pool.query<{ count: string }>(`SELECT COUNT(*)::text AS count FROM inventory_products WHERE active = true AND current_stock <= min_stock_alert`),
+    pool.query<{ count: string }>(`SELECT COUNT(*)::text AS count FROM employees WHERE active = true AND scheduled_start_time IS NULL`),
+  ]);
+  return {
+    active_game_bundles: Number(gameBundles.rows[0]?.count ?? 0),
+    products_without_sale_price: Number(unpriced.rows[0]?.count ?? 0),
+    low_stock_products: Number(lowStock.rows[0]?.count ?? 0),
+    employees_without_schedule: Number(noSchedule.rows[0]?.count ?? 0),
+  };
+}

@@ -60,7 +60,7 @@ export async function PATCH(req: NextRequest) {
   if (body.status === 'recibida' && order) {
     await pool.query(
       `INSERT INTO supplier_purchases (restaurant_id, supplier_id, supplier_name, date, total, notes)
-       VALUES ($1,$2,$3,CURRENT_DATE,$4,$5)`,
+       VALUES ($1,$2,$3,CURRENT_DATE,$4,$5) RETURNING id`,
       [restaurantId, order.supplier_id, order.supplier_name, order.total, `OC recibida — ${order.id.slice(0,8).toUpperCase()}`]
     ).then(async (res) => {
       const purchaseId = (res as { rows: { id: string }[] }).rows[0]?.id;

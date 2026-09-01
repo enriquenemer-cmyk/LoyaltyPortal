@@ -457,16 +457,7 @@ export default function ClientesPage() {
           {!loading && customers.length > 0 && (
             <div className="flex items-center gap-3 flex-wrap">
               <button
-                onClick={() => {
-                  const rows = [['Nombre', 'Teléfono', 'Email', 'Tier', 'Puntos', 'Canjes', 'Última visita']];
-                  for (const c of customers) {
-                    rows.push([c.full_name, c.phone, c.email, c.tier, String(c.totalPoints), String(c.totalClaims), c.lastClaim.claimed_at.slice(0, 10)]);
-                  }
-                  const csv = rows.map(r => r.map(v => `"${v}"`).join(',')).join('\n');
-                  const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv' }));
-                  const a = document.createElement('a'); a.href = url; a.download = 'clientes.csv'; a.click();
-                  URL.revokeObjectURL(url);
-                }}
+                onClick={() => { window.location.href = '/api/admin/export/clientes'; }}
                 className="flex items-center gap-2 font-bold px-5 py-3 rounded-xl text-sm transition-all"
                 style={{ background: 'white', color: '#059669', boxShadow: '0 4px 16px rgba(0,0,0,0.15)' }}
               >

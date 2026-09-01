@@ -436,16 +436,29 @@ export default function VentasPage() {
             <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Ventas Diarias</h1>
             <p className="text-orange-200/70 mt-1.5 text-sm">Control y registro de ventas por sucursal</p>
           </div>
-          <button
-            onClick={() => setShowModal(true)}
-            className="flex items-center gap-2 font-bold px-5 py-3 rounded-xl text-sm transition-all"
-            style={{ background: 'white', color: '#111111', boxShadow: '0 4px 16px rgba(0,0,0,0.15)' }}
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-            </svg>
-            Registrar Venta
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => { window.location.href = '/api/admin/export/ventas'; }}
+              className="flex items-center gap-2 font-bold px-4 py-3 rounded-xl text-sm transition-all"
+              style={{ background: 'rgba(255,255,255,0.15)', color: 'white', border: '2px solid rgba(255,255,255,0.3)' }}
+              title="Descargar ventas en CSV"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              Exportar CSV
+            </button>
+            <button
+              onClick={() => setShowModal(true)}
+              className="flex items-center gap-2 font-bold px-5 py-3 rounded-xl text-sm transition-all"
+              style={{ background: 'white', color: '#111111', boxShadow: '0 4px 16px rgba(0,0,0,0.15)' }}
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+              </svg>
+              Registrar Venta
+            </button>
+          </div>
         </div>
       </div>
 

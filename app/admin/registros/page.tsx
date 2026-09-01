@@ -496,26 +496,7 @@ export default function RegistrosPage() {
   }
 
   function exportCSV() {
-    const headers = ['Nombre', 'Celular', 'Correo', 'Premio', 'Sucursal', 'Estado', 'Fecha'];
-    const rows = filtered.map((c) => [
-      c.full_name,
-      c.phone,
-      c.email,
-      c.prize_name,
-      c.location ?? c.prize_location,
-      c.status === 'delivered' ? 'Entregado' : 'Pendiente',
-      formatDate(c.claimed_at),
-    ]);
-    const csv = [headers, ...rows]
-      .map((row) => row.map((cell) => `"${String(cell).replace(/"/g, '""')}"`).join(','))
-      .join('\n');
-    const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `registros-${new Date().toISOString().slice(0, 10)}.csv`;
-    a.click();
-    URL.revokeObjectURL(url);
+    window.location.href = '/api/admin/export/registros';
   }
 
   const SortableHeader = ({

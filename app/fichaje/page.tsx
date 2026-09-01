@@ -46,42 +46,70 @@ type Dashboard = {
 
 type Phase = 'pin' | 'dashboard' | 'confirm';
 
-const MAX_PIN_LENGTH = 6;
-const DAY_LABELS: Record<string, string> = {
-  lun: 'L', mar: 'M', mie: 'X', jue: 'J', vie: 'V', sab: 'S', dom: 'D',
-};
-const ALL_DAYS = ['lun', 'mar', 'mie', 'jue', 'vie', 'sab', 'dom'];
-const TODAY_KEY = ['dom', 'lun', 'mar', 'mie', 'jue', 'vie', 'sab'][new Date().getDay()];
+const MAX_PIN = 6;
+const ALL_DAYS = ['lun','mar','mie','jue','vie','sab','dom'];
+const DAY_SHORT: Record<string,string> = { lun:'L',mar:'M',mie:'X',jue:'J',vie:'V',sab:'S',dom:'D' };
+const TODAY_KEY = ['dom','lun','mar','mie','jue','vie','sab'][new Date().getDay()];
 
-function fmt(d: string) {
-  return new Date(d).toLocaleString('es-CO', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
-}
 function fmtHours(h: number) {
-  const hrs = Math.floor(h);
-  const mins = Math.round((h - hrs) * 60);
-  return hrs > 0 ? `${hrs}h ${mins}m` : `${mins}m`;
+  const hr = Math.floor(h), mn = Math.round((h - hr) * 60);
+  return hr > 0 ? `${hr}h ${mn}m` : `${mn}m`;
 }
-function fmtDate(d: string) {
-  return new Date(d).toLocaleDateString('es-CO', { weekday: 'short', day: 'numeric', month: 'short' });
+function fmtTime(d: string) {
+  return new Date(d).toLocaleTimeString('es-CO', { hour:'2-digit', minute:'2-digit' });
+}
+function fmtDateShort(d: string) {
+  return new Date(d).toLocaleDateString('es-CO', { weekday:'short', day:'numeric', month:'short' });
 }
 function timeAgo(d: string) {
-  const diff = Date.now() - new Date(d).getTime();
-  const mins = Math.floor(diff / 60000);
-  if (mins < 60) return `hace ${mins}m`;
-  const hrs = Math.floor(mins / 60);
-  if (hrs < 24) return `hace ${hrs}h`;
-  return `hace ${Math.floor(hrs / 24)}d`;
+  const m = Math.floor((Date.now() - new Date(d).getTime()) / 60000);
+  if (m < 60) return `hace ${m}m`;
+  const h = Math.floor(m / 60);
+  if (h < 24) return `hace ${h}h`;
+  return `hace ${Math.floor(h/24)}d`;
+}
+
+// ── PIN pad button ──────────────────────────────────────────────────────────
+function PinBtn({ label, onClick, disabled, accent }: { label: string; onClick: () => void; disabled: boolean; accent?: boolean }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      disabled={disabled}
+      style={{
+        aspectRatio: '1',
+        borderRadius: 20,
+        border: 'none',
+        background: accent ? '#f97316' : 'rgba(255,255,255,0.12)',
+        color: 'white',
+        fontSize: accent ? 22 : 26,
+        fontWeight: 900,
+        cursor: disabled ? 'not-allowed' : 'pointer',
+        opacity: disabled ? 0.4 : 1,
+        transition: 'transform 0.1s, opacity 0.1s',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        boxShadow: accent ? '0 8px 24px rgba(249,115,22,0.5)' : 'none',
+        backdropFilter: 'blur(8px)',
+      }}
+      onMouseDown={e => { (e.currentTarget as HTMLButtonElement).style.transform = 'scale(0.92)'; }}
+      onMouseUp={e => { (e.currentTarget as HTMLButtonElement).style.transform = ''; }}
+    >
+      {label}
+    </button>
+  );
 }
 
 export default function FichajePage() {
   const [phase, setPhase] = useState<Phase>('pin');
-  const [pin, setPin] = useState('');
+  const [pin, setPin]     = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [dashboard, setDashboard] = useState<Dashboard | null>(null);
-  const [confirmMessage, setConfirmMessage] = useState('');
-  const [now, setNow] = useState(new Date());
-  const [activeTab, setActiveTab] = useState<'fichar' | 'historial' | 'turnos' | 'notif'>('fichar');
+  const [confirmMsg, setConfirmMsg] = useState('');
+  const [now, setNow]   = useState(new Date());
+  const [tab, setTab]   = useState<'fichar'|'historial'|'turnos'|'avisos'>('fichar');
 
   useEffect(() => {
     const t = setInterval(() => setNow(new Date()), 1000);
@@ -89,365 +117,369 @@ export default function FichajePage() {
   }, []);
 
   const resetToPin = useCallback(() => {
-    setPin('');
-    setError(null);
-    setDashboard(null);
-    setPhase('pin');
-    setActiveTab('fichar');
+    setPin(''); setError(null); setDashboard(null);
+    setPhase('pin'); setTab('fichar');
   }, []);
 
   async function loadDashboard() {
-    try {
-      const res = await fetch('/api/employees/dashboard');
-      if (res.ok) {
-        const data = await res.json();
-        if (data.employee) {
-          setDashboard(data);
-          setPhase('dashboard');
-        }
-      }
-    } catch { /* ignore */ }
+    const res = await fetch('/api/employees/dashboard').catch(() => null);
+    if (!res?.ok) return;
+    const data = await res.json();
+    if (data.employee) { setDashboard(data); setPhase('dashboard'); }
   }
 
   useEffect(() => { loadDashboard(); }, []);
 
-  function handleDigit(d: string) {
-    if (loading) return;
-    setError(null);
-    setPin(p => p.length < MAX_PIN_LENGTH ? p + d : p);
+  async function handlePin() {
+    if (pin.length < 4) { setError('Mínimo 4 dígitos'); return; }
+    setLoading(true); setError(null);
+    const res = await fetch('/api/employees/login', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ pin }),
+    }).catch(() => null);
+    setLoading(false);
+    if (!res) { setError('Sin conexión'); setPin(''); return; }
+    const data = await res.json();
+    if (!res.ok) { setError(data.error ?? 'PIN incorrecto'); setPin(''); return; }
+    setPin('');
+    await loadDashboard();
   }
 
-  async function handleConfirmPin() {
-    if (pin.length < 4) { setError('El PIN debe tener al menos 4 dígitos.'); return; }
-    setLoading(true);
-    setError(null);
+  async function handleClock(action: 'in'|'out') {
+    setLoading(true); setError(null);
+    const loc: Record<string,number> = {};
     try {
-      const res = await fetch('/api/employees/login', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ pin }),
-      });
-      const data = await res.json();
-      if (!res.ok) { setError(data.error ?? 'PIN incorrecto.'); setPin(''); }
-      else { setPin(''); await loadDashboard(); }
-    } catch { setError('Error de conexión.'); }
-    finally { setLoading(false); }
+      await new Promise<void>(r => navigator.geolocation?.getCurrentPosition(
+        p => { loc.latitude = p.coords.latitude; loc.longitude = p.coords.longitude; r(); },
+        () => r(), { timeout: 4000 }
+      ));
+    } catch { /* no-op */ }
+    const res = await fetch('/api/employees/clock', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action, ...loc }),
+    }).catch(() => null);
+    setLoading(false);
+    if (!res?.ok) { setError('No se pudo registrar'); return; }
+    setConfirmMsg(action === 'in' ? '¡Entrada registrada!' : '¡Salida registrada!');
+    setPhase('confirm');
+    setTimeout(async () => {
+      await fetch('/api/employees/logout', { method: 'POST' }).catch(() => {});
+      resetToPin();
+    }, 3000);
   }
 
-  function getLocation(): Promise<{ latitude: number; longitude: number } | null> {
-    return new Promise(resolve => {
-      if (!('geolocation' in navigator)) { resolve(null); return; }
-      navigator.geolocation.getCurrentPosition(
-        p => resolve({ latitude: p.coords.latitude, longitude: p.coords.longitude }),
-        () => resolve(null),
-        { enableHighAccuracy: true, timeout: 5000 }
-      );
-    });
-  }
-
-  async function handleClockAction(action: 'in' | 'out') {
-    setLoading(true);
-    setError(null);
-    try {
-      const location = await getLocation();
-      const res = await fetch('/api/employees/clock', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action, ...(location ?? {}) }),
-      });
-      const data = await res.json();
-      if (!res.ok) { setError(data.error ?? 'No se pudo registrar.'); return; }
-      setConfirmMessage(action === 'in' ? '¡Entrada registrada!' : '¡Salida registrada!');
-      setPhase('confirm');
-      setTimeout(async () => {
-        await fetch('/api/employees/logout', { method: 'POST' }).catch(() => {});
-        resetToPin();
-      }, 3000);
-    } catch { setError('Error de conexión.'); }
-    finally { setLoading(false); }
-  }
-
-  const timeStr = now.toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-  const dateStr = now.toLocaleDateString('es-CO', { weekday: 'long', day: 'numeric', month: 'long' });
-
+  const timeStr = now.toLocaleTimeString('es-CO', { hour:'2-digit', minute:'2-digit', second:'2-digit' });
+  const dateStr = now.toLocaleDateString('es-CO', { weekday:'long', day:'numeric', month:'long' });
   const emp = dashboard?.employee;
   const workDays = (emp?.work_days ?? 'lun,mar,mie,jue,vie').split(',').map(d => d.trim());
-  const unreadCount = dashboard?.notifications.filter(n => !n.read_at).length ?? 0;
+  const unread = dashboard?.notifications.filter(n => !n.read_at).length ?? 0;
 
+  // ── Shared page wrapper ────────────────────────────────────────────────────
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-8"
-      style={{ background: 'linear-gradient(135deg,#7C2D12 0%,#C2410C 35%,#F97316 60%,#7c3aed 100%)' }}>
-      <div className="w-full max-w-md">
+    <div style={{
+      minHeight: '100dvh',
+      background: 'linear-gradient(160deg,#0f0c29 0%,#1a1040 40%,#24243e 100%)',
+      display: 'flex',
+      flexDirection: 'column',
+      fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif',
+    }}>
 
-        {/* ── PIN phase ── */}
-        {phase === 'pin' && (
-          <div className="rounded-3xl p-6 sm:p-8" style={{ background: 'rgba(255,255,255,0.97)', boxShadow: '0 20px 60px rgba(0,0,0,0.35)' }}>
-            <div className="text-center mb-6">
-              <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-widest mb-3" style={{ background: 'rgba(249,115,22,0.1)', color: '#C2410C' }}>
-                ⏰ Control de Horarios
-              </div>
-              <h1 className="text-2xl sm:text-3xl font-black text-[#1C1917]">Ingresa tu PIN</h1>
-              <p className="text-stone-500 text-sm mt-1 capitalize">{dateStr} · {timeStr}</p>
+      {/* ══════════════════ PIN PHASE ══════════════════ */}
+      {phase === 'pin' && (
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '2rem 1.5rem', gap: '2rem' }}>
+
+          {/* Logo / brand */}
+          <div style={{ textAlign: 'center' }}>
+            <div style={{ width: 64, height: 64, borderRadius: 18, background: 'linear-gradient(135deg,#f97316,#c2410c)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 12px', boxShadow: '0 8px 32px rgba(249,115,22,0.45)' }}>
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
             </div>
-            <div className="flex items-center justify-center gap-3 mb-6">
-              {Array.from({ length: MAX_PIN_LENGTH }).map((_, i) => (
-                <div key={i} className="w-4 h-4 rounded-full transition-all"
-                  style={{ background: i < pin.length ? '#F97316' : '#e5e7eb', transform: i < pin.length ? 'scale(1.15)' : 'scale(1)' }} />
-              ))}
-            </div>
-            {error && <div className="mb-4 bg-red-50 border border-red-200 text-red-700 text-sm font-medium rounded-xl px-4 py-3 text-center">{error}</div>}
-            <div className="grid grid-cols-3 gap-3">
-              {['1','2','3','4','5','6','7','8','9'].map(d => (
-                <button key={d} type="button" onClick={() => handleDigit(d)} disabled={loading}
-                  className="aspect-square rounded-2xl text-2xl font-bold text-[#1C1917] bg-stone-100 hover:bg-orange-50 active:scale-95 transition-all disabled:opacity-50">
-                  {d}
-                </button>
-              ))}
-              <button type="button" onClick={() => setPin(p => p.slice(0, -1))} disabled={loading}
-                className="aspect-square rounded-2xl text-lg font-bold text-stone-500 bg-stone-100 hover:bg-stone-200 active:scale-95 transition-all disabled:opacity-50 flex items-center justify-center">⌫</button>
-              <button type="button" onClick={() => handleDigit('0')} disabled={loading}
-                className="aspect-square rounded-2xl text-2xl font-bold text-[#1C1917] bg-stone-100 hover:bg-orange-50 active:scale-95 transition-all disabled:opacity-50">0</button>
-              <button type="button" onClick={handleConfirmPin} disabled={loading || pin.length < 4}
-                className="aspect-square rounded-2xl text-lg font-bold text-white bg-[#F97316] hover:bg-[#C2410C] active:scale-95 transition-all disabled:opacity-40 flex items-center justify-center">
-                {loading ? '…' : '✓'}
-              </button>
-            </div>
+            <h1 style={{ color: 'white', fontSize: 28, fontWeight: 900, margin: 0, letterSpacing: '-0.5px' }}>Control de Asistencia</h1>
+            <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: 14, marginTop: 6 }}>{dateStr} · {timeStr}</p>
           </div>
-        )}
 
-        {/* ── Dashboard phase ── */}
-        {phase === 'dashboard' && dashboard && emp && (
-          <div className="rounded-3xl overflow-hidden" style={{ background: 'rgba(255,255,255,0.97)', boxShadow: '0 20px 60px rgba(0,0,0,0.35)' }}>
-            {/* Header */}
-            <div className="px-6 pt-6 pb-4" style={{ background: 'linear-gradient(135deg,#7C2D12,#C2410C)' }}>
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-full flex items-center justify-center text-xl font-black text-white shrink-0"
-                  style={{ background: 'rgba(255,255,255,0.2)' }}>
+          {/* PIN display */}
+          <div style={{ display: 'flex', gap: 14, alignItems: 'center', justifyContent: 'center' }}>
+            {Array.from({ length: MAX_PIN }).map((_,i) => (
+              <div key={i} style={{
+                width: 14, height: 14, borderRadius: '50%',
+                background: i < pin.length ? '#f97316' : 'rgba(255,255,255,0.2)',
+                transform: i < pin.length ? 'scale(1.2)' : 'scale(1)',
+                transition: 'all 0.15s cubic-bezier(0.34,1.56,0.64,1)',
+                boxShadow: i < pin.length ? '0 0 12px rgba(249,115,22,0.7)' : 'none',
+              }} />
+            ))}
+          </div>
+
+          {error && (
+            <div style={{ background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.4)', color: '#fca5a5', borderRadius: 12, padding: '10px 20px', fontSize: 14, fontWeight: 600 }}>
+              {error}
+            </div>
+          )}
+
+          {/* Keypad */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 14, width: '100%', maxWidth: 280 }}>
+            {['1','2','3','4','5','6','7','8','9'].map(d => (
+              <PinBtn key={d} label={d} disabled={loading} onClick={() => { setError(null); setPin(p => p.length < MAX_PIN ? p+d : p); }} />
+            ))}
+            <PinBtn label="⌫" disabled={loading} onClick={() => setPin(p => p.slice(0,-1))} />
+            <PinBtn label="0" disabled={loading} onClick={() => { setError(null); setPin(p => p.length < MAX_PIN ? p+'0' : p); }} />
+            <PinBtn label={loading ? '…' : '✓'} accent disabled={loading || pin.length < 4} onClick={handlePin} />
+          </div>
+
+          <p style={{ color: 'rgba(255,255,255,0.25)', fontSize: 12 }}>3E Plataforma · Control de empleados</p>
+        </div>
+      )}
+
+      {/* ══════════════════ DASHBOARD PHASE ══════════════════ */}
+      {phase === 'dashboard' && dashboard && emp && (() => {
+        const activeHrs = dashboard.openEntry
+          ? (Date.now() - new Date(dashboard.openEntry.clock_in).getTime()) / 3600000
+          : 0;
+
+        return (
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', maxWidth: 480, width: '100%', margin: '0 auto' }}>
+
+            {/* ── Top hero ── */}
+            <div style={{ padding: '2rem 1.5rem 1.5rem', position: 'relative', overflow: 'hidden' }}>
+              {/* Glow */}
+              <div style={{ position: 'absolute', top: -60, right: -60, width: 200, height: 200, borderRadius: '50%', background: 'radial-gradient(circle,rgba(249,115,22,0.25),transparent 70%)', pointerEvents: 'none' }} />
+
+              {/* Avatar + name */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 20 }}>
+                <div style={{ width: 52, height: 52, borderRadius: 16, background: 'linear-gradient(135deg,#f97316,#7c3aed)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22, fontWeight: 900, color: 'white', flexShrink: 0, boxShadow: '0 4px 16px rgba(249,115,22,0.4)' }}>
                   {emp.full_name[0].toUpperCase()}
                 </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-white font-black text-lg leading-tight truncate">{emp.full_name}</p>
-                  {emp.position && <p className="text-orange-200 text-xs">{emp.position}</p>}
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <p style={{ color: 'white', fontWeight: 900, fontSize: 20, margin: 0, lineHeight: 1.2 }}>{emp.full_name}</p>
+                  <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 13, margin: '3px 0 0' }}>{emp.position ?? 'Empleado'}</p>
                 </div>
-                <div className="text-right">
-                  <p className="text-white font-black tabular-nums text-lg">{timeStr}</p>
-                  <p className="text-orange-200 text-xs capitalize">{now.toLocaleDateString('es-CO', { weekday: 'short', day: 'numeric', month: 'short' })}</p>
+                <div style={{ textAlign: 'right' }}>
+                  <p style={{ color: 'white', fontWeight: 900, fontSize: 22, margin: 0, fontVariantNumeric: 'tabular-nums' }}>{timeStr}</p>
+                  <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: 11, margin: '2px 0 0', textTransform: 'capitalize' }}>{now.toLocaleDateString('es-CO',{weekday:'short',day:'numeric',month:'short'})}</p>
                 </div>
               </div>
 
-              {/* KPI row */}
-              <div className="grid grid-cols-3 gap-2 mt-4">
+              {/* KPI strip */}
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 10 }}>
                 {[
-                  { label: 'Esta semana', value: fmtHours(dashboard.weekHours) },
-                  { label: 'Este mes', value: fmtHours(dashboard.monthHours) },
-                  { label: 'Vacaciones', value: `${dashboard.vacationAvailable}d` },
+                  { label: 'Esta semana', value: fmtHours(dashboard.weekHours), color: '#a78bfa' },
+                  { label: 'Este mes',    value: fmtHours(dashboard.monthHours), color: '#34d399' },
+                  { label: 'Vacaciones',  value: `${dashboard.vacationAvailable}d`, color: '#fbbf24' },
                 ].map(k => (
-                  <div key={k.label} className="rounded-xl px-3 py-2 text-center" style={{ background: 'rgba(255,255,255,0.15)' }}>
-                    <p className="text-white font-black text-base">{k.value}</p>
-                    <p className="text-orange-200 text-[10px] font-medium">{k.label}</p>
+                  <div key={k.label} style={{ borderRadius: 14, padding: '12px 10px', textAlign: 'center', background: 'rgba(255,255,255,0.07)', backdropFilter: 'blur(12px)', border: '1px solid rgba(255,255,255,0.1)' }}>
+                    <p style={{ color: k.color, fontWeight: 900, fontSize: 18, margin: 0 }}>{k.value}</p>
+                    <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: 10, margin: '3px 0 0', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{k.label}</p>
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* Tabs */}
-            <div className="flex border-b border-stone-100">
+            {/* ── Tab bar ── */}
+            <div style={{ display: 'flex', borderBottom: '1px solid rgba(255,255,255,0.08)', margin: '0 1.5rem', gap: 0 }}>
               {([
-                { key: 'fichar', label: 'Fichar' },
+                { key: 'fichar',    label: 'Fichar' },
                 { key: 'historial', label: 'Historial' },
-                { key: 'turnos', label: 'Mis Turnos' },
-                { key: 'notif', label: unreadCount > 0 ? `Avisos (${unreadCount})` : 'Avisos' },
+                { key: 'turnos',    label: 'Turnos' },
+                { key: 'avisos',    label: unread > 0 ? `Avisos ${unread}` : 'Avisos' },
               ] as const).map(t => (
-                <button key={t.key} type="button" onClick={() => setActiveTab(t.key)}
-                  className="flex-1 py-3 text-xs font-bold transition-all"
-                  style={activeTab === t.key
-                    ? { color: '#C2410C', borderBottom: '2px solid #C2410C' }
-                    : { color: '#9ca3af' }}>
+                <button key={t.key} type="button" onClick={() => setTab(t.key)} style={{
+                  flex: 1, padding: '12px 4px', fontSize: 12, fontWeight: 700, border: 'none', cursor: 'pointer',
+                  background: 'transparent', textTransform: 'uppercase', letterSpacing: '0.05em',
+                  color: tab === t.key ? '#f97316' : 'rgba(255,255,255,0.35)',
+                  borderBottom: tab === t.key ? '2px solid #f97316' : '2px solid transparent',
+                  marginBottom: -1, transition: 'color 0.2s',
+                }}>
                   {t.label}
                 </button>
               ))}
             </div>
 
-            <div className="px-5 py-5">
-              {/* ── Tab: Fichar ── */}
-              {activeTab === 'fichar' && (
-                <div className="space-y-4">
-                  {error && <div className="bg-red-50 border border-red-200 text-red-700 text-sm font-medium rounded-xl px-4 py-3 text-center">{error}</div>}
+            {/* ── Tab content ── */}
+            <div style={{ flex: 1, overflowY: 'auto', padding: '1.5rem' }}>
+
+              {/* FICHAR */}
+              {tab === 'fichar' && (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+                  {error && <div style={{ background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.35)', color: '#fca5a5', borderRadius: 12, padding: '12px 16px', fontSize: 14, fontWeight: 600, textAlign: 'center' }}>{error}</div>}
+
                   {dashboard.openEntry ? (
-                    <>
-                      <div className="rounded-2xl p-4 text-center" style={{ background: '#fef2f2', border: '2px solid #fecaca' }}>
-                        <p className="text-red-700 text-xs font-bold uppercase tracking-wide mb-1">Turno activo desde</p>
-                        <p className="text-red-800 font-black text-lg">{fmt(dashboard.openEntry.clock_in)}</p>
-                        <p className="text-red-600 text-sm mt-1">
-                          {fmtHours((Date.now() - new Date(dashboard.openEntry.clock_in).getTime()) / 3600000)} trabajados
-                        </p>
-                      </div>
-                      <button type="button" onClick={() => handleClockAction('out')} disabled={loading}
-                        className="w-full py-5 rounded-2xl text-xl font-black text-white transition-all disabled:opacity-60"
-                        style={{ background: '#ef4444', boxShadow: '0 8px 24px rgba(239,68,68,0.35)' }}>
-                        {loading ? 'Registrando…' : '🔴 Marcar Salida'}
-                      </button>
-                    </>
+                    /* Active shift card */
+                    <div style={{ borderRadius: 20, padding: '20px', background: 'rgba(239,68,68,0.1)', border: '2px solid rgba(239,68,68,0.35)' }}>
+                      <p style={{ color: '#fca5a5', fontSize: 11, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.1em', margin: '0 0 8px' }}>⏱ Turno activo</p>
+                      <p style={{ color: 'white', fontSize: 22, fontWeight: 900, margin: '0 0 4px' }}>
+                        {fmtHours(activeHrs)} <span style={{ fontWeight: 400, fontSize: 14, color: 'rgba(255,255,255,0.5)' }}>trabajados</span>
+                      </p>
+                      <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: 13, margin: 0 }}>Entrada: {fmtTime(dashboard.openEntry.clock_in)}</p>
+                    </div>
                   ) : (
-                    <>
-                      <div className="rounded-2xl p-4 text-center" style={{ background: '#f0fdf4', border: '2px solid #bbf7d0' }}>
-                        <p className="text-emerald-700 text-xs font-bold uppercase tracking-wide mb-1">Sin turno activo</p>
-                        <p className="text-emerald-800 font-black text-sm">Marca tu entrada para comenzar</p>
-                      </div>
-                      <button type="button" onClick={() => handleClockAction('in')} disabled={loading}
-                        className="w-full py-5 rounded-2xl text-xl font-black text-white transition-all disabled:opacity-60"
-                        style={{ background: '#10b981', boxShadow: '0 8px 24px rgba(16,185,129,0.35)' }}>
-                        {loading ? 'Registrando…' : '🟢 Marcar Entrada'}
-                      </button>
-                    </>
+                    <div style={{ borderRadius: 20, padding: '20px', background: 'rgba(52,211,153,0.08)', border: '2px solid rgba(52,211,153,0.25)' }}>
+                      <p style={{ color: '#6ee7b7', fontSize: 11, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.1em', margin: '0 0 6px' }}>Sin turno activo</p>
+                      <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 14, margin: 0 }}>Marca tu entrada para comenzar</p>
+                    </div>
                   )}
-                  <button type="button" onClick={async () => { await fetch('/api/employees/logout', { method: 'POST' }); resetToPin(); }}
-                    className="w-full text-sm font-medium text-stone-400 hover:text-stone-600 pt-1">
+
+                  {/* Main action button */}
+                  <button type="button" disabled={loading} onClick={() => handleClock(dashboard.openEntry ? 'out' : 'in')} style={{
+                    width: '100%', padding: '22px 0', borderRadius: 22, border: 'none', cursor: loading ? 'not-allowed' : 'pointer',
+                    fontSize: 20, fontWeight: 900, color: 'white',
+                    background: dashboard.openEntry
+                      ? 'linear-gradient(135deg,#dc2626,#991b1b)'
+                      : 'linear-gradient(135deg,#059669,#047857)',
+                    boxShadow: dashboard.openEntry
+                      ? '0 12px 40px rgba(220,38,38,0.5)'
+                      : '0 12px 40px rgba(5,150,105,0.5)',
+                    opacity: loading ? 0.6 : 1,
+                    transition: 'transform 0.15s, opacity 0.15s',
+                    letterSpacing: '-0.3px',
+                  }}
+                  onMouseDown={e => { (e.currentTarget as HTMLButtonElement).style.transform = 'scale(0.97)'; }}
+                  onMouseUp={e => { (e.currentTarget as HTMLButtonElement).style.transform = ''; }}>
+                    {loading ? 'Registrando…' : dashboard.openEntry ? '🔴  Marcar Salida' : '🟢  Marcar Entrada'}
+                  </button>
+
+                  <button type="button" onClick={async () => { await fetch('/api/employees/logout',{method:'POST'}).catch(()=>{}); resetToPin(); }}
+                    style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.3)', fontSize: 13, cursor: 'pointer', fontWeight: 600, padding: '4px 0' }}>
                     No soy yo — cambiar usuario
                   </button>
                 </div>
               )}
 
-              {/* ── Tab: Historial ── */}
-              {activeTab === 'historial' && (
-                <div className="space-y-2">
+              {/* HISTORIAL */}
+              {tab === 'historial' && (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                   {dashboard.history.length === 0 && (
-                    <p className="text-stone-400 text-sm text-center py-6">Sin registros recientes</p>
+                    <p style={{ color: 'rgba(255,255,255,0.3)', textAlign: 'center', padding: '2rem 0', fontSize: 14 }}>Sin registros recientes</p>
                   )}
                   {dashboard.history.map(h => (
-                    <div key={h.id} className="flex items-center justify-between rounded-xl px-4 py-3"
-                      style={{ background: '#f8fafc', border: '1px solid #e2e8f0' }}>
+                    <div key={h.id} style={{ borderRadius: 16, padding: '14px 16px', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.08)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12 }}>
                       <div>
-                        <p className="text-stone-800 font-bold text-sm">{fmtDate(h.clock_in)}</p>
-                        <p className="text-stone-500 text-xs">
-                          {new Date(h.clock_in).toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' })}
-                          {h.clock_out ? ` → ${new Date(h.clock_out).toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' })}` : ' → en curso'}
+                        <p style={{ color: 'white', fontWeight: 700, fontSize: 14, margin: '0 0 3px' }}>{fmtDateShort(h.clock_in)}</p>
+                        <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: 12, margin: 0 }}>
+                          {fmtTime(h.clock_in)}{h.clock_out ? ` → ${fmtTime(h.clock_out)}` : ' → en curso'}
                         </p>
                       </div>
-                      <div className="text-right">
-                        <span className="font-black text-sm" style={{ color: h.clock_out ? '#059669' : '#F97316' }}>
+                      <div style={{ textAlign: 'right', flexShrink: 0 }}>
+                        <p style={{ fontWeight: 900, fontSize: 16, margin: 0, color: h.clock_out ? '#34d399' : '#f97316' }}>
                           {fmtHours(h.hours_worked)}
-                        </span>
-                        {!h.clock_out && <p className="text-[10px] text-orange-500 font-bold">activo</p>}
+                        </p>
+                        {!h.clock_out && <p style={{ color: '#f97316', fontSize: 10, fontWeight: 700, margin: '2px 0 0' }}>activo</p>}
                       </div>
                     </div>
                   ))}
                 </div>
               )}
 
-              {/* ── Tab: Turnos ── */}
-              {activeTab === 'turnos' && (
-                <div className="space-y-4">
-                  {/* Days of week */}
-                  <div>
-                    <p className="text-stone-500 text-xs font-bold uppercase tracking-widest mb-3">Días de trabajo</p>
-                    <div className="flex gap-2 justify-center">
+              {/* TURNOS */}
+              {tab === 'turnos' && (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+                  {/* Days row */}
+                  <div style={{ borderRadius: 18, padding: '18px', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                    <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: 11, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em', margin: '0 0 14px' }}>Días laborales</p>
+                    <div style={{ display: 'flex', gap: 8, justifyContent: 'center' }}>
                       {ALL_DAYS.map(d => {
                         const active = workDays.includes(d);
                         const isToday = d === TODAY_KEY;
                         return (
-                          <div key={d} className="flex flex-col items-center gap-1">
-                            <div className="w-9 h-9 rounded-full flex items-center justify-center font-black text-sm"
-                              style={{
-                                background: active ? (isToday ? '#C2410C' : '#fff7ed') : '#f1f5f9',
-                                color: active ? (isToday ? '#fff' : '#C2410C') : '#94a3b8',
-                                border: isToday ? '2px solid #C2410C' : '2px solid transparent',
-                              }}>
-                              {DAY_LABELS[d]}
+                          <div key={d} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
+                            <div style={{
+                              width: 38, height: 38, borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                              fontWeight: 900, fontSize: 13,
+                              background: isToday ? '#f97316' : active ? 'rgba(249,115,22,0.18)' : 'rgba(255,255,255,0.05)',
+                              color: isToday ? 'white' : active ? '#fb923c' : 'rgba(255,255,255,0.2)',
+                              border: isToday ? '2px solid #f97316' : '2px solid transparent',
+                              boxShadow: isToday ? '0 4px 16px rgba(249,115,22,0.5)' : 'none',
+                            }}>
+                              {DAY_SHORT[d]}
                             </div>
-                            {isToday && <div className="w-1.5 h-1.5 rounded-full bg-orange-500" />}
+                            {isToday && <div style={{ width: 4, height: 4, borderRadius: '50%', background: '#f97316' }} />}
                           </div>
                         );
                       })}
                     </div>
                   </div>
 
-                  {/* Schedule info */}
-                  <div className="rounded-2xl p-4 space-y-3" style={{ background: '#f8fafc', border: '1px solid #e2e8f0' }}>
-                    <div className="flex justify-between items-center">
-                      <span className="text-stone-500 text-sm">Hora de entrada</span>
-                      <span className="font-black text-stone-800">
-                        {emp.scheduled_start_time
-                          ? emp.scheduled_start_time.slice(0, 5)
-                          : '—'}
-                      </span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-stone-500 text-sm">Horas por día</span>
-                      <span className="font-black text-stone-800">{emp.scheduled_hours_per_day ?? '—'}h</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-stone-500 text-sm">Días laborales</span>
-                      <span className="font-black text-stone-800">{workDays.length} días/semana</span>
-                    </div>
+                  {/* Schedule details */}
+                  <div style={{ borderRadius: 18, padding: '18px', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.08)', display: 'flex', flexDirection: 'column', gap: 14 }}>
+                    <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: 11, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em', margin: 0 }}>Horario</p>
+                    {[
+                      { label: 'Entrada programada', value: emp.scheduled_start_time ? emp.scheduled_start_time.slice(0,5) : '—' },
+                      { label: 'Horas por día', value: emp.scheduled_hours_per_day ? `${emp.scheduled_hours_per_day}h` : '—' },
+                      { label: 'Días por semana', value: `${workDays.length} días` },
+                    ].map(r => (
+                      <div key={r.label} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: 14 }}>{r.label}</span>
+                        <span style={{ color: 'white', fontWeight: 900, fontSize: 15 }}>{r.value}</span>
+                      </div>
+                    ))}
                   </div>
 
-                  {/* Vacation */}
-                  <div className="rounded-2xl p-4" style={{ background: '#fffbeb', border: '2px solid #fde68a' }}>
-                    <p className="text-amber-700 text-xs font-bold uppercase tracking-widest mb-3">Vacaciones</p>
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="text-amber-800 text-sm">Acumuladas</span>
-                      <span className="font-black text-amber-800">{dashboard.vacationAccrued} días</span>
+                  {/* Vacaciones */}
+                  <div style={{ borderRadius: 18, padding: '18px', background: 'rgba(251,191,36,0.08)', border: '2px solid rgba(251,191,36,0.25)' }}>
+                    <p style={{ color: '#fbbf24', fontSize: 11, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em', margin: '0 0 14px' }}>🏖 Vacaciones</p>
+                    {[
+                      { label: 'Acumuladas', value: `${dashboard.vacationAccrued} días` },
+                      { label: 'Usadas', value: `${emp.vacation_days_used} días` },
+                    ].map(r => (
+                      <div key={r.label} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
+                        <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: 14 }}>{r.label}</span>
+                        <span style={{ color: '#fbbf24', fontWeight: 700, fontSize: 14 }}>{r.value}</span>
+                      </div>
+                    ))}
+                    <div style={{ height: 1, background: 'rgba(251,191,36,0.2)', margin: '12px 0' }} />
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+                      <span style={{ color: 'white', fontWeight: 700, fontSize: 15 }}>Disponibles</span>
+                      <span style={{ color: '#fbbf24', fontWeight: 900, fontSize: 22 }}>{dashboard.vacationAvailable} días</span>
                     </div>
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="text-amber-800 text-sm">Usadas</span>
-                      <span className="font-black text-amber-800">{emp.vacation_days_used} días</span>
+                    <div style={{ height: 8, borderRadius: 99, background: 'rgba(255,255,255,0.1)', overflow: 'hidden' }}>
+                      <div style={{ height: '100%', borderRadius: 99, background: 'linear-gradient(90deg,#fbbf24,#f59e0b)', width: `${Math.min(100,(dashboard.vacationAvailable/(emp.vacation_days_per_year||12))*100)}%`, transition: 'width 0.6s ease' }} />
                     </div>
-                    <div className="h-px bg-amber-200 my-2" />
-                    <div className="flex justify-between items-center">
-                      <span className="text-amber-900 font-bold text-sm">Disponibles</span>
-                      <span className="font-black text-amber-900 text-lg">{dashboard.vacationAvailable} días</span>
-                    </div>
-                    {/* progress bar */}
-                    <div className="mt-3 h-2 rounded-full bg-amber-100 overflow-hidden">
-                      <div className="h-full rounded-full bg-amber-400 transition-all"
-                        style={{ width: `${Math.min(100, (dashboard.vacationAvailable / (emp.vacation_days_per_year || 12)) * 100)}%` }} />
-                    </div>
-                    <p className="text-amber-600 text-[10px] mt-1 text-center">{emp.vacation_days_per_year} días por año</p>
+                    <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: 11, margin: '6px 0 0', textAlign: 'center' }}>{emp.vacation_days_per_year} días por año</p>
                   </div>
                 </div>
               )}
 
-              {/* ── Tab: Notificaciones ── */}
-              {activeTab === 'notif' && (
-                <div className="space-y-3">
+              {/* AVISOS */}
+              {tab === 'avisos' && (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                   {dashboard.notifications.length === 0 && (
-                    <div className="text-center py-8">
-                      <p className="text-4xl mb-2">🔔</p>
-                      <p className="text-stone-400 text-sm">Sin notificaciones</p>
+                    <div style={{ textAlign: 'center', padding: '3rem 0' }}>
+                      <p style={{ fontSize: 40, margin: '0 0 8px' }}>🔔</p>
+                      <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: 14 }}>Sin avisos por ahora</p>
                     </div>
                   )}
                   {dashboard.notifications.map(n => (
-                    <div key={n.id} className="rounded-xl px-4 py-3 relative"
-                      style={{
-                        background: n.read_at ? '#f8fafc' : '#fff7ed',
-                        border: n.read_at ? '1px solid #e2e8f0' : '2px solid #fed7aa',
-                      }}>
-                      {!n.read_at && (
-                        <div className="absolute top-3 right-3 w-2 h-2 rounded-full bg-orange-500" />
-                      )}
-                      <p className="text-stone-800 font-bold text-sm pr-4">{n.title}</p>
-                      <p className="text-stone-600 text-xs mt-0.5 leading-relaxed">{n.body}</p>
-                      <p className="text-stone-400 text-[10px] mt-1">{timeAgo(n.created_at)}</p>
+                    <div key={n.id} style={{
+                      borderRadius: 16, padding: '14px 16px', position: 'relative',
+                      background: n.read_at ? 'rgba(255,255,255,0.05)' : 'rgba(249,115,22,0.1)',
+                      border: n.read_at ? '1px solid rgba(255,255,255,0.08)' : '1px solid rgba(249,115,22,0.35)',
+                    }}>
+                      {!n.read_at && <div style={{ position: 'absolute', top: 14, right: 14, width: 8, height: 8, borderRadius: '50%', background: '#f97316', boxShadow: '0 0 8px rgba(249,115,22,0.8)' }} />}
+                      <p style={{ color: 'white', fontWeight: 700, fontSize: 14, margin: '0 0 4px', paddingRight: 16 }}>{n.title}</p>
+                      <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: 13, margin: '0 0 6px', lineHeight: 1.5 }}>{n.body}</p>
+                      <p style={{ color: 'rgba(255,255,255,0.25)', fontSize: 11, margin: 0 }}>{timeAgo(n.created_at)}</p>
                     </div>
                   ))}
                 </div>
               )}
             </div>
           </div>
-        )}
+        );
+      })()}
 
-        {/* ── Confirm phase ── */}
-        {phase === 'confirm' && (
-          <div className="rounded-3xl p-10 text-center" style={{ background: 'rgba(255,255,255,0.97)', boxShadow: '0 20px 60px rgba(0,0,0,0.35)' }}>
-            <div className="w-24 h-24 rounded-full mx-auto mb-6 flex items-center justify-center" style={{ background: 'rgba(16,185,129,0.12)' }}>
-              <svg className="w-12 h-12 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-              </svg>
-            </div>
-            <h2 className="text-2xl font-black text-[#1C1917]">{confirmMessage}</h2>
-            <p className="text-stone-500 text-sm mt-2">¡Que tengas un excelente turno!</p>
+      {/* ══════════════════ CONFIRM PHASE ══════════════════ */}
+      {phase === 'confirm' && (
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 20, padding: '2rem' }}>
+          <div style={{ width: 100, height: 100, borderRadius: '50%', background: 'rgba(52,211,153,0.15)', border: '3px solid rgba(52,211,153,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', animation: 'scale-in 0.4s cubic-bezier(0.34,1.56,0.64,1)' }}>
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#34d399" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M5 13l4 4L19 7"/>
+            </svg>
           </div>
-        )}
-      </div>
+          <div style={{ textAlign: 'center' }}>
+            <h2 style={{ color: 'white', fontSize: 26, fontWeight: 900, margin: '0 0 8px' }}>{confirmMsg}</h2>
+            <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: 15, margin: 0 }}>¡Que tengas un excelente turno!</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -35,17 +35,13 @@ export async function GET() {
       r.id, r.name, r.phone, r.owner_name, r.owner_email,
       r.billing_plan, r.billing_status, r.trial_ends_at,
       r.monthly_price, r.notes, r.created_at, r.license_key,
-      COUNT(DISTINCT u.id)::int AS user_count,
-      COUNT(DISTINCT c.id)::int AS client_count,
-      COUNT(DISTINCT cl.id)::int AS claim_count,
-      u_main.username AS main_username
+      (SELECT COUNT(*)::int FROM users WHERE restaurant_id = r.id) AS user_count,
+      (SELECT COUNT(*)::int FROM clients WHERE restaurant_id = r.id) AS client_count,
+      (SELECT COUNT(*)::int FROM claims cl JOIN prizes p ON p.id = cl.prize_id WHERE p.restaurant_id = r.id) AS claim_count,
+      (SELECT username FROM users WHERE restaurant_id = r.id ORDER BY created_at LIMIT 1) AS main_username
     FROM restaurants r
-    LEFT JOIN users u ON u.restaurant_id = r.id
-    LEFT JOIN clients c ON c.restaurant_id = r.id
-    LEFT JOIN claims cl ON cl.restaurant_id = r.id
-    LEFT JOIN users u_main ON u_main.restaurant_id = r.id AND u_main.role = 'manager'
-    GROUP BY r.id, u_main.username
     ORDER BY r.created_at DESC
+    LIMIT 100
   `);
 
   return NextResponse.json(rows);

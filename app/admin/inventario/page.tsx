@@ -2,9 +2,11 @@
 import { ArchiveBoxIcon, ExclamationTriangleIcon, QrCodeIcon, TruckIcon } from '@heroicons/react/24/outline';
 
 import { useEffect, useState, useMemo, useCallback } from 'react';
+import Link from 'next/link';
 import { EmptyState } from '@/app/components/EmptyState';
 import HorizontalBarList from '@/app/components/HorizontalBarList';
 import UnitQRLabel from './UnitQRLabel';
+import { useToast } from '@/app/components/Toast';
 
 type InventoryUnit = {
   id: string;
@@ -41,6 +43,7 @@ type InventoryProduct = {
   description: string | null;
   current_stock: string;
   min_stock_alert: string;
+  sale_price: string | null;
   active: boolean;
   created_at: string;
 };
@@ -108,6 +111,11 @@ function fmtQty(value: string | number): string {
   return n.toString();
 }
 
+function fmtPrice(value: string | number | null): string {
+  if (value === null || value === '') return '—';
+  return Number(value).toLocaleString('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 });
+}
+
 function isToday(dateStr: string) {
   const d = new Date(dateStr);
   const now = new Date();
@@ -132,6 +140,64 @@ function StockBadge({ stock, minAlert }: { stock: number; minAlert: number }) {
     <span className={`inline-flex items-center gap-1.5 text-xs font-bold px-2.5 py-1 rounded-full border ${cls}`}>
       {fmtQty(stock)} <span className="opacity-60 font-medium">· {label}</span>
     </span>
+  );
+}
+
+function SalePriceEditor({ product, onSaved }: { product: InventoryProduct; onSaved: (p: InventoryProduct) => void }) {
+  const toast = useToast();
+  const [editing, setEditing] = useState(false);
+  const [value, setValue] = useState(product.sale_price ?? '');
+  const [saving, setSaving] = useState(false);
+
+  async function handleSave() {
+    setSaving(true);
+    try {
+      const res = await fetch(`/api/admin/inventory/products/${product.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ sale_price: value === '' ? null : Number(value) }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Error al guardar el precio');
+      onSaved(data.product);
+      setEditing(false);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'No se pudo guardar el precio.');
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  if (!editing) {
+    return (
+      <button
+        onClick={() => { setValue(product.sale_price ?? ''); setEditing(true); }}
+        className={`text-xs font-semibold px-2.5 py-1 rounded-lg border transition-colors ${
+          product.sale_price ? 'text-slate-700 border-slate-200 hover:bg-slate-50' : 'text-orange-600 border-orange-200 bg-orange-50 hover:bg-orange-100'
+        }`}
+        title="Precio al que se vende este artículo en el punto de venta"
+      >
+        {fmtPrice(product.sale_price)}
+      </button>
+    );
+  }
+
+  return (
+    <div className="flex items-center gap-1.5">
+      <input
+        type="number"
+        min="0"
+        step="any"
+        autoFocus
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        onKeyDown={(e) => { if (e.key === 'Enter') handleSave(); if (e.key === 'Escape') setEditing(false); }}
+        placeholder="Sin precio"
+        className="w-24 px-2 py-1 border border-[#E8E3DC] rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-[#F97316]/20 focus:border-[#F97316]"
+      />
+      <button onClick={handleSave} disabled={saving} className="text-xs font-bold text-emerald-600 disabled:opacity-50">✓</button>
+      <button onClick={() => setEditing(false)} className="text-xs font-bold text-slate-400">✕</button>
+    </div>
   );
 }
 
@@ -1245,6 +1311,14 @@ export default function InventarioPage() {
             <p className="text-orange-200/70 mt-1.5 text-sm">Control de productos: entradas y consumo</p>
           </div>
           <div className="flex items-center gap-2 flex-wrap">
+            <Link
+              href="/venta"
+              target="_blank"
+              className="flex items-center gap-2 font-bold px-5 py-3 rounded-xl text-sm"
+              style={{ background: 'rgba(255,255,255,0.12)', color: 'white', border: '1px solid rgba(255,255,255,0.25)' }}
+            >
+              Abrir punto de venta
+            </Link>
             <button
               onClick={() => setShowNewSupplier(true)}
               className="flex items-center gap-2 font-bold px-5 py-3 rounded-xl text-sm transition-all"
@@ -1386,6 +1460,7 @@ export default function InventarioPage() {
                       <th className="text-left px-5 py-3.5 font-bold text-slate-500 text-xs uppercase tracking-wider">Proveedor</th>
                       <th className="text-left px-5 py-3.5 font-bold text-slate-500 text-xs uppercase tracking-wider">Unidad</th>
                       <th className="text-left px-5 py-3.5 font-bold text-slate-500 text-xs uppercase tracking-wider">Stock actual</th>
+                      <th className="text-left px-5 py-3.5 font-bold text-slate-500 text-xs uppercase tracking-wider">Precio de venta</th>
                       <th className="text-left px-5 py-3.5 font-bold text-slate-500 text-xs uppercase tracking-wider">Acciones</th>
                     </tr>
                   </thead>
@@ -1397,6 +1472,12 @@ export default function InventarioPage() {
                         <td className="px-5 py-4 text-slate-500">{p.unit}</td>
                         <td className="px-5 py-4">
                           <StockBadge stock={Number(p.current_stock)} minAlert={Number(p.min_stock_alert)} />
+                        </td>
+                        <td className="px-5 py-4">
+                          <SalePriceEditor
+                            product={p}
+                            onSaved={(updated) => setProducts((prev) => prev.map((x) => (x.id === updated.id ? { ...x, ...updated } : x)))}
+                          />
                         </td>
                         <td className="px-5 py-4">
                           <div className="flex items-center gap-2 flex-wrap">

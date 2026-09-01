@@ -347,6 +347,37 @@ export async function ensureSchema(): Promise<void> {
       CREATE INDEX IF NOT EXISTS inventory_units_expires_idx ON inventory_units(expires_at) WHERE status = 'available';
       ALTER TABLE inventory_products ADD COLUMN IF NOT EXISTS description TEXT;
       ALTER TABLE inventory_products ADD COLUMN IF NOT EXISTS code TEXT;
+      ALTER TABLE inventory_products ADD COLUMN IF NOT EXISTS sale_price NUMERIC;
+
+      -- ── Punto de venta (TPV): pantalla ligada a inventario — al cobrar un
+      -- artículo se descuenta el stock automáticamente, para que el
+      -- inventario y las ventas siempre cuadren entre sí. ─────────────────
+      CREATE TABLE IF NOT EXISTS pos_sales (
+        id TEXT PRIMARY KEY,
+        restaurant_id TEXT REFERENCES restaurants(id),
+        employee_id TEXT REFERENCES employees(id),
+        employee_name TEXT,
+        total_amount NUMERIC NOT NULL DEFAULT 0,
+        payment_method TEXT NOT NULL DEFAULT 'efectivo',
+        cancelled_at TIMESTAMPTZ,
+        created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      );
+      CREATE TABLE IF NOT EXISTS pos_sale_items (
+        id TEXT PRIMARY KEY,
+        sale_id TEXT NOT NULL REFERENCES pos_sales(id),
+        product_id TEXT NOT NULL REFERENCES inventory_products(id),
+        product_name TEXT NOT NULL,
+        unit TEXT NOT NULL,
+        quantity NUMERIC NOT NULL,
+        unit_price NUMERIC NOT NULL,
+        subtotal NUMERIC NOT NULL
+      );
+      CREATE INDEX IF NOT EXISTS pos_sale_items_sale_idx ON pos_sale_items(sale_id);
+      CREATE INDEX IF NOT EXISTS pos_sales_created_idx ON pos_sales(created_at);
+      ALTER TABLE pos_sales ADD COLUMN IF NOT EXISTS status TEXT NOT NULL DEFAULT 'pendiente';
+      ALTER TABLE pos_sales ADD COLUMN IF NOT EXISTS status_updated_by TEXT;
+      ALTER TABLE pos_sales ADD COLUMN IF NOT EXISTS status_updated_at TIMESTAMPTZ;
+      CREATE INDEX IF NOT EXISTS pos_sales_status_idx ON pos_sales(status);
 
       -- ── Proveedores: cada producto de inventario pertenece a un proveedor,
       -- así cada proveedor tiene su propio "perfil" con los productos que

@@ -16,6 +16,7 @@ type InventoryProduct = {
   description: string | null;
   current_stock: string;
   min_stock_alert: string;
+  sale_price: string | null;
   active: boolean;
   created_at: string;
 };
@@ -40,7 +41,7 @@ export async function GET(req: NextRequest) {
   try {
     const result = await getPool().query<InventoryProduct>(
       `SELECT p.id, p.restaurant_id, p.supplier_id, s.name as supplier_name, p.name, p.code, p.unit, p.description,
-              p.current_stock, p.min_stock_alert, p.active, p.created_at
+              p.current_stock, p.min_stock_alert, p.sale_price, p.active, p.created_at
        FROM inventory_products p
        LEFT JOIN suppliers s ON s.id = p.supplier_id
        ${whereClause}

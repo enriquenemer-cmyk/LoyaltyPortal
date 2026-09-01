@@ -48,6 +48,21 @@ function saveRecent(query: string) {
 
 // ── Icons ────────────────────────────────────────────────────────────────────
 const Icons = {
+  contabilidad: (
+    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+    </svg>
+  ),
+  proveedores: (
+    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+    </svg>
+  ),
+  fichas: (
+    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+    </svg>
+  ),
   ventas: (
     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" />
@@ -292,6 +307,11 @@ const GroupIcons = {
       <circle cx="12" cy="12" r="3" strokeWidth={2} />
     </svg>
   ),
+  contabilidad: (
+    <svg className="w-[18px] h-[18px]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+    </svg>
+  ),
 };
 
 // ── Nav sections definition ──────────────────────────────────────────────────
@@ -348,6 +368,18 @@ const ALL_SECTIONS: SectionDef[] = [
       { href: '/admin/inventario', label: 'Inventario', icon: Icons.inventario },
       { href: '/admin/fichajes', label: 'Fichajes', icon: Icons.fichajes },
       { href: '/admin/capacitacion', label: 'Capacitación', icon: Icons.capacitacion },
+    ],
+  },
+  {
+    key: 'CONTABILIDAD',
+    label: 'Contabilidad',
+    roles: ['admin', 'manager'],
+    groupIcon: GroupIcons.contabilidad,
+    accent: '#1a6b3c',
+    links: [
+      { href: '/admin/contabilidad', label: 'Resumen Contable', icon: Icons.contabilidad },
+      { href: '/admin/proveedores', label: 'Proveedores y Compras', icon: Icons.proveedores },
+      { href: '/admin/fichas', label: 'Fichas de Costo', icon: Icons.fichas },
     ],
   },
   {

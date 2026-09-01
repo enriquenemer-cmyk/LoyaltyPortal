@@ -2368,9 +2368,11 @@ async function ensureNotificationsSchema(): Promise<void> {
         body TEXT NOT NULL,
         link TEXT,
         restaurant_id TEXT REFERENCES restaurants(id),
+        target_role TEXT,
         read_at TIMESTAMPTZ,
         created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
       );
+      ALTER TABLE notifications ADD COLUMN IF NOT EXISTS target_role TEXT;
     `);
   } finally {
     client.release();

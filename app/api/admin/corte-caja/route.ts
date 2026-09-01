@@ -1,38 +1,39 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getPool } from '@/lib/db';
+import { getPool, ensureAccountingSchema } from '@/lib/db';
 import { getSession } from '@/lib/session';
 
 export async function GET(_req: NextRequest) {
   const session = await getSession();
   if (!session.username) return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
+  await ensureAccountingSchema();
   const restaurantId = session.restaurantId ?? null;
 
   const pool = getPool();
   const [incomeRes, expenseRes, posRes, claimsRes, byMethodRes] = await Promise.all([
     pool.query<{ total: string }>(
       `SELECT COALESCE(SUM(amount),0)::text AS total FROM accounting_entries
-       WHERE restaurant_id=$1 AND type='income' AND date=CURRENT_DATE`,
+       WHERE restaurant_id IS NOT DISTINCT FROM $1 AND type='income' AND date=CURRENT_DATE`,
       [restaurantId]
     ),
     pool.query<{ total: string }>(
       `SELECT COALESCE(SUM(amount),0)::text AS total FROM accounting_entries
-       WHERE restaurant_id=$1 AND type='expense' AND date=CURRENT_DATE`,
+       WHERE restaurant_id IS NOT DISTINCT FROM $1 AND type='expense' AND date=CURRENT_DATE`,
       [restaurantId]
     ),
     pool.query<{ count: string; total: string }>(
       `SELECT COUNT(*)::text AS count, COALESCE(SUM(total_amount),0)::text AS total
-       FROM pos_sales WHERE restaurant_id=$1 AND created_at::date=CURRENT_DATE AND cancelled_at IS NULL`,
+       FROM pos_sales WHERE restaurant_id IS NOT DISTINCT FROM $1 AND created_at::date=CURRENT_DATE AND cancelled_at IS NULL`,
       [restaurantId]
     ).catch(() => ({ rows: [{ count: '0', total: '0' }] })),
     pool.query<{ count: string }>(
       `SELECT COUNT(*)::text AS count FROM claims c
        JOIN prizes p ON p.id = c.prize_id
-       WHERE p.restaurant_id=$1 AND c.claimed_at::date=CURRENT_DATE`,
+       WHERE p.restaurant_id IS NOT DISTINCT FROM $1 AND c.claimed_at::date=CURRENT_DATE`,
       [restaurantId]
     ).catch(() => ({ rows: [{ count: '0' }] })),
     pool.query<{ payment_method: string; total: string; count: string }>(
       `SELECT payment_method, COUNT(*)::text AS count, COALESCE(SUM(total_amount),0)::text AS total
-       FROM pos_sales WHERE restaurant_id=$1 AND created_at::date=CURRENT_DATE AND cancelled_at IS NULL
+       FROM pos_sales WHERE restaurant_id IS NOT DISTINCT FROM $1 AND created_at::date=CURRENT_DATE AND cancelled_at IS NULL
        GROUP BY payment_method`,
       [restaurantId]
     ).catch(() => ({ rows: [] })),
@@ -57,6 +58,7 @@ export async function GET(_req: NextRequest) {
 export async function POST(req: NextRequest) {
   const session = await getSession();
   if (!session.username) return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
+  await ensureAccountingSchema();
   const restaurantId = session.restaurantId ?? null;
 
   const body = await req.json();

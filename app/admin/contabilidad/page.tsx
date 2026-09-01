@@ -101,6 +101,10 @@ export default function ContabilidadPage() {
     window.location.href = `/api/admin/contabilidad/export?period=${period}`;
   }
 
+  function downloadBackup() {
+    window.location.href = '/api/admin/backup';
+  }
+
   const maxBar = data ? Math.max(...data.by_day.map(d => Math.max(parseFloat(d.income), parseFloat(d.expense))), 1) : 1;
   const maxFlujo = flujo ? Math.max(...flujo.projection.map(p => Math.abs(p.cumulative)), 1) : 1;
 
@@ -132,6 +136,7 @@ export default function ContabilidadPage() {
             }}>{p === 'week' ? '7d' : p === 'month' ? '30d' : '1 año'}</button>
           ))}
           <button onClick={exportCSV} style={{ padding: '7px 14px', borderRadius: 8, border: '2px solid #16a34a', background: '#f0fdf4', color: '#16a34a', fontWeight: 700, fontSize: 12, cursor: 'pointer' }}>⬇ CSV</button>
+          <button onClick={downloadBackup} title="Descarga todos tus datos como respaldo" style={{ padding: '7px 14px', borderRadius: 8, border: '2px solid #7c3aed', background: '#f5f3ff', color: '#7c3aed', fontWeight: 700, fontSize: 12, cursor: 'pointer' }}>💾 Respaldo</button>
           <button onClick={() => setShowForm(true)} style={{ padding: '7px 16px', borderRadius: 8, border: '2px solid #111', background: '#F97316', color: 'white', fontWeight: 800, fontSize: 12, cursor: 'pointer', boxShadow: '3px 3px 0 #111' }}>+ Registrar</button>
         </div>
       </div>

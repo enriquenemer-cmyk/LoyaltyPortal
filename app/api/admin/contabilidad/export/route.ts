@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getPool } from '@/lib/db';
+import { getPool, ensureAccountingSchema } from '@/lib/db';
 import { getSession } from '@/lib/session';
 
 export async function GET(req: NextRequest) {
   const session = await getSession();
   if (!session.username) return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
+  await ensureAccountingSchema();
   const restaurantId = session.restaurantId ?? null;
 
   const url = new URL(req.url);
@@ -17,7 +18,7 @@ export async function GET(req: NextRequest) {
   const { rows } = await pool.query(
     `SELECT date::text, type, category, amount::text, description, created_at::text
      FROM accounting_entries
-     WHERE restaurant_id=$1 AND date >= CURRENT_DATE - $2::interval
+     WHERE restaurant_id IS NOT DISTINCT FROM $1 AND date >= CURRENT_DATE - $2::interval
      ORDER BY date DESC, created_at DESC`,
     [restaurantId, interval]
   );

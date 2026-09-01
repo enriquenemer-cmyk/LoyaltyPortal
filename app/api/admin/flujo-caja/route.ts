@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getPool } from '@/lib/db';
+import { getPool, ensureAccountingSchema } from '@/lib/db';
 import { getSession } from '@/lib/session';
 
 export async function GET(_req: NextRequest) {
   const session = await getSession();
   if (!session.username) return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
+  await ensureAccountingSchema();
   const restaurantId = session.restaurantId ?? null;
 
   const pool = getPool();
@@ -14,24 +15,24 @@ export async function GET(_req: NextRequest) {
     pool.query<{ daily_avg: string }>(
       `SELECT COALESCE(SUM(amount)/30.0, 0)::text AS daily_avg
        FROM accounting_entries
-       WHERE restaurant_id=$1 AND type='income' AND date >= CURRENT_DATE - interval '30 days'`,
+       WHERE restaurant_id IS NOT DISTINCT FROM $1 AND type='income' AND date >= CURRENT_DATE - interval '30 days'`,
       [restaurantId]
     ),
     pool.query<{ daily_avg: string }>(
       `SELECT COALESCE(SUM(amount)/30.0, 0)::text AS daily_avg
        FROM accounting_entries
-       WHERE restaurant_id=$1 AND type='expense' AND date >= CURRENT_DATE - interval '30 days'`,
+       WHERE restaurant_id IS NOT DISTINCT FROM $1 AND type='expense' AND date >= CURRENT_DATE - interval '30 days'`,
       [restaurantId]
     ),
     pool.query<{ total: string }>(
       `SELECT COALESCE(SUM(total),0)::text AS total
        FROM supplier_purchases
-       WHERE restaurant_id=$1 AND payment_status='pendiente'`,
+       WHERE restaurant_id IS NOT DISTINCT FROM $1 AND payment_status='pendiente'`,
       [restaurantId]
     ).catch(() => ({ rows: [{ total: '0' }] })),
     pool.query<{ category: string; budgeted: string }>(
       `SELECT category, budgeted::text FROM budget_items
-       WHERE restaurant_id=$1 AND month=TO_CHAR(CURRENT_DATE,'YYYY-MM')`,
+       WHERE restaurant_id IS NOT DISTINCT FROM $1 AND month=TO_CHAR(CURRENT_DATE,'YYYY-MM')`,
       [restaurantId]
     ).catch(() => ({ rows: [] })),
   ]);

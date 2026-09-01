@@ -1,20 +1,22 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getPool } from '@/lib/db';
+import { getPool, ensureAccountingSchema } from '@/lib/db';
 import { getSession } from '@/lib/session';
 
 export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const session = await getSession();
   if (!session.username) return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
+  await ensureAccountingSchema();
   const restaurantId = session.restaurantId ?? null;
   const { id } = await params;
   const pool = getPool();
-  await pool.query(`DELETE FROM product_cost_cards WHERE id=$1 AND restaurant_id=$2`, [id, restaurantId]);
+  await pool.query(`DELETE FROM product_cost_cards WHERE id=$1 AND restaurant_id IS NOT DISTINCT FROM $2`, [id, restaurantId]);
   return NextResponse.json({ ok: true });
 }
 
 export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const session = await getSession();
   if (!session.username) return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
+  await ensureAccountingSchema();
   const restaurantId = session.restaurantId ?? null;
   const { id } = await params;
   const body = await req.json();
@@ -41,7 +43,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
       `UPDATE product_cost_cards SET
          name=$1, category=$2, type=$3, unit=$4, cost_per_unit=$5,
          selling_price=$6, margin_pct=$7, notes=$8, updated_at=NOW()
-       WHERE id=$9 AND restaurant_id=$10 RETURNING *`,
+       WHERE id=$9 AND restaurant_id IS NOT DISTINCT FROM $10 RETURNING *`,
       [body.name, body.category ?? null, body.type ?? 'simple', body.unit ?? 'pza',
        costPerUnit, sellingPrice, marginPct, body.notes ?? null, id, restaurantId]
     );

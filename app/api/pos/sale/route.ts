@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { randomUUID } from 'crypto';
-import { getPool } from '@/lib/db';
+import { getPool, ensureAccountingSchema } from '@/lib/db';
 import { getEmployeeSession } from '@/lib/employee-session';
 
 export const runtime = 'nodejs';
@@ -120,6 +120,7 @@ export async function POST(req: NextRequest) {
 
       // Auto-register income in accounting
       if (session.restaurantId && total > 0) {
+        await ensureAccountingSchema();
         const productNames = lineItems.map(l => l.product_name).join(', ');
         await client.query(
           `INSERT INTO accounting_entries (restaurant_id, date, type, category, amount, description, reference_id)

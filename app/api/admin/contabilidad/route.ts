@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getPool } from '@/lib/db';
+import { getPool, ensureAccountingSchema } from '@/lib/db';
 import { getSession } from '@/lib/session';
 
 export async function GET(req: NextRequest) {
   const session = await getSession();
   if (!session.username) return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
   const restaurantId = session.restaurantId ?? null;
+  await ensureAccountingSchema();
 
   const pool = getPool();
   const url = new URL(req.url);
@@ -18,12 +19,12 @@ export async function GET(req: NextRequest) {
   const [incomeRes, expenseRes, byDayRes, byCategRes, recentRes] = await Promise.all([
     pool.query<{ total: string }>(
       `SELECT COALESCE(SUM(amount),0)::text AS total FROM accounting_entries
-       WHERE restaurant_id=$1 AND type='income' AND date >= CURRENT_DATE - $2::interval`,
+       WHERE restaurant_id IS NOT DISTINCT FROM $1 AND type='income' AND date >= CURRENT_DATE - $2::interval`,
       [restaurantId, interval]
     ),
     pool.query<{ total: string }>(
       `SELECT COALESCE(SUM(amount),0)::text AS total FROM accounting_entries
-       WHERE restaurant_id=$1 AND type='expense' AND date >= CURRENT_DATE - $2::interval`,
+       WHERE restaurant_id IS NOT DISTINCT FROM $1 AND type='expense' AND date >= CURRENT_DATE - $2::interval`,
       [restaurantId, interval]
     ),
     pool.query<{ date: string; income: string; expense: string }>(
@@ -31,21 +32,21 @@ export async function GET(req: NextRequest) {
               COALESCE(SUM(amount) FILTER (WHERE type='income'), 0)::text AS income,
               COALESCE(SUM(amount) FILTER (WHERE type='expense'), 0)::text AS expense
        FROM accounting_entries
-       WHERE restaurant_id=$1 AND date >= CURRENT_DATE - $2::interval
+       WHERE restaurant_id IS NOT DISTINCT FROM $1 AND date >= CURRENT_DATE - $2::interval
        GROUP BY date ORDER BY date`,
       [restaurantId, interval]
     ),
     pool.query<{ category: string; type: string; total: string }>(
       `SELECT category, type, COALESCE(SUM(amount),0)::text AS total
        FROM accounting_entries
-       WHERE restaurant_id=$1 AND date >= CURRENT_DATE - $2::interval
+       WHERE restaurant_id IS NOT DISTINCT FROM $1 AND date >= CURRENT_DATE - $2::interval
        GROUP BY category, type ORDER BY total DESC`,
       [restaurantId, interval]
     ),
     pool.query<{ id: string; date: string; type: string; category: string; amount: string; description: string }>(
       `SELECT id, date::text, type, category, amount::text, description
        FROM accounting_entries
-       WHERE restaurant_id=$1
+       WHERE restaurant_id IS NOT DISTINCT FROM $1
        ORDER BY date DESC, created_at DESC LIMIT 30`,
       [restaurantId]
     ),
@@ -72,6 +73,7 @@ export async function POST(req: NextRequest) {
   const session = await getSession();
   if (!session.username) return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
   const restaurantId = session.restaurantId ?? null;
+  await ensureAccountingSchema();
 
   const body = await req.json();
   const pool = getPool();

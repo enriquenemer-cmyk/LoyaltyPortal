@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getPool } from '@/lib/db';
+import { getPool, ensureAccountingSchema } from '@/lib/db';
 import { getSession } from '@/lib/session';
 
 export async function GET(_req: NextRequest) {
   const session = await getSession();
   if (!session.username) return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
+  await ensureAccountingSchema();
   const restaurantId = session.restaurantId ?? null;
 
   const pool = getPool();
@@ -22,7 +23,7 @@ export async function GET(_req: NextRequest) {
             ) FILTER (WHERE ri.id IS NOT NULL) AS ingredients
      FROM product_cost_cards pc
      LEFT JOIN recipe_ingredients ri ON ri.product_id = pc.id
-     WHERE pc.restaurant_id = $1
+     WHERE pc.restaurant_id IS NOT DISTINCT FROM $1
      GROUP BY pc.id
      ORDER BY pc.category, pc.name`,
     [restaurantId]
@@ -33,6 +34,7 @@ export async function GET(_req: NextRequest) {
 export async function POST(req: NextRequest) {
   const session = await getSession();
   if (!session.username) return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
+  await ensureAccountingSchema();
   const restaurantId = session.restaurantId ?? null;
 
   const body = await req.json();

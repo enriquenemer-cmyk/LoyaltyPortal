@@ -686,6 +686,7 @@ export type DbUser = {
   role: 'admin' | 'manager' | 'cajero';
   restaurant_id: string | null;
   created_at: string;
+  allowed_sections?: string[] | null;
 };
 
 export type Claim = {

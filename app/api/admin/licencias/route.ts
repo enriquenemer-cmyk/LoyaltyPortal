@@ -14,6 +14,7 @@ async function ensureLicenseCols() {
     `ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS owner_name TEXT`,
     `ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS notes TEXT`,
     `ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS monthly_price NUMERIC(10,2) DEFAULT 0`,
+    `ALTER TABLE restaurants ADD COLUMN IF NOT EXISTS license_key TEXT`,
   ];
   for (const sql of cols) await pool.query(sql).catch(() => {});
 }

@@ -11,7 +11,7 @@ export async function GET() {
   try {
     const cookieStore = await cookies();
     const session = await getIronSession<SessionData>(cookieStore, sessionOptions);
-    if (!session.restaurantId) {
+    if (!session.username) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 

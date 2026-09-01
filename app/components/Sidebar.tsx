@@ -415,6 +415,16 @@ const ALL_SECTIONS: SectionDef[] = [
     ],
   },
   {
+    key: 'DESCARGA',
+    label: 'App de Escritorio',
+    roles: ['admin'],
+    groupIcon: (<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1M16 12l-4 4-4-4M12 4v12" strokeLinecap="round" strokeLinejoin="round"/></svg>),
+    accent: '#059669',
+    links: [
+      { href: '/admin/descargar', label: 'Descargar App (.exe / .dmg)', icon: (<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1M16 12l-4 4-4-4M12 4v12" strokeLinecap="round" strokeLinejoin="round"/></svg>) },
+    ],
+  },
+  {
     key: 'ACCESOS_EXTERNOS',
     label: 'Accesos Externos',
     roles: ['admin', 'manager', 'cajero'],

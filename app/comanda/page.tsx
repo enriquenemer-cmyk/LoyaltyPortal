@@ -16,17 +16,17 @@ type Comanda = {
 type Phase = 'pin' | 'board';
 const MAX_PIN_LENGTH = 6;
 
-const NEXT_STATUS: Record<Comanda['status'], { next: Comanda['status']; label: string } | null> = {
-  pendiente: { next: 'preparando', label: 'Empezar a preparar' },
-  preparando: { next: 'listo', label: 'Marcar listo' },
-  listo: { next: 'entregado', label: 'Marcar entregado' },
+const NEXT_STATUS: Record<Comanda['status'], { next: Comanda['status']; label: string; emoji: string; bg: string } | null> = {
+  pendiente:  { next: 'preparando', label: 'En Preparación', emoji: '🔥', bg: '#F97316' },
+  preparando: { next: 'listo',      label: 'Listo',          emoji: '✅', bg: '#059669' },
+  listo:      { next: 'entregado',  label: 'Entregado',      emoji: '📦', bg: '#7c3aed' },
   entregado: null,
 };
 
-const COLUMNS: { status: Comanda['status']; title: string; color: string }[] = [
-  { status: 'pendiente', title: 'Pendiente', color: '#dc2626' },
-  { status: 'preparando', title: 'Preparando', color: '#F97316' },
-  { status: 'listo', title: 'Listo', color: '#059669' },
+const COLUMNS: { status: Comanda['status']; title: string; color: string; emoji: string }[] = [
+  { status: 'pendiente',  title: 'Nuevas',        color: '#dc2626', emoji: '🆕' },
+  { status: 'preparando', title: 'En Preparación', color: '#F97316', emoji: '🔥' },
+  { status: 'listo',      title: 'Listo para entregar', color: '#059669', emoji: '✅' },
 ];
 
 function timeAgo(dateStr: string): string {
@@ -245,41 +245,71 @@ export default function ComandaPage() {
           const items = comandas.filter((c) => c.status === col.status);
           return (
             <div key={col.status} className="flex flex-col gap-3">
-              <div className="flex items-center gap-2 px-1">
-                <span className="w-2.5 h-2.5 rounded-full" style={{ background: col.color }} />
-                <p className="text-sm font-black text-white uppercase tracking-wider">{col.title}</p>
-                <span className="text-xs font-bold text-white/40">{items.length}</span>
+              {/* Column header */}
+              <div className="flex items-center gap-2 px-2 py-2 rounded-xl" style={{ background: col.color + '22', border: `1px solid ${col.color}44` }}>
+                <span className="text-lg">{col.emoji}</span>
+                <p className="text-sm font-black text-white flex-1">{col.title}</p>
+                <span className="text-xs font-black px-2 py-0.5 rounded-full text-white" style={{ background: col.color }}>
+                  {items.length}
+                </span>
               </div>
 
               {items.length === 0 ? (
-                <p className="text-xs text-white/25 px-1">{loading ? 'Cargando…' : 'Sin comandas'}</p>
+                <div className="rounded-2xl p-6 text-center" style={{ background: 'rgba(255,255,255,0.03)', border: '1px dashed rgba(255,255,255,0.1)' }}>
+                  <p className="text-white/20 text-sm">{loading ? 'Cargando…' : 'Sin pedidos aquí'}</p>
+                </div>
               ) : (
                 items.map((c) => {
                   const step = NEXT_STATUS[c.status];
+                  const mins = Math.floor((Date.now() - new Date(c.created_at).getTime()) / 60000);
+                  const urgent = mins >= 15;
                   return (
-                    <div key={c.id} className="rounded-2xl p-4" style={{ background: 'rgba(255,255,255,0.06)', border: `1px solid ${col.color}55` }}>
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-[10px] font-bold text-white/40 uppercase tracking-wide">{timeAgo(c.created_at)}</span>
-                        <span className="text-xs font-black text-white">${Number(c.total_amount).toLocaleString('es-CO')}</span>
+                    <div key={c.id} className="rounded-2xl p-4 flex flex-col gap-3"
+                      style={{
+                        background: 'rgba(255,255,255,0.07)',
+                        border: `2px solid ${urgent ? '#ef4444' : col.color}55`,
+                        boxShadow: urgent ? '0 0 0 1px #ef444444' : 'none',
+                      }}>
+                      {/* Time + total */}
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-bold px-2 py-0.5 rounded-full"
+                          style={{ background: urgent ? '#ef444433' : 'rgba(255,255,255,0.08)', color: urgent ? '#fca5a5' : 'rgba(255,255,255,0.5)' }}>
+                          {urgent ? '⚠️ ' : '⏱ '}{timeAgo(c.created_at)}
+                        </span>
+                        <span className="text-sm font-black text-white">${Number(c.total_amount).toLocaleString('es-CO')}</span>
                       </div>
-                      <div className="space-y-1 mb-3">
+
+                      {/* Items list */}
+                      <div className="space-y-1.5">
                         {c.items.map((it, i) => (
-                          <p key={i} className="text-sm text-white/90 font-semibold">
-                            {it.quantity} × {it.product_name}
-                          </p>
+                          <div key={i} className="flex items-center gap-2">
+                            <span className="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-black text-white shrink-0"
+                              style={{ background: col.color + '99' }}>
+                              {it.quantity}
+                            </span>
+                            <p className="text-sm text-white font-semibold leading-tight">{it.product_name}</p>
+                          </div>
                         ))}
                       </div>
+
                       {c.employee_name && (
-                        <p className="text-[10px] text-white/30 mb-3">Cajero: {c.employee_name}</p>
+                        <p className="text-[10px] text-white/30">Cajero: {c.employee_name}</p>
                       )}
+
+                      {/* Big action button */}
                       {step && (
-                        <button
-                          onClick={() => advance(c)}
-                          className="w-full py-2 rounded-xl text-xs font-black text-white transition-all active:scale-95"
-                          style={{ background: col.color }}
-                        >
-                          {step.label}
+                        <button onClick={() => advance(c)}
+                          className="w-full py-3 rounded-xl font-black text-white transition-all active:scale-95 flex items-center justify-center gap-2"
+                          style={{ background: step.bg, fontSize: '15px', letterSpacing: '0.01em', boxShadow: `0 4px 16px ${step.bg}55` }}>
+                          <span>{step.emoji}</span>
+                          <span>{step.label}</span>
                         </button>
+                      )}
+                      {!step && (
+                        <div className="w-full py-3 rounded-xl text-center font-bold text-white/30 text-sm"
+                          style={{ background: 'rgba(255,255,255,0.05)' }}>
+                          ✓ Completado
+                        </div>
                       )}
                     </div>
                   );

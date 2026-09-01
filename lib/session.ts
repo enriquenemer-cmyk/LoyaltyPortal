@@ -6,6 +6,7 @@ export interface SessionData {
   username: string;
   role: 'admin' | 'manager' | 'cajero';
   restaurantId?: string;
+  allowedSections?: string[];
 }
 
 export const sessionOptions: SessionOptions = {

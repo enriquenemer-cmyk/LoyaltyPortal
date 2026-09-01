@@ -1037,6 +1037,7 @@ function SidebarContent({
 
   const [username, setUsername] = useState<string | null>(null);
   const [role, setRole] = useState<Role>('admin');
+  const [allowedSections, setAllowedSections] = useState<string[] | null>(null);
   const [loggingOut, setLoggingOut] = useState(false);
   const [pendingCount, setPendingCount] = useState(0);
   const [highFraudCount, setHighFraudCount] = useState(0);
@@ -1067,6 +1068,7 @@ function SidebarContent({
         if (d.user) {
           setUsername(d.user.username);
           setRole((d.user.role as Role) ?? 'admin');
+          setAllowedSections(d.user.allowedSections ?? null);
         }
       })
       .catch(() => {});
@@ -1128,6 +1130,7 @@ function SidebarContent({
   } else {
     visibleSections = ALL_SECTIONS
       .filter((s) => s.roles.includes(role))
+      .filter((s) => !allowedSections || allowedSections.includes(s.key))
       .map((s) => {
         if (role === 'manager' && s.key === 'CONFIGURACION') {
           return { ...s, links: s.links.filter((l) => !MANAGER_HIDDEN_LINKS.includes(l.href)) };

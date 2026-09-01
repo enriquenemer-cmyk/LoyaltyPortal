@@ -23,6 +23,7 @@ export async function POST(request: NextRequest) {
     let sessionUsername: string | null = null;
     let sessionRole: 'admin' | 'manager' | 'cajero' = 'admin';
     let sessionRestaurantId: string | undefined;
+    let sessionAllowedSections: string[] | undefined;
 
     // 1. Check env-level admin
     const envUser = (process.env.ADMIN_USER ?? '').trim();
@@ -50,6 +51,7 @@ export async function POST(request: NextRequest) {
         sessionUsername = user.username;
         sessionRole = user.role as 'admin' | 'manager' | 'cajero';
         sessionRestaurantId = user.restaurant_id ?? undefined;
+        if (user.allowed_sections) sessionAllowedSections = user.allowed_sections;
       }
     }
 
@@ -66,6 +68,7 @@ export async function POST(request: NextRequest) {
     session.username = sessionUsername;
     session.role = sessionRole;
     if (sessionRestaurantId) session.restaurantId = sessionRestaurantId;
+    if (sessionAllowedSections) session.allowedSections = sessionAllowedSections;
     await session.save();
 
     // Log admin login activity

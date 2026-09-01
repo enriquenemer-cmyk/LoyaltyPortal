@@ -16,6 +16,7 @@ export async function GET() {
       username: session.username,
       role: session.role,
       restaurantId: session.restaurantId,
+      allowedSections: session.allowedSections ?? null,
     },
   });
 }

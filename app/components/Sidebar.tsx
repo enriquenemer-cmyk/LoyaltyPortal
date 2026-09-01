@@ -20,6 +20,7 @@ type NavItem = {
   href: string;
   label: string;
   exact?: boolean;
+  external?: boolean;
   icon: React.ReactNode;
 };
 
@@ -414,6 +415,39 @@ const ALL_SECTIONS: SectionDef[] = [
     ],
   },
   {
+    key: 'ACCESOS_EXTERNOS',
+    label: 'Accesos Externos',
+    roles: ['admin', 'manager', 'cajero'],
+    groupIcon: (<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>),
+    accent: '#0369a1',
+    links: [
+      {
+        href: '/cajero',
+        label: 'Cajero — Escanear QR',
+        external: true,
+        icon: (<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/></svg>),
+      },
+      {
+        href: '/venta',
+        label: 'TPV — Punto de Venta',
+        external: true,
+        icon: (<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>),
+      },
+      {
+        href: '/admin/generate',
+        label: 'Generar Premios QR',
+        external: true,
+        icon: (<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3M17 17v3h3M14 17h.01"/></svg>),
+      },
+      {
+        href: '/admin/registros',
+        label: 'Registros de Clientes',
+        external: true,
+        icon: (<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>),
+      },
+    ],
+  },
+  {
     key: 'RESTAURANTES',
     label: 'Restaurantes',
     roles: ['admin', 'manager'],
@@ -706,7 +740,7 @@ function GlobalSearch({ onSelect }: { onSelect?: (item: SearchResult) => void })
 
 // ── Single nav link ──────────────────────────────────────────────────────────
 function NavLink({
-  href, label, icon, exact, highlighted, favorited, onToggleFavorite, showFavoriteToggle, linkBadge,
+  href, label, icon, exact, external, highlighted, favorited, onToggleFavorite, showFavoriteToggle, linkBadge,
 }: NavItem & {
   highlighted?: boolean;
   favorited?: boolean;
@@ -715,7 +749,25 @@ function NavLink({
   linkBadge?: number;
 }) {
   const pathname = usePathname();
-  const isActive = exact ? pathname === href : pathname === href || pathname.startsWith(href + '/');
+  const isActive = !external && (exact ? pathname === href : pathname === href || pathname.startsWith(href + '/'));
+
+  if (external) {
+    return (
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={`group/navlink flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm transition-all border-l-2 border-transparent pl-[10px] ${highlighted ? 'sidebar-link-pulse' : ''}`}
+        style={{ color: '#0369a1' }}
+        onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = 'rgba(3,105,161,0.08)'; (e.currentTarget as HTMLAnchorElement).style.color = '#0284c7'; }}
+        onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = ''; (e.currentTarget as HTMLAnchorElement).style.color = '#0369a1'; }}
+      >
+        <span className="w-4 h-4 shrink-0 flex items-center justify-center">{icon}</span>
+        <span className="truncate text-xs flex-1">{label}</span>
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="shrink-0 opacity-50"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      </a>
+    );
+  }
 
   return (
     <Link

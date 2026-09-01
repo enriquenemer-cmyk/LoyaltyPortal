@@ -28,7 +28,14 @@ export default function LoginPage() {
         body: JSON.stringify({ username: form.username, password: form.password, rememberMe }),
       });
       const data = await res.json();
-      if (!res.ok) { setError(data.error || 'Credenciales inválidas.'); return; }
+      if (!res.ok) {
+        if (data.error === 'CUENTA_SUSPENDIDA') {
+          router.push('/suspendida');
+          return;
+        }
+        setError(data.message || data.error || 'Credenciales inválidas.');
+        return;
+      }
       router.push('/admin/generate');
       router.refresh();
     } catch {

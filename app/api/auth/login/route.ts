@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { getIronSession } from 'iron-session';
 import { SessionData, sessionOptions } from '@/lib/session';
-import { getUserByUsername } from '@/lib/db';
+import { getUserByUsername, getPool } from '@/lib/db';
 import bcrypt from 'bcryptjs';
 import { checkRateLimit, getClientIp } from '@/lib/rateLimit';
 
@@ -35,6 +35,18 @@ export async function POST(request: NextRequest) {
       // 2. Check DB users
       const user = await getUserByUsername(username.trim());
       if (user && await bcrypt.compare(password, user.password_hash)) {
+        // Check if restaurant license is active
+        if (user.restaurant_id) {
+          const { rows: [rest] } = await getPool().query(
+            `SELECT billing_status FROM restaurants WHERE id=$1`, [user.restaurant_id]
+          );
+          if (rest?.billing_status === 'blocked') {
+            return NextResponse.json({
+              error: 'CUENTA_SUSPENDIDA',
+              message: 'Tu cuenta está suspendida. Contacta a 3E para reactivarla.',
+            }, { status: 403 });
+          }
+        }
         sessionUsername = user.username;
         sessionRole = user.role as 'admin' | 'manager' | 'cajero';
         sessionRestaurantId = user.restaurant_id ?? undefined;

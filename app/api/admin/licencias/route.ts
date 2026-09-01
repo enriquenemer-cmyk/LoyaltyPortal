@@ -36,7 +36,7 @@ export async function GET() {
       r.billing_plan, r.billing_status, r.trial_ends_at,
       r.monthly_price, r.notes, r.created_at, r.license_key,
       (SELECT COUNT(*)::int FROM users WHERE restaurant_id = r.id) AS user_count,
-      (SELECT COUNT(*)::int FROM clients WHERE restaurant_id = r.id) AS client_count,
+      (SELECT COUNT(DISTINCT cl2.phone)::int FROM claims cl2 JOIN prizes p2 ON p2.id = cl2.prize_id WHERE p2.restaurant_id = r.id) AS client_count,
       (SELECT COUNT(*)::int FROM claims cl JOIN prizes p ON p.id = cl.prize_id WHERE p.restaurant_id = r.id) AS claim_count,
       (SELECT username FROM users WHERE restaurant_id = r.id ORDER BY created_at LIMIT 1) AS main_username
     FROM restaurants r

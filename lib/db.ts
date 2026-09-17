@@ -15,10 +15,24 @@ export function getPool(): Pool {
   return pool;
 }
 
-let schemaInitialized = false;
+// Se cachea la PROMESA en curso (no un booleano) porque dos llamadas
+// concurrentes que lean "false" antes de que la primera termine intentarían
+// ambas crear las mismas tablas nuevas a la vez — Postgres puede rechazar esa
+// carrera aunque cada CREATE TABLE use IF NOT EXISTS (choque en pg_type). Al
+// cachear la promesa, la segunda llamada espera el mismo trabajo en vez de
+// duplicarlo. Si falla, se limpia para permitir un reintento real.
+let schemaPromise: Promise<void> | null = null;
 
-export async function ensureSchema(): Promise<void> {
-  if (schemaInitialized) return;
+export function ensureSchema(): Promise<void> {
+  if (schemaPromise) return schemaPromise;
+  schemaPromise = ensureSchemaInternal().catch((err) => {
+    schemaPromise = null;
+    throw err;
+  });
+  return schemaPromise;
+}
+
+async function ensureSchemaInternal(): Promise<void> {
   const client = await getPool().connect();
   try {
     await client.query(`
@@ -326,6 +340,50 @@ export async function ensureSchema(): Promise<void> {
       );
       CREATE INDEX IF NOT EXISTS inventory_movements_product_idx ON inventory_movements(product_id);
 
+      -- ── Conteo físico de inventario: snapshot del stock del sistema en un
+      -- momento dado, para comparar contra el conteo físico real y ajustar
+      -- las diferencias. ──────────────────────────────────────────────────
+      CREATE TABLE IF NOT EXISTS inventory_counts (
+        id TEXT PRIMARY KEY,
+        restaurant_id TEXT REFERENCES restaurants(id),
+        status TEXT NOT NULL DEFAULT 'abierto',
+        notes TEXT,
+        started_by TEXT,
+        closed_by TEXT,
+        started_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+        closed_at TIMESTAMPTZ
+      );
+      CREATE TABLE IF NOT EXISTS inventory_count_items (
+        id TEXT PRIMARY KEY,
+        count_id TEXT NOT NULL REFERENCES inventory_counts(id) ON DELETE CASCADE,
+        product_id TEXT NOT NULL REFERENCES inventory_products(id) ON DELETE CASCADE,
+        product_name TEXT NOT NULL,
+        unit TEXT NOT NULL,
+        expected_stock NUMERIC NOT NULL,
+        counted_stock NUMERIC,
+        counted_at TIMESTAMPTZ
+      );
+      CREATE INDEX IF NOT EXISTS inventory_count_items_count_idx ON inventory_count_items(count_id);
+      CREATE UNIQUE INDEX IF NOT EXISTS inventory_counts_one_open_idx ON inventory_counts(restaurant_id) WHERE status = 'abierto';
+
+      -- ── Merma: bajas de inventario por caducidad, daño, robo, etc. ──────
+      -- Se registran aparte de entradas/salidas normales para poder medir
+      -- el costo real que representa el desperdicio.
+      CREATE TABLE IF NOT EXISTS inventory_waste (
+        id TEXT PRIMARY KEY,
+        restaurant_id TEXT REFERENCES restaurants(id),
+        product_id TEXT NOT NULL REFERENCES inventory_products(id) ON DELETE CASCADE,
+        quantity NUMERIC NOT NULL,
+        unit TEXT NOT NULL,
+        reason TEXT NOT NULL,
+        estimated_cost NUMERIC,
+        notes TEXT,
+        created_by TEXT,
+        created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      );
+      CREATE INDEX IF NOT EXISTS inventory_waste_product_idx ON inventory_waste(product_id);
+      CREATE INDEX IF NOT EXISTS inventory_waste_restaurant_idx ON inventory_waste(restaurant_id, created_at);
+
       -- ── Inventario por unidad: cada bulto/bolsa que llega tiene su propio
       -- peso real y su propio QR. Se retira entera de una sola vez (no se
       -- fracciona), descontando exactamente su peso del producto. ──────────
@@ -348,6 +406,7 @@ export async function ensureSchema(): Promise<void> {
       ALTER TABLE inventory_products ADD COLUMN IF NOT EXISTS description TEXT;
       ALTER TABLE inventory_products ADD COLUMN IF NOT EXISTS code TEXT;
       ALTER TABLE inventory_products ADD COLUMN IF NOT EXISTS sale_price NUMERIC;
+      ALTER TABLE inventory_products ADD COLUMN IF NOT EXISTS cost_per_unit NUMERIC;
 
       -- ── Punto de venta (TPV): pantalla ligada a inventario — al cobrar un
       -- artículo se descuenta el stock automáticamente, para que el
@@ -365,7 +424,8 @@ export async function ensureSchema(): Promise<void> {
       CREATE TABLE IF NOT EXISTS pos_sale_items (
         id TEXT PRIMARY KEY,
         sale_id TEXT NOT NULL REFERENCES pos_sales(id),
-        product_id TEXT NOT NULL REFERENCES inventory_products(id),
+        product_id TEXT NOT NULL,
+        product_type TEXT NOT NULL DEFAULT 'inventory',
         product_name TEXT NOT NULL,
         unit TEXT NOT NULL,
         quantity NUMERIC NOT NULL,
@@ -377,7 +437,63 @@ export async function ensureSchema(): Promise<void> {
       ALTER TABLE pos_sales ADD COLUMN IF NOT EXISTS status TEXT NOT NULL DEFAULT 'pendiente';
       ALTER TABLE pos_sales ADD COLUMN IF NOT EXISTS status_updated_by TEXT;
       ALTER TABLE pos_sales ADD COLUMN IF NOT EXISTS status_updated_at TIMESTAMPTZ;
+
+      -- ── Mesas del restaurante y cuentas divididas ────────────────────────
+      CREATE TABLE IF NOT EXISTS restaurant_tables (
+        id TEXT PRIMARY KEY,
+        restaurant_id TEXT REFERENCES restaurants(id),
+        name TEXT NOT NULL,
+        active BOOLEAN NOT NULL DEFAULT TRUE,
+        created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      );
+      ALTER TABLE pos_sales ADD COLUMN IF NOT EXISTS table_id TEXT REFERENCES restaurant_tables(id);
+      ALTER TABLE pos_sales ADD COLUMN IF NOT EXISTS table_name TEXT;
+      -- Cuando una venta se paga entre varios métodos/personas, pos_sales.payment_method
+      -- queda como 'dividida' y el detalle real vive aquí (para que el arqueo de caja
+      -- pueda seguir sumando cada método correctamente).
+      CREATE TABLE IF NOT EXISTS pos_sale_payments (
+        id TEXT PRIMARY KEY,
+        sale_id TEXT NOT NULL REFERENCES pos_sales(id) ON DELETE CASCADE,
+        method TEXT NOT NULL,
+        amount NUMERIC NOT NULL,
+        created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      );
+      CREATE INDEX IF NOT EXISTS pos_sale_payments_sale_idx ON pos_sale_payments(sale_id);
       CREATE INDEX IF NOT EXISTS pos_sales_status_idx ON pos_sales(status);
+
+      -- ── Pedidos en línea / para llevar / delivery ────────────────────────
+      -- El cliente arma su pedido y lo envía SIN pagar (no hay pasarela de
+      -- pago propia). El staff lo confirma o lo rechaza; al confirmar recién
+      -- ahí se descuenta inventario real y se genera la venta en el POS —
+      -- así nunca se compromete stock que en realidad no había disponible.
+      CREATE TABLE IF NOT EXISTS online_orders (
+        id TEXT PRIMARY KEY,
+        restaurant_id TEXT REFERENCES restaurants(id),
+        customer_name TEXT NOT NULL,
+        customer_phone TEXT NOT NULL,
+        delivery_type TEXT NOT NULL DEFAULT 'pickup',
+        address TEXT,
+        notes TEXT,
+        status TEXT NOT NULL DEFAULT 'pendiente',
+        total_amount NUMERIC NOT NULL DEFAULT 0,
+        pos_sale_id TEXT REFERENCES pos_sales(id),
+        rejection_reason TEXT,
+        created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+        updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      );
+      CREATE INDEX IF NOT EXISTS online_orders_status_idx ON online_orders(restaurant_id, status);
+      CREATE TABLE IF NOT EXISTS online_order_items (
+        id TEXT PRIMARY KEY,
+        order_id TEXT NOT NULL REFERENCES online_orders(id) ON DELETE CASCADE,
+        product_id TEXT NOT NULL,
+        product_type TEXT NOT NULL DEFAULT 'inventory',
+        product_name TEXT NOT NULL,
+        unit TEXT NOT NULL,
+        quantity NUMERIC NOT NULL,
+        unit_price NUMERIC NOT NULL,
+        subtotal NUMERIC NOT NULL
+      );
+      CREATE INDEX IF NOT EXISTS online_order_items_order_idx ON online_order_items(order_id);
 
       -- ── Proveedores: cada producto de inventario pertenece a un proveedor,
       -- así cada proveedor tiene su propio "perfil" con los productos que
@@ -602,7 +718,6 @@ export async function ensureSchema(): Promise<void> {
       );
       CREATE INDEX IF NOT EXISTS ai_customer_cards_phone_idx ON ai_customer_cards(phone);
     `);
-    schemaInitialized = true;
   } finally {
     client.release();
   }
@@ -2345,7 +2460,7 @@ export async function updateUserPassword(username: string, passwordHash: string)
 
 // ── Notifications ─────────────────────────────────────────────────────────────
 
-export type NotificationType = 'new_claim' | 'prize_expiring' | 'vip_customer' | 'new_delivery' | 'low_prizes' | 'daily_summary' | 'platform_update' | 'forgotten_clock_out';
+export type NotificationType = 'new_claim' | 'prize_expiring' | 'vip_customer' | 'new_delivery' | 'low_prizes' | 'daily_summary' | 'platform_update' | 'forgotten_clock_out' | 'low_stock' | 'expiring_stock';
 
 export type Notification = {
   id: string;
@@ -2506,10 +2621,18 @@ export async function markMessageRead(id: string): Promise<InternalMessage | und
 // `suppliers` YA EXISTE (la usa Inventario) — se reutiliza tal cual, con sus
 // columnas reales (id TEXT, contact_phone, contact_email). Todo lo demás
 // aquí es nuevo para este módulo.
-let accountingSchemaEnsured = false;
+let accountingSchemaPromise: Promise<void> | null = null;
 
-export async function ensureAccountingSchema(): Promise<void> {
-  if (accountingSchemaEnsured) return;
+export function ensureAccountingSchema(): Promise<void> {
+  if (accountingSchemaPromise) return accountingSchemaPromise;
+  accountingSchemaPromise = ensureAccountingSchemaInternal().catch((err) => {
+    accountingSchemaPromise = null;
+    throw err;
+  });
+  return accountingSchemaPromise;
+}
+
+async function ensureAccountingSchemaInternal(): Promise<void> {
   const client = await getPool().connect();
   try {
     await client.query(`
@@ -2539,6 +2662,38 @@ export async function ensureAccountingSchema(): Promise<void> {
         total NUMERIC(12,2) GENERATED ALWAYS AS (quantity * unit_cost) STORED
       );
 
+      -- ── Conciliación bancaria: cruce automático entre compras a
+      -- proveedores y movimientos bancarios reales (por nombre + importe). ──
+      CREATE TABLE IF NOT EXISTS bank_movements (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        restaurant_id TEXT,
+        date DATE NOT NULL,
+        amount NUMERIC(12,2) NOT NULL,
+        description TEXT NOT NULL,
+        matched_purchase_id UUID REFERENCES supplier_purchases(id) ON DELETE SET NULL,
+        created_at TIMESTAMPTZ DEFAULT NOW()
+      );
+      CREATE INDEX IF NOT EXISTS bank_movements_restaurant_idx ON bank_movements(restaurant_id, date);
+      ALTER TABLE supplier_purchases ADD COLUMN IF NOT EXISTS bank_movement_id UUID REFERENCES bank_movements(id) ON DELETE SET NULL;
+
+      -- ── Arqueo / corte de caja: cierre diario de efectivo, vinculable a un
+      -- movimiento bancario cuando ese efectivo se deposita al banco. ──────
+      CREATE TABLE IF NOT EXISTS cash_cuts (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        restaurant_id TEXT,
+        date DATE NOT NULL,
+        system_cash NUMERIC(12,2) NOT NULL DEFAULT 0,
+        system_card NUMERIC(12,2) NOT NULL DEFAULT 0,
+        system_other NUMERIC(12,2) NOT NULL DEFAULT 0,
+        counted_cash NUMERIC(12,2) NOT NULL DEFAULT 0,
+        difference NUMERIC(12,2) NOT NULL DEFAULT 0,
+        bank_movement_id UUID REFERENCES bank_movements(id) ON DELETE SET NULL,
+        closed_by TEXT,
+        closed_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      );
+      CREATE UNIQUE INDEX IF NOT EXISTS cash_cuts_restaurant_date_idx
+        ON cash_cuts (COALESCE(restaurant_id, ''), date);
+
       CREATE TABLE IF NOT EXISTS product_cost_cards (
         id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
         restaurant_id TEXT,
@@ -2561,8 +2716,16 @@ export async function ensureAccountingSchema(): Promise<void> {
         quantity NUMERIC(12,4) NOT NULL DEFAULT 1,
         unit TEXT DEFAULT 'g',
         unit_cost NUMERIC(12,4) NOT NULL DEFAULT 0,
-        total_cost NUMERIC(12,4) GENERATED ALWAYS AS (quantity * unit_cost) STORED
+        total_cost NUMERIC(12,4) GENERATED ALWAYS AS (quantity * unit_cost) STORED,
+        inventory_product_id TEXT REFERENCES inventory_products(id)
       );
+      ALTER TABLE recipe_ingredients ADD COLUMN IF NOT EXISTS inventory_product_id TEXT REFERENCES inventory_products(id);
+
+      -- Vincula cada ficha de costo "elaborada" con su receta real, para que
+      -- al venderse en el TPV se descuenten los ingredientes de inventario
+      -- (no un "producto" abstracto) — inventario real, no aproximado.
+      ALTER TABLE pos_sale_items DROP CONSTRAINT IF EXISTS pos_sale_items_product_id_fkey;
+      ALTER TABLE pos_sale_items ADD COLUMN IF NOT EXISTS product_type TEXT NOT NULL DEFAULT 'inventory';
 
       CREATE TABLE IF NOT EXISTS accounting_entries (
         id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -2601,7 +2764,6 @@ export async function ensureAccountingSchema(): Promise<void> {
         created_at TIMESTAMPTZ DEFAULT NOW()
       );
     `);
-    accountingSchemaEnsured = true;
   } finally {
     client.release();
   }

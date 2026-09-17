@@ -122,6 +122,12 @@ const Icons = {
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
     </svg>
   ),
+  simulador: (
+    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 17a4 4 0 100-8 4 4 0 000 8z" />
+    </svg>
+  ),
   leads: (
     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.169.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z" />
@@ -346,6 +352,7 @@ const ALL_SECTIONS: SectionDef[] = [
       { href: '/admin/registros', label: 'Registros de Cobro', icon: Icons.registros },
       { href: '/admin/reglas', label: 'Premios Automaticos', icon: Icons.reglas },
       { href: '/admin/campanas', label: 'Campanas', icon: Icons.campanas },
+      { href: '/admin/simulador-publicaciones', label: 'Simulador de Publicaciones', icon: Icons.simulador },
     ],
   },
   {
@@ -374,8 +381,12 @@ const ALL_SECTIONS: SectionDef[] = [
     links: [
       { href: '/admin/ventas', label: 'Ventas Diarias', icon: Icons.ventas },
       { href: '/venta', label: 'Punto de Venta (POS)', icon: Icons.ventas },
+      { href: '/admin/mesas', label: 'Mesas', icon: Icons.ventas },
+      { href: '/admin/pedidos-online', label: 'Pedidos en Línea', icon: Icons.ventas },
+      { href: '/admin/rentabilidad', label: 'Rentabilidad por Platillo', icon: Icons.ventas },
       { href: '/admin/inventario', label: 'Inventario', icon: Icons.inventario },
       { href: '/admin/fichajes', label: 'Fichajes', icon: Icons.fichajes },
+      { href: '/admin/nomina', label: 'Nómina (estimado)', icon: Icons.fichajes },
       { href: '/admin/capacitacion', label: 'Capacitación', icon: Icons.capacitacion },
     ],
   },
@@ -390,6 +401,7 @@ const ALL_SECTIONS: SectionDef[] = [
       { href: '/admin/proveedores', label: 'Proveedores y Compras', icon: Icons.proveedores },
       { href: '/admin/ordenes-compra', label: 'Órdenes de Compra', icon: Icons.inventario },
       { href: '/admin/fichas', label: 'Fichas de Costo', icon: Icons.fichas },
+      { href: '/admin/contabilidad/conciliacion', label: 'Conciliación Bancaria', icon: Icons.contabilidad },
     ],
   },
   {

@@ -14,7 +14,7 @@ import {
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 
-type NotificationType = 'new_claim' | 'prize_expiring' | 'vip_customer' | 'new_delivery' | 'low_prizes' | 'daily_summary' | 'platform_update' | 'forgotten_clock_out';
+type NotificationType = 'new_claim' | 'prize_expiring' | 'vip_customer' | 'new_delivery' | 'low_prizes' | 'daily_summary' | 'platform_update' | 'forgotten_clock_out' | 'low_stock' | 'expiring_stock';
 
 type Notification = {
   id: string;
@@ -38,6 +38,8 @@ function typeIcon(type: NotificationType) {
     case 'daily_summary': return <ChartBarIcon className={`${cls} text-[#1a6b3c]`} />;
     case 'platform_update': return <SparklesIcon className={`${cls} text-purple-500`} />;
     case 'forgotten_clock_out': return <ExclamationCircleIcon className={`${cls} text-red-500`} />;
+    case 'low_stock': return <ExclamationTriangleIcon className={`${cls} text-red-500`} />;
+    case 'expiring_stock': return <ClockIcon className={`${cls} text-amber-500`} />;
     default: return <BellIcon className={`${cls} text-stone-400`} />;
   }
 }

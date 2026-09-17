@@ -9,7 +9,7 @@ type InventoryMovement = {
   id: string;
   product_id: string;
   product_name: string;
-  type: 'entrada' | 'salida';
+  type: 'entrada' | 'salida' | 'merma';
   quantity: string;
   note: string | null;
   created_by: string | null;

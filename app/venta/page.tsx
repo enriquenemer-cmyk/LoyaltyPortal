@@ -15,9 +15,14 @@ type Product = {
   unit: string;
   current_stock: string;
   sale_price: string;
+  product_type: 'inventory' | 'recipe';
 };
 
 type CartLine = { product: Product; quantity: number };
+
+type RestaurantTable = { id: string; name: string; active: boolean };
+
+type SplitPart = { method: string; amount: string };
 
 type SaleReceipt = {
   id: string;
@@ -85,6 +90,7 @@ export default function VentaPage() {
 
   const [products, setProducts] = useState<Product[]>([]);
   const [productsLoading, setProductsLoading] = useState(false);
+  const [productsError, setProductsError] = useState<string | null>(null);
   const [cart, setCart] = useState<CartLine[]>([]);
   const [paymentMethod, setPaymentMethod] = useState('efectivo');
   const [charging, setCharging] = useState(false);
@@ -93,6 +99,10 @@ export default function VentaPage() {
   const [cancelling, setCancelling] = useState(false);
   const [todayTotal, setTodayTotal] = useState(0);
   const [gameBundle, setGameBundle] = useState<{ id: string; name: string } | null>(null);
+  const [tables, setTables] = useState<RestaurantTable[]>([]);
+  const [selectedTableId, setSelectedTableId] = useState('');
+  const [splitMode, setSplitMode] = useState(false);
+  const [splitParts, setSplitParts] = useState<SplitPart[]>([{ method: 'efectivo', amount: '' }, { method: 'efectivo', amount: '' }]);
 
   const resetToPin = useCallback(() => {
     setPin('');
@@ -101,6 +111,9 @@ export default function VentaPage() {
     setProducts([]);
     setCart([]);
     setReceipt(null);
+    setSelectedTableId('');
+    setSplitMode(false);
+    setSplitParts([{ method: 'efectivo', amount: '' }, { method: 'efectivo', amount: '' }]);
     setPhase('pin');
   }, []);
 
@@ -109,9 +122,11 @@ export default function VentaPage() {
     try {
       const res = await fetch('/api/pos/products');
       const data = await res.json();
-      if (res.ok) setProducts(data.products ?? []);
-    } catch {
-      // ignore
+      if (!res.ok) throw new Error(data.error || 'No se pudieron cargar los artículos');
+      setProducts(data.products ?? []);
+      setProductsError(null);
+    } catch (err) {
+      setProductsError(err instanceof Error ? err.message : 'No se pudieron cargar los artículos. Revisa tu conexión.');
     } finally {
       setProductsLoading(false);
     }
@@ -142,6 +157,16 @@ export default function VentaPage() {
     }
   }, []);
 
+  const loadTables = useCallback(async () => {
+    try {
+      const res = await fetch('/api/admin/mesas');
+      const data = await res.json();
+      if (res.ok) setTables((data.tables ?? []).filter((t: RestaurantTable) => t.active));
+    } catch {
+      // asignar mesa es opcional — si falla, simplemente no se muestra el selector
+    }
+  }, []);
+
   async function checkSession() {
     try {
       const res = await fetch('/api/employees/me');
@@ -166,8 +191,9 @@ export default function VentaPage() {
       loadProducts();
       loadTodaySales();
       loadGameBundle();
+      loadTables();
     }
-  }, [phase, loadProducts, loadTodaySales, loadGameBundle]);
+  }, [phase, loadProducts, loadTodaySales, loadGameBundle, loadTables]);
 
   function handleDigit(d: string) {
     if (pinLoading) return;
@@ -232,17 +258,46 @@ export default function VentaPage() {
     [cart]
   );
 
+  const splitSum = useMemo(
+    () => splitParts.reduce((sum, p) => sum + (parseFloat(p.amount) || 0), 0),
+    [splitParts]
+  );
+  const splitValid = splitMode && Math.abs(splitSum - total) < 0.5 && splitParts.every((p) => parseFloat(p.amount) > 0);
+
+  function updateSplitPart(i: number, patch: Partial<SplitPart>) {
+    setSplitParts((prev) => prev.map((p, idx) => (idx === i ? { ...p, ...patch } : p)));
+  }
+  function addSplitPart() {
+    setSplitParts((prev) => [...prev, { method: 'efectivo', amount: '' }]);
+  }
+  function removeSplitPart(i: number) {
+    setSplitParts((prev) => prev.filter((_, idx) => idx !== i));
+  }
+  function repartirIgual() {
+    const n = splitParts.length || 2;
+    const share = Math.round((total / n) * 100) / 100;
+    setSplitParts((prev) => prev.map((p, i) => ({ ...p, amount: i === prev.length - 1 ? (total - share * (n - 1)).toFixed(2) : share.toFixed(2) })));
+  }
+
   async function handleCharge() {
     if (cart.length === 0) return;
+    if (splitMode && !splitValid) {
+      setError('La suma de la cuenta dividida debe ser igual al total.');
+      return;
+    }
     setCharging(true);
     setError(null);
     try {
+      const selectedTable = tables.find((t) => t.id === selectedTableId);
       const res = await fetch('/api/pos/sale', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           payment_method: paymentMethod,
-          items: cart.map((l) => ({ product_id: l.product.id, quantity: l.quantity })),
+          table_id: selectedTableId || null,
+          table_name: selectedTable?.name ?? null,
+          items: cart.map((l) => ({ product_id: l.product.id, quantity: l.quantity, product_type: l.product.product_type })),
+          ...(splitMode ? { payments: splitParts.map((p) => ({ method: p.method, amount: parseFloat(p.amount) })) } : {}),
         }),
       });
       const data = await res.json();
@@ -252,6 +307,8 @@ export default function VentaPage() {
       }
       setReceipt(data.sale);
       setCart([]);
+      setSplitMode(false);
+      setSplitParts([{ method: 'efectivo', amount: '' }, { method: 'efectivo', amount: '' }]);
       loadProducts();
       loadTodaySales();
     } catch {
@@ -390,6 +447,13 @@ export default function VentaPage() {
         <div className="flex-1 p-4 overflow-y-auto">
           {productsLoading ? (
             <div className="py-10 text-center text-sm text-stone-400">Cargando artículos...</div>
+          ) : productsError ? (
+            <div className="py-10 text-center text-sm max-w-sm mx-auto">
+              <p className="text-red-500 font-semibold mb-3">{productsError}</p>
+              <button onClick={loadProducts} className="text-xs font-bold px-4 py-2 rounded-lg border border-red-200 text-red-600 bg-red-50 hover:bg-red-100">
+                Reintentar
+              </button>
+            </div>
           ) : products.length === 0 ? (
             <div className="py-10 text-center text-sm text-stone-400 max-w-sm mx-auto">
               No hay artículos disponibles para vender. Un administrador debe asignarles un precio de venta en Inventario.
@@ -398,18 +462,24 @@ export default function VentaPage() {
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
               {products.map((p) => {
                 const stock = Number(p.current_stock);
-                const outOfStock = stock <= 0;
+                const isRecipe = p.product_type === 'recipe';
+                const unlimited = isRecipe && stock >= 999999;
+                const outOfStock = !unlimited && stock <= 0;
                 return (
                   <button
                     key={p.id}
                     onClick={() => !outOfStock && addToCart(p)}
                     disabled={outOfStock}
-                    className="text-left bg-white border border-[#E8E3DC] rounded-2xl p-4 hover:border-emerald-400 hover:shadow-md transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+                    className={`text-left bg-white border rounded-2xl p-4 hover:shadow-md transition-all disabled:opacity-40 disabled:cursor-not-allowed ${
+                      isRecipe ? 'border-orange-200 hover:border-orange-400' : 'border-[#E8E3DC] hover:border-emerald-400'
+                    }`}
                   >
-                    <p className="text-sm font-bold text-[#1C1917] leading-snug">{p.name}</p>
+                    <p className="text-sm font-bold text-[#1C1917] leading-snug">
+                      {isRecipe && <span className="mr-1">🍳</span>}{p.name}
+                    </p>
                     <p className="text-lg font-black text-emerald-600 mt-1">{formatCurrency(Number(p.sale_price))}</p>
                     <p className="text-[10px] text-stone-400 mt-1">
-                      {outOfStock ? 'Sin stock' : `Disponible: ${stock} ${p.unit}`}
+                      {outOfStock ? 'Sin stock' : unlimited ? 'Disponible' : `Disponible: ${stock} ${p.unit}`}
                     </p>
                   </button>
                 );
@@ -464,21 +534,80 @@ export default function VentaPage() {
               </div>
             )}
 
-            <div className="flex gap-2">
-              {PAYMENT_METHODS.map((m) => (
-                <button
-                  key={m.value}
-                  onClick={() => setPaymentMethod(m.value)}
-                  className={`flex-1 text-xs font-bold py-2 rounded-xl border transition-colors ${
-                    paymentMethod === m.value
-                      ? 'bg-emerald-600 text-white border-emerald-600'
-                      : 'bg-white text-stone-500 border-[#E8E3DC] hover:bg-stone-50'
-                  }`}
-                >
-                  {m.label}
-                </button>
-              ))}
-            </div>
+            {tables.length > 0 && (
+              <select
+                value={selectedTableId}
+                onChange={(e) => setSelectedTableId(e.target.value)}
+                className="w-full text-xs font-bold py-2 px-3 rounded-xl border border-[#E8E3DC] bg-white text-stone-600"
+              >
+                <option value="">Sin mesa asignada</option>
+                {tables.map((t) => (
+                  <option key={t.id} value={t.id}>{t.name}</option>
+                ))}
+              </select>
+            )}
+
+            <button
+              onClick={() => setSplitMode((v) => !v)}
+              className={`w-full text-xs font-bold py-2 rounded-xl border transition-colors ${
+                splitMode ? 'bg-purple-600 text-white border-purple-600' : 'bg-white text-purple-600 border-purple-200 hover:bg-purple-50'
+              }`}
+            >
+              {splitMode ? '✕ Cancelar cuenta dividida' : '➗ Dividir cuenta'}
+            </button>
+
+            {splitMode ? (
+              <div className="space-y-2">
+                {splitParts.map((p, i) => (
+                  <div key={i} className="flex items-center gap-1.5">
+                    <select
+                      value={p.method}
+                      onChange={(e) => updateSplitPart(i, { method: e.target.value })}
+                      className="text-xs font-bold py-2 px-1.5 rounded-lg border border-[#E8E3DC] bg-white text-stone-600"
+                    >
+                      {PAYMENT_METHODS.map((m) => <option key={m.value} value={m.value}>{m.label}</option>)}
+                    </select>
+                    <input
+                      type="number" min="0" step="any"
+                      value={p.amount}
+                      onChange={(e) => updateSplitPart(i, { amount: e.target.value })}
+                      placeholder="Monto"
+                      className="flex-1 text-xs py-2 px-2 rounded-lg border border-[#E8E3DC]"
+                    />
+                    {splitParts.length > 2 && (
+                      <button onClick={() => removeSplitPart(i)} className="text-red-400 text-xs px-1">✕</button>
+                    )}
+                  </div>
+                ))}
+                <div className="flex gap-2">
+                  <button onClick={addSplitPart} className="flex-1 text-[11px] font-bold py-1.5 rounded-lg border border-dashed border-stone-300 text-stone-500">
+                    + Agregar parte
+                  </button>
+                  <button onClick={repartirIgual} className="flex-1 text-[11px] font-bold py-1.5 rounded-lg border border-dashed border-stone-300 text-stone-500">
+                    Repartir igual
+                  </button>
+                </div>
+                <div className={`text-xs font-bold text-right ${splitValid ? 'text-emerald-600' : 'text-red-500'}`}>
+                  Suma: {formatCurrency(splitSum)} / {formatCurrency(total)}
+                </div>
+              </div>
+            ) : (
+              <div className="flex gap-2">
+                {PAYMENT_METHODS.map((m) => (
+                  <button
+                    key={m.value}
+                    onClick={() => setPaymentMethod(m.value)}
+                    className={`flex-1 text-xs font-bold py-2 rounded-xl border transition-colors ${
+                      paymentMethod === m.value
+                        ? 'bg-emerald-600 text-white border-emerald-600'
+                        : 'bg-white text-stone-500 border-[#E8E3DC] hover:bg-stone-50'
+                    }`}
+                  >
+                    {m.label}
+                  </button>
+                ))}
+              </div>
+            )}
 
             <div className="flex items-center justify-between px-1">
               <span className="text-xs font-bold text-stone-500 uppercase tracking-wide">Total</span>
@@ -487,7 +616,7 @@ export default function VentaPage() {
 
             <button
               onClick={handleCharge}
-              disabled={cart.length === 0 || charging}
+              disabled={cart.length === 0 || charging || (splitMode && !splitValid)}
               className="w-full py-4 rounded-2xl text-lg font-black text-white bg-emerald-600 hover:bg-emerald-700 active:scale-95 transition-all disabled:opacity-40"
               style={{ boxShadow: '0 8px 24px rgba(5,150,105,0.35)' }}
             >
@@ -535,6 +664,14 @@ export default function VentaPage() {
               </div>
             )}
 
+            <a
+              href={`/venta/factura/${receipt.id}`}
+              target="_blank"
+              rel="noreferrer"
+              className="block w-full py-3 rounded-xl text-sm font-black text-center text-[#1C1917] bg-stone-100 hover:bg-stone-200 transition-colors mb-2"
+            >
+              🖨️ Ver e imprimir factura
+            </a>
             <button
               onClick={() => setReceipt(null)}
               className="w-full py-3 rounded-xl text-sm font-black text-white bg-emerald-600 hover:bg-emerald-700 transition-colors mb-2"

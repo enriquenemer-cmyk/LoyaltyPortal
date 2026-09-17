@@ -1,12 +1,16 @@
 'use client';
 import { useEffect, useState } from 'react';
 
-type Ingredient = { id?: string; ingredient_name: string; quantity: number; unit: string; unit_cost: number; total_cost?: number };
+type Ingredient = {
+  id?: string; ingredient_name: string; quantity: number; unit: string; unit_cost: number; total_cost?: number;
+  inventory_product_id?: string | null; inventory_unit?: string; inventory_stock?: string;
+};
 type CostCard = {
   id: string; name: string; category?: string; type: string; unit: string;
   cost_per_unit: string; selling_price?: string; margin_pct?: string; notes?: string;
   ingredients?: Ingredient[];
 };
+type InvProduct = { id: string; name: string; unit: string; current_stock: string };
 
 const UNITS_PROD = ['pza', 'kg', 'l', 'porción', 'caja', 'bolsa', 'rollo', 'par'];
 const UNITS_ING = ['g', 'kg', 'ml', 'l', 'pza', 'cdita', 'cda', 'taza'];
@@ -24,7 +28,7 @@ function marginColor(m: number) {
 const emptyCard = () => ({
   name: '', category: '', type: 'simple' as 'simple' | 'prepared',
   unit: 'pza', cost_per_unit: '', selling_price: '', notes: '',
-  ingredients: [{ ingredient_name: '', quantity: 100, unit: 'g', unit_cost: 0 }],
+  ingredients: [{ ingredient_name: '', quantity: 100, unit: 'g', unit_cost: 0, inventory_product_id: null as string | null }],
 });
 
 export default function FichasPage() {
@@ -33,68 +37,120 @@ export default function FichasPage() {
   const [editId, setEditId] = useState<string | null>(null);
   const [form, setForm] = useState(emptyCard());
   const [saving, setSaving] = useState(false);
+  const [formError, setFormError] = useState('');
+  const [listError, setListError] = useState('');
   const [filter, setFilter] = useState<'all' | 'simple' | 'prepared'>('all');
+  const [invProducts, setInvProducts] = useState<InvProduct[]>([]);
 
   async function load() {
-    const res = await fetch('/api/admin/fichas');
-    if (res.ok) setCards(await res.json());
+    try {
+      const res = await fetch('/api/admin/fichas');
+      const data = await res.json();
+      if (!res.ok) throw new Error(data?.error || 'No se pudieron cargar las fichas');
+      setCards(data);
+      setListError('');
+    } catch (err) {
+      setListError(err instanceof Error ? err.message : 'No se pudieron cargar las fichas');
+    }
   }
 
   useEffect(() => {
     fetch('/api/admin/setup-contabilidad', { method: 'POST' }).catch(() => {});
     load();
+    fetch('/api/admin/inventory/products')
+      .then(r => (r.ok ? r.json() : { products: [] }))
+      .then(d => setInvProducts(d.products ?? []))
+      .catch(() => {});
   }, []);
 
-  function openNew() { setForm(emptyCard()); setEditId(null); setShowForm(true); }
+  function openNew() { setForm(emptyCard()); setEditId(null); setFormError(''); setShowForm(true); }
   function openEdit(c: CostCard) {
     setForm({
       name: c.name, category: c.category ?? '', type: c.type as 'simple' | 'prepared',
       unit: c.unit, cost_per_unit: c.cost_per_unit, selling_price: c.selling_price ?? '',
       notes: c.notes ?? '',
       ingredients: c.ingredients?.length
-        ? c.ingredients.map(i => ({ ingredient_name: i.ingredient_name, quantity: i.quantity, unit: i.unit, unit_cost: i.unit_cost }))
-        : [{ ingredient_name: '', quantity: 100, unit: 'g', unit_cost: 0 }],
+        ? c.ingredients.map(i => ({
+            ingredient_name: i.ingredient_name, quantity: i.quantity, unit: i.unit, unit_cost: i.unit_cost,
+            inventory_product_id: i.inventory_product_id ?? null,
+          }))
+        : [{ ingredient_name: '', quantity: 100, unit: 'g', unit_cost: 0, inventory_product_id: null as string | null }],
     });
     setEditId(c.id);
+    setFormError('');
     setShowForm(true);
   }
 
   async function saveCard() {
     if (!form.name.trim()) return;
     setSaving(true);
+    setFormError('');
     const url = editId ? `/api/admin/fichas/${editId}` : '/api/admin/fichas';
     const method = editId ? 'PATCH' : 'POST';
-    await fetch(url, {
-      method,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        ...form,
-        cost_per_unit: parseFloat(form.cost_per_unit) || 0,
-        selling_price: form.selling_price ? parseFloat(form.selling_price) : null,
-        ingredients: form.type === 'prepared' ? form.ingredients : [],
-      }),
-    });
-    setSaving(false);
-    setShowForm(false);
-    load();
+    try {
+      const res = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...form,
+          cost_per_unit: parseFloat(form.cost_per_unit) || 0,
+          selling_price: form.selling_price ? parseFloat(form.selling_price) : null,
+          ingredients: form.type === 'prepared' ? form.ingredients : [],
+        }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || 'No se pudo guardar la ficha');
+      setShowForm(false);
+      await load();
+    } catch (err) {
+      setFormError(err instanceof Error ? err.message : 'No se pudo guardar la ficha');
+    } finally {
+      setSaving(false);
+    }
   }
 
   async function deleteCard(id: string) {
     if (!confirm('¿Eliminar ficha?')) return;
-    await fetch(`/api/admin/fichas/${id}`, { method: 'DELETE' });
-    load();
+    setListError('');
+    try {
+      const res = await fetch(`/api/admin/fichas/${id}`, { method: 'DELETE' });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || 'No se pudo eliminar la ficha');
+      }
+      await load();
+    } catch (err) {
+      setListError(err instanceof Error ? err.message : 'No se pudo eliminar la ficha');
+    }
   }
 
   function addIngredient() {
-    setForm(f => ({ ...f, ingredients: [...f.ingredients, { ingredient_name: '', quantity: 100, unit: 'g', unit_cost: 0 }] }));
+    setForm(f => ({ ...f, ingredients: [...f.ingredients, { ingredient_name: '', quantity: 100, unit: 'g', unit_cost: 0, inventory_product_id: null as string | null }] }));
   }
   function removeIngredient(i: number) {
     setForm(f => ({ ...f, ingredients: f.ingredients.filter((_, idx) => idx !== i) }));
   }
-  function updateIng(i: number, key: string, val: string | number) {
+  function updateIng(i: number, key: string, val: string | number | null) {
     setForm(f => {
       const ingredients = [...f.ingredients];
       ingredients[i] = { ...ingredients[i], [key]: val };
+      return { ...f, ingredients };
+    });
+  }
+  function linkInventory(i: number, productId: string) {
+    setForm(f => {
+      const ingredients = [...f.ingredients];
+      if (!productId) {
+        ingredients[i] = { ...ingredients[i], inventory_product_id: null };
+      } else {
+        const prod = invProducts.find(p => p.id === productId);
+        ingredients[i] = {
+          ...ingredients[i],
+          inventory_product_id: productId,
+          ingredient_name: ingredients[i].ingredient_name || prod?.name || '',
+          unit: prod?.unit || ingredients[i].unit,
+        };
+      }
       return { ...f, ingredients };
     });
   }
@@ -132,6 +188,12 @@ export default function FichasPage() {
           </button>
         ))}
       </div>
+
+      {listError && (
+        <div style={{ background: '#fee2e2', border: '2px solid #dc2626', borderRadius: 8, padding: '10px 14px', marginBottom: 16, fontSize: 13, fontWeight: 700, color: '#991b1b' }}>
+          {listError}
+        </div>
+      )}
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(290px,1fr))', gap: 16 }}>
         {filtered.map(c => {
@@ -244,17 +306,40 @@ export default function FichasPage() {
                     <div key={h} style={{ fontSize: 10, fontWeight: 700, color: '#9ca3af', textTransform: 'uppercase' }}>{h}</div>
                   ))}
                 </div>
-                {form.ingredients.map((ing, i) => (
-                  <div key={i} style={{ display: 'grid', gridTemplateColumns: '1fr 80px 80px 110px 32px', gap: 6, marginBottom: 6, alignItems: 'center' }}>
-                    <input placeholder="Ej. Carne molida" value={ing.ingredient_name} onChange={e => updateIng(i, 'ingredient_name', e.target.value)} style={{ ...inputStyle, padding: '7px 10px' }} />
-                    <input type="number" value={ing.quantity} onChange={e => updateIng(i, 'quantity', e.target.value)} style={{ ...inputStyle, padding: '7px 8px' }} />
-                    <select value={ing.unit} onChange={e => updateIng(i, 'unit', e.target.value)} style={{ ...inputStyle, padding: '7px 6px', background: 'white' }}>
-                      {UNITS_ING.map(u => <option key={u} value={u}>{u}</option>)}
-                    </select>
-                    <input type="number" step="0.001" placeholder="$/ud" value={ing.unit_cost} onChange={e => updateIng(i, 'unit_cost', e.target.value)} style={{ ...inputStyle, padding: '7px 8px' }} />
-                    <button onClick={() => removeIngredient(i)} style={{ background: '#fee2e2', border: 'none', borderRadius: 6, cursor: 'pointer', fontSize: 14, padding: '6px', color: '#dc2626' }}>✕</button>
+                {form.ingredients.map((ing, i) => {
+                  const linkedProd = ing.inventory_product_id ? invProducts.find(p => p.id === ing.inventory_product_id) : null;
+                  return (
+                  <div key={i} style={{ marginBottom: 10, paddingBottom: 10, borderBottom: '1px dashed #e5e7eb' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 80px 80px 110px 32px', gap: 6, alignItems: 'center' }}>
+                      <input placeholder="Ej. Carne molida" value={ing.ingredient_name} onChange={e => updateIng(i, 'ingredient_name', e.target.value)} style={{ ...inputStyle, padding: '7px 10px' }} />
+                      <input type="number" value={ing.quantity} onChange={e => updateIng(i, 'quantity', e.target.value)} style={{ ...inputStyle, padding: '7px 8px' }} />
+                      <select value={ing.unit} onChange={e => updateIng(i, 'unit', e.target.value)} disabled={!!linkedProd} style={{ ...inputStyle, padding: '7px 6px', background: linkedProd ? '#f3f4f6' : 'white' }}>
+                        {UNITS_ING.map(u => <option key={u} value={u}>{u}</option>)}
+                      </select>
+                      <input type="number" step="0.001" placeholder="$/ud" value={ing.unit_cost} onChange={e => updateIng(i, 'unit_cost', e.target.value)} style={{ ...inputStyle, padding: '7px 8px' }} />
+                      <button onClick={() => removeIngredient(i)} style={{ background: '#fee2e2', border: 'none', borderRadius: 6, cursor: 'pointer', fontSize: 14, padding: '6px', color: '#dc2626' }}>✕</button>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 6 }}>
+                      <span style={{ fontSize: 11, color: '#6b7280' }}>🔗 Descontar de inventario real:</span>
+                      <select
+                        value={ing.inventory_product_id ?? ''}
+                        onChange={e => linkInventory(i, e.target.value)}
+                        style={{ flex: 1, border: '1px solid #d1d5db', borderRadius: 6, padding: '5px 8px', fontSize: 12, background: 'white' }}
+                      >
+                        <option value="">— No vincular (solo costo) —</option>
+                        {invProducts.map(p => (
+                          <option key={p.id} value={p.id}>{p.name} ({p.unit}, stock: {p.current_stock})</option>
+                        ))}
+                      </select>
+                      {linkedProd && (
+                        <span style={{ fontSize: 11, fontWeight: 700, color: '#16a34a', whiteSpace: 'nowrap' }}>
+                          Stock: {linkedProd.current_stock} {linkedProd.unit}
+                        </span>
+                      )}
+                    </div>
                   </div>
-                ))}
+                  );
+                })}
                 <button onClick={addIngredient} style={{ padding: '6px 12px', border: '2px dashed #d1d5db', borderRadius: 8, background: 'white', fontWeight: 700, fontSize: 12, cursor: 'pointer', color: '#6b7280', marginBottom: 4 }}>+ Ingrediente</button>
                 {form.ingredients.length > 0 && (
                   <div style={{ marginTop: 8, fontWeight: 800, fontSize: 14, color: '#dc2626' }}>
@@ -268,6 +353,12 @@ export default function FichasPage() {
               <label style={labelStyle}>Notas</label>
               <input value={form.notes} onChange={e => setForm(f => ({ ...f, notes: e.target.value }))} style={inputStyle} placeholder="Opcional" />
             </div>
+
+            {formError && (
+              <div style={{ background: '#fee2e2', border: '1px solid #dc2626', borderRadius: 8, padding: '8px 12px', marginBottom: 12, fontSize: 12, fontWeight: 700, color: '#991b1b' }}>
+                {formError}
+              </div>
+            )}
 
             <div style={{ display: 'flex', gap: 10 }}>
               <button onClick={() => setShowForm(false)} style={{ flex: 1, padding: '10px 0', borderRadius: 8, border: '2px solid #d1d5db', background: 'white', fontWeight: 700, cursor: 'pointer' }}>Cancelar</button>

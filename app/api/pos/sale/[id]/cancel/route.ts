@@ -44,12 +44,35 @@ export async function POST(_req: NextRequest, { params }: { params: Promise<{ id
       return NextResponse.json({ error: 'Solo se pueden anular ventas del mismo día' }, { status: 409 });
     }
 
-    const itemsResult = await client.query<{ product_id: string; product_name: string; quantity: string }>(
-      `SELECT product_id, product_name, quantity FROM pos_sale_items WHERE sale_id = $1`,
+    const itemsResult = await client.query<{ product_id: string; product_name: string; quantity: string; product_type: string }>(
+      `SELECT product_id, product_name, quantity, product_type FROM pos_sale_items WHERE sale_id = $1`,
       [id]
     );
 
     for (const item of itemsResult.rows) {
+      if (item.product_type === 'recipe') {
+        // El product_id de una receta apunta a product_cost_cards, no a
+        // inventory_products: hay que devolver el stock a cada ingrediente
+        // real vinculado, en la misma proporción en que se descontó al vender.
+        const ingredientsResult = await client.query<{ inventory_product_id: string; quantity: string }>(
+          `SELECT inventory_product_id, quantity FROM recipe_ingredients WHERE product_id = $1 AND inventory_product_id IS NOT NULL`,
+          [item.product_id]
+        );
+        for (const ing of ingredientsResult.rows) {
+          const restored = Math.round(Number(ing.quantity) * Number(item.quantity) * 1000) / 1000;
+          await client.query(
+            `UPDATE inventory_products SET current_stock = ROUND((current_stock + $1)::numeric, 3) WHERE id = $2`,
+            [restored, ing.inventory_product_id]
+          );
+          await client.query(
+            `INSERT INTO inventory_movements (id, product_id, type, quantity, note, created_by)
+             VALUES ($1, $2, 'entrada', $3, $4, $5)`,
+            [randomUUID(), ing.inventory_product_id, restored, `Anulación de venta #${id.slice(0, 8).toUpperCase()} (receta ${item.product_name})`, session.fullName ?? 'Cajero']
+          );
+        }
+        continue;
+      }
+
       await client.query(
         `UPDATE inventory_products SET current_stock = ROUND((current_stock + $1)::numeric, 3) WHERE id = $2`,
         [item.quantity, item.product_id]

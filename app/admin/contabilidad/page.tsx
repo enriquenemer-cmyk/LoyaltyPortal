@@ -8,10 +8,15 @@ type Summary = {
   income: number; expense: number; profit: number; margin: number;
   by_day: DayRow[]; by_category: CategRow[]; recent: Entry[];
 };
+type CashCut = {
+  id: string; counted_cash: string; system_cash: string; difference: string;
+  bank_movement_id: string | null; closed_by: string | null; closed_at: string;
+};
 type CorteCaja = {
   date: string; income: number; expense: number; net: number;
   pos_sales: number; pos_total: number; claims_today: number;
-  by_payment_method: { payment_method: string; count: string; total: string }[];
+  by_payment_method: { method: string; count: string; total: string }[];
+  cash_cut: CashCut | null;
 };
 type FlujoCaja = {
   daily_income_avg: number; daily_expense_avg: number; daily_net_avg: number;
@@ -36,6 +41,9 @@ function pct(n: number) { return `${n >= 0 ? '+' : ''}${n.toFixed(1)}%`; }
 export default function ContabilidadPage() {
   const [data, setData] = useState<Summary | null>(null);
   const [corte, setCorte] = useState<CorteCaja | null>(null);
+  const [countedCash, setCountedCash] = useState('');
+  const [closingCorte, setClosingCorte] = useState(false);
+  const [corteError, setCorteError] = useState('');
   const [flujo, setFlujo] = useState<FlujoCaja | null>(null);
   const [budget, setBudget] = useState<BudgetItem[]>([]);
   const [period, setPeriod] = useState<'week' | 'month' | 'year'>('month');
@@ -69,6 +77,30 @@ export default function ContabilidadPage() {
     fetch('/api/admin/setup-contabilidad', { method: 'POST' }).catch(() => {});
     load();
   }, [load]);
+
+  async function cerrarCorte() {
+    const counted = parseFloat(countedCash);
+    if (!Number.isFinite(counted) || counted < 0) {
+      setCorteError('Ingresa el efectivo contado.');
+      return;
+    }
+    setClosingCorte(true);
+    setCorteError('');
+    try {
+      const res = await fetch('/api/admin/corte-caja', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ counted_cash: counted }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'No se pudo cerrar el corte de caja');
+      await load();
+    } catch (err) {
+      setCorteError(err instanceof Error ? err.message : 'No se pudo cerrar el corte de caja');
+    } finally {
+      setClosingCorte(false);
+    }
+  }
 
   async function saveEntry() {
     if (!form.amount || parseFloat(form.amount) <= 0) return;
@@ -308,12 +340,12 @@ export default function ContabilidadPage() {
             ))}
           </div>
           {(corte?.by_payment_method ?? []).length > 0 && (
-            <div style={cardStyle}>
+            <div style={{ ...cardStyle, marginBottom: 20 }}>
               <div style={{ fontWeight: 800, fontSize: 13, marginBottom: 12 }}>Ventas POS por forma de pago</div>
               <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
                 {corte!.by_payment_method.map(m => (
-                  <div key={m.payment_method} style={{ background: '#f9fafb', borderRadius: 8, padding: '12px 16px', border: '1px solid #e5e7eb', minWidth: 140 }}>
-                    <div style={{ fontSize: 12, fontWeight: 800, color: '#374151', textTransform: 'capitalize' }}>{m.payment_method}</div>
+                  <div key={m.method} style={{ background: '#f9fafb', borderRadius: 8, padding: '12px 16px', border: '1px solid #e5e7eb', minWidth: 140 }}>
+                    <div style={{ fontSize: 12, fontWeight: 800, color: '#374151', textTransform: 'capitalize' }}>{m.method}</div>
                     <div style={{ fontSize: 20, fontWeight: 900, color: '#F97316' }}>{fmt(parseFloat(m.total))}</div>
                     <div style={{ fontSize: 10, color: '#9ca3af' }}>{m.count} ventas</div>
                   </div>
@@ -321,6 +353,59 @@ export default function ContabilidadPage() {
               </div>
             </div>
           )}
+
+          <div style={cardStyle}>
+            <div style={{ fontWeight: 800, fontSize: 13, marginBottom: 12 }}>🏧 Arqueo de efectivo</div>
+            {corte?.cash_cut ? (
+              <div>
+                <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap', marginBottom: 10 }}>
+                  <div>
+                    <div style={{ fontSize: 10, color: '#6b7280', fontWeight: 700, textTransform: 'uppercase' }}>Sistema esperaba</div>
+                    <div style={{ fontSize: 16, fontWeight: 900 }}>{fmt(parseFloat(corte.cash_cut.system_cash))}</div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: 10, color: '#6b7280', fontWeight: 700, textTransform: 'uppercase' }}>Contado en caja</div>
+                    <div style={{ fontSize: 16, fontWeight: 900 }}>{fmt(parseFloat(corte.cash_cut.counted_cash))}</div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: 10, color: '#6b7280', fontWeight: 700, textTransform: 'uppercase' }}>Diferencia</div>
+                    <div style={{ fontSize: 16, fontWeight: 900, color: Math.abs(parseFloat(corte.cash_cut.difference)) < 0.01 ? '#16a34a' : '#dc2626' }}>
+                      {parseFloat(corte.cash_cut.difference) > 0 ? '+' : ''}{fmt(parseFloat(corte.cash_cut.difference))}
+                    </div>
+                  </div>
+                </div>
+                <p style={{ fontSize: 11, color: '#9ca3af', margin: 0 }}>
+                  Cerrado por {corte.cash_cut.closed_by || '—'} a las {new Date(corte.cash_cut.closed_at).toLocaleTimeString('es-MX')}.{' '}
+                  {corte.cash_cut.bank_movement_id
+                    ? 'Vinculado a un movimiento bancario ✓'
+                    : <a href="/admin/contabilidad/conciliacion" style={{ color: '#F97316', fontWeight: 700 }}>Vincular al depósito bancario →</a>}
+                </p>
+              </div>
+            ) : (
+              <div>
+                <p style={{ fontSize: 12, color: '#6b7280', marginBottom: 10 }}>
+                  Cuenta el efectivo físico en caja y ciérralo contra lo que el sistema registró hoy en ventas por efectivo.
+                </p>
+                <div style={{ display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}>
+                  <input
+                    type="number" min="0" step="any"
+                    value={countedCash}
+                    onChange={(e) => setCountedCash(e.target.value)}
+                    placeholder="Efectivo contado"
+                    style={{ width: 160, border: '2px solid #d1d5db', borderRadius: 8, padding: '8px 12px', fontSize: 13 }}
+                  />
+                  <button
+                    onClick={cerrarCorte}
+                    disabled={closingCorte}
+                    style={{ padding: '9px 18px', border: '2px solid #111', borderRadius: 8, background: '#F97316', color: 'white', fontWeight: 800, fontSize: 13, cursor: 'pointer', boxShadow: '3px 3px 0 #111' }}
+                  >
+                    {closingCorte ? 'Cerrando...' : 'Cerrar corte del día'}
+                  </button>
+                </div>
+                {corteError && <p style={{ color: '#dc2626', fontSize: 12, fontWeight: 700, marginTop: 8 }}>{corteError}</p>}
+              </div>
+            )}
+          </div>
         </div>
       )}
 

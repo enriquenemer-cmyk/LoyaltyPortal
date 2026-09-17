@@ -44,6 +44,7 @@ type InventoryProduct = {
   current_stock: string;
   min_stock_alert: string;
   sale_price: string | null;
+  cost_per_unit: string | null;
   active: boolean;
   created_at: string;
 };
@@ -65,7 +66,7 @@ type InventoryMovement = {
   id: string;
   product_id: string;
   product_name: string;
-  type: 'entrada' | 'salida';
+  type: 'entrada' | 'salida' | 'merma' | 'ajuste';
   quantity: string;
   note: string | null;
   created_by: string | null;
@@ -81,7 +82,31 @@ type TopConsumedItem = {
   percentage: number;
 };
 
-type Tab = 'productos' | 'movimientos' | 'proveedores' | 'resumen';
+type Tab = 'productos' | 'movimientos' | 'proveedores' | 'resumen' | 'merma';
+
+type WasteReason = 'caducado' | 'dañado' | 'derramado' | 'robo_perdida' | 'error_preparacion' | 'otro';
+
+const WASTE_REASON_LABELS: Record<WasteReason, string> = {
+  caducado: 'Caducado',
+  dañado: 'Dañado',
+  derramado: 'Derramado / preparación',
+  robo_perdida: 'Robo o pérdida',
+  error_preparacion: 'Error de preparación',
+  otro: 'Otro',
+};
+
+type WasteItem = {
+  id: string;
+  product_id: string;
+  product_name: string;
+  quantity: string;
+  unit: string;
+  reason: WasteReason;
+  estimated_cost: string | null;
+  notes: string | null;
+  created_by: string | null;
+  created_at: string;
+};
 
 type InventorySummaryRow = {
   id: string;
@@ -144,9 +169,37 @@ function StockBadge({ stock, minAlert }: { stock: number; minAlert: number }) {
 }
 
 function SalePriceEditor({ product, onSaved }: { product: InventoryProduct; onSaved: (p: InventoryProduct) => void }) {
+  return (
+    <PriceFieldEditor
+      product={product}
+      onSaved={onSaved}
+      field="sale_price"
+      title="Precio al que se vende este artículo en el punto de venta"
+      emptyClassName="text-orange-600 border-orange-200 bg-orange-50 hover:bg-orange-100"
+    />
+  );
+}
+
+function CostFieldEditor({ product, onSaved }: { product: InventoryProduct; onSaved: (p: InventoryProduct) => void }) {
+  return (
+    <PriceFieldEditor
+      product={product}
+      onSaved={onSaved}
+      field="cost_per_unit"
+      title="Costo de compra por unidad, usado para calcular el margen en Rentabilidad"
+      emptyClassName="text-slate-400 border-dashed border-slate-300 hover:bg-slate-50"
+    />
+  );
+}
+
+function PriceFieldEditor({
+  product, onSaved, field, title, emptyClassName,
+}: {
+  product: InventoryProduct; onSaved: (p: InventoryProduct) => void; field: 'sale_price' | 'cost_per_unit'; title: string; emptyClassName: string;
+}) {
   const toast = useToast();
   const [editing, setEditing] = useState(false);
-  const [value, setValue] = useState(product.sale_price ?? '');
+  const [value, setValue] = useState(product[field] ?? '');
   const [saving, setSaving] = useState(false);
 
   async function handleSave() {
@@ -155,14 +208,14 @@ function SalePriceEditor({ product, onSaved }: { product: InventoryProduct; onSa
       const res = await fetch(`/api/admin/inventory/products/${product.id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ sale_price: value === '' ? null : Number(value) }),
+        body: JSON.stringify({ [field]: value === '' ? null : Number(value) }),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Error al guardar el precio');
+      if (!res.ok) throw new Error(data.error || 'Error al guardar');
       onSaved(data.product);
       setEditing(false);
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : 'No se pudo guardar el precio.');
+      toast.error(err instanceof Error ? err.message : 'No se pudo guardar.');
     } finally {
       setSaving(false);
     }
@@ -171,13 +224,13 @@ function SalePriceEditor({ product, onSaved }: { product: InventoryProduct; onSa
   if (!editing) {
     return (
       <button
-        onClick={() => { setValue(product.sale_price ?? ''); setEditing(true); }}
+        onClick={() => { setValue(product[field] ?? ''); setEditing(true); }}
         className={`text-xs font-semibold px-2.5 py-1 rounded-lg border transition-colors ${
-          product.sale_price ? 'text-slate-700 border-slate-200 hover:bg-slate-50' : 'text-orange-600 border-orange-200 bg-orange-50 hover:bg-orange-100'
+          product[field] ? 'text-slate-700 border-slate-200 hover:bg-slate-50' : emptyClassName
         }`}
-        title="Precio al que se vende este artículo en el punto de venta"
+        title={title}
       >
-        {fmtPrice(product.sale_price)}
+        {fmtPrice(product[field])}
       </button>
     );
   }
@@ -311,11 +364,25 @@ function ExpiringBanner({ units }: { units: ExpiringUnit[] }) {
   );
 }
 
-function MovementTypeBadge({ type }: { type: 'entrada' | 'salida' }) {
+function MovementTypeBadge({ type }: { type: 'entrada' | 'salida' | 'merma' | 'ajuste' }) {
   if (type === 'entrada') {
     return (
       <span className="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-700 text-xs font-bold px-2.5 py-1 rounded-full border border-emerald-200">
         + Entrada
+      </span>
+    );
+  }
+  if (type === 'merma') {
+    return (
+      <span className="inline-flex items-center gap-1.5 bg-amber-50 text-amber-700 text-xs font-bold px-2.5 py-1 rounded-full border border-amber-200">
+        🗑️ Merma
+      </span>
+    );
+  }
+  if (type === 'ajuste') {
+    return (
+      <span className="inline-flex items-center gap-1.5 bg-blue-50 text-blue-700 text-xs font-bold px-2.5 py-1 rounded-full border border-blue-200">
+        📋 Ajuste
       </span>
     );
   }
@@ -595,6 +662,154 @@ function MovementModal({
             style={{ background: type === 'entrada' ? 'linear-gradient(135deg,#059669,#0d9488)' : 'linear-gradient(135deg,#dc2626,#ea580c)' }}
           >
             {saving ? 'Guardando...' : 'Confirmar'}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function WasteModal({
+  product,
+  products,
+  onClose,
+  onSaved,
+}: {
+  product: InventoryProduct | null;
+  products: InventoryProduct[];
+  onClose: () => void;
+  onSaved: () => void;
+}) {
+  const [productId, setProductId] = useState(product?.id ?? '');
+  const [quantity, setQuantity] = useState('');
+  const [reason, setReason] = useState<WasteReason>('caducado');
+  const [estimatedCost, setEstimatedCost] = useState('');
+  const [notes, setNotes] = useState('');
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState('');
+
+  const selected = product ?? products.find((p) => p.id === productId) ?? null;
+
+  async function handleSubmit() {
+    if (!productId) {
+      setError('Selecciona un producto');
+      return;
+    }
+    const qty = Number(quantity);
+    if (!Number.isFinite(qty) || qty <= 0) {
+      setError('Ingresa una cantidad válida');
+      return;
+    }
+    setSaving(true);
+    setError('');
+    try {
+      const res = await fetch('/api/admin/inventory/merma', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          product_id: productId,
+          quantity: qty,
+          reason,
+          estimated_cost: estimatedCost.trim() ? Number(estimatedCost) : null,
+          notes: notes.trim() || null,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Error al registrar la merma');
+      onSaved();
+      onClose();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Error al registrar la merma');
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4" onClick={onClose}>
+      <div className="bg-white rounded-2xl shadow-xl w-full max-w-sm p-6" onClick={(e) => e.stopPropagation()}>
+        <h2 className="text-lg font-extrabold text-slate-800 mb-1">🗑️ Registrar merma</h2>
+        <p className="text-sm text-slate-400 mb-4">
+          {selected ? `${selected.name} · stock actual: ${fmtQty(selected.current_stock)} ${selected.unit}` : 'Baja de inventario por caducidad, daño u otro motivo'}
+        </p>
+
+        <div className="space-y-3">
+          {!product && (
+            <div>
+              <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">Producto</label>
+              <select
+                value={productId}
+                onChange={(e) => setProductId(e.target.value)}
+                className="w-full px-3 py-2.5 border border-[#E8E3DC] rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#F97316]/20 focus:border-[#F97316]"
+              >
+                <option value="">Selecciona un producto</option>
+                {products.map((p) => (
+                  <option key={p.id} value={p.id}>{p.name} ({fmtQty(p.current_stock)} {p.unit})</option>
+                ))}
+              </select>
+            </div>
+          )}
+          <div>
+            <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">Cantidad {selected ? `(${selected.unit})` : ''}</label>
+            <input
+              type="number"
+              min="0"
+              step="any"
+              value={quantity}
+              onChange={(e) => setQuantity(e.target.value)}
+              autoFocus={!!product}
+              className="w-full px-3 py-2.5 border border-[#E8E3DC] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#F97316]/20 focus:border-[#F97316]"
+            />
+          </div>
+          <div>
+            <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">Motivo</label>
+            <select
+              value={reason}
+              onChange={(e) => setReason(e.target.value as WasteReason)}
+              className="w-full px-3 py-2.5 border border-[#E8E3DC] rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#F97316]/20 focus:border-[#F97316]"
+            >
+              {(Object.keys(WASTE_REASON_LABELS) as WasteReason[]).map((r) => (
+                <option key={r} value={r}>{WASTE_REASON_LABELS[r]}</option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">Costo estimado (opcional)</label>
+            <input
+              type="number"
+              min="0"
+              step="any"
+              value={estimatedCost}
+              onChange={(e) => setEstimatedCost(e.target.value)}
+              placeholder="Valor perdido en pesos"
+              className="w-full px-3 py-2.5 border border-[#E8E3DC] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#F97316]/20 focus:border-[#F97316]"
+            />
+          </div>
+          <div>
+            <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">Nota (opcional)</label>
+            <input
+              type="text"
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              placeholder="Detalles adicionales"
+              className="w-full px-3 py-2.5 border border-[#E8E3DC] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#F97316]/20 focus:border-[#F97316]"
+            />
+          </div>
+        </div>
+
+        {error && <p className="text-red-600 text-xs font-semibold mt-3">{error}</p>}
+
+        <div className="flex items-center justify-end gap-2 mt-6">
+          <button onClick={onClose} className="px-4 py-2.5 rounded-xl text-sm font-bold text-slate-500 hover:bg-slate-100 transition-colors">
+            Cancelar
+          </button>
+          <button
+            onClick={handleSubmit}
+            disabled={saving}
+            className="px-5 py-2.5 rounded-xl text-sm font-bold text-white transition-all disabled:opacity-50"
+            style={{ background: 'linear-gradient(135deg,#dc2626,#ea580c)' }}
+          >
+            {saving ? 'Guardando...' : 'Registrar merma'}
           </button>
         </div>
       </div>
@@ -1161,6 +1376,9 @@ export default function InventarioPage() {
   const [editingCodeId, setEditingCodeId] = useState<string | null>(null);
   const [codeInput, setCodeInput] = useState('');
   const [savingCode, setSavingCode] = useState(false);
+  const [wasteLog, setWasteLog] = useState<WasteItem[]>([]);
+  const [wasteSummary, setWasteSummary] = useState<{ total_cost: number; by_reason: Record<string, { count: number; cost: number }> }>({ total_cost: 0, by_reason: {} });
+  const [wasteModal, setWasteModal] = useState<{ product: InventoryProduct | null } | null>(null);
 
   const fetchProducts = useCallback(async () => {
     try {
@@ -1206,6 +1424,18 @@ export default function InventarioPage() {
     }
   }, []);
 
+  const fetchWaste = useCallback(async () => {
+    try {
+      const res = await fetch('/api/admin/inventory/merma');
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      setWasteLog(data.waste ?? []);
+      setWasteSummary(data.summary ?? { total_cost: 0, by_reason: {} });
+    } catch {
+      // non-critical
+    }
+  }, []);
+
   useEffect(() => {
     async function loadAll() {
       setLoading(true);
@@ -1214,6 +1444,7 @@ export default function InventarioPage() {
         fetchMovements(),
         fetchSuppliers(),
         fetchSummary(),
+        fetchWaste(),
         fetch('/api/restaurants')
           .then((r) => r.json())
           .then((d) => setRestaurants(d.restaurants ?? []))
@@ -1230,7 +1461,7 @@ export default function InventarioPage() {
       setLoading(false);
     }
     loadAll();
-  }, [fetchProducts, fetchMovements, fetchSuppliers, fetchSummary]);
+  }, [fetchProducts, fetchMovements, fetchSuppliers, fetchSummary, fetchWaste]);
 
   async function handleSaveCode(productId: string) {
     setSavingCode(true);
@@ -1264,6 +1495,12 @@ export default function InventarioPage() {
 
   function refreshAfterMovement() {
     fetchProducts();
+    fetchMovements();
+  }
+
+  function refreshAfterWaste() {
+    fetchProducts();
+    fetchWaste();
     fetchMovements();
   }
 
@@ -1326,6 +1563,13 @@ export default function InventarioPage() {
               style={{ background: 'rgba(255,255,255,0.12)', color: 'white', border: '1px solid rgba(255,255,255,0.25)' }}
             >
               Abrir comanda
+            </Link>
+            <Link
+              href="/admin/inventario/conteo"
+              className="flex items-center gap-2 font-bold px-5 py-3 rounded-xl text-sm"
+              style={{ background: 'rgba(255,255,255,0.12)', color: 'white', border: '1px solid rgba(255,255,255,0.25)' }}
+            >
+              📋 Conteo físico
             </Link>
             <button
               onClick={() => setShowNewSupplier(true)}
@@ -1427,6 +1671,16 @@ export default function InventarioPage() {
           >
             Resumen
           </button>
+          <button
+            onClick={() => setTab('merma')}
+            className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-bold border transition-all ${
+              tab === 'merma'
+                ? 'bg-[#F97316] text-white border-[#F97316] shadow-md shadow-orange-200'
+                : 'bg-white text-slate-600 border-slate-200 hover:border-[#F97316] hover:text-[#F97316]'
+            }`}
+          >
+            🗑️ Merma
+          </button>
         </div>
 
         {supplierFilter && tab === 'productos' && (
@@ -1468,6 +1722,7 @@ export default function InventarioPage() {
                       <th className="text-left px-5 py-3.5 font-bold text-slate-500 text-xs uppercase tracking-wider">Proveedor</th>
                       <th className="text-left px-5 py-3.5 font-bold text-slate-500 text-xs uppercase tracking-wider">Unidad</th>
                       <th className="text-left px-5 py-3.5 font-bold text-slate-500 text-xs uppercase tracking-wider">Stock actual</th>
+                      <th className="text-left px-5 py-3.5 font-bold text-slate-500 text-xs uppercase tracking-wider">Costo</th>
                       <th className="text-left px-5 py-3.5 font-bold text-slate-500 text-xs uppercase tracking-wider">Precio de venta</th>
                       <th className="text-left px-5 py-3.5 font-bold text-slate-500 text-xs uppercase tracking-wider">Acciones</th>
                     </tr>
@@ -1480,6 +1735,12 @@ export default function InventarioPage() {
                         <td className="px-5 py-4 text-slate-500">{p.unit}</td>
                         <td className="px-5 py-4">
                           <StockBadge stock={Number(p.current_stock)} minAlert={Number(p.min_stock_alert)} />
+                        </td>
+                        <td className="px-5 py-4">
+                          <CostFieldEditor
+                            product={p}
+                            onSaved={(updated) => setProducts((prev) => prev.map((x) => (x.id === updated.id ? { ...x, ...updated } : x)))}
+                          />
                         </td>
                         <td className="px-5 py-4">
                           <SalePriceEditor
@@ -1513,6 +1774,13 @@ export default function InventarioPage() {
                               className="text-xs font-bold px-3 py-1.5 rounded-lg border border-slate-200 text-slate-600 bg-slate-50 hover:bg-slate-100 transition-colors"
                             >
                               Ver unidades
+                            </button>
+                            <button
+                              onClick={() => setWasteModal({ product: p })}
+                              className="text-xs font-bold px-3 py-1.5 rounded-lg border border-amber-200 text-amber-700 bg-amber-50 hover:bg-amber-100 transition-colors"
+                              title="Registrar merma (caducidad, daño, etc.)"
+                            >
+                              🗑️ Merma
                             </button>
                           </div>
                         </td>
@@ -1642,6 +1910,82 @@ export default function InventarioPage() {
               </div>
             </div>
           )
+        ) : tab === 'merma' ? (
+          <>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-5">
+              <div className="bg-white rounded-2xl border border-[#E8E3DC] border-l-4 p-5" style={{ borderLeftColor: '#dc2626' }}>
+                <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest mb-0.5">Costo total de merma</p>
+                <p className="text-2xl font-extrabold text-red-600">{fmtPrice(wasteSummary.total_cost)}</p>
+              </div>
+              {(Object.keys(WASTE_REASON_LABELS) as WasteReason[])
+                .filter((r) => wasteSummary.by_reason[r])
+                .slice(0, 2)
+                .map((r) => (
+                  <div key={r} className="bg-white rounded-2xl border border-[#E8E3DC] border-l-4 p-5" style={{ borderLeftColor: '#F97316' }}>
+                    <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest mb-0.5">{WASTE_REASON_LABELS[r]}</p>
+                    <p className="text-2xl font-extrabold text-[#F97316]">{wasteSummary.by_reason[r].count}</p>
+                    {wasteSummary.by_reason[r].cost > 0 && (
+                      <p className="text-xs text-stone-400 mt-0.5">{fmtPrice(wasteSummary.by_reason[r].cost)}</p>
+                    )}
+                  </div>
+                ))}
+            </div>
+
+            <div className="flex justify-end mb-4">
+              <button
+                onClick={() => setWasteModal({ product: null })}
+                className="text-xs font-bold px-4 py-2.5 rounded-xl text-white transition-all"
+                style={{ background: 'linear-gradient(135deg,#dc2626,#ea580c)' }}
+              >
+                + Registrar merma
+              </button>
+            </div>
+
+            {wasteLog.length === 0 ? (
+              <div className="bg-white rounded-2xl border border-[#E8E3DC] shadow-sm">
+                <EmptyState
+                  icon="clipboard"
+                  title="Sin mermas registradas"
+                  description="Las bajas de inventario por caducidad, daño u otros motivos aparecerán aquí."
+                />
+              </div>
+            ) : (
+              <div className="bg-white rounded-2xl border border-[#E8E3DC] shadow-sm overflow-hidden">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="bg-[#FAFAF9] border-b border-[#E8E3DC]">
+                        <th className="text-left px-5 py-3.5 font-bold text-slate-500 text-xs uppercase tracking-wider">Producto</th>
+                        <th className="text-left px-5 py-3.5 font-bold text-slate-500 text-xs uppercase tracking-wider">Cantidad</th>
+                        <th className="text-left px-5 py-3.5 font-bold text-slate-500 text-xs uppercase tracking-wider">Motivo</th>
+                        <th className="text-right px-5 py-3.5 font-bold text-slate-500 text-xs uppercase tracking-wider">Costo estimado</th>
+                        <th className="text-left px-5 py-3.5 font-bold text-slate-500 text-xs uppercase tracking-wider">Nota</th>
+                        <th className="text-left px-5 py-3.5 font-bold text-slate-500 text-xs uppercase tracking-wider">Quién</th>
+                        <th className="text-left px-5 py-3.5 font-bold text-slate-500 text-xs uppercase tracking-wider">Cuándo</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-50">
+                      {wasteLog.map((w) => (
+                        <tr key={w.id} className="hover:bg-orange-50/40 transition-colors">
+                          <td className="px-5 py-4 font-medium text-slate-900">{w.product_name}</td>
+                          <td className="px-5 py-4 text-slate-600">{fmtQty(w.quantity)} {w.unit}</td>
+                          <td className="px-5 py-4">
+                            <span className="inline-flex items-center gap-1.5 bg-amber-50 text-amber-700 text-xs font-bold px-2.5 py-1 rounded-full border border-amber-200">
+                              {WASTE_REASON_LABELS[w.reason]}
+                            </span>
+                          </td>
+                          <td className="px-5 py-4 text-right font-semibold text-red-600">{w.estimated_cost ? fmtPrice(w.estimated_cost) : '—'}</td>
+                          <td className="px-5 py-4 text-slate-500">{w.notes || '—'}</td>
+                          <td className="px-5 py-4 text-slate-500">{w.created_by || '—'}</td>
+                          <td className="px-5 py-4 text-slate-500 whitespace-nowrap">{new Date(w.created_at).toLocaleString('es-CO')}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
+          </>
         ) : movements.length === 0 ? (
           <div className="bg-white rounded-2xl border border-[#E8E3DC] shadow-sm">
             <EmptyState
@@ -1721,6 +2065,15 @@ export default function InventarioPage() {
           product={unitsListModal}
           onClose={() => setUnitsListModal(null)}
           onChanged={refreshAfterMovement}
+        />
+      )}
+
+      {wasteModal && (
+        <WasteModal
+          product={wasteModal.product}
+          products={activeProducts}
+          onClose={() => setWasteModal(null)}
+          onSaved={refreshAfterWaste}
         />
       )}
 

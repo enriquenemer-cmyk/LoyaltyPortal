@@ -5,12 +5,12 @@ export default function SuspendidaPage() {
       background: '#FAFAF9', fontFamily: 'sans-serif', padding: 24,
     }}>
       <div style={{
-        maxWidth: 440, width: '100%', background: '#fff',
-        border: '2px solid #111', borderRadius: 16, boxShadow: '6px 6px 0 #111',
+        maxWidth: 440, width: '100%', background: 'var(--apple-bg-2)',
+        border: '0.5px solid var(--apple-sep)', borderRadius: 16, boxShadow: 'var(--apple-shadow-2)',
         padding: 40, textAlign: 'center',
       }}>
         <div style={{ fontSize: 64, marginBottom: 16 }}>🔒</div>
-        <h1 style={{ fontSize: 24, fontWeight: 800, marginBottom: 8, color: '#111' }}>
+        <h1 style={{ fontSize: 24, fontWeight: 800, marginBottom: 8, color: 'var(--apple-label)' }}>
           Cuenta suspendida
         </h1>
         <p style={{ color: '#666', fontSize: 15, marginBottom: 24, lineHeight: 1.6 }}>
@@ -30,7 +30,7 @@ export default function SuspendidaPage() {
         <a href="/admin/login" style={{
           display: 'inline-block', padding: '12px 28px',
           background: '#111', color: '#fff', borderRadius: 10,
-          border: '2px solid #111', fontWeight: 700, fontSize: 14,
+          border: '0.5px solid var(--apple-sep)', fontWeight: 700, fontSize: 14,
           textDecoration: 'none', boxShadow: '3px 3px 0 #F97316',
         }}>
           ← Volver al login

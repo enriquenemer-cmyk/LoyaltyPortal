@@ -39,7 +39,22 @@ export default function OrdenesCompraPage() {
     setSuppliers(s);
   }
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => {
+    load();
+    try {
+      const raw = localStorage.getItem('ordenSugerida');
+      if (raw) {
+        const items = JSON.parse(raw);
+        if (Array.isArray(items) && items.length > 0) {
+          setForm((f) => ({ ...f, items }));
+          setShowForm(true);
+        }
+        localStorage.removeItem('ordenSugerida');
+      }
+    } catch {
+      // si el localStorage está corrupto, simplemente se ignora
+    }
+  }, []);
 
   function addItem() { setForm(f => ({ ...f, items: [...f.items, { product_name: '', quantity: 1, unit: 'pza', unit_cost: 0 }] })); }
   function removeItem(i: number) { setForm(f => ({ ...f, items: f.items.filter((_, idx) => idx !== i) })); }
@@ -82,10 +97,10 @@ export default function OrdenesCompraPage() {
     <div style={{ padding: '24px', maxWidth: 1000, margin: '0 auto' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24, flexWrap: 'wrap', gap: 12 }}>
         <div>
-          <h1 style={{ fontSize: 26, fontWeight: 900, color: '#111', margin: 0 }}>Órdenes de Compra</h1>
+          <h1 style={{ fontSize: 26, fontWeight: 900, color: 'var(--apple-label)', margin: 0 }}>Órdenes de Compra</h1>
           <p style={{ fontSize: 13, color: '#6b7280', margin: '4px 0 0' }}>Genera órdenes a proveedores y confírmalas al recibirlas</p>
         </div>
-        <button onClick={() => setShowForm(true)} style={{ padding: '8px 18px', border: '2px solid #111', borderRadius: 8, background: '#F97316', color: 'white', fontWeight: 800, fontSize: 13, cursor: 'pointer', boxShadow: '3px 3px 0 #111' }}>+ Nueva orden</button>
+        <button onClick={() => setShowForm(true)} style={{ padding: '8px 18px', border: '0.5px solid var(--apple-sep)', borderRadius: 8, background: '#F97316', color: 'white', fontWeight: 800, fontSize: 13, cursor: 'pointer', boxShadow: 'var(--apple-shadow-1)' }}>+ Nueva orden</button>
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
@@ -93,7 +108,7 @@ export default function OrdenesCompraPage() {
           const st = STATUS_STYLE[o.status] ?? STATUS_STYLE.pendiente;
           const supplierName = o.supplier_name_joined ?? o.supplier_name ?? '—';
           return (
-            <div key={o.id} style={{ background: 'white', border: '2px solid #111', borderRadius: 12, padding: 18, boxShadow: '3px 3px 0 #111' }}>
+            <div key={o.id} style={{ background: 'var(--apple-bg-2)', border: '0.5px solid var(--apple-sep)', borderRadius: 12, padding: 18, boxShadow: 'var(--apple-shadow-1)' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 10, marginBottom: 12 }}>
                 <div>
                   <div style={{ fontWeight: 900, fontSize: 15 }}>🏪 {supplierName}</div>
@@ -105,7 +120,7 @@ export default function OrdenesCompraPage() {
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                   <span style={{ background: st.bg, color: st.color, borderRadius: 8, padding: '4px 12px', fontSize: 12, fontWeight: 700 }}>{st.label}</span>
-                  <span style={{ fontSize: 18, fontWeight: 900, color: '#111' }}>{fmt(parseFloat(o.total))}</span>
+                  <span style={{ fontSize: 18, fontWeight: 900, color: 'var(--apple-label)' }}>{fmt(parseFloat(o.total))}</span>
                 </div>
               </div>
 
@@ -131,7 +146,7 @@ export default function OrdenesCompraPage() {
               {o.status === 'pendiente' && (
                 <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
                   <button onClick={() => updateStatus(o.id, 'recibida')} style={{ padding: '7px 16px', border: '2px solid #16a34a', borderRadius: 8, background: '#f0fdf4', color: '#16a34a', fontWeight: 700, fontSize: 12, cursor: 'pointer' }}>✅ Marcar como recibida</button>
-                  <button onClick={() => updateStatus(o.id, 'cancelada')} style={{ padding: '7px 14px', border: '2px solid #e5e7eb', borderRadius: 8, background: 'white', color: '#9ca3af', fontWeight: 700, fontSize: 12, cursor: 'pointer' }}>Cancelar OC</button>
+                  <button onClick={() => updateStatus(o.id, 'cancelada')} style={{ padding: '7px 14px', border: '2px solid #e5e7eb', borderRadius: 8, background: 'var(--apple-bg-2)', color: '#9ca3af', fontWeight: 700, fontSize: 12, cursor: 'pointer' }}>Cancelar OC</button>
                 </div>
               )}
               {o.notes && <div style={{ fontSize: 11, color: '#9ca3af', marginTop: 6 }}>{o.notes}</div>}
@@ -144,7 +159,7 @@ export default function OrdenesCompraPage() {
       {/* Modal nueva OC */}
       {showForm && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 1000, display: 'flex', alignItems: 'flex-start', justifyContent: 'center', padding: 20, overflowY: 'auto' }}>
-          <div style={{ background: 'white', border: '2px solid #111', borderRadius: 14, padding: 28, width: '100%', maxWidth: 620, boxShadow: '6px 6px 0 #111', marginTop: 20, marginBottom: 20 }}>
+          <div style={{ background: 'var(--apple-bg-2)', border: '0.5px solid var(--apple-sep)', borderRadius: 14, padding: 28, width: '100%', maxWidth: 620, boxShadow: 'var(--apple-shadow-2)', marginTop: 20, marginBottom: 20 }}>
             <h2 style={{ fontWeight: 900, fontSize: 18, margin: '0 0 18px' }}>Nueva Orden de Compra</h2>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 14 }}>
               <div>
@@ -152,7 +167,7 @@ export default function OrdenesCompraPage() {
                 <select value={form.supplier_id} onChange={e => {
                   const s = suppliers.find(s => s.id === e.target.value);
                   setForm(f => ({ ...f, supplier_id: e.target.value, supplier_name: s?.name ?? '' }));
-                }} style={{ ...inputStyle, background: 'white' }}>
+                }} style={{ ...inputStyle, background: 'var(--apple-bg-2)' }}>
                   <option value="">— Seleccionar —</option>
                   {suppliers.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
                 </select>
@@ -176,23 +191,23 @@ export default function OrdenesCompraPage() {
               <div key={i} style={{ display: 'grid', gridTemplateColumns: '1fr 80px 80px 110px 36px', gap: 8, marginBottom: 8, alignItems: 'center' }}>
                 <input placeholder="Producto" value={item.product_name} onChange={e => updateItem(i, 'product_name', e.target.value)} style={{ ...inputStyle, padding: '8px 10px' }} />
                 <input type="number" placeholder="Cant." value={item.quantity} onChange={e => updateItem(i, 'quantity', e.target.value)} style={{ ...inputStyle, padding: '8px 8px' }} />
-                <select value={item.unit} onChange={e => updateItem(i, 'unit', e.target.value)} style={{ ...inputStyle, padding: '8px 6px', background: 'white' }}>
+                <select value={item.unit} onChange={e => updateItem(i, 'unit', e.target.value)} style={{ ...inputStyle, padding: '8px 6px', background: 'var(--apple-bg-2)' }}>
                   {UNITS.map(u => <option key={u} value={u}>{u}</option>)}
                 </select>
                 <input type="number" placeholder="$/unit" value={item.unit_cost} onChange={e => updateItem(i, 'unit_cost', e.target.value)} style={{ ...inputStyle, padding: '8px 8px' }} step="0.01" />
                 <button onClick={() => removeItem(i)} style={{ background: '#fee2e2', border: 'none', borderRadius: 6, cursor: 'pointer', fontSize: 16, padding: '6px', color: '#dc2626' }}>✕</button>
               </div>
             ))}
-            <button onClick={addItem} style={{ padding: '7px 14px', border: '2px dashed #d1d5db', borderRadius: 8, background: 'white', fontWeight: 700, fontSize: 12, cursor: 'pointer', color: '#6b7280', marginBottom: 14 }}>+ Producto</button>
+            <button onClick={addItem} style={{ padding: '7px 14px', border: '2px dashed #d1d5db', borderRadius: 8, background: 'var(--apple-bg-2)', fontWeight: 700, fontSize: 12, cursor: 'pointer', color: '#6b7280', marginBottom: 14 }}>+ Producto</button>
 
             <div style={{ background: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: 8, padding: '10px 14px', marginBottom: 16, display: 'flex', justifyContent: 'space-between' }}>
               <span style={{ fontWeight: 700 }}>Total estimado:</span>
-              <span style={{ fontWeight: 900, fontSize: 18, color: '#111' }}>{fmt(total)}</span>
+              <span style={{ fontWeight: 900, fontSize: 18, color: 'var(--apple-label)' }}>{fmt(total)}</span>
             </div>
 
             <div style={{ display: 'flex', gap: 10 }}>
-              <button onClick={() => setShowForm(false)} style={{ flex: 1, padding: '10px 0', borderRadius: 8, border: '2px solid #d1d5db', background: 'white', fontWeight: 700, cursor: 'pointer' }}>Cancelar</button>
-              <button onClick={save} disabled={saving} style={{ flex: 2, padding: '10px 0', borderRadius: 8, border: '2px solid #111', background: '#F97316', color: 'white', fontWeight: 800, cursor: 'pointer', boxShadow: '3px 3px 0 #111' }}>
+              <button onClick={() => setShowForm(false)} style={{ flex: 1, padding: '10px 0', borderRadius: 8, border: '2px solid #d1d5db', background: 'var(--apple-bg-2)', fontWeight: 700, cursor: 'pointer' }}>Cancelar</button>
+              <button onClick={save} disabled={saving} style={{ flex: 2, padding: '10px 0', borderRadius: 8, border: '0.5px solid var(--apple-sep)', background: '#F97316', color: 'white', fontWeight: 800, cursor: 'pointer', boxShadow: 'var(--apple-shadow-1)' }}>
                 {saving ? 'Guardando...' : 'Crear Orden de Compra'}
               </button>
             </div>

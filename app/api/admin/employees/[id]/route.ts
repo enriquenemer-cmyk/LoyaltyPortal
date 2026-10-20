@@ -23,7 +23,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 
   try {
     const body = await request.json();
-    const { full_name, pin, position, restaurant_id, active, hourly_rate, scheduled_hours_per_day, scheduled_start_time } = body ?? {};
+    const { full_name, pin, position, restaurant_id, active, hourly_rate, scheduled_hours_per_day, scheduled_start_time, commission_pct } = body ?? {};
 
     const fields: string[] = [];
     const values: unknown[] = [];
@@ -57,6 +57,13 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
       fields.push(`scheduled_start_time = $${idx++}`);
       values.push(scheduled_start_time || null);
     }
+    if (typeof commission_pct === 'number' || commission_pct === null) {
+      if (typeof commission_pct === 'number' && (commission_pct < 0 || commission_pct > 100)) {
+        return NextResponse.json({ error: 'La comisión debe estar entre 0 y 100.' }, { status: 400 });
+      }
+      fields.push(`commission_pct = $${idx++}`);
+      values.push(commission_pct);
+    }
     if (typeof pin === 'string') {
       if (!/^\d{4,6}$/.test(pin)) {
         return NextResponse.json({ error: 'El PIN debe tener entre 4 y 6 dígitos.' }, { status: 400 });
@@ -74,7 +81,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
     const pool = getPool();
     const { rows } = await pool.query(
       `UPDATE employees SET ${fields.join(', ')} WHERE id = $${idx}
-       RETURNING id, restaurant_id, full_name, position, photo_url, active, total_training_points, hourly_rate, scheduled_hours_per_day, scheduled_start_time, created_at`,
+       RETURNING id, restaurant_id, full_name, position, photo_url, active, total_training_points, hourly_rate, scheduled_hours_per_day, scheduled_start_time, commission_pct, created_at`,
       values
     );
 

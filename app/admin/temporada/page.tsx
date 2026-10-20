@@ -163,8 +163,8 @@ export default function TemporadaPage() {
         <div style={{ maxWidth: 820, margin: '0 auto' }}>
 
           {/* Create season form */}
-          <div style={{ background: 'white', border: '1px solid #E8E3DC', borderRadius: 14, padding: 20, marginBottom: 24 }}>
-            <h2 style={{ fontSize: 15, fontWeight: 700, color: '#1C1917', margin: '0 0 16px' }}>
+          <div style={{ background: 'var(--apple-bg-2)', border: '1px solid #E8E3DC', borderRadius: 14, padding: 20, marginBottom: 24 }}>
+            <h2 style={{ fontSize: 15, fontWeight: 700, color: 'var(--apple-label)', margin: '0 0 16px' }}>
               Nueva temporada
             </h2>
 
@@ -184,7 +184,7 @@ export default function TemporadaPage() {
             </div>
 
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-              <p style={{ fontSize: 13, fontWeight: 700, color: '#1C1917', margin: 0 }}>Niveles del battle pass</p>
+              <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--apple-label)', margin: 0 }}>Niveles del battle pass</p>
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: '60px 110px 1fr 1.5fr 36px', gap: 8, marginBottom: 8 }}>
@@ -259,7 +259,7 @@ export default function TemporadaPage() {
 
           {/* Seasons list */}
           <div>
-            <h2 style={{ fontSize: 15, fontWeight: 700, color: '#1C1917', margin: '0 0 12px' }}>
+            <h2 style={{ fontSize: 15, fontWeight: 700, color: 'var(--apple-label)', margin: '0 0 12px' }}>
               Temporadas
             </h2>
             {loading && <p style={{ fontSize: 13, color: '#78716C' }}>Cargando...</p>}
@@ -292,11 +292,11 @@ function SeasonCard({ season, onToggleActive }: { season: Season; onToggleActive
   const end = new Date(season.end_date).toLocaleDateString('es-CO', { day: 'numeric', month: 'short', year: 'numeric' });
 
   return (
-    <div style={{ background: 'white', border: '1px solid #E8E3DC', borderRadius: 14, padding: 18 }}>
+    <div style={{ background: 'var(--apple-bg-2)', border: '1px solid #E8E3DC', borderRadius: 14, padding: 18 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 12, flexWrap: 'wrap' }}>
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
-            <span style={{ fontSize: 15, fontWeight: 800, color: '#1C1917' }}><TrophyIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> {season.name}</span>
+            <span style={{ fontSize: 15, fontWeight: 800, color: 'var(--apple-label)' }}><TrophyIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> {season.name}</span>
             <span style={{
               fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 20,
               background: season.active ? '#EAF3DE' : '#F5F3F0',
@@ -321,7 +321,7 @@ function SeasonCard({ season, onToggleActive }: { season: Season; onToggleActive
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
             {leaderboard.slice(0, 3).map((l, i) => (
               <div key={l.phone} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ fontSize: 13, color: '#1C1917' }}>
+                <span style={{ fontSize: 13, color: 'var(--apple-label)' }}>
                   {['', '', ''][i] ?? ''} {l.full_name ?? l.phone}
                 </span>
                 <span style={{ fontSize: 13, fontWeight: 700, color: '#F59E0B' }}>{l.season_points} pts</span>
@@ -335,13 +335,13 @@ function SeasonCard({ season, onToggleActive }: { season: Season; onToggleActive
 }
 
 const labelStyle: React.CSSProperties = {
-  display: 'block', fontSize: 12, fontWeight: 600, color: '#1C1917', marginBottom: 6,
+  display: 'block', fontSize: 12, fontWeight: 600, color: 'var(--apple-label)', marginBottom: 6,
   textTransform: 'uppercase', letterSpacing: '0.06em',
 };
 
 const inputStyle: React.CSSProperties = {
   width: '100%', padding: '8px 10px', borderRadius: 8, border: '1px solid #E8E3DC',
-  background: 'white', fontSize: 13, color: '#1C1917', outline: 'none', boxSizing: 'border-box',
+  background: 'var(--apple-bg-2)', fontSize: 13, color: 'var(--apple-label)', outline: 'none', boxSizing: 'border-box',
 };
 
 const primaryBtn: React.CSSProperties = {
@@ -350,6 +350,6 @@ const primaryBtn: React.CSSProperties = {
 };
 
 const ghostBtn: React.CSSProperties = {
-  padding: '10px 20px', borderRadius: 10, background: 'white', color: '#1C1917',
+  padding: '10px 20px', borderRadius: 10, background: 'var(--apple-bg-2)', color: 'var(--apple-label)',
   fontWeight: 600, fontSize: 14, border: '1px solid #E8E3DC', cursor: 'pointer',
 };

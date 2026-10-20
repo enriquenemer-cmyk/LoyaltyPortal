@@ -45,65 +45,48 @@ export default function LoginPage() {
     }
   }
 
+  const field = 'w-full pl-10 pr-4 text-[15px] rounded-[10px] focus:outline-none';
   return (
-    <div
-      className="min-h-screen flex"
-      style={{
-        background: '#FAFAF9',
-        backgroundImage: 'radial-gradient(circle, rgba(0,0,0,0.06) 1px, transparent 1px)',
-        backgroundSize: '20px 20px',
-      }}
-    >
+    <div className="min-h-screen flex" style={{ background: 'var(--apple-bg)' }}>
 
       {/* LEFT COLUMN — brand panel */}
       <div
         className="hidden md:flex md:w-[42%] flex-col justify-between relative overflow-hidden"
-        style={{ background: '#1a6b3c', borderRight: '4px solid #111' }}
+        style={{ background: 'linear-gradient(160deg, #2C2C2E 0%, #000 100%)' }}
       >
-        {/* Halftone texture */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{ backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.14) 1.5px, transparent 1.5px)', backgroundSize: '18px 18px' }}
-        />
-        {/* Bold sticker shapes */}
-        <div className="absolute pointer-events-none" style={{ width: 180, height: 180, borderRadius: 32, background: '#F97316', border: '3px solid #111', top: -50, right: -50, transform: 'rotate(18deg)' }} />
-        <div className="absolute pointer-events-none" style={{ width: 90, height: 90, borderRadius: '50%', background: '#fff', border: '3px solid #111', bottom: 60, left: -40 }} />
+        <div className="absolute pointer-events-none" style={{ width: 520, height: 520, borderRadius: '50%', top: -180, right: -200, background: 'radial-gradient(circle, rgba(249,115,22,0.35) 0%, transparent 65%)' }} />
+        <div className="absolute pointer-events-none" style={{ width: 420, height: 420, borderRadius: '50%', bottom: -160, left: -160, background: 'radial-gradient(circle, rgba(52,199,89,0.22) 0%, transparent 65%)' }} />
 
-        {/* Top logo mark */}
-        <div className="relative z-10 p-8 flex items-center gap-2.5">
-          <span style={{ width: 10, height: 10, borderRadius: 3, background: '#F97316', border: '2px solid #111' }} />
-          <span style={{ color: '#fff', fontSize: 12, fontWeight: 800, letterSpacing: '0.14em', textTransform: 'uppercase' }}>3E</span>
-        </div>
+        <div className="relative z-10 p-8" />
 
-        {/* Centered content */}
         <div className="relative z-10 flex flex-col items-center text-center gap-7 px-10">
-          <div style={{ background: '#fff', borderRadius: 20, padding: 22, border: '2px solid #111', boxShadow: '4px 4px 0 #111' }}>
+          <div style={{ background: '#fff', borderRadius: 28, padding: 20, boxShadow: '0 20px 50px rgba(0,0,0,0.45)' }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/logo-3e-oficial.webp" alt="3E" width={130} height={130} style={{ objectFit: 'contain', display: 'block' }} />
+            <img src="/logo-3e-oficial.webp" alt="3E" width={112} height={112} style={{ objectFit: 'contain', display: 'block' }} />
           </div>
 
           <div>
-            <h2 style={{ color: 'white', fontSize: 32, fontWeight: 900, letterSpacing: '-0.03em', lineHeight: 1.08, marginBottom: 10 }}>
+            <h2 style={{ color: '#fff', fontSize: 34, fontWeight: 700, letterSpacing: '-0.03em', lineHeight: 1.1, marginBottom: 10 }}>
               Plataforma de<br />Premios QR
             </h2>
-            <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: 14, fontWeight: 500, lineHeight: 1.6 }}>
+            <p style={{ color: 'rgba(235,235,245,0.62)', fontSize: 15, lineHeight: 1.5 }}>
               Gestiona, genera y monitorea<br />tus premios en tiempo real.
             </p>
           </div>
 
-          <ul className="text-left space-y-3.5 w-full max-w-[280px]">
-            {BENEFITS.map((b) => (
-              <li key={b.text} className="flex items-center gap-3" style={{ background: 'rgba(255,255,255,0.1)', border: '2px solid rgba(17,17,17,0.4)', borderRadius: 10, padding: '8px 12px' }}>
-                <span style={{ width: 26, height: 26, borderRadius: 7, background: '#F97316', border: '2px solid #111', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                  <svg width="14" height="14" fill="none" stroke="#111" viewBox="0 0 24 24">{b.svg}</svg>
+          <ul className="text-left w-full max-w-[300px] overflow-hidden" style={{ background: 'rgba(255,255,255,0.08)', borderRadius: 14, WebkitBackdropFilter: 'blur(20px)', backdropFilter: 'blur(20px)' }}>
+            {BENEFITS.map((b, i) => (
+              <li key={b.text} className="flex items-center gap-3" style={{ padding: '11px 14px', borderTop: i ? '0.5px solid rgba(255,255,255,0.12)' : 'none' }}>
+                <span style={{ width: 28, height: 28, borderRadius: 7, background: '#F97316', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <svg width="15" height="15" fill="none" stroke="#fff" viewBox="0 0 24 24">{b.svg}</svg>
                 </span>
-                <span style={{ color: '#fff', fontSize: 13, fontWeight: 700 }}>{b.text}</span>
+                <span style={{ color: '#fff', fontSize: 14, fontWeight: 500 }}>{b.text}</span>
               </li>
             ))}
           </ul>
         </div>
 
-        <p className="relative z-10 text-center pb-8" style={{ color: 'rgba(255,255,255,0.6)', fontSize: 11, fontWeight: 600 }}>
+        <p className="relative z-10 text-center pb-8" style={{ color: 'rgba(235,235,245,0.38)', fontSize: 11 }}>
           © {new Date().getFullYear()} 3E · Todos los derechos reservados
         </p>
       </div>
@@ -111,118 +94,82 @@ export default function LoginPage() {
       {/* RIGHT COLUMN — form */}
       <div className="flex-1 flex flex-col items-center justify-center py-12 px-6 md:px-16">
 
-        {/* Mobile logo */}
-        <div className="md:hidden flex flex-col items-center mb-8 gap-3">
-          <div style={{ background: '#fff', borderRadius: 16, padding: 14, border: '2px solid #111', boxShadow: '3px 3px 0 #111' }}>
+        <div className="md:hidden flex flex-col items-center mb-8">
+          <div style={{ background: '#fff', borderRadius: 22, padding: 14, boxShadow: 'var(--apple-shadow-2)' }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/logo-3e-oficial.webp" alt="3E" width={56} height={56} style={{ objectFit: 'contain', display: 'block' }} />
           </div>
-          <span style={{ color: '#111', fontSize: 13, fontWeight: 800 }}>3E</span>
         </div>
 
-        <div className="w-full max-w-sm" style={{ background: '#fff', border: '2px solid #111', borderRadius: 20, boxShadow: '6px 6px 0 #111', padding: '2.25rem' }}>
-          {/* Heading */}
+        <div className="w-full max-w-sm" style={{ background: 'var(--apple-bg-2)', borderRadius: 22, boxShadow: 'var(--apple-shadow-2)', padding: '2.25rem' }}>
           <div className="mb-7">
-            <h1 style={{ fontSize: 26, fontWeight: 900, color: '#111', letterSpacing: '-0.03em', lineHeight: 1.15, marginBottom: 8 }}>
-              Bienvenido de vuelta
+            <h1 style={{ fontSize: 28, fontWeight: 700, color: 'var(--apple-label)', letterSpacing: '-0.03em', lineHeight: 1.15, marginBottom: 6 }}>
+              Bienvenido
             </h1>
-            <p style={{ color: '#6b7280', fontSize: 14, fontWeight: 500 }}>
-              Ingresa tus credenciales para acceder al panel.
+            <p style={{ color: 'var(--apple-label-2)', fontSize: 15 }}>
+              Inicia sesión para acceder al panel.
             </p>
           </div>
 
-          {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-5">
-
-            {/* Username */}
-            <div>
-              <label style={{ display: 'block', fontSize: 13, fontWeight: 800, color: '#111', marginBottom: 6 }}>Usuario</label>
-              <div className="relative">
-                <svg className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: '#111', opacity: 0.5 }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                </svg>
-                <input
-                  type="text"
-                  value={form.username}
-                  onChange={(e) => setForm((p) => ({ ...p, username: e.target.value }))}
-                  required
-                  placeholder="Nombre de usuario"
-                  className="w-full pl-10 pr-4 py-2.5 text-sm rounded-[10px] transition-all focus:outline-none"
-                  style={{ border: '2px solid #111', color: '#111', boxShadow: '3px 3px 0 rgba(0,0,0,0.12)', fontWeight: 600 }}
-                  onFocus={e => { e.currentTarget.style.borderColor = '#F97316'; e.currentTarget.style.boxShadow = '3px 3px 0 rgba(249,115,22,0.4)'; }}
-                  onBlur={e => { e.currentTarget.style.borderColor = '#111'; e.currentTarget.style.boxShadow = '3px 3px 0 rgba(0,0,0,0.12)'; }}
-                />
-              </div>
-            </div>
-
-            {/* Password */}
-            <div>
-              <div className="flex items-center justify-between mb-1.5">
-                <label style={{ fontSize: 13, fontWeight: 800, color: '#111' }}>Contraseña</label>
-                <Link href="/admin/forgot-password" style={{ fontSize: 12, color: '#F97316', fontWeight: 700, textDecoration: 'none' }}>
-                  ¿Olvidaste tu contraseña?
-                </Link>
-              </div>
-              <div className="relative">
-                <svg className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: '#111', opacity: 0.5 }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                </svg>
-                <input
-                  type="password"
-                  value={form.password}
-                  onChange={(e) => setForm((p) => ({ ...p, password: e.target.value }))}
-                  required
-                  placeholder="••••••••"
-                  className="w-full pl-10 pr-4 py-2.5 text-sm rounded-[10px] transition-all focus:outline-none"
-                  style={{ border: '2px solid #111', color: '#111', boxShadow: '3px 3px 0 rgba(0,0,0,0.12)', fontWeight: 600 }}
-                  onFocus={e => { e.currentTarget.style.borderColor = '#F97316'; e.currentTarget.style.boxShadow = '3px 3px 0 rgba(249,115,22,0.4)'; }}
-                  onBlur={e => { e.currentTarget.style.borderColor = '#111'; e.currentTarget.style.boxShadow = '3px 3px 0 rgba(0,0,0,0.12)'; }}
-                />
-              </div>
-            </div>
-
-            {/* Remember me */}
-            <div className="flex items-center gap-2.5">
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="relative">
+              <svg className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: 'var(--apple-label-2)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
               <input
-                type="checkbox"
-                id="rememberMe"
-                checked={rememberMe}
-                onChange={(e) => setRememberMe(e.target.checked)}
-                className="w-[18px] h-[18px] cursor-pointer"
-                style={{ accentColor: '#F97316', border: '2px solid #111', borderRadius: 4, boxShadow: '2px 2px 0 #111' }}
+                type="text"
+                aria-label="Usuario"
+                autoComplete="username"
+                value={form.username}
+                onChange={(e) => setForm((p) => ({ ...p, username: e.target.value }))}
+                required
+                placeholder="Usuario"
+                className={field}
+                style={{ height: 46 }}
               />
-              <label htmlFor="rememberMe" style={{ fontSize: 13, color: '#374151', fontWeight: 600, cursor: 'pointer' }}>
-                Mantener sesión iniciada
-              </label>
             </div>
 
-            {/* Error */}
+            <div className="relative">
+              <svg className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: 'var(--apple-label-2)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              </svg>
+              <input
+                type="password"
+                aria-label="Contraseña"
+                autoComplete="current-password"
+                value={form.password}
+                onChange={(e) => setForm((p) => ({ ...p, password: e.target.value }))}
+                required
+                placeholder="Contraseña"
+                className={field}
+                style={{ height: 46 }}
+              />
+            </div>
+
+            <div className="flex items-center justify-between pt-1">
+              <label className="flex items-center gap-2.5 cursor-pointer" style={{ fontSize: 14, color: 'var(--apple-label)' }}>
+                <input type="checkbox" role="switch" checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} style={{ transform: 'scale(0.78)', transformOrigin: 'left center', marginRight: -12 }} />
+                Recordarme
+              </label>
+              <Link href="/admin/forgot-password" style={{ fontSize: 14, color: '#F97316', textDecoration: 'none' }}>
+                ¿Olvidaste tu contraseña?
+              </Link>
+            </div>
+
             {error && (
-              <div className="flex items-center gap-2.5 px-4 py-3 rounded-[10px]" style={{ background: '#fef2f2', border: '2px solid #111', boxShadow: '3px 3px 0 rgba(220,38,38,0.3)' }}>
-                <svg style={{ width: 16, height: 16, color: '#dc2626', flexShrink: 0 }} fill="currentColor" viewBox="0 0 20 20">
+              <div className="flex items-center gap-2.5 px-4 py-3" style={{ background: 'rgba(255,59,48,0.1)', borderRadius: 12 }}>
+                <svg style={{ width: 16, height: 16, color: '#FF3B30', flexShrink: 0 }} fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
                 </svg>
-                <span style={{ fontSize: 13, color: '#dc2626', fontWeight: 700 }}>{error}</span>
+                <span style={{ fontSize: 14, color: '#FF3B30', fontWeight: 500 }}>{error}</span>
               </div>
             )}
 
-            {/* Submit */}
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3 rounded-[12px] text-white text-sm transition-all"
-              style={{
-                background: loading ? '#6b9e7e' : '#F97316',
-                border: '2.5px solid #111',
-                boxShadow: loading ? 'none' : '4px 4px 0 #111',
-                fontWeight: 800,
-                cursor: loading ? 'not-allowed' : 'pointer',
-                marginTop: 4,
-              }}
-              onMouseEnter={e => { if (!loading) { (e.currentTarget as HTMLButtonElement).style.transform = 'translate(-2px, -2px)'; (e.currentTarget as HTMLButtonElement).style.boxShadow = '6px 6px 0 #111'; } }}
-              onMouseLeave={e => { if (!loading) { (e.currentTarget as HTMLButtonElement).style.transform = 'translate(0, 0)'; (e.currentTarget as HTMLButtonElement).style.boxShadow = '4px 4px 0 #111'; } }}
-              onMouseDown={e => { if (!loading) { (e.currentTarget as HTMLButtonElement).style.transform = 'translate(2px, 2px)'; (e.currentTarget as HTMLButtonElement).style.boxShadow = '1px 1px 0 #111'; } }}
-              onMouseUp={e => { if (!loading) { (e.currentTarget as HTMLButtonElement).style.transform = 'translate(-2px, -2px)'; (e.currentTarget as HTMLButtonElement).style.boxShadow = '6px 6px 0 #111'; } }}
+              className="w-full text-white"
+              style={{ height: 48, borderRadius: 12, background: '#F97316', fontSize: 16, fontWeight: 600, marginTop: 8, boxShadow: 'none', border: 0 }}
             >
               {loading ? (
                 <span className="flex items-center justify-center gap-2">
@@ -230,7 +177,7 @@ export default function LoginPage() {
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
                   </svg>
-                  Iniciando sesión...
+                  Iniciando sesión…
                 </span>
               ) : (
                 'Iniciar sesión'
@@ -238,12 +185,9 @@ export default function LoginPage() {
             </button>
           </form>
 
-          {/* Divider */}
-          <div className="mt-7 pt-5" style={{ borderTop: '2px dashed rgba(17,17,17,0.15)' }}>
-            <p style={{ fontSize: 11, color: '#9ca3af', textAlign: 'center', fontWeight: 600 }}>
-              © {new Date().getFullYear()} 3E · Acceso restringido al personal autorizado
-            </p>
-          </div>
+          <p className="mt-7 text-center" style={{ fontSize: 12, color: 'var(--apple-label-3)' }}>
+            © {new Date().getFullYear()} 3E · Acceso restringido al personal autorizado
+          </p>
         </div>
       </div>
     </div>

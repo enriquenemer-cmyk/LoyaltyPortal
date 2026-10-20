@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
+import { exportToExcel } from '@/lib/exportExcel';
 
 type Item = {
   product_id: string; product_type: 'inventory' | 'recipe'; product_name: string;
@@ -50,31 +51,52 @@ export default function RentabilidadPage() {
 
   useEffect(() => { load(rangeDays); }, [rangeDays]);
 
-  const cardStyle = { background: 'white', border: '2px solid #111', borderRadius: 12, padding: 18, boxShadow: '4px 4px 0 #111' } as const;
+  function exportar() {
+    exportToExcel(`rentabilidad-${new Date().toISOString().slice(0, 10)}`, 'Rentabilidad', items.map((it) => ({
+      Platillo: it.product_name,
+      Tipo: it.product_type === 'recipe' ? 'Receta' : 'Simple',
+      Vendidos: it.quantity_sold,
+      Ingresos: it.revenue,
+      Costo: it.cost ?? '',
+      Margen: it.margin ?? '',
+      'Margen %': it.margin_pct ?? '',
+    })));
+  }
+
+  const cardStyle = { background: 'var(--apple-bg-2)', border: '0.5px solid var(--apple-sep)', borderRadius: 12, padding: 18, boxShadow: 'var(--apple-shadow-2)' } as const;
 
   return (
     <div style={{ padding: '24px', maxWidth: 1100, margin: '0 auto' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24, flexWrap: 'wrap', gap: 12 }}>
         <div>
-          <h1 style={{ fontSize: 26, fontWeight: 900, color: '#111', margin: 0 }}>📈 Rentabilidad por Platillo</h1>
+          <h1 style={{ fontSize: 26, fontWeight: 900, color: 'var(--apple-label)', margin: 0 }}>📈 Rentabilidad por Platillo</h1>
           <p style={{ fontSize: 13, color: '#6b7280', margin: '4px 0 0' }}>
             Margen real de lo vendido en el Punto de Venta, comparado contra el costo vigente.
           </p>
         </div>
-        <div style={{ display: 'flex', gap: 4, background: '#f3f4f6', borderRadius: 10, padding: 4 }}>
-          {RANGES.map((r) => (
-            <button
-              key={r.days}
-              onClick={() => setRangeDays(r.days)}
-              style={{
-                padding: '7px 16px', borderRadius: 8, border: 'none', cursor: 'pointer', fontWeight: 700, fontSize: 13,
-                background: rangeDays === r.days ? 'white' : 'transparent', color: '#111',
-                boxShadow: rangeDays === r.days ? '0 1px 4px rgba(0,0,0,.1)' : 'none',
-              }}
-            >
-              {r.label}
-            </button>
-          ))}
+        <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+          <div style={{ display: 'flex', gap: 4, background: '#f3f4f6', borderRadius: 10, padding: 4 }}>
+            {RANGES.map((r) => (
+              <button
+                key={r.days}
+                onClick={() => setRangeDays(r.days)}
+                style={{
+                  padding: '7px 16px', borderRadius: 8, border: 'none', cursor: 'pointer', fontWeight: 700, fontSize: 13,
+                  background: rangeDays === r.days ? 'white' : 'transparent', color: 'var(--apple-label)',
+                  boxShadow: rangeDays === r.days ? '0 1px 4px rgba(0,0,0,.1)' : 'none',
+                }}
+              >
+                {r.label}
+              </button>
+            ))}
+          </div>
+          <button
+            onClick={exportar}
+            disabled={items.length === 0}
+            style={{ padding: '8px 16px', border: '0.5px solid var(--apple-sep)', borderRadius: 8, background: 'var(--apple-bg-2)', fontWeight: 800, fontSize: 12, cursor: 'pointer', boxShadow: 'var(--apple-shadow-1)' }}
+          >
+            ⬇ Excel
+          </button>
         </div>
       </div>
 
@@ -120,7 +142,7 @@ export default function RentabilidadPage() {
               <div style={{ overflowX: 'auto' }}>
                 <table style={{ width: '100%', fontSize: 13, borderCollapse: 'collapse' }}>
                   <thead>
-                    <tr style={{ background: '#f9fafb', borderBottom: '2px solid #111' }}>
+                    <tr style={{ background: '#f9fafb', borderBottom: '0.5px solid var(--apple-sep)' }}>
                       <th style={{ textAlign: 'left', padding: '10px 16px', fontSize: 11, textTransform: 'uppercase', color: '#6b7280' }}>Platillo</th>
                       <th style={{ textAlign: 'right', padding: '10px 16px', fontSize: 11, textTransform: 'uppercase', color: '#6b7280' }}>Vendidos</th>
                       <th style={{ textAlign: 'right', padding: '10px 16px', fontSize: 11, textTransform: 'uppercase', color: '#6b7280' }}>Ingresos</th>

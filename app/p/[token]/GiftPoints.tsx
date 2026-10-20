@@ -96,8 +96,8 @@ export default function GiftPoints({ token, initialBalance }: { token: string; i
     .slice(0, 5);
 
   return (
-    <div style={{ background: '#fff', borderRadius: 16, border: '1px solid #E8E3DC', padding: 16, marginBottom: 16 }}>
-      <p style={{ fontSize: 12, fontWeight: 700, color: '#1C1917', margin: '0 0 12px' }}><GiftIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Regalar puntos</p>
+    <div style={{ background: 'var(--apple-bg-2)', borderRadius: 16, border: '1px solid #E8E3DC', padding: 16, marginBottom: 16 }}>
+      <p style={{ fontSize: 12, fontWeight: 700, color: 'var(--apple-label)', margin: '0 0 12px' }}><GiftIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Regalar puntos</p>
 
       {success ? (
         <div className="gift-success" style={{ position: 'relative', textAlign: 'center', padding: '16px 8px', overflow: 'hidden' }}>
@@ -107,7 +107,7 @@ export default function GiftPoints({ token, initialBalance }: { token: string; i
             ))}
           </div>
           <div style={{ fontSize: 32, marginBottom: 6, position: 'relative', zIndex: 1 }}><SparklesIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
-          <p style={{ fontSize: 13, fontWeight: 700, color: '#1C1917', margin: '0 0 4px', position: 'relative', zIndex: 1 }}>
+          <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--apple-label)', margin: '0 0 4px', position: 'relative', zIndex: 1 }}>
             ¡Listo! Le regalaste {success.points} puntos a {success.phone}
           </p>
           <button
@@ -213,7 +213,7 @@ export default function GiftPoints({ token, initialBalance }: { token: string; i
           <div style={{ display: 'flex', gap: 8 }}>
             <button
               onClick={() => { setOpen(false); setError(null); }}
-              style={{ flex: 1, padding: '10px 16px', borderRadius: 12, border: '1px solid #E8E3DC', background: '#fff', color: '#78716C', fontSize: 13, fontWeight: 700, cursor: 'pointer' }}
+              style={{ flex: 1, padding: '10px 16px', borderRadius: 12, border: '1px solid #E8E3DC', background: 'var(--apple-bg-2)', color: '#78716C', fontSize: 13, fontWeight: 700, cursor: 'pointer' }}
             >
               Cancelar
             </button>
@@ -245,7 +245,7 @@ export default function GiftPoints({ token, initialBalance }: { token: string; i
             {recentHistory.map((t) => (
               <div key={`${t.direction}-${t.id}`} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8 }}>
                 <div style={{ minWidth: 0 }}>
-                  <p style={{ fontSize: 12, fontWeight: 600, color: '#1C1917', margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  <p style={{ fontSize: 12, fontWeight: 600, color: 'var(--apple-label)', margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                     {t.direction === 'sent' ? '↑' : '↓'} {t.direction === 'sent' ? 'Enviado a' : 'Recibido de'} {t.other_name}
                   </p>
                   <p style={{ fontSize: 10, color: '#78716C', margin: 0 }}>

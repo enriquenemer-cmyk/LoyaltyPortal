@@ -91,12 +91,12 @@ export default function ProveedoresPage() {
     <div style={{ padding: '24px', maxWidth: 1100, margin: '0 auto' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24, flexWrap: 'wrap', gap: 12 }}>
         <div>
-          <h1 style={{ fontSize: 26, fontWeight: 900, color: '#111', margin: 0 }}>Proveedores y Compras</h1>
+          <h1 style={{ fontSize: 26, fontWeight: 900, color: 'var(--apple-label)', margin: 0 }}>Proveedores y Compras</h1>
           <p style={{ fontSize: 13, color: '#6b7280', margin: '4px 0 0' }}>Registra proveedores y entradas de mercancía</p>
         </div>
         <div style={{ display: 'flex', gap: 10 }}>
-          <button onClick={() => setShowSupForm(true)} style={{ padding: '8px 16px', border: '2px solid #111', borderRadius: 8, background: 'white', fontWeight: 700, fontSize: 13, cursor: 'pointer', boxShadow: '3px 3px 0 #111' }}>+ Proveedor</button>
-          <button onClick={() => setShowPurchForm(true)} style={{ padding: '8px 18px', border: '2px solid #111', borderRadius: 8, background: '#F97316', color: 'white', fontWeight: 800, fontSize: 13, cursor: 'pointer', boxShadow: '3px 3px 0 #111' }}>+ Compra</button>
+          <button onClick={() => setShowSupForm(true)} style={{ padding: '8px 16px', border: '0.5px solid var(--apple-sep)', borderRadius: 8, background: 'var(--apple-bg-2)', fontWeight: 700, fontSize: 13, cursor: 'pointer', boxShadow: 'var(--apple-shadow-1)' }}>+ Proveedor</button>
+          <button onClick={() => setShowPurchForm(true)} style={{ padding: '8px 18px', border: '0.5px solid var(--apple-sep)', borderRadius: 8, background: '#F97316', color: 'white', fontWeight: 800, fontSize: 13, cursor: 'pointer', boxShadow: 'var(--apple-shadow-1)' }}>+ Compra</button>
         </div>
       </div>
 
@@ -104,7 +104,7 @@ export default function ProveedoresPage() {
         {(['suppliers', 'purchases'] as const).map(t => (
           <button key={t} onClick={() => setTab(t)} style={{
             padding: '8px 20px', borderRadius: 8, border: 'none', cursor: 'pointer', fontWeight: 700, fontSize: 13,
-            background: tab === t ? 'white' : 'transparent', color: '#111',
+            background: tab === t ? 'white' : 'transparent', color: 'var(--apple-label)',
             boxShadow: tab === t ? '0 1px 4px rgba(0,0,0,.1)' : 'none',
           }}>
             {t === 'suppliers' ? `Proveedores (${suppliers.length})` : `Compras (${purchases.length})`}
@@ -115,9 +115,9 @@ export default function ProveedoresPage() {
       {tab === 'suppliers' && (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(280px,1fr))', gap: 16 }}>
           {suppliers.map(s => (
-            <div key={s.id} style={{ background: 'white', border: '2px solid #111', borderRadius: 12, padding: 18, boxShadow: '4px 4px 0 #111' }}>
+            <div key={s.id} style={{ background: 'var(--apple-bg-2)', border: '0.5px solid var(--apple-sep)', borderRadius: 12, padding: 18, boxShadow: 'var(--apple-shadow-2)' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                <div style={{ fontSize: 16, fontWeight: 900, color: '#111' }}>🏪 {s.name}</div>
+                <div style={{ fontSize: 16, fontWeight: 900, color: 'var(--apple-label)' }}>🏪 {s.name}</div>
                 <button onClick={() => deleteSupplier(s.id)} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 16, color: '#9ca3af' }}>✕</button>
               </div>
               {s.contact_name && <div style={{ fontSize: 12, color: '#374151', marginTop: 4 }}>👤 {s.contact_name}</div>}
@@ -125,7 +125,7 @@ export default function ProveedoresPage() {
               {s.contact_email && <div style={{ fontSize: 12, color: '#374151' }}>📧 {s.contact_email}</div>}
               {s.notes && <div style={{ fontSize: 11, color: '#9ca3af', marginTop: 6, fontStyle: 'italic' }}>{s.notes}</div>}
               <div style={{ marginTop: 12, paddingTop: 10, borderTop: '1px solid #f3f4f6', display: 'flex', gap: 16 }}>
-                <div><div style={{ fontSize: 18, fontWeight: 900, color: '#111' }}>{s.purchase_count}</div><div style={{ fontSize: 10, color: '#9ca3af', fontWeight: 700 }}>COMPRAS</div></div>
+                <div><div style={{ fontSize: 18, fontWeight: 900, color: 'var(--apple-label)' }}>{s.purchase_count}</div><div style={{ fontSize: 10, color: '#9ca3af', fontWeight: 700 }}>COMPRAS</div></div>
                 <div><div style={{ fontSize: 18, fontWeight: 900, color: '#dc2626' }}>{fmt(parseFloat(s.total_spent))}</div><div style={{ fontSize: 10, color: '#9ca3af', fontWeight: 700 }}>TOTAL GASTADO</div></div>
               </div>
             </div>
@@ -137,10 +137,10 @@ export default function ProveedoresPage() {
       {tab === 'purchases' && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
           {purchases.map(p => (
-            <div key={p.id} style={{ background: 'white', border: '2px solid #111', borderRadius: 12, padding: 18, boxShadow: '3px 3px 0 #111' }}>
+            <div key={p.id} style={{ background: 'var(--apple-bg-2)', border: '0.5px solid var(--apple-sep)', borderRadius: 12, padding: 18, boxShadow: 'var(--apple-shadow-1)' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 8 }}>
                 <div>
-                  <div style={{ fontWeight: 900, fontSize: 15, color: '#111' }}>🏪 {p.supplier_name ?? '—'}</div>
+                  <div style={{ fontWeight: 900, fontSize: 15, color: 'var(--apple-label)' }}>🏪 {p.supplier_name ?? '—'}</div>
                   <div style={{ fontSize: 12, color: '#6b7280', marginTop: 2 }}>{p.date}{p.invoice_number ? ` · Factura ${p.invoice_number}` : ''}</div>
                 </div>
                 <div style={{ fontSize: 20, fontWeight: 900, color: '#dc2626' }}>{fmt(parseFloat(p.total))}</div>
@@ -175,7 +175,7 @@ export default function ProveedoresPage() {
       {/* Modal: nuevo proveedor */}
       {showSupForm && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20 }}>
-          <div style={{ background: 'white', border: '2px solid #111', borderRadius: 14, padding: 28, width: '100%', maxWidth: 420, boxShadow: '6px 6px 0 #111' }}>
+          <div style={{ background: 'var(--apple-bg-2)', border: '0.5px solid var(--apple-sep)', borderRadius: 14, padding: 28, width: '100%', maxWidth: 420, boxShadow: 'var(--apple-shadow-2)' }}>
             <h2 style={{ fontWeight: 900, fontSize: 18, margin: '0 0 18px' }}>Nuevo proveedor</h2>
             {[
               { label: 'Nombre *', key: 'name' },
@@ -190,8 +190,8 @@ export default function ProveedoresPage() {
               </div>
             ))}
             <div style={{ display: 'flex', gap: 10, marginTop: 4 }}>
-              <button onClick={() => setShowSupForm(false)} style={{ flex: 1, padding: '10px 0', borderRadius: 8, border: '2px solid #d1d5db', background: 'white', fontWeight: 700, cursor: 'pointer' }}>Cancelar</button>
-              <button onClick={saveSupplier} disabled={saving} style={{ flex: 2, padding: '10px 0', borderRadius: 8, border: '2px solid #111', background: '#F97316', color: 'white', fontWeight: 800, cursor: 'pointer', boxShadow: '3px 3px 0 #111' }}>
+              <button onClick={() => setShowSupForm(false)} style={{ flex: 1, padding: '10px 0', borderRadius: 8, border: '2px solid #d1d5db', background: 'var(--apple-bg-2)', fontWeight: 700, cursor: 'pointer' }}>Cancelar</button>
+              <button onClick={saveSupplier} disabled={saving} style={{ flex: 2, padding: '10px 0', borderRadius: 8, border: '0.5px solid var(--apple-sep)', background: '#F97316', color: 'white', fontWeight: 800, cursor: 'pointer', boxShadow: 'var(--apple-shadow-1)' }}>
                 {saving ? 'Guardando...' : 'Guardar'}
               </button>
             </div>
@@ -202,7 +202,7 @@ export default function ProveedoresPage() {
       {/* Modal: nueva compra */}
       {showPurchForm && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20, overflowY: 'auto' }}>
-          <div style={{ background: 'white', border: '2px solid #111', borderRadius: 14, padding: 28, width: '100%', maxWidth: 620, boxShadow: '6px 6px 0 #111', margin: 'auto' }}>
+          <div style={{ background: 'var(--apple-bg-2)', border: '0.5px solid var(--apple-sep)', borderRadius: 14, padding: 28, width: '100%', maxWidth: 620, boxShadow: 'var(--apple-shadow-2)', margin: 'auto' }}>
             <h2 style={{ fontWeight: 900, fontSize: 18, margin: '0 0 18px' }}>Registrar compra</h2>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 14 }}>
               <div>
@@ -210,7 +210,7 @@ export default function ProveedoresPage() {
                 <select value={purchForm.supplier_id} onChange={e => {
                   const s = suppliers.find(s => s.id === e.target.value);
                   setPurchForm(f => ({ ...f, supplier_id: e.target.value, supplier_name: s?.name ?? '' }));
-                }} style={{ ...inputStyle, background: 'white' }}>
+                }} style={{ ...inputStyle, background: 'var(--apple-bg-2)' }}>
                   <option value="">— Seleccionar —</option>
                   {suppliers.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
                 </select>
@@ -229,19 +229,19 @@ export default function ProveedoresPage() {
               </div>
             </div>
 
-            <div style={{ fontWeight: 800, fontSize: 13, color: '#111', marginBottom: 10 }}>Productos comprados</div>
+            <div style={{ fontWeight: 800, fontSize: 13, color: 'var(--apple-label)', marginBottom: 10 }}>Productos comprados</div>
             {purchForm.items.map((item, i) => (
               <div key={i} style={{ display: 'grid', gridTemplateColumns: '1fr 80px 80px 110px 36px', gap: 8, marginBottom: 8, alignItems: 'center' }}>
                 <input placeholder="Producto" value={item.product_name} onChange={e => updateItem(i, 'product_name', e.target.value)} style={{ ...inputStyle, padding: '8px 10px' }} />
                 <input type="number" placeholder="Cant." value={item.quantity} onChange={e => updateItem(i, 'quantity', e.target.value)} style={{ ...inputStyle, padding: '8px 8px' }} />
-                <select value={item.unit} onChange={e => updateItem(i, 'unit', e.target.value)} style={{ ...inputStyle, padding: '8px 6px', background: 'white' }}>
+                <select value={item.unit} onChange={e => updateItem(i, 'unit', e.target.value)} style={{ ...inputStyle, padding: '8px 6px', background: 'var(--apple-bg-2)' }}>
                   {UNITS.map(u => <option key={u} value={u}>{u}</option>)}
                 </select>
                 <input type="number" placeholder="$/unit" value={item.unit_cost} onChange={e => updateItem(i, 'unit_cost', e.target.value)} style={{ ...inputStyle, padding: '8px 8px' }} step="0.01" />
                 <button onClick={() => removeItem(i)} style={{ background: '#fee2e2', border: 'none', borderRadius: 6, cursor: 'pointer', fontSize: 16, padding: '6px', color: '#dc2626' }}>✕</button>
               </div>
             ))}
-            <button onClick={addItem} style={{ padding: '7px 14px', border: '2px dashed #d1d5db', borderRadius: 8, background: 'white', fontWeight: 700, fontSize: 12, cursor: 'pointer', color: '#6b7280', marginBottom: 16 }}>+ Agregar producto</button>
+            <button onClick={addItem} style={{ padding: '7px 14px', border: '2px dashed #d1d5db', borderRadius: 8, background: 'var(--apple-bg-2)', fontWeight: 700, fontSize: 12, cursor: 'pointer', color: '#6b7280', marginBottom: 16 }}>+ Agregar producto</button>
 
             <div style={{ background: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: 8, padding: '12px 16px', marginBottom: 16, display: 'flex', justifyContent: 'space-between' }}>
               <span style={{ fontWeight: 700, fontSize: 14 }}>Total de compra:</span>
@@ -254,8 +254,8 @@ export default function ProveedoresPage() {
             </div>
 
             <div style={{ display: 'flex', gap: 10 }}>
-              <button onClick={() => setShowPurchForm(false)} style={{ flex: 1, padding: '10px 0', borderRadius: 8, border: '2px solid #d1d5db', background: 'white', fontWeight: 700, cursor: 'pointer' }}>Cancelar</button>
-              <button onClick={savePurchase} disabled={saving} style={{ flex: 2, padding: '10px 0', borderRadius: 8, border: '2px solid #111', background: '#F97316', color: 'white', fontWeight: 800, cursor: 'pointer', boxShadow: '3px 3px 0 #111' }}>
+              <button onClick={() => setShowPurchForm(false)} style={{ flex: 1, padding: '10px 0', borderRadius: 8, border: '2px solid #d1d5db', background: 'var(--apple-bg-2)', fontWeight: 700, cursor: 'pointer' }}>Cancelar</button>
+              <button onClick={savePurchase} disabled={saving} style={{ flex: 2, padding: '10px 0', borderRadius: 8, border: '0.5px solid var(--apple-sep)', background: '#F97316', color: 'white', fontWeight: 800, cursor: 'pointer', boxShadow: 'var(--apple-shadow-1)' }}>
                 {saving ? 'Guardando...' : 'Guardar compra'}
               </button>
             </div>

@@ -1,11 +1,13 @@
 'use client';
 import { useEffect, useState } from 'react';
+import { exportToExcel } from '@/lib/exportExcel';
 
 type Item = {
   employee_id: string; full_name: string; position: string | null;
-  hourly_rate: number | null; days_worked: number; hours_worked: number; gross_pay: number | null;
+  hourly_rate: number | null; days_worked: number; hours_worked: number; hourly_pay: number | null;
+  commission_pct: number | null; sales_total: number; commission: number | null; gross_pay: number | null;
 };
-type Totals = { hours: number; gross_pay: number };
+type Totals = { hours: number; sales_total: number; commission: number; gross_pay: number };
 
 function fmt(n: number) {
   return n.toLocaleString('es-MX', { style: 'currency', currency: 'MXN', minimumFractionDigits: 2 });
@@ -17,7 +19,7 @@ const RANGES = [
   { label: 'Mes', days: 30 },
 ];
 
-const cardStyle = { background: 'white', border: '2px solid #111', borderRadius: 12, padding: 18, boxShadow: '4px 4px 0 #111' } as const;
+const cardStyle = { background: 'var(--apple-bg-2)', border: '0.5px solid var(--apple-sep)', borderRadius: 12, padding: 18, boxShadow: 'var(--apple-shadow-2)' } as const;
 
 export default function NominaPage() {
   const [items, setItems] = useState<Item[]>([]);
@@ -46,34 +48,58 @@ export default function NominaPage() {
 
   useEffect(() => { load(rangeDays); }, [rangeDays]);
 
+  function exportar() {
+    exportToExcel(`nomina-${new Date().toISOString().slice(0, 10)}`, 'Nómina', items.map((it) => ({
+      Empleado: it.full_name,
+      Puesto: it.position ?? '',
+      'Días trabajados': it.days_worked,
+      Horas: it.hours_worked,
+      'Tarifa/hora': it.hourly_rate ?? '',
+      'Pago por horas': it.hourly_pay ?? '',
+      'Comisión %': it.commission_pct ?? '',
+      'Ventas del periodo': it.sales_total,
+      Comisión: it.commission ?? '',
+      'Total estimado': it.gross_pay ?? '',
+    })));
+  }
+
   return (
-    <div style={{ padding: '24px', maxWidth: 1000, margin: '0 auto' }}>
+    <div style={{ padding: '24px', maxWidth: 1100, margin: '0 auto' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8, flexWrap: 'wrap', gap: 12 }}>
         <div>
-          <h1 style={{ fontSize: 26, fontWeight: 900, color: '#111', margin: 0 }}>🧾 Nómina (estimado)</h1>
+          <h1 style={{ fontSize: 26, fontWeight: 900, color: 'var(--apple-label)', margin: 0 }}>🧾 Nómina (estimado)</h1>
           <p style={{ fontSize: 13, color: '#6b7280', margin: '4px 0 0' }}>
-            Horas reales fichadas × tarifa por hora de cada empleado.
+            Horas reales fichadas × tarifa por hora, más comisión por venta si aplica.
           </p>
         </div>
-        <div style={{ display: 'flex', gap: 4, background: '#f3f4f6', borderRadius: 10, padding: 4 }}>
-          {RANGES.map((r) => (
-            <button
-              key={r.days}
-              onClick={() => setRangeDays(r.days)}
-              style={{
-                padding: '7px 16px', borderRadius: 8, border: 'none', cursor: 'pointer', fontWeight: 700, fontSize: 13,
-                background: rangeDays === r.days ? 'white' : 'transparent', color: '#111',
-                boxShadow: rangeDays === r.days ? '0 1px 4px rgba(0,0,0,.1)' : 'none',
-              }}
-            >
-              {r.label}
-            </button>
-          ))}
+        <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+          <div style={{ display: 'flex', gap: 4, background: '#f3f4f6', borderRadius: 10, padding: 4 }}>
+            {RANGES.map((r) => (
+              <button
+                key={r.days}
+                onClick={() => setRangeDays(r.days)}
+                style={{
+                  padding: '7px 16px', borderRadius: 8, border: 'none', cursor: 'pointer', fontWeight: 700, fontSize: 13,
+                  background: rangeDays === r.days ? 'white' : 'transparent', color: 'var(--apple-label)',
+                  boxShadow: rangeDays === r.days ? '0 1px 4px rgba(0,0,0,.1)' : 'none',
+                }}
+              >
+                {r.label}
+              </button>
+            ))}
+          </div>
+          <button
+            onClick={exportar}
+            disabled={items.length === 0}
+            style={{ padding: '8px 16px', border: '0.5px solid var(--apple-sep)', borderRadius: 8, background: 'var(--apple-bg-2)', fontWeight: 800, fontSize: 12, cursor: 'pointer', boxShadow: 'var(--apple-shadow-1)' }}
+          >
+            ⬇ Excel
+          </button>
         </div>
       </div>
 
       <div style={{ background: '#fffbeb', border: '1px solid #fde68a', borderRadius: 8, padding: '10px 14px', marginBottom: 20, fontSize: 12, color: '#92400e' }}>
-        ⚠️ Este cálculo es solo un estimado interno de referencia (horas × tarifa). No incluye retenciones, prestaciones ni ninguna obligación fiscal o legal — para eso necesitas un sistema de nómina certificado en tu país.
+        ⚠️ Este cálculo es solo un estimado interno de referencia (horas × tarifa + comisión). No incluye retenciones, prestaciones ni ninguna obligación fiscal o legal — para eso necesitas un sistema de nómina certificado en tu país.
       </div>
 
       {error && (
@@ -93,6 +119,10 @@ export default function NominaPage() {
                 <div style={{ fontSize: 20, fontWeight: 900 }}>{totals.hours.toFixed(1)} h</div>
               </div>
               <div style={cardStyle}>
+                <div style={{ fontSize: 10, color: '#6b7280', fontWeight: 700, textTransform: 'uppercase' }}>Comisiones</div>
+                <div style={{ fontSize: 20, fontWeight: 900, color: '#7c3aed' }}>{fmt(totals.commission)}</div>
+              </div>
+              <div style={cardStyle}>
                 <div style={{ fontSize: 10, color: '#6b7280', fontWeight: 700, textTransform: 'uppercase' }}>Nómina estimada</div>
                 <div style={{ fontSize: 20, fontWeight: 900, color: '#F97316' }}>{fmt(totals.gross_pay)}</div>
               </div>
@@ -106,12 +136,14 @@ export default function NominaPage() {
               <div style={{ overflowX: 'auto' }}>
                 <table style={{ width: '100%', fontSize: 13, borderCollapse: 'collapse' }}>
                   <thead>
-                    <tr style={{ background: '#f9fafb', borderBottom: '2px solid #111' }}>
+                    <tr style={{ background: '#f9fafb', borderBottom: '0.5px solid var(--apple-sep)' }}>
                       <th style={{ textAlign: 'left', padding: '10px 16px', fontSize: 11, textTransform: 'uppercase', color: '#6b7280' }}>Empleado</th>
-                      <th style={{ textAlign: 'right', padding: '10px 16px', fontSize: 11, textTransform: 'uppercase', color: '#6b7280' }}>Días trabajados</th>
+                      <th style={{ textAlign: 'right', padding: '10px 16px', fontSize: 11, textTransform: 'uppercase', color: '#6b7280' }}>Días</th>
                       <th style={{ textAlign: 'right', padding: '10px 16px', fontSize: 11, textTransform: 'uppercase', color: '#6b7280' }}>Horas</th>
-                      <th style={{ textAlign: 'right', padding: '10px 16px', fontSize: 11, textTransform: 'uppercase', color: '#6b7280' }}>Tarifa/hora</th>
-                      <th style={{ textAlign: 'right', padding: '10px 16px', fontSize: 11, textTransform: 'uppercase', color: '#6b7280' }}>Estimado a pagar</th>
+                      <th style={{ textAlign: 'right', padding: '10px 16px', fontSize: 11, textTransform: 'uppercase', color: '#6b7280' }}>Pago por horas</th>
+                      <th style={{ textAlign: 'right', padding: '10px 16px', fontSize: 11, textTransform: 'uppercase', color: '#6b7280' }}>Ventas</th>
+                      <th style={{ textAlign: 'right', padding: '10px 16px', fontSize: 11, textTransform: 'uppercase', color: '#6b7280' }}>Comisión</th>
+                      <th style={{ textAlign: 'right', padding: '10px 16px', fontSize: 11, textTransform: 'uppercase', color: '#6b7280' }}>Total</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -123,8 +155,12 @@ export default function NominaPage() {
                         </td>
                         <td style={{ padding: '10px 16px', textAlign: 'right' }}>{it.days_worked}</td>
                         <td style={{ padding: '10px 16px', textAlign: 'right' }}>{it.hours_worked.toFixed(1)} h</td>
-                        <td style={{ padding: '10px 16px', textAlign: 'right', color: it.hourly_rate !== null ? '#374151' : '#9ca3af' }}>
-                          {it.hourly_rate !== null ? fmt(it.hourly_rate) : 'Sin tarifa'}
+                        <td style={{ padding: '10px 16px', textAlign: 'right', color: it.hourly_pay !== null ? '#374151' : '#9ca3af' }}>
+                          {it.hourly_pay !== null ? fmt(it.hourly_pay) : 'Sin tarifa'}
+                        </td>
+                        <td style={{ padding: '10px 16px', textAlign: 'right', color: '#6b7280' }}>{fmt(it.sales_total)}</td>
+                        <td style={{ padding: '10px 16px', textAlign: 'right', color: it.commission !== null ? '#7c3aed' : '#9ca3af' }}>
+                          {it.commission !== null ? `${fmt(it.commission)} (${it.commission_pct}%)` : 'Sin comisión'}
                         </td>
                         <td style={{ padding: '10px 16px', textAlign: 'right', fontWeight: 900, color: it.gross_pay !== null ? '#16a34a' : '#9ca3af' }}>
                           {it.gross_pay !== null ? fmt(it.gross_pay) : '—'}
@@ -135,7 +171,7 @@ export default function NominaPage() {
                 </table>
               </div>
               <p style={{ padding: '10px 16px', fontSize: 11, color: '#9ca3af', margin: 0, borderTop: '1px solid #f3f4f6' }}>
-                &ldquo;Sin tarifa&rdquo; = el empleado no tiene tarifa por hora configurada. Agrégala en Fichajes → editar empleado.
+                Configura tarifa por hora y comisión desde Fichajes → editar empleado.
               </p>
             </div>
           )}

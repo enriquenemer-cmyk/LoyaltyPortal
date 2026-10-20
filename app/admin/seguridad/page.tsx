@@ -126,7 +126,7 @@ export default function SeguridadPage() {
             onClick={handleExport}
             disabled={exporting}
             className="flex items-center gap-2 font-bold px-5 py-3 rounded-xl text-sm disabled:opacity-60"
-            style={{ background: 'white', color: '#111111', boxShadow: '0 4px 16px rgba(0,0,0,0.15)' }}
+            style={{ background: 'var(--apple-bg-2)', color: 'var(--apple-label)', boxShadow: '0 4px 16px rgba(0,0,0,0.15)' }}
           >
             {exporting ? (
               <svg className="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">

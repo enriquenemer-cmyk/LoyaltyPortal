@@ -45,7 +45,7 @@ export default async function VerificarPage({ params }: Props) {
   const verificationCode = id.replace(/-/g, '').slice(-8).toUpperCase();
 
   return (
-    <div style={{ minHeight: '100vh', background: '#ffffff', fontFamily: 'system-ui,-apple-system,sans-serif' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--apple-bg-2)', fontFamily: 'system-ui,-apple-system,sans-serif' }}>
 
       {/* Header banner */}
       <div style={{ background: 'linear-gradient(155deg,#F97316 0%,#EA580C 45%,#7C2D12 100%)', padding: '40px 24px 80px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
@@ -80,14 +80,14 @@ export default async function VerificarPage({ params }: Props) {
         </div>
 
         {/* Info card */}
-        <div style={{ background: 'white', borderRadius: 24, boxShadow: '0 2px 24px rgba(0,0,0,0.07), 0 0 0 1px rgba(0,0,0,0.05)', overflow: 'hidden', marginBottom: 14 }}>
+        <div style={{ background: 'var(--apple-bg-2)', borderRadius: 24, boxShadow: '0 2px 24px rgba(0,0,0,0.07), 0 0 0 1px rgba(0,0,0,0.05)', overflow: 'hidden', marginBottom: 14 }}>
 
           {/* Why */}
           <div style={{ padding: '20px 22px', borderBottom: '1px solid #F3F4F6', display: 'flex', gap: 14 }}>
             <div style={{ width: 44, height: 44, borderRadius: 12, background: 'linear-gradient(135deg,#fef3c7,#FFEDD5)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, flexShrink: 0 }}><TrophyIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
             <div>
               <p style={{ color: '#F97316', fontSize: 10, fontWeight: 800, letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 4, margin: '0 0 4px' }}>Por qué lo ganó</p>
-              <p style={{ color: '#111', fontSize: 14, fontWeight: 600, lineHeight: 1.55, margin: 0 }}>{prize.reason}</p>
+              <p style={{ color: 'var(--apple-label)', fontSize: 14, fontWeight: 600, lineHeight: 1.55, margin: 0 }}>{prize.reason}</p>
             </div>
           </div>
 
@@ -118,7 +118,7 @@ export default async function VerificarPage({ params }: Props) {
         {/* Verification code */}
         <div style={{ background: '#FAFAF9', border: '1.5px solid #E8E3DC', borderRadius: 16, padding: '18px 22px', textAlign: 'center', marginBottom: 14 }}>
           <p style={{ color: '#78716c', fontSize: 10, fontWeight: 800, letterSpacing: '0.18em', textTransform: 'uppercase', margin: '0 0 8px' }}>Código de verificación</p>
-          <p style={{ color: '#1C1917', fontSize: 22, fontWeight: 900, letterSpacing: '0.22em', fontFamily: 'monospace', margin: 0 }}>{verificationCode}</p>
+          <p style={{ color: 'var(--apple-label)', fontSize: 22, fontWeight: 900, letterSpacing: '0.22em', fontFamily: 'monospace', margin: 0 }}>{verificationCode}</p>
         </div>
 
         {/* Disclaimer */}

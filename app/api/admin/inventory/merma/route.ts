@@ -45,7 +45,25 @@ export async function GET(req: NextRequest) {
     bucket.cost += r.estimated_cost ? Number(r.estimated_cost) : 0;
   }
 
-  return NextResponse.json({ waste: rows, summary: { total_cost: totalCost, by_reason: byReason } });
+  // Tendencia de las últimas 8 semanas (independiente del filtro from/to) para
+  // graficar si la merma está subiendo o bajando con el tiempo.
+  const { rows: weekRows } = await pool.query(
+    `SELECT date_trunc('week', created_at) AS week_start,
+            COALESCE(SUM(estimated_cost), 0)::text AS cost,
+            COUNT(*)::int AS count
+     FROM inventory_waste
+     WHERE restaurant_id IS NOT DISTINCT FROM $1 AND created_at > NOW() - INTERVAL '8 weeks'
+     GROUP BY week_start
+     ORDER BY week_start ASC`,
+    [session.restaurantId ?? null]
+  );
+  const byWeek = weekRows.map((w) => ({
+    week_start: w.week_start,
+    cost: Number(w.cost),
+    count: w.count,
+  }));
+
+  return NextResponse.json({ waste: rows, summary: { total_cost: totalCost, by_reason: byReason, by_week: byWeek } });
 }
 
 export async function POST(req: NextRequest) {

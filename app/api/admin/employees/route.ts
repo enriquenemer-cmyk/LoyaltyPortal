@@ -22,7 +22,7 @@ export async function GET() {
   const pool = getPool();
   const { rows } = await pool.query(
     `SELECT id, restaurant_id, full_name, position, photo_url, active, total_training_points,
-            hourly_rate, scheduled_hours_per_day, scheduled_start_time, created_at
+            hourly_rate, scheduled_hours_per_day, scheduled_start_time, commission_pct, created_at
      FROM employees
      ORDER BY active DESC, full_name ASC`
   );
@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const { full_name, pin, position, restaurant_id, hourly_rate, scheduled_hours_per_day, scheduled_start_time } = await request.json();
+    const { full_name, pin, position, restaurant_id, hourly_rate, scheduled_hours_per_day, scheduled_start_time, commission_pct } = await request.json();
 
     if (!full_name || typeof full_name !== 'string' || !full_name.trim()) {
       return NextResponse.json({ error: 'El nombre es requerido.' }, { status: 400 });
@@ -51,14 +51,15 @@ export async function POST(request: NextRequest) {
     const pool = getPool();
 
     const { rows } = await pool.query(
-      `INSERT INTO employees (id, restaurant_id, full_name, pin_hash, position, active, hourly_rate, scheduled_hours_per_day, scheduled_start_time)
-       VALUES ($1, $2, $3, $4, $5, TRUE, $6, $7, $8)
-       RETURNING id, restaurant_id, full_name, position, photo_url, active, total_training_points, hourly_rate, scheduled_hours_per_day, scheduled_start_time, created_at`,
+      `INSERT INTO employees (id, restaurant_id, full_name, pin_hash, position, active, hourly_rate, scheduled_hours_per_day, scheduled_start_time, commission_pct)
+       VALUES ($1, $2, $3, $4, $5, TRUE, $6, $7, $8, $9)
+       RETURNING id, restaurant_id, full_name, position, photo_url, active, total_training_points, hourly_rate, scheduled_hours_per_day, scheduled_start_time, commission_pct, created_at`,
       [
         id, restaurant_id || null, full_name.trim(), pinHash, position || null,
         typeof hourly_rate === 'number' ? hourly_rate : null,
         typeof scheduled_hours_per_day === 'number' ? scheduled_hours_per_day : null,
         typeof scheduled_start_time === 'string' && scheduled_start_time ? scheduled_start_time : null,
+        typeof commission_pct === 'number' ? commission_pct : null,
       ]
     );
 

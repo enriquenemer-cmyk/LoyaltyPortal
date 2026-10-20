@@ -384,7 +384,7 @@ ${pagesHtml}
             <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Generación Masiva</h1>
             <p className="text-orange-200/70 mt-1.5 text-sm">Crea hasta 100 QRs únicos del mismo premio en un solo clic.</p>
           </div>
-          <Link href="/admin/generate" className="flex items-center gap-2 font-bold px-5 py-3 rounded-xl text-sm" style={{ background: 'white', color: '#C2410C', boxShadow: '0 4px 16px rgba(0,0,0,0.15)' }}>
+          <Link href="/admin/generate" className="flex items-center gap-2 font-bold px-5 py-3 rounded-xl text-sm" style={{ background: 'var(--apple-bg-2)', color: '#C2410C', boxShadow: '0 4px 16px rgba(0,0,0,0.15)' }}>
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>

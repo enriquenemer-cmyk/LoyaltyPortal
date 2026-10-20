@@ -20,6 +20,10 @@ export default function PedidosPage() {
   const [sending, setSending] = useState(false);
   const [error, setError] = useState('');
   const [confirmed, setConfirmed] = useState<{ id: string; total_amount: number } | null>(null);
+  const [showRepeat, setShowRepeat] = useState(false);
+  const [repeatPhone, setRepeatPhone] = useState('');
+  const [repeatLoading, setRepeatLoading] = useState(false);
+  const [repeatMsg, setRepeatMsg] = useState('');
 
   useEffect(() => {
     fetch('/api/pedidos/productos')
@@ -42,6 +46,41 @@ export default function PedidosPage() {
       return;
     }
     setCart((prev) => prev.map((l) => (l.product.id === id ? { ...l, quantity: qty } : l)));
+  }
+
+  async function repetirPedido() {
+    if (!repeatPhone.trim()) return;
+    setRepeatLoading(true);
+    setRepeatMsg('');
+    try {
+      const res = await fetch(`/api/pedidos/ultimo?phone=${encodeURIComponent(repeatPhone.trim())}`);
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'No se pudo buscar tu último pedido');
+      if (!data.order) {
+        setRepeatMsg('No encontramos un pedido anterior con ese teléfono.');
+        return;
+      }
+      const lines: CartLine[] = [];
+      let skipped = 0;
+      for (const it of data.order.items as { product_id: string; quantity: string }[]) {
+        const product = products.find((p) => p.id === it.product_id);
+        if (product) lines.push({ product, quantity: Number(it.quantity) });
+        else skipped++;
+      }
+      if (lines.length === 0) {
+        setRepeatMsg('Ninguno de esos artículos está disponible ahora mismo.');
+        return;
+      }
+      setCart(lines);
+      setPhone(repeatPhone.trim());
+      setShowRepeat(false);
+      setRepeatMsg('');
+      if (skipped > 0) setError(`Se agregaron tus artículos de siempre. ${skipped} ya no está(n) disponible(s).`);
+    } catch (err) {
+      setRepeatMsg(err instanceof Error ? err.message : 'No se pudo buscar tu último pedido');
+    } finally {
+      setRepeatLoading(false);
+    }
   }
 
   const total = cart.reduce((sum, l) => sum + Number(l.product.sale_price) * l.quantity, 0);
@@ -110,7 +149,33 @@ export default function PedidosPage() {
       <div className="bg-white border-b border-[#E8E3DC] px-4 py-4 text-center">
         <h1 className="text-xl font-black text-[#1C1917]">🛍️ Pide en línea</h1>
         <p className="text-xs text-stone-400 mt-0.5">Para llevar o a domicilio</p>
+        <button onClick={() => setShowRepeat(true)} className="text-xs font-bold text-emerald-600 mt-2 hover:underline">
+          🔁 ¿Ya pediste antes? Repetir mi pedido
+        </button>
       </div>
+
+      {showRepeat && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4" onClick={() => setShowRepeat(false)}>
+          <div className="bg-white rounded-2xl p-6 max-w-xs w-full" onClick={(e) => e.stopPropagation()}>
+            <h3 className="text-sm font-black text-[#1C1917] mb-1">Repetir mi pedido</h3>
+            <p className="text-xs text-stone-400 mb-3">Escribe el teléfono con el que pediste la vez pasada.</p>
+            <input
+              value={repeatPhone}
+              onChange={(e) => setRepeatPhone(e.target.value)}
+              placeholder="Tu teléfono"
+              className="w-full text-sm px-3 py-2 rounded-xl border border-[#E8E3DC] mb-2"
+            />
+            {repeatMsg && <p className="text-xs text-red-500 font-semibold mb-2">{repeatMsg}</p>}
+            <button
+              onClick={repetirPedido}
+              disabled={repeatLoading || !repeatPhone.trim()}
+              className="w-full py-2.5 rounded-xl text-sm font-black text-white bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50"
+            >
+              {repeatLoading ? 'Buscando…' : 'Buscar mi pedido'}
+            </button>
+          </div>
+        </div>
+      )}
 
       <div className="max-w-2xl mx-auto p-4 pb-40">
         {loading ? (

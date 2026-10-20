@@ -1730,18 +1730,18 @@ export default function AdminDashboard() {
                 <Link
                   href="/admin/generate"
                   className="px-5 py-2.5 rounded-xl text-sm font-black transition-all"
-                  style={{ background: '#F97316', color: 'white', border: '2px solid #111', boxShadow: '3px 3px 0 #111' }}
-                  onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.transform = 'translate(-1px,-1px)'; (e.currentTarget as HTMLAnchorElement).style.boxShadow = '5px 5px 0 #111'; }}
-                  onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.transform = ''; (e.currentTarget as HTMLAnchorElement).style.boxShadow = '3px 3px 0 #111'; }}
+                  style={{ background: '#F97316', color: 'white', border: '0.5px solid var(--apple-sep)', boxShadow: 'var(--apple-shadow-1)' }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.transform = 'translate(-1px,-1px)'; (e.currentTarget as HTMLAnchorElement).style.boxShadow = 'var(--apple-shadow-2)'; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.transform = ''; (e.currentTarget as HTMLAnchorElement).style.boxShadow = 'var(--apple-shadow-1)'; }}
                 >
                   + Generar Premio
                 </Link>
                 <Link
                   href="/admin/registros"
                   className="px-5 py-2.5 rounded-xl text-sm font-black transition-all"
-                  style={{ background: 'white', color: '#111111', border: '2px solid #111', boxShadow: '3px 3px 0 #111' }}
-                  onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.transform = 'translate(-1px,-1px)'; (e.currentTarget as HTMLAnchorElement).style.boxShadow = '5px 5px 0 #111'; }}
-                  onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.transform = ''; (e.currentTarget as HTMLAnchorElement).style.boxShadow = '3px 3px 0 #111'; }}
+                  style={{ background: 'var(--apple-bg-2)', color: 'var(--apple-label)', border: '0.5px solid var(--apple-sep)', boxShadow: 'var(--apple-shadow-1)' }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.transform = 'translate(-1px,-1px)'; (e.currentTarget as HTMLAnchorElement).style.boxShadow = 'var(--apple-shadow-2)'; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.transform = ''; (e.currentTarget as HTMLAnchorElement).style.boxShadow = 'var(--apple-shadow-1)'; }}
                 >
                   Ver Registros
                 </Link>

@@ -548,6 +548,20 @@ async function ensureSchemaInternal(): Promise<void> {
       ALTER TABLE employees ADD COLUMN IF NOT EXISTS hourly_rate NUMERIC;
       ALTER TABLE employees ADD COLUMN IF NOT EXISTS scheduled_hours_per_day NUMERIC;
       ALTER TABLE employees ADD COLUMN IF NOT EXISTS scheduled_start_time TIME;
+      ALTER TABLE employees ADD COLUMN IF NOT EXISTS commission_pct NUMERIC;
+
+      -- ── Turnos planeados: para comparar contra los fichajes reales ──────
+      CREATE TABLE IF NOT EXISTS shift_schedules (
+        id TEXT PRIMARY KEY,
+        employee_id TEXT NOT NULL REFERENCES employees(id) ON DELETE CASCADE,
+        date DATE NOT NULL,
+        start_time TIME NOT NULL,
+        end_time TIME NOT NULL,
+        notes TEXT,
+        created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      );
+      CREATE UNIQUE INDEX IF NOT EXISTS shift_schedules_employee_date_idx ON shift_schedules(employee_id, date);
+      CREATE INDEX IF NOT EXISTS shift_schedules_date_idx ON shift_schedules(date);
       CREATE TABLE IF NOT EXISTS time_clock_entries (
         id TEXT PRIMARY KEY,
         employee_id TEXT NOT NULL REFERENCES employees(id) ON DELETE CASCADE,

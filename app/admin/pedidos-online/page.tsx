@@ -12,6 +12,20 @@ function fmt(n: string | number) {
   return Number(n).toLocaleString('es-MX', { style: 'currency', currency: 'MXN', minimumFractionDigits: 2 });
 }
 
+// No hay cuenta de WhatsApp Business API configurada, así que en vez de
+// enviar automático, se abre WhatsApp con el mensaje ya escrito para que el
+// staff lo mande con un clic — cero costo, cero cuenta nueva necesaria.
+function whatsappLink(phone: string, message: string) {
+  const digits = phone.replace(/\D/g, '');
+  return `https://wa.me/${digits}?text=${encodeURIComponent(message)}`;
+}
+const STATUS_MESSAGES: Record<string, (name: string) => string> = {
+  confirmado: (name) => `Hola ${name}, tu pedido fue confirmado y ya lo estamos preparando 🎉`,
+  preparando: (name) => `Hola ${name}, tu pedido ya se está preparando 👨‍🍳`,
+  listo: (name) => `Hola ${name}, ¡tu pedido ya está listo! 📦`,
+  entregado: (name) => `Hola ${name}, ¡gracias por tu compra! 🎉`,
+};
+
 const STATUS_STYLE: Record<string, { bg: string; color: string; label: string }> = {
   pendiente: { bg: '#fef9c3', color: '#ca8a04', label: '⏳ Pendiente' },
   confirmado: { bg: '#dbeafe', color: '#2563eb', label: '✅ Confirmado' },
@@ -21,7 +35,7 @@ const STATUS_STYLE: Record<string, { bg: string; color: string; label: string }>
   cancelado: { bg: '#fee2e2', color: '#dc2626', label: '✕ Cancelado' },
 };
 
-const cardStyle = { background: 'white', border: '2px solid #111', borderRadius: 12, padding: 16, boxShadow: '4px 4px 0 #111' } as const;
+const cardStyle = { background: 'var(--apple-bg-2)', border: '0.5px solid var(--apple-sep)', borderRadius: 12, padding: 16, boxShadow: 'var(--apple-shadow-2)' } as const;
 
 export default function PedidosOnlinePage() {
   const [orders, setOrders] = useState<Order[]>([]);
@@ -111,7 +125,7 @@ export default function PedidosOnlinePage() {
     <div style={{ padding: '24px', maxWidth: 900, margin: '0 auto' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20, flexWrap: 'wrap', gap: 10 }}>
         <div>
-          <h1 style={{ fontSize: 26, fontWeight: 900, color: '#111', margin: 0 }}>🛍️ Pedidos en Línea</h1>
+          <h1 style={{ fontSize: 26, fontWeight: 900, color: 'var(--apple-label)', margin: 0 }}>🛍️ Pedidos en Línea</h1>
           <p style={{ fontSize: 13, color: '#6b7280', margin: '4px 0 0' }}>
             Comparte <code>/pedidos</code> con tus clientes para que ordenen desde su celular.
           </p>
@@ -160,28 +174,39 @@ export default function PedidosOnlinePage() {
                       </div>
                     </div>
 
+                    {STATUS_MESSAGES[o.status] && (
+                      <a
+                        href={whatsappLink(o.customer_phone, STATUS_MESSAGES[o.status](o.customer_name))}
+                        target="_blank"
+                        rel="noreferrer"
+                        style={{ display: 'block', textAlign: 'center', width: '100%', padding: '7px 0', border: '2px solid #16a34a', borderRadius: 8, background: '#f0fdf4', color: '#16a34a', fontWeight: 800, fontSize: 11, marginBottom: 8, textDecoration: 'none' }}
+                      >
+                        💬 Avisar por WhatsApp
+                      </a>
+                    )}
+
                     {o.status === 'pendiente' && (
                       <div style={{ display: 'flex', gap: 8 }}>
-                        <button onClick={() => confirmar(o.id)} disabled={busyId === o.id} style={{ flex: 1, padding: '8px 0', border: '2px solid #111', borderRadius: 8, background: '#16a34a', color: 'white', fontWeight: 800, fontSize: 12, cursor: 'pointer' }}>
+                        <button onClick={() => confirmar(o.id)} disabled={busyId === o.id} style={{ flex: 1, padding: '8px 0', border: '0.5px solid var(--apple-sep)', borderRadius: 8, background: '#16a34a', color: 'white', fontWeight: 800, fontSize: 12, cursor: 'pointer' }}>
                           ✓ Confirmar
                         </button>
-                        <button onClick={() => rechazar(o.id)} disabled={busyId === o.id} style={{ flex: 1, padding: '8px 0', border: '2px solid #d1d5db', borderRadius: 8, background: 'white', color: '#dc2626', fontWeight: 800, fontSize: 12, cursor: 'pointer' }}>
+                        <button onClick={() => rechazar(o.id)} disabled={busyId === o.id} style={{ flex: 1, padding: '8px 0', border: '2px solid #d1d5db', borderRadius: 8, background: 'var(--apple-bg-2)', color: '#dc2626', fontWeight: 800, fontSize: 12, cursor: 'pointer' }}>
                           ✕ Rechazar
                         </button>
                       </div>
                     )}
                     {o.status === 'confirmado' && (
-                      <button onClick={() => avanzar(o.id, 'preparando')} disabled={busyId === o.id} style={{ width: '100%', padding: '8px 0', border: '2px solid #111', borderRadius: 8, background: '#F97316', color: 'white', fontWeight: 800, fontSize: 12, cursor: 'pointer' }}>
+                      <button onClick={() => avanzar(o.id, 'preparando')} disabled={busyId === o.id} style={{ width: '100%', padding: '8px 0', border: '0.5px solid var(--apple-sep)', borderRadius: 8, background: '#F97316', color: 'white', fontWeight: 800, fontSize: 12, cursor: 'pointer' }}>
                         👨‍🍳 Marcar en preparación
                       </button>
                     )}
                     {o.status === 'preparando' && (
-                      <button onClick={() => avanzar(o.id, 'listo')} disabled={busyId === o.id} style={{ width: '100%', padding: '8px 0', border: '2px solid #111', borderRadius: 8, background: '#2563eb', color: 'white', fontWeight: 800, fontSize: 12, cursor: 'pointer' }}>
+                      <button onClick={() => avanzar(o.id, 'listo')} disabled={busyId === o.id} style={{ width: '100%', padding: '8px 0', border: '0.5px solid var(--apple-sep)', borderRadius: 8, background: '#2563eb', color: 'white', fontWeight: 800, fontSize: 12, cursor: 'pointer' }}>
                         📦 Marcar como listo
                       </button>
                     )}
                     {o.status === 'listo' && (
-                      <button onClick={() => avanzar(o.id, 'entregado')} disabled={busyId === o.id} style={{ width: '100%', padding: '8px 0', border: '2px solid #111', borderRadius: 8, background: '#16a34a', color: 'white', fontWeight: 800, fontSize: 12, cursor: 'pointer' }}>
+                      <button onClick={() => avanzar(o.id, 'entregado')} disabled={busyId === o.id} style={{ width: '100%', padding: '8px 0', border: '0.5px solid var(--apple-sep)', borderRadius: 8, background: '#16a34a', color: 'white', fontWeight: 800, fontSize: 12, cursor: 'pointer' }}>
                         🎉 Marcar como entregado
                       </button>
                     )}

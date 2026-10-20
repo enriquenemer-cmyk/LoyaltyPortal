@@ -229,8 +229,8 @@ export default function TicketTiersPage() {
     <div style={{ minHeight: '100vh', background: '#FAFAF9', padding: '24px', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
       <div style={{ maxWidth: 820, margin: '0 auto' }}>
         {/* Restaurant selector */}
-        <div style={{ background: 'white', border: '1px solid #E8E3DC', borderRadius: 14, padding: 20, marginBottom: 20 }}>
-          <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#1C1917', marginBottom: 8 }}>
+        <div style={{ background: 'var(--apple-bg-2)', border: '1px solid #E8E3DC', borderRadius: 14, padding: 20, marginBottom: 20 }}>
+          <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: 'var(--apple-label)', marginBottom: 8 }}>
             Restaurante
           </label>
           <select
@@ -248,9 +248,9 @@ export default function TicketTiersPage() {
         {selectedId && (
           <>
             {/* Tier editor */}
-            <div style={{ background: 'white', border: '1px solid #E8E3DC', borderRadius: 14, padding: 20, marginBottom: 20 }}>
+            <div style={{ background: 'var(--apple-bg-2)', border: '1px solid #E8E3DC', borderRadius: 14, padding: 20, marginBottom: 20 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-                <h2 style={{ fontSize: 15, fontWeight: 700, color: '#1C1917', margin: 0 }}>
+                <h2 style={{ fontSize: 15, fontWeight: 700, color: 'var(--apple-label)', margin: 0 }}>
                   Niveles de premio
                 </h2>
                 {loading && <span style={{ fontSize: 12, color: '#78716C' }}>Cargando...</span>}
@@ -353,8 +353,8 @@ export default function TicketTiersPage() {
             </div>
 
             {/* Consolation Prize Config */}
-            <div style={{ background: 'white', border: '1px solid #E8E3DC', borderRadius: 14, padding: 20, marginBottom: 20 }}>
-              <h2 style={{ fontSize: 15, fontWeight: 700, color: '#1C1917', margin: '0 0 4px' }}>
+            <div style={{ background: 'var(--apple-bg-2)', border: '1px solid #E8E3DC', borderRadius: 14, padding: 20, marginBottom: 20 }}>
+              <h2 style={{ fontSize: 15, fontWeight: 700, color: 'var(--apple-label)', margin: '0 0 4px' }}>
                 <GiftIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Premio de Consolación
               </h2>
               <p style={{ color: '#78716C', fontSize: 13, marginBottom: 16 }}>
@@ -367,7 +367,7 @@ export default function TicketTiersPage() {
               </p>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
                 <div>
-                  <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#1C1917', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                  <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: 'var(--apple-label)', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
                     Nombre del premio
                   </label>
                   <input
@@ -378,7 +378,7 @@ export default function TicketTiersPage() {
                   />
                 </div>
                 <div>
-                  <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#1C1917', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                  <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: 'var(--apple-label)', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
                     Descripción
                   </label>
                   <input
@@ -402,7 +402,7 @@ export default function TicketTiersPage() {
                   <p style={{ fontSize: 11, color: '#9A3412', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 4 }}>
                     Vista previa del cliente
                   </p>
-                  <p style={{ fontSize: 14, fontWeight: 700, color: '#1C1917', marginBottom: 2 }}><GiftIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> {consolationName}</p>
+                  <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--apple-label)', marginBottom: 2 }}><GiftIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> {consolationName}</p>
                   <p style={{ fontSize: 12, color: '#78716C', margin: 0 }}>{consolationDesc}</p>
                   <p style={{ fontSize: 11, color: '#EA580C', fontWeight: 700, marginTop: 6, fontFamily: 'monospace' }}>Código: CONS-XXXXXX</p>
                 </div>
@@ -410,12 +410,12 @@ export default function TicketTiersPage() {
 
               {/* Personalización */}
               <div style={{ marginTop: 20, borderTop: '1px solid #E8E3DC', paddingTop: 16 }}>
-                <p style={{ fontSize: 13, fontWeight: 700, color: '#1C1917', marginBottom: 12, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--apple-label)', marginBottom: 12, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
                   Personalización
                 </p>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
                   <div>
-                    <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#1C1917', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                    <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: 'var(--apple-label)', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
                       Título de bienvenida
                     </label>
                     <input
@@ -426,7 +426,7 @@ export default function TicketTiersPage() {
                     />
                   </div>
                   <div>
-                    <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#1C1917', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                    <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: 'var(--apple-label)', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
                       Subtítulo
                     </label>
                     <input
@@ -437,7 +437,7 @@ export default function TicketTiersPage() {
                     />
                   </div>
                   <div>
-                    <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#1C1917', marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                    <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: 'var(--apple-label)', marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
                       Color principal
                     </label>
                     <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
@@ -483,8 +483,8 @@ export default function TicketTiersPage() {
 
             {/* Ticket Feedback Rating */}
             {avgRating !== null && (
-              <div style={{ background: 'white', border: '1px solid #E8E3DC', borderRadius: 14, padding: 20, marginBottom: 20 }}>
-                <h2 style={{ fontSize: 15, fontWeight: 700, color: '#1C1917', margin: '0 0 4px' }}>
+              <div style={{ background: 'var(--apple-bg-2)', border: '1px solid #E8E3DC', borderRadius: 14, padding: 20, marginBottom: 20 }}>
+                <h2 style={{ fontSize: 15, fontWeight: 700, color: 'var(--apple-label)', margin: '0 0 4px' }}>
                   Calificación promedio del ticket scanner
                 </h2>
                 <p style={{ color: '#78716C', fontSize: 13, marginBottom: 12 }}>
@@ -512,10 +512,10 @@ export default function TicketTiersPage() {
             )}
 
             {/* QR Code section */}
-            <div style={{ background: 'white', border: '1px solid #E8E3DC', borderRadius: 14, padding: 20, marginBottom: 20 }}>
+            <div style={{ background: 'var(--apple-bg-2)', border: '1px solid #E8E3DC', borderRadius: 14, padding: 20, marginBottom: 20 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 16, flexWrap: 'wrap', gap: 10 }}>
                 <div>
-                  <h2 style={{ fontSize: 15, fontWeight: 700, color: '#1C1917', margin: '0 0 4px' }}>
+                  <h2 style={{ fontSize: 15, fontWeight: 700, color: 'var(--apple-label)', margin: '0 0 4px' }}>
                     Código QR — Ticket Scanner
                   </h2>
                   <p style={{ color: '#78716C', fontSize: 13, margin: 0 }}>
@@ -563,8 +563,8 @@ export default function TicketTiersPage() {
             </div>
 
             {/* WhatsApp cashier number */}
-            <div style={{ background: 'white', border: '1px solid #E8E3DC', borderRadius: 14, padding: 20 }}>
-              <h2 style={{ fontSize: 15, fontWeight: 700, color: '#1C1917', margin: '0 0 4px' }}>
+            <div style={{ background: 'var(--apple-bg-2)', border: '1px solid #E8E3DC', borderRadius: 14, padding: 20 }}>
+              <h2 style={{ fontSize: 15, fontWeight: 700, color: 'var(--apple-label)', margin: '0 0 4px' }}>
                 Número del cajero (WhatsApp VIP)
               </h2>
               <p style={{ color: '#78716C', fontSize: 13, marginBottom: 12 }}>
@@ -594,9 +594,9 @@ export default function TicketTiersPage() {
               >
                 <div
                   onClick={(e) => e.stopPropagation()}
-                  style={{ background: 'white', borderRadius: 20, padding: 32, maxWidth: 420, width: '90%', textAlign: 'center' }}
+                  style={{ background: 'var(--apple-bg-2)', borderRadius: 20, padding: 32, maxWidth: 420, width: '90%', textAlign: 'center' }}
                 >
-                  <h3 style={{ fontSize: 18, fontWeight: 800, color: '#1C1917', marginBottom: 8 }}>
+                  <h3 style={{ fontSize: 18, fontWeight: 800, color: 'var(--apple-label)', marginBottom: 8 }}>
                     QR Modo Kiosk
                   </h3>
                   <p style={{ fontSize: 13, color: '#78716C', marginBottom: 16 }}>
@@ -636,9 +636,9 @@ const inputStyle: React.CSSProperties = {
   padding: '8px 10px',
   borderRadius: 8,
   border: '1px solid #E8E3DC',
-  background: 'white',
+  background: 'var(--apple-bg-2)',
   fontSize: 13,
-  color: '#1C1917',
+  color: 'var(--apple-label)',
   outline: 'none',
   boxSizing: 'border-box',
 };
@@ -648,9 +648,9 @@ const selectStyle: React.CSSProperties = {
   padding: '10px 12px',
   borderRadius: 10,
   border: '1px solid #E8E3DC',
-  background: 'white',
+  background: 'var(--apple-bg-2)',
   fontSize: 14,
-  color: '#1C1917',
+  color: 'var(--apple-label)',
   outline: 'none',
 };
 
@@ -668,8 +668,8 @@ const primaryBtn: React.CSSProperties = {
 const ghostBtn: React.CSSProperties = {
   padding: '10px 20px',
   borderRadius: 10,
-  background: 'white',
-  color: '#1C1917',
+  background: 'var(--apple-bg-2)',
+  color: 'var(--apple-label)',
   fontWeight: 600,
   fontSize: 14,
   border: '1px solid #E8E3DC',

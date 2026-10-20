@@ -96,12 +96,12 @@ export default function UnidadPage({ params }: { params: Promise<{ id: string }>
     <div className="min-h-screen flex items-center justify-center px-4 py-10" style={{ background: '#FAFAF9' }}>
       <div className="w-full max-w-sm">
         <div className="flex justify-center mb-6">
-          <div className="w-14 h-14 rounded-2xl flex items-center justify-center" style={{ background: '#F97316', border: '2px solid #111', boxShadow: '3px 3px 0 #111' }}>
+          <div className="w-14 h-14 rounded-2xl flex items-center justify-center" style={{ background: '#F97316', border: '0.5px solid var(--apple-sep)', boxShadow: 'var(--apple-shadow-1)' }}>
             <ArchiveBoxIcon className="w-7 h-7 text-white" />
           </div>
         </div>
 
-        <div style={{ background: '#fff', border: '2px solid #111', borderRadius: 20, boxShadow: '6px 6px 0 #111', padding: '2rem' }}>
+        <div style={{ background: 'var(--apple-bg-2)', border: '0.5px solid var(--apple-sep)', borderRadius: 20, boxShadow: 'var(--apple-shadow-2)', padding: '2rem' }}>
           {loading && (
             <p className="text-center text-sm text-stone-400">Cargando unidad…</p>
           )}
@@ -181,14 +181,14 @@ export default function UnidadPage({ params }: { params: Promise<{ id: string }>
               </div>
 
               {unit.status === 'retired' ? (
-                <div className="flex items-center gap-2.5 px-4 py-3 rounded-xl" style={{ background: '#F0FDF4', border: '2px solid #111' }}>
+                <div className="flex items-center gap-2.5 px-4 py-3 rounded-xl" style={{ background: '#F0FDF4', border: '0.5px solid var(--apple-sep)' }}>
                   <CheckCircleIcon className="w-5 h-5 text-emerald-600 shrink-0" />
                   <p className="text-sm font-semibold text-emerald-800">
                     Ya retirada{unit.retired_by ? ` por ${unit.retired_by}` : ''}{unit.retired_at ? ` — ${formatDateTime(unit.retired_at)}` : ''}
                   </p>
                 </div>
               ) : result ? (
-                <div className="flex items-center gap-2.5 px-4 py-3 rounded-xl" style={{ background: '#F0FDF4', border: '2px solid #111' }}>
+                <div className="flex items-center gap-2.5 px-4 py-3 rounded-xl" style={{ background: '#F0FDF4', border: '0.5px solid var(--apple-sep)' }}>
                   <CheckCircleIcon className="w-5 h-5 text-emerald-600 shrink-0" />
                   <p className="text-sm font-semibold text-emerald-800">
                     Retirado: −{result.weight_removed} {result.unit}. Stock nuevo: {result.new_stock} {result.unit}.
@@ -199,7 +199,7 @@ export default function UnidadPage({ params }: { params: Promise<{ id: string }>
                   onClick={handleRetirar}
                   disabled={retiring}
                   className="w-full py-3.5 rounded-xl text-white text-base transition-all disabled:opacity-60"
-                  style={{ background: '#F97316', border: '2.5px solid #111', boxShadow: retiring ? 'none' : '4px 4px 0 #111', fontWeight: 800 }}
+                  style={{ background: '#F97316', border: '0.5px solid var(--apple-sep)', boxShadow: retiring ? 'none' : 'var(--apple-shadow-2)', fontWeight: 800 }}
                 >
                   {retiring ? 'Retirando…' : `Retirar esta unidad (−${unit.weight} ${unit.unit})`}
                 </button>
@@ -209,7 +209,7 @@ export default function UnidadPage({ params }: { params: Promise<{ id: string }>
             </>
           )}
 
-          <div className="text-center mt-6 pt-5" style={{ borderTop: '1px dashed rgba(17,17,17,0.15)' }}>
+          <div className="text-center mt-6 pt-5" style={{ borderTop: '1px dashed var(--apple-sep)' }}>
             <Link href="/admin/inventario" style={{ fontSize: 13, color: '#6b7280', fontWeight: 600 }}>← Volver a Inventario</Link>
           </div>
         </div>

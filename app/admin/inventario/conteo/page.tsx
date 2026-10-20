@@ -9,7 +9,7 @@ type CountSummary = {
 type CountItem = { id: string; product_id: string; product_name: string; unit: string; expected_stock: string; counted_stock: string | null; counted_at: string | null };
 type CountDetail = CountSummary & { items: CountItem[] };
 
-const cardStyle = { background: 'white', border: '2px solid #111', borderRadius: 12, padding: 18, boxShadow: '4px 4px 0 #111' } as const;
+const cardStyle = { background: 'var(--apple-bg-2)', border: '0.5px solid var(--apple-sep)', borderRadius: 12, padding: 18, boxShadow: 'var(--apple-shadow-2)' } as const;
 
 function fmtQty(v: string | number) {
   return (Math.round(Number(v) * 1000) / 1000).toString();
@@ -143,7 +143,7 @@ export default function ConteoFisicoPage() {
     <div style={{ padding: '24px', maxWidth: 1000, margin: '0 auto' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24, flexWrap: 'wrap', gap: 12 }}>
         <div>
-          <h1 style={{ fontSize: 26, fontWeight: 900, color: '#111', margin: 0 }}>📋 Conteo Físico de Inventario</h1>
+          <h1 style={{ fontSize: 26, fontWeight: 900, color: 'var(--apple-label)', margin: 0 }}>📋 Conteo Físico de Inventario</h1>
           <p style={{ fontSize: 13, color: '#6b7280', margin: '4px 0 0' }}>
             Compara el stock del sistema contra el conteo físico real y ajusta las diferencias.
           </p>
@@ -167,13 +167,13 @@ export default function ConteoFisicoPage() {
               <div style={{ fontSize: 12, color: '#6b7280' }}>{new Date(open.started_at).toLocaleString('es-MX')} · {open.items.length} artículos</div>
             </div>
             <div style={{ display: 'flex', gap: 8 }}>
-              <button onClick={cancelarConteo} disabled={busy} className="cursor-pointer" style={{ padding: '8px 14px', border: '2px solid #d1d5db', borderRadius: 8, background: 'white', fontWeight: 700, fontSize: 12 }}>
+              <button onClick={cancelarConteo} disabled={busy} className="cursor-pointer" style={{ padding: '8px 14px', border: '2px solid #d1d5db', borderRadius: 8, background: 'var(--apple-bg-2)', fontWeight: 700, fontSize: 12 }}>
                 Cancelar conteo
               </button>
-              <button onClick={guardarAvance} disabled={busy} style={{ padding: '8px 14px', border: '2px solid #111', borderRadius: 8, background: '#f3f4f6', fontWeight: 800, fontSize: 12 }}>
+              <button onClick={guardarAvance} disabled={busy} style={{ padding: '8px 14px', border: '0.5px solid var(--apple-sep)', borderRadius: 8, background: '#f3f4f6', fontWeight: 800, fontSize: 12 }}>
                 Guardar avance
               </button>
-              <button onClick={cerrarConteo} disabled={busy} style={{ padding: '8px 18px', border: '2px solid #111', borderRadius: 8, background: '#16a34a', color: 'white', fontWeight: 800, fontSize: 12, boxShadow: '3px 3px 0 #111' }}>
+              <button onClick={cerrarConteo} disabled={busy} style={{ padding: '8px 18px', border: '0.5px solid var(--apple-sep)', borderRadius: 8, background: '#16a34a', color: 'white', fontWeight: 800, fontSize: 12, boxShadow: 'var(--apple-shadow-1)' }}>
                 Cerrar y ajustar
               </button>
             </div>
@@ -183,7 +183,7 @@ export default function ConteoFisicoPage() {
             <div style={{ overflowX: 'auto' }}>
               <table style={{ width: '100%', fontSize: 13, borderCollapse: 'collapse' }}>
                 <thead>
-                  <tr style={{ background: '#f9fafb', borderBottom: '2px solid #111' }}>
+                  <tr style={{ background: '#f9fafb', borderBottom: '0.5px solid var(--apple-sep)' }}>
                     <th style={{ textAlign: 'left', padding: '10px 16px', fontSize: 11, textTransform: 'uppercase', color: '#6b7280' }}>Producto</th>
                     <th style={{ textAlign: 'right', padding: '10px 16px', fontSize: 11, textTransform: 'uppercase', color: '#6b7280' }}>Sistema</th>
                     <th style={{ textAlign: 'right', padding: '10px 16px', fontSize: 11, textTransform: 'uppercase', color: '#6b7280' }}>Contado</th>
@@ -227,7 +227,7 @@ export default function ConteoFisicoPage() {
             <button
               onClick={iniciarConteo}
               disabled={busy}
-              style={{ padding: '10px 24px', border: '2px solid #111', borderRadius: 8, background: '#F97316', color: 'white', fontWeight: 800, fontSize: 14, cursor: 'pointer', boxShadow: '3px 3px 0 #111' }}
+              style={{ padding: '10px 24px', border: '0.5px solid var(--apple-sep)', borderRadius: 8, background: '#F97316', color: 'white', fontWeight: 800, fontSize: 14, cursor: 'pointer', boxShadow: 'var(--apple-shadow-1)' }}
             >
               {busy ? 'Iniciando...' : '+ Iniciar conteo físico'}
             </button>

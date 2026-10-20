@@ -384,8 +384,10 @@ const ALL_SECTIONS: SectionDef[] = [
       { href: '/admin/mesas', label: 'Mesas', icon: Icons.ventas },
       { href: '/admin/pedidos-online', label: 'Pedidos en Línea', icon: Icons.ventas },
       { href: '/admin/rentabilidad', label: 'Rentabilidad por Platillo', icon: Icons.ventas },
+      { href: '/admin/hora-pico', label: 'Hora Pico', icon: Icons.ventas },
       { href: '/admin/inventario', label: 'Inventario', icon: Icons.inventario },
       { href: '/admin/fichajes', label: 'Fichajes', icon: Icons.fichajes },
+      { href: '/admin/turnos', label: 'Turnos Planeados', icon: Icons.fichajes },
       { href: '/admin/nomina', label: 'Nómina (estimado)', icon: Icons.fichajes },
       { href: '/admin/capacitacion', label: 'Capacitación', icon: Icons.capacitacion },
     ],
@@ -400,6 +402,7 @@ const ALL_SECTIONS: SectionDef[] = [
       { href: '/admin/contabilidad', label: 'Resumen Contable', icon: Icons.contabilidad },
       { href: '/admin/proveedores', label: 'Proveedores y Compras', icon: Icons.proveedores },
       { href: '/admin/ordenes-compra', label: 'Órdenes de Compra', icon: Icons.inventario },
+      { href: '/admin/sugerencia-compra', label: 'Sugerencia de Compra', icon: Icons.inventario },
       { href: '/admin/fichas', label: 'Fichas de Costo', icon: Icons.fichas },
       { href: '/admin/contabilidad/conciliacion', label: 'Conciliación Bancaria', icon: Icons.contabilidad },
     ],
@@ -689,7 +692,7 @@ function GlobalSearch({ onSelect }: { onSelect?: (item: SearchResult) => void })
   const showDropdown = focused && (results.length > 0 || (query === '' && recent.length > 0) || loading);
 
   return (
-    <div className="px-3 py-2" style={{ borderBottom: '2px solid #000' }}>
+    <div className="px-3 py-2" style={{ borderBottom: '0.5px solid var(--apple-sep)' }}>
       <div className="relative">
         <div className="relative flex items-center">
           {loading ? (
@@ -711,7 +714,7 @@ function GlobalSearch({ onSelect }: { onSelect?: (item: SearchResult) => void })
             onKeyDown={handleKeyDown}
             placeholder="Buscar datos..."
             className="sidebar-search-input w-full pl-8 pr-3 py-1.5 text-xs rounded-lg focus:outline-none transition-all"
-            style={{ background: '#f5f5f5', border: '2px solid #111', color: '#111', boxShadow: '2px 2px 0 #111', fontWeight: 600 }}
+            style={{ fontWeight: 400 }}
           />
         </div>
         {showDropdown && (
@@ -882,7 +885,7 @@ function AccordionSection({
         </span>
         <span
           className="flex-1 text-left text-[12.5px] font-bold truncate"
-          style={{ color: '#111111' }}
+          style={{ color: 'var(--apple-label)' }}
         >
           {section.label}
         </span>
@@ -1281,7 +1284,7 @@ function SidebarContent({
           {!compact && (
             <div className="flex items-center gap-2 px-2 py-1 mb-1">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" style={{ boxShadow: '0 0 6px rgba(52,211,153,0.6)' }} />
-              <span className="text-xs font-semibold truncate" style={{ color: '#111111' }}>{username}</span>
+              <span className="text-xs font-semibold truncate" style={{ color: 'var(--apple-label)' }}>{username}</span>
               <span className="ml-auto text-[9px] font-bold tracking-wide uppercase" style={{ color: 'rgba(100,116,139,0.6)' }}>{role}</span>
             </div>
           )}
@@ -1291,7 +1294,7 @@ function SidebarContent({
               disabled={loggingOut}
               title="Cerrar sesion"
               className={`flex items-center gap-2 rounded-lg text-xs font-medium transition-all ${compact ? 'p-1.5' : 'flex-1 px-3 py-1.5'}`}
-              style={{ color: '#111111', border: '1px solid #e5e7eb' }}
+              style={{ color: 'var(--apple-label)' }}
               onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.color = '#fca5a5'; (e.currentTarget as HTMLButtonElement).style.background = 'rgba(239,68,68,0.1)'; (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(239,68,68,0.2)'; }}
               onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.color = '#111111'; (e.currentTarget as HTMLButtonElement).style.background = ''; (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(0,0,0,0.06)'; }}
             >
@@ -1352,13 +1355,12 @@ export default function Sidebar() {
   return (
     <>
       {/* Desktop sidebar — 240px expanded, 64px compact (icon rail) */}
-      <aside className={`hidden md:flex fixed left-0 top-0 h-full flex-col z-40 transition-[width] duration-200 ${compact ? 'w-16' : 'w-[240px]'}`}
-        style={{ background: '#ffffff', borderRight: '2px solid #000000' }}>
+      <aside className={`apple-sidebar hidden md:flex fixed left-0 top-0 h-full flex-col z-40 transition-[width] duration-200 ${compact ? 'w-16' : 'w-[240px]'}`}>
         <SidebarContent compact={compact} onToggleCompact={handleToggleCompact} />
       </aside>
 
       {/* Mobile top bar */}
-      <div className="md:hidden fixed top-0 left-0 right-0 h-14 flex items-center justify-between px-4 z-40 bg-white overflow-hidden" style={{ borderBottom: '2px solid #000000', width: '100vw' }}>
+      <div className="apple-topbar md:hidden fixed top-0 left-0 right-0 h-14 flex items-center justify-between px-4 z-40 overflow-hidden" style={{ width: '100vw', paddingTop: 'env(safe-area-inset-top)' }}>
         <Link href="/admin" className="flex items-center gap-2">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/logo-3e-oficial.webp" alt="3E" width={40} height={40} style={{ objectFit: 'contain', display: 'block' }} />
@@ -1380,8 +1382,7 @@ export default function Sidebar() {
       {mobileOpen && (
         <>
           <div className="md:hidden fixed inset-0 z-50 bg-black/30 backdrop-blur-sm" onClick={() => setMobileOpen(false)} />
-          <aside className="md:hidden fixed left-0 top-0 h-full w-[240px] z-50 flex flex-col shadow-xl"
-            style={{ background: '#ffffff', borderRight: '2px solid #000000' }}>
+          <aside className="apple-sidebar md:hidden fixed left-0 top-0 h-full w-[240px] z-50 flex flex-col shadow-xl">
             <SidebarContent onLinkClick={() => setMobileOpen(false)} />
           </aside>
         </>

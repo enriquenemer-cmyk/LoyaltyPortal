@@ -40,7 +40,7 @@ const CORNER_STYLES = [
 
 const DEFAULT_STYLE = {
   qr_dot_color: '#0f172a',
-  qr_background: '#ffffff',
+  qr_background: 'var(--apple-bg-2)',
   qr_dot_style: 'square',
   qr_corner_style: 'square',
   qr_gradient_end: '',
@@ -169,7 +169,7 @@ export default function CampanasPage() {
           <button
             onClick={openNew}
             className="flex items-center gap-2 font-bold px-5 py-3 rounded-xl text-sm transition-all"
-            style={{ background: 'white', color: '#111111', boxShadow: '0 4px 16px rgba(0,0,0,0.15)' }}
+            style={{ background: 'var(--apple-bg-2)', color: 'var(--apple-label)', boxShadow: '0 4px 16px rgba(0,0,0,0.15)' }}
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />

@@ -82,12 +82,25 @@ function createMainWindow(restaurantName) {
     minWidth: 900,
     minHeight: 600,
     title: `3E Plataforma — ${restaurantName}`,
+    ...(process.platform === 'darwin' ? {
+      titleBarStyle: 'hiddenInset',
+      trafficLightPosition: { x: 16, y: 18 },
+      vibrancy: 'sidebar',
+      visualEffectState: 'followWindow',
+      backgroundColor: '#00000000',
+    } : {}),
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
     },
     autoHideMenuBar: false,
   });
+
+  if (process.platform === 'darwin') {
+    win.webContents.on('dom-ready', () => {
+      win.webContents.executeJavaScript("document.documentElement.classList.add('is-electron-mac')").catch(() => {});
+    });
+  }
 
   // Build a minimal menu
   const menu = Menu.buildFromTemplate([

@@ -17,7 +17,7 @@ export default function NotFound() {
           404
         </div>
 
-        <h1 style={{ fontSize: 24, fontWeight: 800, color: '#1C1917', marginBottom: 10 }}>
+        <h1 style={{ fontSize: 24, fontWeight: 800, color: 'var(--apple-label)', marginBottom: 10 }}>
           Esta página no existe
         </h1>
         <p style={{ color: '#78716c', fontSize: 15, lineHeight: 1.6, marginBottom: 32 }}>
@@ -28,7 +28,7 @@ export default function NotFound() {
           <Link href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'linear-gradient(135deg,#F97316,#EA580C)', color: 'white', fontWeight: 700, fontSize: 15, padding: '12px 24px', borderRadius: 14, textDecoration: 'none', boxShadow: '0 8px 24px rgba(249,115,22,0.30)' }}>
             ← Volver al inicio
           </Link>
-          <Link href="/admin" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'white', color: '#44403c', fontWeight: 700, fontSize: 15, padding: '12px 24px', borderRadius: 14, textDecoration: 'none', border: '1px solid #E8E3DC', boxShadow: '0 1px 4px rgba(28,25,23,0.06)' }}>
+          <Link href="/admin" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'var(--apple-bg-2)', color: '#44403c', fontWeight: 700, fontSize: 15, padding: '12px 24px', borderRadius: 14, textDecoration: 'none', border: '1px solid #E8E3DC', boxShadow: '0 1px 4px rgba(28,25,23,0.06)' }}>
             Ir al panel
           </Link>
         </div>

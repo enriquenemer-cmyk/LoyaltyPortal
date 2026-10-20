@@ -74,7 +74,7 @@ export default function LeadsPage() {
             onClick={() => exportCSV(filtered)}
             disabled={filtered.length === 0}
             className="flex items-center gap-2 font-bold px-5 py-3 rounded-xl text-sm transition-all disabled:opacity-50"
-            style={{ background: 'white', color: '#F97316', boxShadow: '0 4px 16px rgba(0,0,0,0.15)' }}
+            style={{ background: 'var(--apple-bg-2)', color: '#F97316', boxShadow: '0 4px 16px rgba(0,0,0,0.15)' }}
           >
             Exportar CSV
           </button>

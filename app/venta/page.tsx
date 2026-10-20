@@ -66,9 +66,9 @@ function GameQR({ url, size = 140 }: { url: string; size?: number }) {
         height: size,
         type: 'svg',
         data: url,
-        dotsOptions: { type: 'square', color: '#111111' },
-        cornersSquareOptions: { type: 'square', color: '#111111' },
-        cornersDotOptions: { type: 'square', color: '#111111' },
+        dotsOptions: { type: 'square', color: 'var(--apple-label)' },
+        cornersSquareOptions: { type: 'square', color: 'var(--apple-label)' },
+        cornersDotOptions: { type: 'square', color: 'var(--apple-label)' },
         backgroundOptions: { color: '#ffffff' },
         qrOptions: { errorCorrectionLevel: 'M' },
       });

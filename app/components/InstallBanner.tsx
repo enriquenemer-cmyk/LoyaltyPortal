@@ -51,8 +51,8 @@ export default function InstallBanner() {
     <div style={{
       position: 'fixed', bottom: 16, left: '50%', transform: 'translateX(-50%)',
       zIndex: 9999, display: 'flex', alignItems: 'center', gap: 12,
-      background: '#fff', border: '2px solid #111', borderRadius: 12,
-      boxShadow: '4px 4px 0 #111', padding: '12px 16px', maxWidth: 360, width: 'calc(100% - 32px)',
+      background: 'var(--apple-bg-2)', border: '0.5px solid var(--apple-sep)', borderRadius: 12,
+      boxShadow: 'var(--apple-shadow-2)', padding: '12px 16px', maxWidth: 360, width: 'calc(100% - 32px)',
     }}>
       <img src="/icon-192.png" alt="3E" style={{ width: 40, height: 40, borderRadius: 8, border: '1px solid #eee' }} />
       <div style={{ flex: 1, minWidth: 0 }}>

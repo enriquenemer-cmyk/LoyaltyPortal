@@ -770,7 +770,7 @@ export default function ReportePage() {
                 onClick={handleDownloadPdf}
                 disabled={generatingPdf}
                 className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-bold transition-all disabled:opacity-60"
-                style={{ background: 'white', color: '#111111', boxShadow: '0 4px 16px rgba(0,0,0,0.15)' }}
+                style={{ background: 'var(--apple-bg-2)', color: 'var(--apple-label)', boxShadow: '0 4px 16px rgba(0,0,0,0.15)' }}
                 title="Descargar PDF completo"
               >
                 {generatingPdf ? (

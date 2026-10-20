@@ -39,7 +39,7 @@ export default function ForgotPasswordPage() {
         <div className="flex justify-center mb-6">
           <div
             className="w-14 h-14 rounded-2xl flex items-center justify-center"
-            style={{ background: '#F97316', border: '2px solid #111', boxShadow: '3px 3px 0 #111' }}
+            style={{ background: '#F97316', border: '0.5px solid var(--apple-sep)', boxShadow: 'var(--apple-shadow-1)' }}
           >
             <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
@@ -49,24 +49,24 @@ export default function ForgotPasswordPage() {
         </div>
 
         <div className="text-center mb-8">
-          <h1 style={{ fontSize: 26, fontWeight: 900, color: '#111', letterSpacing: '-0.03em' }}>Restablecer contraseña</h1>
+          <h1 style={{ fontSize: 26, fontWeight: 900, color: 'var(--apple-label)', letterSpacing: '-0.03em' }}>Restablecer contraseña</h1>
           <p style={{ color: '#6b7280', fontSize: 14, fontWeight: 500, marginTop: 8 }}>
             Ingresa tu nombre de usuario y te enviaremos las instrucciones.
           </p>
         </div>
 
-        <div style={{ background: '#fff', border: '2px solid #111', borderRadius: 20, boxShadow: '6px 6px 0 #111', padding: '2.25rem' }}>
+        <div style={{ background: 'var(--apple-bg-2)', border: '0.5px solid var(--apple-sep)', borderRadius: 20, boxShadow: 'var(--apple-shadow-2)', padding: '2.25rem' }}>
           {sent ? (
             <div className="text-center">
               <div
                 className="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4"
-                style={{ background: '#1a6b3c', border: '2px solid #111', boxShadow: '2px 2px 0 #111' }}
+                style={{ background: '#1a6b3c', border: '0.5px solid var(--apple-sep)', boxShadow: 'var(--apple-shadow-1)' }}
               >
                 <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
                 </svg>
               </div>
-              <p style={{ fontSize: 14, fontWeight: 800, color: '#111', marginBottom: 8 }}>Instrucciones enviadas</p>
+              <p style={{ fontSize: 14, fontWeight: 800, color: 'var(--apple-label)', marginBottom: 8 }}>Instrucciones enviadas</p>
               <p style={{ fontSize: 13, color: '#6b7280', fontWeight: 500 }}>
                 Si el usuario existe, recibirás las instrucciones. Revisa tu panel de Seguridad.
               </p>
@@ -80,11 +80,11 @@ export default function ForgotPasswordPage() {
           ) : (
             <form onSubmit={handleSubmit} className="space-y-5">
               <div>
-                <label style={{ display: 'block', fontSize: 13, fontWeight: 800, color: '#111', marginBottom: 6 }}>Usuario</label>
+                <label style={{ display: 'block', fontSize: 13, fontWeight: 800, color: 'var(--apple-label)', marginBottom: 6 }}>Usuario</label>
                 <div className="relative">
                   <svg
                     className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4"
-                    style={{ color: '#111', opacity: 0.5 }}
+                    style={{ color: 'var(--apple-label)', opacity: 0.5 }}
                     fill="none" stroke="currentColor" viewBox="0 0 24 24"
                   >
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
@@ -97,9 +97,9 @@ export default function ForgotPasswordPage() {
                     required
                     placeholder="admin"
                     className="w-full pl-10 pr-4 py-2.5 text-sm rounded-[10px] transition-all focus:outline-none"
-                    style={{ border: '2px solid #111', color: '#111', boxShadow: '3px 3px 0 rgba(0,0,0,0.12)', fontWeight: 600 }}
+                    style={{ border: '0.5px solid var(--apple-sep)', color: 'var(--apple-label)', boxShadow: 'var(--apple-shadow-1)', fontWeight: 600 }}
                     onFocus={e => { e.currentTarget.style.borderColor = '#F97316'; e.currentTarget.style.boxShadow = '3px 3px 0 rgba(249,115,22,0.4)'; }}
-                    onBlur={e => { e.currentTarget.style.borderColor = '#111'; e.currentTarget.style.boxShadow = '3px 3px 0 rgba(0,0,0,0.12)'; }}
+                    onBlur={e => { e.currentTarget.style.borderColor = '#111'; e.currentTarget.style.boxShadow = 'var(--apple-shadow-1)'; }}
                   />
                 </div>
               </div>
@@ -110,15 +110,15 @@ export default function ForgotPasswordPage() {
                 className="w-full py-3 rounded-[12px] text-white text-sm transition-all"
                 style={{
                   background: loading ? '#6b9e7e' : '#F97316',
-                  border: '2.5px solid #111',
-                  boxShadow: loading ? 'none' : '4px 4px 0 #111',
+                  border: '0.5px solid var(--apple-sep)',
+                  boxShadow: loading ? 'none' : 'var(--apple-shadow-2)',
                   fontWeight: 800,
                   cursor: loading ? 'not-allowed' : 'pointer',
                 }}
-                onMouseEnter={e => { if (!loading) { (e.currentTarget as HTMLButtonElement).style.transform = 'translate(-2px, -2px)'; (e.currentTarget as HTMLButtonElement).style.boxShadow = '6px 6px 0 #111'; } }}
-                onMouseLeave={e => { if (!loading) { (e.currentTarget as HTMLButtonElement).style.transform = 'translate(0, 0)'; (e.currentTarget as HTMLButtonElement).style.boxShadow = '4px 4px 0 #111'; } }}
-                onMouseDown={e => { if (!loading) { (e.currentTarget as HTMLButtonElement).style.transform = 'translate(2px, 2px)'; (e.currentTarget as HTMLButtonElement).style.boxShadow = '1px 1px 0 #111'; } }}
-                onMouseUp={e => { if (!loading) { (e.currentTarget as HTMLButtonElement).style.transform = 'translate(-2px, -2px)'; (e.currentTarget as HTMLButtonElement).style.boxShadow = '6px 6px 0 #111'; } }}
+                onMouseEnter={e => { if (!loading) { (e.currentTarget as HTMLButtonElement).style.transform = 'translate(-2px, -2px)'; (e.currentTarget as HTMLButtonElement).style.boxShadow = 'var(--apple-shadow-2)'; } }}
+                onMouseLeave={e => { if (!loading) { (e.currentTarget as HTMLButtonElement).style.transform = 'translate(0, 0)'; (e.currentTarget as HTMLButtonElement).style.boxShadow = 'var(--apple-shadow-2)'; } }}
+                onMouseDown={e => { if (!loading) { (e.currentTarget as HTMLButtonElement).style.transform = 'translate(2px, 2px)'; (e.currentTarget as HTMLButtonElement).style.boxShadow = 'var(--apple-shadow-1)'; } }}
+                onMouseUp={e => { if (!loading) { (e.currentTarget as HTMLButtonElement).style.transform = 'translate(-2px, -2px)'; (e.currentTarget as HTMLButtonElement).style.boxShadow = 'var(--apple-shadow-2)'; } }}
               >
                 {loading ? (
                   <span className="flex items-center justify-center gap-2">

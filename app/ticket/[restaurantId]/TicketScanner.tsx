@@ -1061,7 +1061,7 @@ export default function TicketScanner({
               <p style={{ color: '#9A3412', fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 4 }}>
                 Tu código
               </p>
-              <p style={{ color: '#1C1917', fontSize: 28, fontWeight: 900, fontFamily: 'monospace', letterSpacing: '0.12em', margin: 0 }}>
+              <p style={{ color: 'var(--apple-label)', fontSize: 28, fontWeight: 900, fontFamily: 'monospace', letterSpacing: '0.12em', margin: 0 }}>
                 {cons.code}
               </p>
             </div>
@@ -1142,7 +1142,7 @@ export default function TicketScanner({
                 padding: '16px',
                 borderRadius: 14,
                 background: '#EA580C',
-                color: '#1C1917',
+                color: 'var(--apple-label)',
                 fontWeight: 800,
                 fontSize: btnFontSize,
                 border: 'none',
@@ -1363,7 +1363,7 @@ export default function TicketScanner({
             <p style={{ color: '#9A3412', fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 4 }}>
               Tu código de consolación
             </p>
-            <p style={{ color: '#1C1917', fontSize: 32, fontWeight: 900, fontFamily: 'monospace', letterSpacing: '0.1em', margin: 0 }}>
+            <p style={{ color: 'var(--apple-label)', fontSize: 32, fontWeight: 900, fontFamily: 'monospace', letterSpacing: '0.1em', margin: 0 }}>
               {consolationFolio}
             </p>
           </div>

@@ -255,7 +255,7 @@ export default function ImportarPage() {
             <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">Importar Premios</h1>
             <p className="text-orange-200/70 mt-1.5 text-sm">Sube un archivo con multiples premios y genéralos en un solo paso.</p>
           </div>
-          <Link href="/admin/generate" className="flex items-center gap-2 font-bold px-5 py-3 rounded-xl text-sm" style={{ background: 'white', color: '#C2410C', boxShadow: '0 4px 16px rgba(0,0,0,0.15)' }}>
+          <Link href="/admin/generate" className="flex items-center gap-2 font-bold px-5 py-3 rounded-xl text-sm" style={{ background: 'var(--apple-bg-2)', color: '#C2410C', boxShadow: '0 4px 16px rgba(0,0,0,0.15)' }}>
             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>

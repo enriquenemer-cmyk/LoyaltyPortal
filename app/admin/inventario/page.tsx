@@ -5,6 +5,7 @@ import { useEffect, useState, useMemo, useCallback } from 'react';
 import Link from 'next/link';
 import { EmptyState } from '@/app/components/EmptyState';
 import HorizontalBarList from '@/app/components/HorizontalBarList';
+import WeekdayBarChart from '@/app/components/WeekdayBarChart';
 import UnitQRLabel from './UnitQRLabel';
 import { useToast } from '@/app/components/Toast';
 
@@ -1377,7 +1378,7 @@ export default function InventarioPage() {
   const [codeInput, setCodeInput] = useState('');
   const [savingCode, setSavingCode] = useState(false);
   const [wasteLog, setWasteLog] = useState<WasteItem[]>([]);
-  const [wasteSummary, setWasteSummary] = useState<{ total_cost: number; by_reason: Record<string, { count: number; cost: number }> }>({ total_cost: 0, by_reason: {} });
+  const [wasteSummary, setWasteSummary] = useState<{ total_cost: number; by_reason: Record<string, { count: number; cost: number }>; by_week: { week_start: string; cost: number; count: number }[] }>({ total_cost: 0, by_reason: {}, by_week: [] });
   const [wasteModal, setWasteModal] = useState<{ product: InventoryProduct | null } | null>(null);
 
   const fetchProducts = useCallback(async () => {
@@ -1430,7 +1431,7 @@ export default function InventarioPage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
       setWasteLog(data.waste ?? []);
-      setWasteSummary(data.summary ?? { total_cost: 0, by_reason: {} });
+      setWasteSummary(data.summary ?? { total_cost: 0, by_reason: {}, by_week: [] });
     } catch {
       // non-critical
     }
@@ -1581,7 +1582,7 @@ export default function InventarioPage() {
             <button
               onClick={() => setShowNewProduct(true)}
               className="flex items-center gap-2 font-bold px-5 py-3 rounded-xl text-sm transition-all"
-              style={{ background: 'white', color: '#F97316', boxShadow: '0 4px 16px rgba(0,0,0,0.15)' }}
+              style={{ background: 'var(--apple-bg-2)', color: '#F97316', boxShadow: '0 4px 16px rgba(0,0,0,0.15)' }}
             >
               + Nuevo Producto
             </button>
@@ -1930,6 +1931,19 @@ export default function InventarioPage() {
                   </div>
                 ))}
             </div>
+
+            {wasteSummary.by_week.length > 0 && (
+              <div className="bg-white rounded-2xl border border-[#E8E3DC] p-5 mb-5">
+                <p className="text-xs font-bold text-stone-400 uppercase tracking-widest mb-3">Tendencia de merma (últimas 8 semanas)</p>
+                <WeekdayBarChart
+                  data={wasteSummary.by_week.map((w) => ({
+                    label: new Date(w.week_start).toLocaleDateString('es-MX', { day: '2-digit', month: 'short' }),
+                    value: w.cost,
+                  }))}
+                  formatValue={(v) => fmtPrice(v)}
+                />
+              </div>
+            )}
 
             <div className="flex justify-end mb-4">
               <button

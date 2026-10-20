@@ -16,6 +16,7 @@ type Employee = {
   hourly_rate: number | null;
   scheduled_hours_per_day: number | null;
   scheduled_start_time: string | null;
+  commission_pct: number | null;
   created_at: string;
 };
 
@@ -154,11 +155,12 @@ export default function FichajesPage() {
 
   const [showForm, setShowForm] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  const [form, setForm] = useState({ full_name: '', pin: '', position: '', hourly_rate: '', scheduled_hours_per_day: '8', scheduled_start_time: '09:00' });
+  const [form, setForm] = useState({ full_name: '', pin: '', position: '', hourly_rate: '', scheduled_hours_per_day: '8', scheduled_start_time: '09:00', commission_pct: '' });
   const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
   const [detailRate, setDetailRate] = useState('');
   const [detailHours, setDetailHours] = useState('');
   const [detailStartTime, setDetailStartTime] = useState('');
+  const [detailCommission, setDetailCommission] = useState('');
   const [savingDetail, setSavingDetail] = useState(false);
 
   const [resettingId, setResettingId] = useState<string | null>(null);
@@ -237,13 +239,14 @@ export default function FichajesPage() {
           hourly_rate: form.hourly_rate ? Number(form.hourly_rate) : null,
           scheduled_hours_per_day: form.scheduled_hours_per_day ? Number(form.scheduled_hours_per_day) : null,
           scheduled_start_time: form.scheduled_start_time || null,
+          commission_pct: form.commission_pct ? Number(form.commission_pct) : null,
         }),
       });
       const data = await res.json();
       if (!res.ok) {
         setError(data.error ?? 'Error al crear empleado.');
       } else {
-        setForm({ full_name: '', pin: '', position: '', hourly_rate: '', scheduled_hours_per_day: '8', scheduled_start_time: '09:00' });
+        setForm({ full_name: '', pin: '', position: '', hourly_rate: '', scheduled_hours_per_day: '8', scheduled_start_time: '09:00', commission_pct: '' });
         setShowForm(false);
         await loadEmployees();
         setSuccess('Empleado creado exitosamente.');
@@ -313,6 +316,7 @@ export default function FichajesPage() {
           hourly_rate: detailRate ? Number(detailRate) : null,
           scheduled_hours_per_day: detailHours ? Number(detailHours) : null,
           scheduled_start_time: detailStartTime || null,
+          commission_pct: detailCommission ? Number(detailCommission) : null,
         }),
       });
       const data = await res.json();
@@ -408,7 +412,7 @@ export default function FichajesPage() {
             <button
               onClick={() => { setShowForm((v) => !v); setError(null); }}
               className="flex items-center gap-2 font-bold px-5 py-3 rounded-xl text-sm"
-              style={{ background: 'white', color: '#111111', boxShadow: '0 4px 16px rgba(0,0,0,0.15)' }}
+              style={{ background: 'var(--apple-bg-2)', color: 'var(--apple-label)', boxShadow: '0 4px 16px rgba(0,0,0,0.15)' }}
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -525,6 +529,21 @@ export default function FichajesPage() {
               </div>
               <div>
                 <label className="block text-xs font-semibold text-stone-500 uppercase tracking-wide mb-1.5">
+                  Comisión por venta % <span className="normal-case font-normal text-stone-400">(opcional)</span>
+                </label>
+                <input
+                  type="number"
+                  min={0}
+                  max={100}
+                  step="any"
+                  value={form.commission_pct}
+                  onChange={(e) => setForm((f) => ({ ...f, commission_pct: e.target.value }))}
+                  placeholder="Ej. 5"
+                  className="w-full border border-[#E8E3DC] rounded-xl px-3 py-2.5 text-sm text-[#1C1917] placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-[#F97316]/30 focus:border-[#F97316] transition-colors"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-stone-500 uppercase tracking-wide mb-1.5">
                   Horas programadas al día
                 </label>
                 <input
@@ -604,6 +623,7 @@ export default function FichajesPage() {
                             setDetailRate(emp.hourly_rate != null ? String(emp.hourly_rate) : '');
                             setDetailHours(emp.scheduled_hours_per_day != null ? String(emp.scheduled_hours_per_day) : '');
                             setDetailStartTime(emp.scheduled_start_time ? emp.scheduled_start_time.slice(0, 5) : '');
+                            setDetailCommission(emp.commission_pct != null ? String(emp.commission_pct) : '');
                           }}
                           className="hover:text-[#F97316] hover:underline transition-colors text-left"
                         >
@@ -878,6 +898,19 @@ export default function FichajesPage() {
                     value={detailHours}
                     onChange={(e) => setDetailHours(e.target.value)}
                     placeholder="Ej. 8"
+                    className="w-full border border-[#E8E3DC] rounded-lg px-2.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#F97316]/30 focus:border-[#F97316]"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[11px] font-semibold text-stone-400 mb-1">Comisión por venta %</label>
+                  <input
+                    type="number"
+                    min={0}
+                    max={100}
+                    step="any"
+                    value={detailCommission}
+                    onChange={(e) => setDetailCommission(e.target.value)}
+                    placeholder="Ej. 5"
                     className="w-full border border-[#E8E3DC] rounded-lg px-2.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#F97316]/30 focus:border-[#F97316]"
                   />
                 </div>

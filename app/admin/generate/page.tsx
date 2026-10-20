@@ -832,7 +832,7 @@ function GenerateForm() {
                             borderRadius: 16,
                             overflow: 'hidden',
                             cursor: 'pointer',
-                            background: '#fff',
+                            background: 'var(--apple-bg-2)',
                             textAlign: 'left',
                             position: 'relative',
                           }}
@@ -848,7 +848,7 @@ function GenerateForm() {
                           </div>
                           {/* Content */}
                           <div style={{ padding: '10px 12px 12px' }}>
-                            <p style={{ fontSize: 13, fontWeight: 700, color: '#111111', lineHeight: 1.3, marginBottom: 3 }}>{tpl.name}</p>
+                            <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--apple-label)', lineHeight: 1.3, marginBottom: 3 }}>{tpl.name}</p>
                             <p style={{ fontSize: 11, color: '#6b7280', lineHeight: 1.4 }}>{tpl.short}</p>
                           </div>
                           {active && (
@@ -875,7 +875,7 @@ function GenerateForm() {
                         borderRadius: 16,
                         overflow: 'hidden',
                         cursor: 'pointer',
-                        background: '#fff',
+                        background: 'var(--apple-bg-2)',
                         textAlign: 'left',
                         position: 'relative',
                       }}
@@ -887,7 +887,7 @@ function GenerateForm() {
                         <PencilIcon style={{ width: 28, height: 28, color: '#F97316', position: 'relative', zIndex: 1 }} aria-hidden="true" />
                       </div>
                       <div style={{ padding: '10px 12px 12px' }}>
-                        <p style={{ fontSize: 13, fontWeight: 700, color: '#111111', lineHeight: 1.3, marginBottom: 3 }}>Personalizado</p>
+                        <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--apple-label)', lineHeight: 1.3, marginBottom: 3 }}>Personalizado</p>
                         <p style={{ fontSize: 11, color: '#6b7280', lineHeight: 1.4 }}>Crea desde cero</p>
                       </div>
                       {selectedTemplate === 'custom' && (

@@ -41,12 +41,12 @@ export default function ActivationCountdown({ activateAt, children }: Props) {
   if (remaining > 0) {
     return (
       <div style={{
-        background: 'white', borderRadius: 28, padding: 40, textAlign: 'center',
+        background: 'var(--apple-bg-2)', borderRadius: 28, padding: 40, textAlign: 'center',
         maxWidth: 360, width: '100%', boxShadow: '0 8px 40px rgba(0,0,0,0.08)',
         margin: '0 auto',
       }}>
         <div style={{ fontSize: 52, marginBottom: 16 }}>⏳</div>
-        <h2 style={{ fontSize: 20, fontWeight: 900, color: '#111', marginBottom: 8 }}>
+        <h2 style={{ fontSize: 20, fontWeight: 900, color: 'var(--apple-label)', marginBottom: 8 }}>
           Premio próximamente
         </h2>
         <p style={{ color: '#555', fontSize: 14, lineHeight: 1.6, marginBottom: 20 }}>

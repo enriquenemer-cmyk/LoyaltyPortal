@@ -33,7 +33,7 @@ export default async function ReferidosAdminPage() {
   const gradient = 'linear-gradient(135deg, #F97316 0%, #EA580C 100%)';
 
   const card: React.CSSProperties = {
-    background: 'white',
+    background: 'var(--apple-bg-2)',
     border: '1px solid #E2E8F0',
     borderRadius: 16,
     padding: '20px 24px',
@@ -179,7 +179,7 @@ export default async function ReferidosAdminPage() {
                         data-link={referralLink}
                         title="Copiar link de referido"
                         style={{
-                          padding: '5px 8px', borderRadius: 7, background: 'white',
+                          padding: '5px 8px', borderRadius: 7, background: 'var(--apple-bg-2)',
                           border: '1px solid #E2E8F0', flexShrink: 0,
                           display: 'flex', alignItems: 'center',
                         }}
@@ -210,7 +210,7 @@ export default async function ReferidosAdminPage() {
                 {stats.chains.slice(0, 20).map((c, i) => (
                   <div key={i} className="row-hover" style={{
                     display: 'flex', alignItems: 'center', gap: 8,
-                    padding: '9px 4px', background: 'white',
+                    padding: '9px 4px', background: 'var(--apple-bg-2)',
                     borderBottom: i < Math.min(stats.chains.length, 20) - 1 ? '1px solid #F1F5F9' : 'none',
                   }}>
                     <div style={{ minWidth: 0, flex: 1 }}>
@@ -256,7 +256,7 @@ export default async function ReferidosAdminPage() {
                 </thead>
                 <tbody>
                   {stats.chains.map((c, i) => (
-                    <tr key={i} className="row-hover" style={{ borderBottom: '1px solid #F1F5F9', background: 'white' }}>
+                    <tr key={i} className="row-hover" style={{ borderBottom: '1px solid #F1F5F9', background: 'var(--apple-bg-2)' }}>
                       <td style={{ padding: '11px 12px', fontWeight: 700, color: '#1E293B' }}>{c.referrer_name}</td>
                       <td style={{ padding: '11px 12px' }}>
                         <span style={{ background: '#FFF7ED', color: '#F97316', borderRadius: 6, padding: '3px 8px', fontSize: 11, fontFamily: 'monospace', fontWeight: 700, letterSpacing: '0.06em' }}>

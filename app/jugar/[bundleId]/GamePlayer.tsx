@@ -155,7 +155,7 @@ function SlotsGame({
         <div
           key={i}
           className="w-24 h-28 rounded-xl flex items-center justify-center text-center font-bold text-sm border-2"
-          style={{ background: '#FFF7F3', borderColor: '#F97316', color: '#1C1917', padding: 8 }}
+          style={{ background: '#FFF7F3', borderColor: '#F97316', color: 'var(--apple-label)', padding: 8 }}
         >
           <span style={{ lineHeight: 1.3 }}>
             {prizes[idx]?.name ?? '?'}

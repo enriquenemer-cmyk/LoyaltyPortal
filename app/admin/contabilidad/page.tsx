@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useState, useCallback } from 'react';
+import { exportToExcel } from '@/lib/exportExcel';
 
 type Entry = { id: string; date: string; type: string; category: string; amount: string; description: string };
 type DayRow = { date: string; income: string; expense: string };
@@ -150,26 +151,26 @@ export default function ContabilidadPage() {
 
   const inputStyle = { width: '100%', border: '2px solid #d1d5db', borderRadius: 8, padding: '9px 12px', fontSize: 14, boxSizing: 'border-box' as const };
   const labelStyle = { fontSize: 12, fontWeight: 700 as const, color: '#374151', display: 'block' as const, marginBottom: 4 };
-  const cardStyle = { background: 'white', border: '2px solid #111', borderRadius: 12, padding: 20, boxShadow: '4px 4px 0 #111' };
+  const cardStyle = { background: 'var(--apple-bg-2)', border: '0.5px solid var(--apple-sep)', borderRadius: 12, padding: 20, boxShadow: 'var(--apple-shadow-2)' };
 
   return (
     <div style={{ padding: '24px', maxWidth: 1100, margin: '0 auto' }}>
       {/* Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20, flexWrap: 'wrap', gap: 12 }}>
         <div>
-          <h1 style={{ fontSize: 26, fontWeight: 900, color: '#111', margin: 0 }}>Contabilidad</h1>
+          <h1 style={{ fontSize: 26, fontWeight: 900, color: 'var(--apple-label)', margin: 0 }}>Contabilidad</h1>
           <p style={{ fontSize: 13, color: '#6b7280', margin: '4px 0 0' }}>Ingresos, gastos y margen en tiempo real</p>
         </div>
         <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
           {(['week', 'month', 'year'] as const).map(p => (
             <button key={p} onClick={() => setPeriod(p)} style={{
-              padding: '7px 14px', borderRadius: 8, border: '2px solid #111', cursor: 'pointer', fontWeight: 700, fontSize: 12,
+              padding: '7px 14px', borderRadius: 8, border: '0.5px solid var(--apple-sep)', cursor: 'pointer', fontWeight: 700, fontSize: 12,
               background: period === p ? '#111' : 'white', color: period === p ? 'white' : '#111',
             }}>{p === 'week' ? '7d' : p === 'month' ? '30d' : '1 año'}</button>
           ))}
           <button onClick={exportCSV} style={{ padding: '7px 14px', borderRadius: 8, border: '2px solid #16a34a', background: '#f0fdf4', color: '#16a34a', fontWeight: 700, fontSize: 12, cursor: 'pointer' }}>⬇ CSV</button>
           <button onClick={downloadBackup} title="Descarga todos tus datos como respaldo" style={{ padding: '7px 14px', borderRadius: 8, border: '2px solid #7c3aed', background: '#f5f3ff', color: '#7c3aed', fontWeight: 700, fontSize: 12, cursor: 'pointer' }}>💾 Respaldo</button>
-          <button onClick={() => setShowForm(true)} style={{ padding: '7px 16px', borderRadius: 8, border: '2px solid #111', background: '#F97316', color: 'white', fontWeight: 800, fontSize: 12, cursor: 'pointer', boxShadow: '3px 3px 0 #111' }}>+ Registrar</button>
+          <button onClick={() => setShowForm(true)} style={{ padding: '7px 16px', borderRadius: 8, border: '0.5px solid var(--apple-sep)', background: '#F97316', color: 'white', fontWeight: 800, fontSize: 12, cursor: 'pointer', boxShadow: 'var(--apple-shadow-1)' }}>+ Registrar</button>
         </div>
       </div>
 
@@ -184,7 +185,7 @@ export default function ContabilidadPage() {
         ].map(t => (
           <button key={t.key} onClick={() => setTab(t.key as typeof tab)} style={{
             padding: '8px 16px', borderRadius: 8, border: 'none', cursor: 'pointer', fontWeight: 700, fontSize: 12,
-            background: tab === t.key ? 'white' : 'transparent', color: '#111',
+            background: tab === t.key ? 'white' : 'transparent', color: 'var(--apple-label)',
             boxShadow: tab === t.key ? '0 1px 4px rgba(0,0,0,.1)' : 'none',
           }}>{t.label}</button>
         ))}
@@ -247,7 +248,7 @@ export default function ContabilidadPage() {
             <div style={{ fontWeight: 800, fontSize: 13, marginBottom: 12 }}>Últimos movimientos</div>
             <div style={{ overflowX: 'auto' }}>
               <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
-                <thead><tr style={{ borderBottom: '2px solid #111' }}>
+                <thead><tr style={{ borderBottom: '0.5px solid var(--apple-sep)' }}>
                   {['Fecha','Tipo','Categoría','Descripción','Monto'].map(h => (
                     <th key={h} style={{ textAlign: 'left', padding: '7px 10px', fontWeight: 800, fontSize: 10, color: '#6b7280', textTransform: 'uppercase' }}>{h}</th>
                   ))}
@@ -322,7 +323,20 @@ export default function ContabilidadPage() {
       {/* ── CORTE DE CAJA ── */}
       {tab === 'corte' && (
         <div>
-          <div style={{ fontWeight: 700, fontSize: 13, color: '#6b7280', marginBottom: 16 }}>Corte del día: {corte?.date ?? '—'}</div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16, flexWrap: 'wrap', gap: 8 }}>
+            <div style={{ fontWeight: 700, fontSize: 13, color: '#6b7280' }}>Corte del día: {corte?.date ?? '—'}</div>
+            <button
+              onClick={() => corte && exportToExcel(`arqueo-${corte.date}`, 'Arqueo', [
+                { Fecha: corte.date, 'Ingresos hoy': corte.income, 'Gastos hoy': corte.expense, 'Efectivo neto': corte.net, 'Ventas POS': corte.pos_total, Transacciones: corte.pos_sales, 'Canjes hoy': corte.claims_today },
+                ...corte.by_payment_method.map(m => ({ Fecha: '', 'Método de pago': m.method, Total: parseFloat(m.total), Ventas: m.count })),
+                ...(corte.cash_cut ? [{ Fecha: '', 'Efectivo esperado': parseFloat(corte.cash_cut.system_cash), 'Efectivo contado': parseFloat(corte.cash_cut.counted_cash), Diferencia: parseFloat(corte.cash_cut.difference) }] : []),
+              ])}
+              disabled={!corte}
+              style={{ padding: '7px 14px', border: '0.5px solid var(--apple-sep)', borderRadius: 8, background: 'var(--apple-bg-2)', fontWeight: 800, fontSize: 12, cursor: 'pointer', boxShadow: 'var(--apple-shadow-1)' }}
+            >
+              ⬇ Excel
+            </button>
+          </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(180px,1fr))', gap: 14, marginBottom: 20 }}>
             {[
               { label: 'Ingresos hoy', value: corte?.income ?? 0, color: '#16a34a', icon: '📈' },
@@ -397,7 +411,7 @@ export default function ContabilidadPage() {
                   <button
                     onClick={cerrarCorte}
                     disabled={closingCorte}
-                    style={{ padding: '9px 18px', border: '2px solid #111', borderRadius: 8, background: '#F97316', color: 'white', fontWeight: 800, fontSize: 13, cursor: 'pointer', boxShadow: '3px 3px 0 #111' }}
+                    style={{ padding: '9px 18px', border: '0.5px solid var(--apple-sep)', borderRadius: 8, background: '#F97316', color: 'white', fontWeight: 800, fontSize: 13, cursor: 'pointer', boxShadow: 'var(--apple-shadow-1)' }}
                   >
                     {closingCorte ? 'Cerrando...' : 'Cerrar corte del día'}
                   </button>
@@ -450,7 +464,7 @@ export default function ContabilidadPage() {
         <div>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
             <div style={{ fontWeight: 700, fontSize: 13, color: '#6b7280' }}>Presupuesto mes actual vs Real</div>
-            <button onClick={() => setShowBudgetForm(true)} style={{ padding: '7px 14px', border: '2px solid #111', borderRadius: 8, background: '#F97316', color: 'white', fontWeight: 800, fontSize: 12, cursor: 'pointer', boxShadow: '3px 3px 0 #111' }}>+ Agregar</button>
+            <button onClick={() => setShowBudgetForm(true)} style={{ padding: '7px 14px', border: '0.5px solid var(--apple-sep)', borderRadius: 8, background: '#F97316', color: 'white', fontWeight: 800, fontSize: 12, cursor: 'pointer', boxShadow: 'var(--apple-shadow-1)' }}>+ Agregar</button>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
             {budget.map(b => {
@@ -485,12 +499,12 @@ export default function ContabilidadPage() {
       {/* Modal: registrar movimiento */}
       {showForm && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20 }}>
-          <div style={{ background: 'white', border: '2px solid #111', borderRadius: 14, padding: 28, width: '100%', maxWidth: 440, boxShadow: '6px 6px 0 #111' }}>
+          <div style={{ background: 'var(--apple-bg-2)', border: '0.5px solid var(--apple-sep)', borderRadius: 14, padding: 28, width: '100%', maxWidth: 440, boxShadow: 'var(--apple-shadow-2)' }}>
             <h2 style={{ fontWeight: 900, fontSize: 18, margin: '0 0 18px' }}>Registrar movimiento</h2>
             <div style={{ display: 'flex', gap: 10, marginBottom: 14 }}>
               {(['expense', 'income'] as const).map(t => (
                 <button key={t} onClick={() => setForm(f => ({ ...f, type: t, category: t === 'expense' ? 'compra_proveedor' : 'venta' }))} style={{
-                  flex: 1, padding: '9px 0', borderRadius: 8, border: '2px solid #111', fontWeight: 800, fontSize: 13, cursor: 'pointer',
+                  flex: 1, padding: '9px 0', borderRadius: 8, border: '0.5px solid var(--apple-sep)', fontWeight: 800, fontSize: 13, cursor: 'pointer',
                   background: form.type === t ? (t === 'income' ? '#dcfce7' : '#fee2e2') : 'white',
                   color: form.type === t ? (t === 'income' ? '#16a34a' : '#dc2626') : '#111',
                 }}>{t === 'income' ? '📈 Ingreso' : '📉 Gasto'}</button>
@@ -504,13 +518,13 @@ export default function ContabilidadPage() {
             ))}
             <div style={{ marginBottom: 16 }}>
               <label style={labelStyle}>Categoría</label>
-              <select value={form.category} onChange={e => setForm(f => ({ ...f, category: e.target.value }))} style={{ ...inputStyle, background: 'white' }}>
+              <select value={form.category} onChange={e => setForm(f => ({ ...f, category: e.target.value }))} style={{ ...inputStyle, background: 'var(--apple-bg-2)' }}>
                 {(form.type === 'expense' ? EXPENSE_CATEGORIES : INCOME_CATEGORIES).map(c => <option key={c} value={c}>{CATEGORY_LABELS[c] ?? c}</option>)}
               </select>
             </div>
             <div style={{ display: 'flex', gap: 10 }}>
-              <button onClick={() => setShowForm(false)} style={{ flex: 1, padding: '10px 0', borderRadius: 8, border: '2px solid #d1d5db', background: 'white', fontWeight: 700, cursor: 'pointer' }}>Cancelar</button>
-              <button onClick={saveEntry} disabled={saving} style={{ flex: 2, padding: '10px 0', borderRadius: 8, border: '2px solid #111', background: '#F97316', color: 'white', fontWeight: 800, cursor: 'pointer', boxShadow: '3px 3px 0 #111' }}>{saving ? 'Guardando...' : 'Guardar'}</button>
+              <button onClick={() => setShowForm(false)} style={{ flex: 1, padding: '10px 0', borderRadius: 8, border: '2px solid #d1d5db', background: 'var(--apple-bg-2)', fontWeight: 700, cursor: 'pointer' }}>Cancelar</button>
+              <button onClick={saveEntry} disabled={saving} style={{ flex: 2, padding: '10px 0', borderRadius: 8, border: '0.5px solid var(--apple-sep)', background: '#F97316', color: 'white', fontWeight: 800, cursor: 'pointer', boxShadow: 'var(--apple-shadow-1)' }}>{saving ? 'Guardando...' : 'Guardar'}</button>
             </div>
           </div>
         </div>
@@ -519,11 +533,11 @@ export default function ContabilidadPage() {
       {/* Modal: presupuesto */}
       {showBudgetForm && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20 }}>
-          <div style={{ background: 'white', border: '2px solid #111', borderRadius: 14, padding: 28, width: '100%', maxWidth: 380, boxShadow: '6px 6px 0 #111' }}>
+          <div style={{ background: 'var(--apple-bg-2)', border: '0.5px solid var(--apple-sep)', borderRadius: 14, padding: 28, width: '100%', maxWidth: 380, boxShadow: 'var(--apple-shadow-2)' }}>
             <h2 style={{ fontWeight: 900, fontSize: 18, margin: '0 0 18px' }}>Agregar presupuesto</h2>
             <div style={{ marginBottom: 12 }}>
               <label style={labelStyle}>Categoría</label>
-              <select value={budgetForm.category} onChange={e => setBudgetForm(f => ({ ...f, category: e.target.value }))} style={{ ...inputStyle, background: 'white' }}>
+              <select value={budgetForm.category} onChange={e => setBudgetForm(f => ({ ...f, category: e.target.value }))} style={{ ...inputStyle, background: 'var(--apple-bg-2)' }}>
                 {EXPENSE_CATEGORIES.map(c => <option key={c} value={c}>{CATEGORY_LABELS[c] ?? c}</option>)}
               </select>
             </div>
@@ -532,8 +546,8 @@ export default function ContabilidadPage() {
               <input type="number" step="0.01" value={budgetForm.budgeted} onChange={e => setBudgetForm(f => ({ ...f, budgeted: e.target.value }))} style={inputStyle} placeholder="0.00" />
             </div>
             <div style={{ display: 'flex', gap: 10 }}>
-              <button onClick={() => setShowBudgetForm(false)} style={{ flex: 1, padding: '10px 0', borderRadius: 8, border: '2px solid #d1d5db', background: 'white', fontWeight: 700, cursor: 'pointer' }}>Cancelar</button>
-              <button onClick={saveBudget} disabled={saving} style={{ flex: 2, padding: '10px 0', borderRadius: 8, border: '2px solid #111', background: '#F97316', color: 'white', fontWeight: 800, cursor: 'pointer', boxShadow: '3px 3px 0 #111' }}>{saving ? 'Guardando...' : 'Guardar'}</button>
+              <button onClick={() => setShowBudgetForm(false)} style={{ flex: 1, padding: '10px 0', borderRadius: 8, border: '2px solid #d1d5db', background: 'var(--apple-bg-2)', fontWeight: 700, cursor: 'pointer' }}>Cancelar</button>
+              <button onClick={saveBudget} disabled={saving} style={{ flex: 2, padding: '10px 0', borderRadius: 8, border: '0.5px solid var(--apple-sep)', background: '#F97316', color: 'white', fontWeight: 800, cursor: 'pointer', boxShadow: 'var(--apple-shadow-1)' }}>{saving ? 'Guardando...' : 'Guardar'}</button>
             </div>
           </div>
         </div>

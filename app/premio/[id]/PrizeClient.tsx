@@ -131,14 +131,14 @@ export default function PrizeClient({ prize, claimCount, weeklyCount, daysLeft }
         <div style={{ maxWidth: 440, margin: '0 auto', padding: '20px 16px 60px' }}>
 
           {/* Info card */}
-          <div className="s2" style={{ background: 'white', borderRadius: 24, border: '1px solid #E8E3DC', overflow: 'hidden', marginBottom: 14, boxShadow: '0 2px 16px rgba(28,25,23,0.07)' }}>
+          <div className="s2" style={{ background: 'var(--apple-bg-2)', borderRadius: 24, border: '1px solid #E8E3DC', overflow: 'hidden', marginBottom: 14, boxShadow: '0 2px 16px rgba(28,25,23,0.07)' }}>
 
             {prize.reason && (
               <div style={{ padding: '18px 20px', borderBottom: '1px solid #F0EDE8', display: 'flex', alignItems: 'flex-start', gap: 14 }}>
                 <div style={{ width: 42, height: 42, borderRadius: 14, background: '#FFF7ED', border: '1px solid #FED7AA', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, flexShrink: 0 }}><TrophyIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
                 <div>
                   <p style={{ color: '#F97316', fontSize: 10, fontWeight: 800, letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: 4 }}>Por qué lo ganaste</p>
-                  <p style={{ color: '#1C1917', fontSize: 14, fontWeight: 600, lineHeight: 1.5, margin: 0 }}>{prize.reason}</p>
+                  <p style={{ color: 'var(--apple-label)', fontSize: 14, fontWeight: 600, lineHeight: 1.5, margin: 0 }}>{prize.reason}</p>
                 </div>
               </div>
             )}
@@ -166,7 +166,7 @@ export default function PrizeClient({ prize, claimCount, weeklyCount, daysLeft }
                 <div key={label} style={{ padding: '16px 18px', textAlign: 'center', borderRight: i === 0 ? '1px solid #F0EDE8' : 'none' }}>
                   <span style={{ fontSize: 20 }}>{icon}</span>
                   <p style={{ color: '#a8a29e', fontSize: 10, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', margin: '6px 0 3px' }}>{label}</p>
-                  <p style={{ color: '#1C1917', fontSize: 12, fontWeight: 700, lineHeight: 1.4, margin: 0 }}>{val}</p>
+                  <p style={{ color: 'var(--apple-label)', fontSize: 12, fontWeight: 700, lineHeight: 1.4, margin: 0 }}>{val}</p>
                 </div>
               ))}
             </div>
@@ -180,17 +180,17 @@ export default function PrizeClient({ prize, claimCount, weeklyCount, daysLeft }
           {/* Claim / Already claimed */}
           <div className="s4">
             {alreadyClaimed ? (
-              <div style={{ background: 'white', borderRadius: 24, padding: '32px 24px', textAlign: 'center', boxShadow: '0 2px 16px rgba(28,25,23,0.07)', border: '1px solid #fecaca' }}>
+              <div style={{ background: 'var(--apple-bg-2)', borderRadius: 24, padding: '32px 24px', textAlign: 'center', boxShadow: '0 2px 16px rgba(28,25,23,0.07)', border: '1px solid #fecaca' }}>
                 <div style={{ width: 56, height: 56, borderRadius: '50%', background: '#fef2f2', border: '2px solid #fecaca', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
                   <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
                   </svg>
                 </div>
-                <h3 style={{ fontSize: 18, fontWeight: 900, color: '#1C1917', marginBottom: 8 }}>QR ya utilizado</h3>
-                <p style={{ color: '#78716c', fontSize: 14, lineHeight: 1.6, margin: 0 }}>Cada premio se canjea <strong style={{ color: '#1C1917' }}>una sola vez</strong>.</p>
+                <h3 style={{ fontSize: 18, fontWeight: 900, color: 'var(--apple-label)', marginBottom: 8 }}>QR ya utilizado</h3>
+                <p style={{ color: '#78716c', fontSize: 14, lineHeight: 1.6, margin: 0 }}>Cada premio se canjea <strong style={{ color: 'var(--apple-label)' }}>una sola vez</strong>.</p>
               </div>
             ) : (
-              <div style={{ background: 'white', borderRadius: 24, boxShadow: '0 2px 16px rgba(28,25,23,0.07)', border: '1px solid #E8E3DC', overflow: 'hidden' }}>
+              <div style={{ background: 'var(--apple-bg-2)', borderRadius: 24, boxShadow: '0 2px 16px rgba(28,25,23,0.07)', border: '1px solid #E8E3DC', overflow: 'hidden' }}>
                 {/* Form header */}
                 <div style={{ background: '#FAFAF9', padding: '18px 22px', borderBottom: '1px solid #E8E3DC' }}>
                   {/* Stepper */}
@@ -211,7 +211,7 @@ export default function PrizeClient({ prize, claimCount, weeklyCount, daysLeft }
                       </div>
                     ))}
                   </div>
-                  <h2 style={{ fontSize: 18, fontWeight: 900, color: '#1C1917', margin: '0 0 3px' }}>Regístrate para cobrar</h2>
+                  <h2 style={{ fontSize: 18, fontWeight: 900, color: 'var(--apple-label)', margin: '0 0 3px' }}>Regístrate para cobrar</h2>
                   <p style={{ color: '#78716c', fontSize: 13, margin: 0 }}>Solo tu nombre, teléfono y correo</p>
                 </div>
 

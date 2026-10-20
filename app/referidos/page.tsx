@@ -214,7 +214,7 @@ function ReferidosContent() {
       <div style={{ maxWidth: 600, margin: '-40px auto 0', padding: '0 16px 80px', position: 'relative', zIndex: 2 }}>
 
         {/* ── REFERRAL LINK CARD ── */}
-        <div style={{ background: 'white', borderRadius: 20, padding: 28, boxShadow: '0 8px 40px rgba(249,115,22,0.14)', marginBottom: 16, animation: 'fadeUp 0.5s ease 0.2s both' }}>
+        <div style={{ background: 'var(--apple-bg-2)', borderRadius: 20, padding: 28, boxShadow: '0 8px 40px rgba(249,115,22,0.14)', marginBottom: 16, animation: 'fadeUp 0.5s ease 0.2s both' }}>
           <p style={{ fontSize: 11, fontWeight: 700, color: '#94A3B8', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 10 }}>Tu link único</p>
           <div style={{ background: '#F0F9FF', border: '1.5px solid #FED7AA', borderRadius: 12, padding: '12px 14px', marginBottom: 14, display: 'flex', alignItems: 'center', gap: 8, overflow: 'hidden' }}>
             <svg width="15" height="15" fill="none" viewBox="0 0 24 24" style={{ flexShrink: 0 }}>
@@ -253,18 +253,18 @@ function ReferidosContent() {
 
         {/* ── STATS ── */}
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 16, animation: 'fadeUp 0.5s ease 0.25s both' }}>
-          <div style={{ background: 'white', borderRadius: 16, padding: '20px 16px', boxShadow: '0 2px 16px rgba(0,0,0,0.05)', textAlign: 'center' }}>
+          <div style={{ background: 'var(--apple-bg-2)', borderRadius: 16, padding: '20px 16px', boxShadow: '0 2px 16px rgba(0,0,0,0.05)', textAlign: 'center' }}>
             <p style={{ fontSize: 42, fontWeight: 900, color: '#F97316', lineHeight: 1, marginBottom: 4 }}>{data?.count ?? 0}</p>
             <p style={{ fontSize: 12, color: '#64748B', fontWeight: 600 }}>Amigos invitados</p>
           </div>
-          <div style={{ background: 'white', borderRadius: 16, padding: '20px 16px', boxShadow: '0 2px 16px rgba(0,0,0,0.05)', textAlign: 'center' }}>
+          <div style={{ background: 'var(--apple-bg-2)', borderRadius: 16, padding: '20px 16px', boxShadow: '0 2px 16px rgba(0,0,0,0.05)', textAlign: 'center' }}>
             <p style={{ fontSize: 42, fontWeight: 900, color: '#EA580C', lineHeight: 1, marginBottom: 4 }}>{rewardsEarned}</p>
             <p style={{ fontSize: 12, color: '#64748B', fontWeight: 600 }}>Premios ganados</p>
           </div>
         </div>
 
         {/* ── PROGRESS ── */}
-        <div style={{ background: 'white', borderRadius: 20, padding: 24, boxShadow: '0 2px 16px rgba(0,0,0,0.05)', marginBottom: 16, animation: 'fadeUp 0.5s ease 0.3s both' }}>
+        <div style={{ background: 'var(--apple-bg-2)', borderRadius: 20, padding: 24, boxShadow: '0 2px 16px rgba(0,0,0,0.05)', marginBottom: 16, animation: 'fadeUp 0.5s ease 0.3s both' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
             <div>
               <p style={{ fontSize: 15, fontWeight: 800, color: '#1E293B', marginBottom: 2 }}>Próxima recompensa</p>
@@ -296,7 +296,7 @@ function ReferidosContent() {
         </div>
 
         {/* ── FRIENDS LIST ── */}
-        <div style={{ background: 'white', borderRadius: 20, padding: 24, boxShadow: '0 2px 16px rgba(0,0,0,0.05)', marginBottom: 16, animation: 'fadeUp 0.5s ease 0.35s both' }}>
+        <div style={{ background: 'var(--apple-bg-2)', borderRadius: 20, padding: 24, boxShadow: '0 2px 16px rgba(0,0,0,0.05)', marginBottom: 16, animation: 'fadeUp 0.5s ease 0.35s both' }}>
           <h2 style={{ fontSize: 16, fontWeight: 800, color: '#1E293B', marginBottom: 16, display: 'flex', alignItems: 'center', gap: 8 }}>
             <span><UsersIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></span> Amigos que has invitado
           </h2>
@@ -342,7 +342,7 @@ function ReferidosContent() {
               { icon: '', title: 'Ambos ganan', desc: `Cada ${REWARD_STEP} amigos registrados te dan un premio extra automáticamente.` },
             ].map((item, i) => (
               <div key={i} className="step-card" style={{
-                background: 'white', borderRadius: 16, padding: '18px 20px',
+                background: 'var(--apple-bg-2)', borderRadius: 16, padding: '18px 20px',
                 boxShadow: '0 2px 12px rgba(0,0,0,0.04)',
                 display: 'flex', alignItems: 'flex-start', gap: 14,
               }}>
@@ -371,7 +371,7 @@ function ReferidosContent() {
           </p>
           <div style={{ display: 'flex', gap: 10, justifyContent: 'center', flexWrap: 'wrap' }}>
             <button onClick={handleWhatsApp} className="cta-btn" style={{
-              background: 'white', color: '#15803D',
+              background: 'var(--apple-bg-2)', color: '#15803D',
               borderRadius: 12, padding: '12px 18px', fontWeight: 800, fontSize: 13,
               display: 'flex', alignItems: 'center', gap: 7,
             }}>

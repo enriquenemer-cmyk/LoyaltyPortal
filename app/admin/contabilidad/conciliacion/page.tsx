@@ -21,7 +21,7 @@ function fmtDate(d: string) {
   return new Date(d).toLocaleDateString('es-MX', { day: '2-digit', month: 'short', year: 'numeric' });
 }
 
-const cardStyle = { background: 'white', border: '2px solid #111', borderRadius: 12, padding: 18, boxShadow: '4px 4px 0 #111' } as const;
+const cardStyle = { background: 'var(--apple-bg-2)', border: '0.5px solid var(--apple-sep)', borderRadius: 12, padding: 18, boxShadow: 'var(--apple-shadow-2)' } as const;
 
 export default function ConciliacionPage() {
   const [movimientosPendientes, setMovimientosPendientes] = useState<Movimiento[]>([]);
@@ -188,7 +188,7 @@ export default function ConciliacionPage() {
   return (
     <div style={{ padding: '24px', maxWidth: 1100, margin: '0 auto' }}>
       <div style={{ marginBottom: 24 }}>
-        <h1 style={{ fontSize: 26, fontWeight: 900, color: '#111', margin: 0 }}>🏦 Conciliación Bancaria</h1>
+        <h1 style={{ fontSize: 26, fontWeight: 900, color: 'var(--apple-label)', margin: 0 }}>🏦 Conciliación Bancaria</h1>
         <p style={{ fontSize: 13, color: '#6b7280', margin: '4px 0 0' }}>
           Cruza automáticamente tus compras a proveedores contra los movimientos reales de tu banco, por nombre e importe.
         </p>
@@ -197,7 +197,7 @@ export default function ConciliacionPage() {
       {loadError && (
         <div style={{ background: '#fee2e2', border: '2px solid #dc2626', borderRadius: 8, padding: '10px 14px', marginBottom: 16, display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 10 }}>
           <span style={{ fontSize: 13, color: '#991b1b', fontWeight: 700 }}>{loadError}</span>
-          <button onClick={load} style={{ fontSize: 12, fontWeight: 800, color: '#991b1b', background: 'white', border: '1px solid #dc2626', borderRadius: 6, padding: '4px 10px', cursor: 'pointer' }}>Reintentar</button>
+          <button onClick={load} style={{ fontSize: 12, fontWeight: 800, color: '#991b1b', background: 'var(--apple-bg-2)', border: '1px solid #dc2626', borderRadius: 6, padding: '4px 10px', cursor: 'pointer' }}>Reintentar</button>
         </div>
       )}
       {actionError && (
@@ -222,7 +222,7 @@ export default function ConciliacionPage() {
         <button
           onClick={handleImport}
           disabled={importing || !pasteText.trim()}
-          style={{ marginTop: 10, padding: '8px 18px', border: '2px solid #111', borderRadius: 8, background: '#F97316', color: 'white', fontWeight: 800, fontSize: 13, cursor: 'pointer', boxShadow: '3px 3px 0 #111' }}
+          style={{ marginTop: 10, padding: '8px 18px', border: '0.5px solid var(--apple-sep)', borderRadius: 8, background: '#F97316', color: 'white', fontWeight: 800, fontSize: 13, cursor: 'pointer', boxShadow: 'var(--apple-shadow-1)' }}
         >
           {importing ? 'Importando...' : 'Importar movimientos'}
         </button>
@@ -258,7 +258,7 @@ export default function ConciliacionPage() {
                   <button
                     onClick={() => confirmar(s.compra_id, s.movimiento_id)}
                     disabled={busyId === s.compra_id}
-                    style={{ marginTop: 10, padding: '7px 16px', border: '2px solid #111', borderRadius: 8, background: '#16a34a', color: 'white', fontWeight: 800, fontSize: 12, cursor: 'pointer' }}
+                    style={{ marginTop: 10, padding: '7px 16px', border: '0.5px solid var(--apple-sep)', borderRadius: 8, background: '#16a34a', color: 'white', fontWeight: 800, fontSize: 12, cursor: 'pointer' }}
                   >
                     {busyId === s.compra_id ? 'Confirmando...' : 'Confirmar cruce'}
                   </button>
@@ -285,7 +285,7 @@ export default function ConciliacionPage() {
                     <select
                       value={manualPick[s.compra.id] ?? ''}
                       onChange={(e) => setManualPick((p) => ({ ...p, [s.compra.id]: e.target.value }))}
-                      style={{ flex: 1, border: '2px solid #d1d5db', borderRadius: 8, padding: '7px 10px', fontSize: 12, background: 'white' }}
+                      style={{ flex: 1, border: '2px solid #d1d5db', borderRadius: 8, padding: '7px 10px', fontSize: 12, background: 'var(--apple-bg-2)' }}
                     >
                       <option value="">Elegir movimiento manualmente...</option>
                       {movimientosSinUsar.map((m) => (
@@ -295,7 +295,7 @@ export default function ConciliacionPage() {
                     <button
                       onClick={() => manualPick[s.compra.id] && confirmar(s.compra.id, manualPick[s.compra.id])}
                       disabled={!manualPick[s.compra.id] || busyId === s.compra.id}
-                      style={{ padding: '7px 14px', border: '2px solid #111', borderRadius: 8, background: '#111', color: 'white', fontWeight: 800, fontSize: 12, cursor: 'pointer', whiteSpace: 'nowrap' }}
+                      style={{ padding: '7px 14px', border: '0.5px solid var(--apple-sep)', borderRadius: 8, background: '#111', color: 'white', fontWeight: 800, fontSize: 12, cursor: 'pointer', whiteSpace: 'nowrap' }}
                     >
                       Conciliar
                     </button>
@@ -322,7 +322,7 @@ export default function ConciliacionPage() {
                     <select
                       value={cashCutPick[c.id] ?? ''}
                       onChange={(e) => setCashCutPick((p) => ({ ...p, [c.id]: e.target.value }))}
-                      style={{ flex: 1, border: '2px solid #d1d5db', borderRadius: 8, padding: '7px 10px', fontSize: 12, background: 'white' }}
+                      style={{ flex: 1, border: '2px solid #d1d5db', borderRadius: 8, padding: '7px 10px', fontSize: 12, background: 'var(--apple-bg-2)' }}
                     >
                       <option value="">Elegir movimiento del depósito...</option>
                       {movimientosSinUsar.map((m) => (
@@ -332,7 +332,7 @@ export default function ConciliacionPage() {
                     <button
                       onClick={() => cashCutPick[c.id] && confirmarCaja(c.id, cashCutPick[c.id])}
                       disabled={!cashCutPick[c.id] || busyId === c.id}
-                      style={{ padding: '7px 14px', border: '2px solid #111', borderRadius: 8, background: '#111', color: 'white', fontWeight: 800, fontSize: 12, cursor: 'pointer', whiteSpace: 'nowrap' }}
+                      style={{ padding: '7px 14px', border: '0.5px solid var(--apple-sep)', borderRadius: 8, background: '#111', color: 'white', fontWeight: 800, fontSize: 12, cursor: 'pointer', whiteSpace: 'nowrap' }}
                     >
                       Vincular
                     </button>

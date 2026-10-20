@@ -208,15 +208,15 @@ export default function NotificationBell() {
           className="absolute top-full mt-2 w-80 z-50 overflow-hidden"
           style={{
             left: 0,
-            background: '#fff',
-            border: '2px solid #111',
-            boxShadow: '5px 5px 0 #111',
+            background: 'var(--apple-bg-2)',
+            border: '0.5px solid var(--apple-sep)',
+            boxShadow: 'var(--apple-shadow-2)',
             borderRadius: 16,
             animation: 'comic-pop-in 0.25s cubic-bezier(0.34,1.56,0.64,1) both',
           }}
         >
           {/* Header */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 16px', background: '#111', borderBottom: '2px solid #111' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 16px', background: '#111', borderBottom: '0.5px solid var(--apple-sep)' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
               <BellIcon style={{ width: 14, height: 14, color: '#F97316' }} />
               <span style={{ fontSize: 11, fontWeight: 900, color: '#fff', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Notificaciones</span>
@@ -239,10 +239,10 @@ export default function NotificationBell() {
           <div style={{ maxHeight: 340, overflowY: 'auto' }}>
             {visible.length === 0 ? (
               <div style={{ padding: '32px 16px', textAlign: 'center' }}>
-                <div style={{ width: 48, height: 48, background: '#f5f5f5', border: '2px solid #111', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 12px' }}>
+                <div style={{ width: 48, height: 48, background: '#f5f5f5', border: '0.5px solid var(--apple-sep)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 12px' }}>
                   <BellIcon style={{ width: 22, height: 22, color: '#9ca3af' }} />
                 </div>
-                <p style={{ fontSize: 13, fontWeight: 700, color: '#111', marginBottom: 4 }}>Todo al día</p>
+                <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--apple-label)', marginBottom: 4 }}>Todo al día</p>
                 <p style={{ fontSize: 12, color: '#9ca3af' }}>No hay notificaciones nuevas</p>
               </div>
             ) : (
@@ -264,7 +264,7 @@ export default function NotificationBell() {
                       {typeIcon(n.type)}
                     </span>
                     <div style={{ minWidth: 0, flex: 1 }}>
-                      <p style={{ fontSize: 12, fontWeight: 700, color: '#111', marginBottom: 2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{n.title}</p>
+                      <p style={{ fontSize: 12, fontWeight: 700, color: 'var(--apple-label)', marginBottom: 2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{n.title}</p>
                       <p style={{ fontSize: 11, color: '#6b7280', lineHeight: 1.4, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{n.body}</p>
                       <p style={{ fontSize: 10, color: '#d1d5db', marginTop: 4, fontWeight: 600 }}>{timeAgo(n.created_at)}</p>
                     </div>
@@ -284,7 +284,7 @@ export default function NotificationBell() {
 
           {/* Footer */}
           {count > 8 && (
-            <div style={{ borderTop: '2px solid #111', padding: '10px 16px', textAlign: 'center' }}>
+            <div style={{ borderTop: '0.5px solid var(--apple-sep)', padding: '10px 16px', textAlign: 'center' }}>
               <Link
                 href="/admin/registros"
                 onClick={() => setOpen(false)}

@@ -89,7 +89,7 @@ export default function LicenciasPage() {
     .reduce((s, t) => s + parseFloat(t.monthly_price || '0'), 0);
 
   const btn = (style?: object) => ({
-    border: '2px solid #111', borderRadius: 8, cursor: 'pointer', fontWeight: 700,
+    border: '0.5px solid var(--apple-sep)', borderRadius: 8, cursor: 'pointer', fontWeight: 700,
     fontSize: 13, padding: '8px 16px', ...style,
   });
 
@@ -101,7 +101,7 @@ export default function LicenciasPage() {
           <h1 style={{ fontSize: 26, fontWeight: 800, margin: 0 }}>🔑 Panel de Licencias</h1>
           <p style={{ color: '#666', margin: '4px 0 0', fontSize: 14 }}>Gestiona clientes, planes y accesos</p>
         </div>
-        <button onClick={() => setShowForm(true)} style={{ ...btn({ background: '#F97316', color: '#fff', boxShadow: '3px 3px 0 #111', fontSize: 14, padding: '10px 20px' }) }}>
+        <button onClick={() => setShowForm(true)} style={{ ...btn({ background: '#F97316', color: '#fff', boxShadow: 'var(--apple-shadow-1)', fontSize: 14, padding: '10px 20px' }) }}>
           + Nuevo cliente
         </button>
       </div>
@@ -114,7 +114,7 @@ export default function LicenciasPage() {
           { label: 'Bloqueados', value: tenants.filter(t => t.billing_status === 'blocked').length, color: '#dc2626' },
           { label: 'MRR estimado', value: `$${totalMRR.toLocaleString('es-MX')}`, color: '#7c3aed' },
         ].map(k => (
-          <div key={k.label} style={{ background: '#fff', border: '2px solid #111', borderRadius: 12, boxShadow: '3px 3px 0 #111', padding: '16px 20px' }}>
+          <div key={k.label} style={{ background: 'var(--apple-bg-2)', border: '0.5px solid var(--apple-sep)', borderRadius: 12, boxShadow: 'var(--apple-shadow-1)', padding: '16px 20px' }}>
             <div style={{ fontSize: 12, color: '#666', fontWeight: 600, marginBottom: 4 }}>{k.label}</div>
             <div style={{ fontSize: 28, fontWeight: 800, color: k.color }}>{k.value}</div>
           </div>
@@ -125,7 +125,7 @@ export default function LicenciasPage() {
       <input
         value={search} onChange={e => setSearch(e.target.value)}
         placeholder="Buscar por nombre, usuario o dueño..."
-        style={{ width: '100%', padding: '10px 14px', border: '2px solid #111', borderRadius: 10, fontSize: 14, marginBottom: 16, boxSizing: 'border-box' }}
+        style={{ width: '100%', padding: '10px 14px', border: '0.5px solid var(--apple-sep)', borderRadius: 10, fontSize: 14, marginBottom: 16, boxSizing: 'border-box' }}
       />
 
       {/* Table */}
@@ -193,7 +193,7 @@ export default function LicenciasPage() {
       {/* Modal: Nuevo cliente */}
       {showForm && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16 }}>
-          <div style={{ background: '#fff', border: '2px solid #111', borderRadius: 16, boxShadow: '6px 6px 0 #111', padding: 28, width: '100%', maxWidth: 520, maxHeight: '90vh', overflowY: 'auto' }}>
+          <div style={{ background: 'var(--apple-bg-2)', border: '0.5px solid var(--apple-sep)', borderRadius: 16, boxShadow: 'var(--apple-shadow-2)', padding: 28, width: '100%', maxWidth: 520, maxHeight: '90vh', overflowY: 'auto' }}>
             <h2 style={{ margin: '0 0 20px', fontSize: 18, fontWeight: 800 }}>+ Nuevo cliente</h2>
             {error && <div style={{ background: '#fee2e2', border: '1px solid #fca5a5', borderRadius: 8, padding: '10px 14px', marginBottom: 14, color: '#dc2626', fontSize: 13 }}>{error}</div>}
             {[
@@ -212,7 +212,7 @@ export default function LicenciasPage() {
                   value={(form as Record<string, string>)[f.key]}
                   onChange={e => setForm(p => ({ ...p, [f.key]: e.target.value }))}
                   placeholder={f.placeholder}
-                  style={{ width: '100%', padding: '9px 12px', border: '2px solid #111', borderRadius: 8, fontSize: 13, boxSizing: 'border-box' }}
+                  style={{ width: '100%', padding: '9px 12px', border: '0.5px solid var(--apple-sep)', borderRadius: 8, fontSize: 13, boxSizing: 'border-box' }}
                 />
               </div>
             ))}
@@ -220,7 +220,7 @@ export default function LicenciasPage() {
               <div>
                 <label style={{ display: 'block', fontWeight: 700, fontSize: 12, marginBottom: 4 }}>Plan</label>
                 <select value={form.billing_plan} onChange={e => setForm(p => ({ ...p, billing_plan: e.target.value }))}
-                  style={{ width: '100%', padding: '9px 12px', border: '2px solid #111', borderRadius: 8, fontSize: 13 }}>
+                  style={{ width: '100%', padding: '9px 12px', border: '0.5px solid var(--apple-sep)', borderRadius: 8, fontSize: 13 }}>
                   <option value="free">Gratuito</option>
                   <option value="basic">Básico</option>
                   <option value="pro">Pro</option>
@@ -230,26 +230,26 @@ export default function LicenciasPage() {
               <div>
                 <label style={{ display: 'block', fontWeight: 700, fontSize: 12, marginBottom: 4 }}>Precio mensual (MXN)</label>
                 <input type="number" value={form.monthly_price} onChange={e => setForm(p => ({ ...p, monthly_price: e.target.value }))}
-                  placeholder="500" style={{ width: '100%', padding: '9px 12px', border: '2px solid #111', borderRadius: 8, fontSize: 13, boxSizing: 'border-box' }} />
+                  placeholder="500" style={{ width: '100%', padding: '9px 12px', border: '0.5px solid var(--apple-sep)', borderRadius: 8, fontSize: 13, boxSizing: 'border-box' }} />
               </div>
             </div>
             <div style={{ marginBottom: 12 }}>
               <label style={{ display: 'block', fontWeight: 700, fontSize: 12, marginBottom: 4 }}>Fin de periodo de prueba</label>
               <input type="date" value={form.trial_ends_at} onChange={e => setForm(p => ({ ...p, trial_ends_at: e.target.value }))}
-                style={{ width: '100%', padding: '9px 12px', border: '2px solid #111', borderRadius: 8, fontSize: 13, boxSizing: 'border-box' }} />
+                style={{ width: '100%', padding: '9px 12px', border: '0.5px solid var(--apple-sep)', borderRadius: 8, fontSize: 13, boxSizing: 'border-box' }} />
             </div>
             <div style={{ marginBottom: 20 }}>
               <label style={{ display: 'block', fontWeight: 700, fontSize: 12, marginBottom: 4 }}>Notas internas</label>
               <textarea value={form.notes} onChange={e => setForm(p => ({ ...p, notes: e.target.value }))}
                 rows={2} placeholder="Acordado por WhatsApp el 1 sep 2026..."
-                style={{ width: '100%', padding: '9px 12px', border: '2px solid #111', borderRadius: 8, fontSize: 13, boxSizing: 'border-box', resize: 'vertical' }} />
+                style={{ width: '100%', padding: '9px 12px', border: '0.5px solid var(--apple-sep)', borderRadius: 8, fontSize: 13, boxSizing: 'border-box', resize: 'vertical' }} />
             </div>
             <div style={{ display: 'flex', gap: 10 }}>
-              <button onClick={create} disabled={saving} style={{ ...btn({ background: '#F97316', color: '#fff', boxShadow: '3px 3px 0 #111', flex: 1 }) }}>
+              <button onClick={create} disabled={saving} style={{ ...btn({ background: '#F97316', color: '#fff', boxShadow: 'var(--apple-shadow-1)', flex: 1 }) }}>
                 {saving ? 'Creando...' : 'Crear cliente'}
               </button>
               <button onClick={() => { setShowForm(false); setError(''); setForm({ ...empty }); }}
-                style={{ ...btn({ background: '#fff', color: '#111' }) }}>Cancelar</button>
+                style={{ ...btn({ background: 'var(--apple-bg-2)', color: 'var(--apple-label)' }) }}>Cancelar</button>
             </div>
           </div>
         </div>
@@ -258,7 +258,7 @@ export default function LicenciasPage() {
       {/* Modal: Editar cliente */}
       {selected && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16 }}>
-          <div style={{ background: '#fff', border: '2px solid #111', borderRadius: 16, boxShadow: '6px 6px 0 #111', padding: 28, width: '100%', maxWidth: 480, maxHeight: '90vh', overflowY: 'auto' }}>
+          <div style={{ background: 'var(--apple-bg-2)', border: '0.5px solid var(--apple-sep)', borderRadius: 16, boxShadow: 'var(--apple-shadow-2)', padding: 28, width: '100%', maxWidth: 480, maxHeight: '90vh', overflowY: 'auto' }}>
             <h2 style={{ margin: '0 0 4px', fontSize: 18, fontWeight: 800 }}>{selected.name}</h2>
             <p style={{ margin: '0 0 8px', color: '#666', fontSize: 13 }}>Usuario: <strong>{selected.main_username}</strong></p>
             {selected.license_key && (
@@ -277,7 +277,7 @@ export default function LicenciasPage() {
                 <label style={{ display: 'block', fontWeight: 700, fontSize: 12, marginBottom: 4 }}>Estado</label>
                 <select defaultValue={selected.billing_status}
                   onChange={e => patch(selected.id, { billing_status: e.target.value })}
-                  style={{ width: '100%', padding: '9px 12px', border: '2px solid #111', borderRadius: 8, fontSize: 13 }}>
+                  style={{ width: '100%', padding: '9px 12px', border: '0.5px solid var(--apple-sep)', borderRadius: 8, fontSize: 13 }}>
                   <option value="active">✅ Activo</option>
                   <option value="blocked">🔒 Bloqueado</option>
                   <option value="trial">⏳ Prueba</option>
@@ -287,7 +287,7 @@ export default function LicenciasPage() {
                 <label style={{ display: 'block', fontWeight: 700, fontSize: 12, marginBottom: 4 }}>Plan</label>
                 <select defaultValue={selected.billing_plan}
                   onChange={e => patch(selected.id, { billing_plan: e.target.value })}
-                  style={{ width: '100%', padding: '9px 12px', border: '2px solid #111', borderRadius: 8, fontSize: 13 }}>
+                  style={{ width: '100%', padding: '9px 12px', border: '0.5px solid var(--apple-sep)', borderRadius: 8, fontSize: 13 }}>
                   <option value="free">Gratuito</option>
                   <option value="basic">Básico</option>
                   <option value="pro">Pro</option>
@@ -301,13 +301,13 @@ export default function LicenciasPage() {
                 <label style={{ display: 'block', fontWeight: 700, fontSize: 12, marginBottom: 4 }}>Precio mensual</label>
                 <input type="number" defaultValue={parseFloat(selected.monthly_price || '0')}
                   onBlur={e => patch(selected.id, { monthly_price: parseFloat(e.target.value) || 0 })}
-                  style={{ width: '100%', padding: '9px 12px', border: '2px solid #111', borderRadius: 8, fontSize: 13, boxSizing: 'border-box' }} />
+                  style={{ width: '100%', padding: '9px 12px', border: '0.5px solid var(--apple-sep)', borderRadius: 8, fontSize: 13, boxSizing: 'border-box' }} />
               </div>
               <div>
                 <label style={{ display: 'block', fontWeight: 700, fontSize: 12, marginBottom: 4 }}>Fin prueba</label>
                 <input type="date" defaultValue={selected.trial_ends_at?.slice(0, 10) ?? ''}
                   onBlur={e => patch(selected.id, { trial_ends_at: e.target.value })}
-                  style={{ width: '100%', padding: '9px 12px', border: '2px solid #111', borderRadius: 8, fontSize: 13, boxSizing: 'border-box' }} />
+                  style={{ width: '100%', padding: '9px 12px', border: '0.5px solid var(--apple-sep)', borderRadius: 8, fontSize: 13, boxSizing: 'border-box' }} />
               </div>
             </div>
 
@@ -315,7 +315,7 @@ export default function LicenciasPage() {
               <label style={{ display: 'block', fontWeight: 700, fontSize: 12, marginBottom: 4 }}>Notas internas</label>
               <textarea defaultValue={selected.notes ?? ''}
                 onBlur={e => patch(selected.id, { notes: e.target.value })}
-                rows={2} style={{ width: '100%', padding: '9px 12px', border: '2px solid #111', borderRadius: 8, fontSize: 13, boxSizing: 'border-box', resize: 'vertical' }} />
+                rows={2} style={{ width: '100%', padding: '9px 12px', border: '0.5px solid var(--apple-sep)', borderRadius: 8, fontSize: 13, boxSizing: 'border-box', resize: 'vertical' }} />
             </div>
 
             <div style={{ background: '#f5f3ff', border: '2px solid #7c3aed', borderRadius: 10, padding: '14px 16px', marginBottom: 16 }}>

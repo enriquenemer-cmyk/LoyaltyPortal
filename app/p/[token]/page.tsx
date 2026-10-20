@@ -82,7 +82,7 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
       <div style={{ minHeight: '100vh', width: '100%', overflowX: 'hidden', background: '#FAFAF9', fontFamily: 'system-ui, sans-serif', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px 16px' }}>
         <div style={{ textAlign: 'center', maxWidth: 360 }}>
           <div style={{ fontSize: 48, marginBottom: 16 }}><MagnifyingGlassIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
-          <h1 style={{ fontSize: 20, fontWeight: 700, color: '#1C1917', margin: '0 0 8px' }}>Perfil no encontrado</h1>
+          <h1 style={{ fontSize: 20, fontWeight: 700, color: 'var(--apple-label)', margin: '0 0 8px' }}>Perfil no encontrado</h1>
           <p style={{ fontSize: 14, color: '#78716C', margin: '0 0 20px' }}>
             El enlace que intentas abrir no es válido o ha expirado.
           </p>
@@ -114,7 +114,7 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
           <h1 style={{ fontSize: 22, fontWeight: 800, color: '#fff', margin: '0 0 6px' }}>
             {profile.full_name ?? 'Cliente 3E'}
           </h1>
-          <span style={{ fontSize: 13, fontWeight: 700, color: '#C2410C', background: '#fff', padding: '4px 14px', borderRadius: 20, display: 'inline-block' }}>
+          <span style={{ fontSize: 13, fontWeight: 700, color: '#C2410C', background: 'var(--apple-bg-2)', padding: '4px 14px', borderRadius: 20, display: 'inline-block' }}>
             Nivel {TIER_LABEL[profile.tier] ?? profile.tier}
           </span>
         </div>
@@ -128,7 +128,7 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
             { label: 'Puntos actuales', value: profile.total_points.toLocaleString(), accent: '#F97316' },
             { label: 'Puntos históricos', value: profile.lifetime_points.toLocaleString(), accent: '#7C3AED' },
           ].map(c => (
-            <div key={c.label} style={{ background: '#fff', borderRadius: 16, border: '1px solid #E8E3DC', padding: '14px 16px' }}>
+            <div key={c.label} style={{ background: 'var(--apple-bg-2)', borderRadius: 16, border: '1px solid #E8E3DC', padding: '14px 16px' }}>
               <p style={{ fontSize: 22, fontWeight: 800, color: c.accent, margin: '0 0 2px' }}>{c.value}</p>
               <p style={{ fontSize: 11, color: '#78716C', margin: 0 }}>{c.label}</p>
             </div>
@@ -136,11 +136,11 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
         </div>
 
         {/* Progress to next tier */}
-        <div style={{ background: '#fff', borderRadius: 16, border: '1px solid #E8E3DC', padding: 16, marginBottom: 16 }}>
+        <div style={{ background: 'var(--apple-bg-2)', borderRadius: 16, border: '1px solid #E8E3DC', padding: 16, marginBottom: 16 }}>
           {next ? (
             <>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
-                <p style={{ fontSize: 12, fontWeight: 700, color: '#1C1917', margin: 0 }}>
+                <p style={{ fontSize: 12, fontWeight: 700, color: 'var(--apple-label)', margin: 0 }}>
                   Progreso a {TIER_LABEL[next]} {TIER_EMOJI[next]}
                 </p>
                 <p style={{ fontSize: 12, fontWeight: 600, color: '#78716C', margin: 0 }}>{progressPct}%</p>
@@ -165,7 +165,7 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
         {/* Streak + Boost */}
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 16 }}>
           {profile.streak_days > 0 && (
-            <div style={{ background: '#fff', borderRadius: 16, border: '1px solid #E8E3DC', padding: '14px 16px' }}>
+            <div style={{ background: 'var(--apple-bg-2)', borderRadius: 16, border: '1px solid #E8E3DC', padding: '14px 16px' }}>
               <p style={{ fontSize: 22, fontWeight: 800, color: '#F59E0B', margin: '0 0 2px' }}><FireIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> {profile.streak_days}</p>
               <p style={{ fontSize: 11, color: '#78716C', margin: 0 }}>Días de racha</p>
             </div>
@@ -190,8 +190,8 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
 
         {/* Stamp card */}
         {stamp_card && (
-          <div style={{ background: '#fff', borderRadius: 16, border: '1px solid #E8E3DC', padding: 16, marginBottom: 16 }}>
-            <p style={{ fontSize: 12, fontWeight: 700, color: '#1C1917', margin: '0 0 8px' }}>Tarjeta de sellos</p>
+          <div style={{ background: 'var(--apple-bg-2)', borderRadius: 16, border: '1px solid #E8E3DC', padding: 16, marginBottom: 16 }}>
+            <p style={{ fontSize: 12, fontWeight: 700, color: 'var(--apple-label)', margin: '0 0 8px' }}>Tarjeta de sellos</p>
             <div style={{ display: 'flex', gap: 6, marginBottom: 8, flexWrap: 'wrap' }}>
               {Array.from({ length: stamp_card.stamps_required }).map((_, i) => (
                 <div key={i} style={{ width: 28, height: 28, borderRadius: '50%', background: i < stamp_card.stamps_count ? '#F97316' : '#E8E3DC', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, color: '#fff', flexShrink: 0 }}>
@@ -208,13 +208,13 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
 
         {/* Recent prizes */}
         {claims.length > 0 && (
-          <div style={{ background: '#fff', borderRadius: 16, border: '1px solid #E8E3DC', padding: 16, marginBottom: 16 }}>
-            <p style={{ fontSize: 12, fontWeight: 700, color: '#1C1917', margin: '0 0 12px' }}>Premios recientes</p>
+          <div style={{ background: 'var(--apple-bg-2)', borderRadius: 16, border: '1px solid #E8E3DC', padding: 16, marginBottom: 16 }}>
+            <p style={{ fontSize: 12, fontWeight: 700, color: 'var(--apple-label)', margin: '0 0 12px' }}>Premios recientes</p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
               {claims.slice(0, 8).map(c => (
                 <div key={c.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8 }}>
                   <div style={{ minWidth: 0 }}>
-                    <p style={{ fontSize: 13, fontWeight: 600, color: '#1C1917', margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{c.prize_name}</p>
+                    <p style={{ fontSize: 13, fontWeight: 600, color: 'var(--apple-label)', margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{c.prize_name}</p>
                     <p style={{ fontSize: 11, color: '#78716C', margin: 0 }}>
                       {new Date(c.claimed_at).toLocaleDateString('es-CO', { day: 'numeric', month: 'short', year: 'numeric' })}
                     </p>
@@ -284,7 +284,7 @@ function BattlePassTrack({ seasonData }: { seasonData: NonNullable<SeasonData> }
 
   return (
     <div style={{
-      background: '#fff',
+      background: 'var(--apple-bg-2)',
       borderRadius: 16,
       border: '1px solid #E8E3DC',
       padding: 16,
@@ -308,7 +308,7 @@ function BattlePassTrack({ seasonData }: { seasonData: NonNullable<SeasonData> }
       `}</style>
 
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
-        <p style={{ fontSize: 12, fontWeight: 800, color: '#1C1917', margin: 0, display: 'flex', alignItems: 'center', gap: 6 }}>
+        <p style={{ fontSize: 12, fontWeight: 800, color: 'var(--apple-label)', margin: 0, display: 'flex', alignItems: 'center', gap: 6 }}>
           <TrophyIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> {season.name}
         </p>
         <span style={{ fontSize: 10, fontWeight: 700, color: '#7C3AED', background: 'rgba(124,58,237,0.1)', padding: '2px 8px', borderRadius: 20 }}>
@@ -429,7 +429,7 @@ function CollectibleCard({
 
   return (
     <div style={{ marginBottom: 16 }}>
-      <p style={{ fontSize: 12, fontWeight: 800, color: '#1C1917', margin: '0 0 8px', display: 'flex', alignItems: 'center', gap: 6 }}>
+      <p style={{ fontSize: 12, fontWeight: 800, color: 'var(--apple-label)', margin: '0 0 8px', display: 'flex', alignItems: 'center', gap: 6 }}>
         <SparklesIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /> Tu tarjeta coleccionable
       </p>
 
@@ -507,7 +507,7 @@ function CollectibleCard({
         >
           <div>
             <div style={{ fontSize: 36, marginBottom: 10 }}><LockClosedIcon className="w-5 h-5 inline-block align-middle" aria-hidden="true" /></div>
-            <p style={{ fontSize: 13, fontWeight: 700, color: '#1C1917', margin: '0 0 4px' }}>
+            <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--apple-label)', margin: '0 0 4px' }}>
               Tarjeta coleccionable bloqueada
             </p>
             <p style={{ fontSize: 12, color: '#78716C', margin: 0, maxWidth: 240, marginLeft: 'auto', marginRight: 'auto' }}>

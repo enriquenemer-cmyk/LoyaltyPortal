@@ -369,7 +369,7 @@ export default function UsuariosPage() {
           </div>
           <button onClick={() => { setShowCreate((v) => !v); setError(null); }}
             className="flex items-center gap-2 font-bold px-5 py-3 rounded-xl text-sm"
-            style={{ background: 'white', color: '#111', boxShadow: '0 4px 16px rgba(0,0,0,0.15)' }}>
+            style={{ background: 'var(--apple-bg-2)', color: 'var(--apple-label)', boxShadow: '0 4px 16px rgba(0,0,0,0.15)' }}>
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
             </svg>

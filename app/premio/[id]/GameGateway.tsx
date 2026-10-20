@@ -148,7 +148,7 @@ function InstructionOverlay({
       <div
         onClick={(e) => e.stopPropagation()}
         style={{
-          background: 'white',
+          background: 'var(--apple-bg-2)',
           borderRadius: 16,
           padding: '24px 20px',
           maxWidth: 260,
@@ -157,7 +157,7 @@ function InstructionOverlay({
         }}
       >
         <div style={{ fontSize: 44, marginBottom: 10 }}>{icon}</div>
-        <p style={{ color: '#1c1917', fontSize: 15, fontWeight: 700, lineHeight: 1.5, margin: '0 0 12px' }}>
+        <p style={{ color: 'var(--apple-label)', fontSize: 15, fontWeight: 700, lineHeight: 1.5, margin: '0 0 12px' }}>
           {text}
         </p>
         {extra}
@@ -397,7 +397,7 @@ function SlotsGame({ prizeName, onWin }: { prizeName: string; onWin: () => void 
               padding: '14px 0',
               borderRadius: 12,
               background: 'linear-gradient(135deg, #FB923C, #EA580C)',
-              color: '#1c1917',
+              color: 'var(--apple-label)',
               fontWeight: 900,
               fontSize: 16,
               border: 'none',
@@ -601,7 +601,7 @@ function RouletteGame({ prizeName, onWin }: { prizeName: string; onWin: () => vo
               padding: '14px 0',
               borderRadius: 12,
               background: 'linear-gradient(135deg, #FB923C, #EA580C)',
-              color: '#1c1917',
+              color: 'var(--apple-label)',
               fontWeight: 900,
               fontSize: 16,
               border: 'none',
@@ -837,7 +837,7 @@ function PenaltyGame({ prizeName, onWin }: { prizeName: string; onWin: () => voi
               padding: '14px 0',
               borderRadius: 12,
               background: 'linear-gradient(135deg, #FB923C, #EA580C)',
-              color: '#1c1917',
+              color: 'var(--apple-label)',
               fontWeight: 900,
               fontSize: 16,
               border: 'none',
@@ -1083,7 +1083,7 @@ function ScratchGame({ prizeName, onWin }: { prizeName: string; onWin: () => voi
               padding: '14px 0',
               borderRadius: 12,
               background: 'linear-gradient(135deg, #FB923C, #EA580C)',
-              color: '#1c1917',
+              color: 'var(--apple-label)',
               fontWeight: 900,
               fontSize: 16,
               border: 'none',

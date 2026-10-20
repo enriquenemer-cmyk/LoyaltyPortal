@@ -28,9 +28,9 @@ export default function UnitQRLabel({ url, productName, weight, unit, orderNumbe
         height: size,
         type: 'svg',
         data: url,
-        dotsOptions: { type: 'square', color: '#111111' },
-        cornersSquareOptions: { type: 'square', color: '#111111' },
-        cornersDotOptions: { type: 'square', color: '#111111' },
+        dotsOptions: { type: 'square', color: 'var(--apple-label)' },
+        cornersSquareOptions: { type: 'square', color: 'var(--apple-label)' },
+        cornersDotOptions: { type: 'square', color: 'var(--apple-label)' },
         backgroundOptions: { color: '#ffffff' },
         qrOptions: { errorCorrectionLevel: 'M' },
       });
@@ -43,10 +43,10 @@ export default function UnitQRLabel({ url, productName, weight, unit, orderNumbe
   return (
     <div
       className="inventory-unit-label"
-      style={{ border: '2px solid #111', borderRadius: 12, padding: 12, display: 'inline-flex', flexDirection: 'column', alignItems: 'center', gap: 6, background: '#fff', width: size + 24 }}
+      style={{ border: '0.5px solid var(--apple-sep)', borderRadius: 12, padding: 12, display: 'inline-flex', flexDirection: 'column', alignItems: 'center', gap: 6, background: 'var(--apple-bg-2)', width: size + 24 }}
     >
       <div ref={containerRef} style={{ width: size, height: size }} />
-      <p style={{ fontWeight: 800, fontSize: 12, color: '#111', textAlign: 'center', margin: 0 }}>{productName}</p>
+      <p style={{ fontWeight: 800, fontSize: 12, color: 'var(--apple-label)', textAlign: 'center', margin: 0 }}>{productName}</p>
       <p style={{ fontWeight: 900, fontSize: 16, color: '#F97316', margin: 0 }}>{weight} {unit}</p>
       <p style={{ fontSize: 10, color: '#6b7280', margin: 0 }}>Pedido #{orderNumber}</p>
     </div>

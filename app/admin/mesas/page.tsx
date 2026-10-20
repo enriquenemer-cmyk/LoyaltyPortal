@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 
 type Table = { id: string; name: string; active: boolean };
 
-const cardStyle = { background: 'white', border: '2px solid #111', borderRadius: 12, padding: 18, boxShadow: '4px 4px 0 #111' } as const;
+const cardStyle = { background: 'var(--apple-bg-2)', border: '0.5px solid var(--apple-sep)', borderRadius: 12, padding: 18, boxShadow: 'var(--apple-shadow-2)' } as const;
 
 export default function MesasPage() {
   const [tables, setTables] = useState<Table[]>([]);
@@ -68,7 +68,7 @@ export default function MesasPage() {
 
   return (
     <div style={{ padding: '24px', maxWidth: 700, margin: '0 auto' }}>
-      <h1 style={{ fontSize: 26, fontWeight: 900, color: '#111', margin: '0 0 4px' }}>🍽️ Mesas</h1>
+      <h1 style={{ fontSize: 26, fontWeight: 900, color: 'var(--apple-label)', margin: '0 0 4px' }}>🍽️ Mesas</h1>
       <p style={{ fontSize: 13, color: '#6b7280', margin: '0 0 24px' }}>
         Administra las mesas de tu restaurante para asignarlas a las ventas en el Punto de Venta.
       </p>
@@ -90,7 +90,7 @@ export default function MesasPage() {
         <button
           onClick={crear}
           disabled={saving || !newName.trim()}
-          style={{ padding: '9px 20px', border: '2px solid #111', borderRadius: 8, background: '#F97316', color: 'white', fontWeight: 800, fontSize: 13, cursor: 'pointer', boxShadow: '3px 3px 0 #111' }}
+          style={{ padding: '9px 20px', border: '0.5px solid var(--apple-sep)', borderRadius: 8, background: '#F97316', color: 'white', fontWeight: 800, fontSize: 13, cursor: 'pointer', boxShadow: 'var(--apple-shadow-1)' }}
         >
           + Agregar
         </button>

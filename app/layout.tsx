@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
-import { Plus_Jakarta_Sans, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import "./apple.css";
 import { ToastProvider } from "./components/Toast";
 import ServiceWorkerRegister from "./components/ServiceWorkerRegister";
 import AppShell from "./components/AppShell";
@@ -9,17 +9,6 @@ import InactivityLogout from "./components/InactivityLogout";
 import OnboardingTour from "./components/OnboardingTour";
 import OfflineIndicator from "./components/OfflineIndicator";
 import InstallBanner from "./components/InstallBanner";
-
-const plusJakarta = Plus_Jakarta_Sans({
-  subsets: ["latin"],
-  variable: "--font-jakarta",
-  weight: ["400", "500", "600", "700", "800"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "3E - Plataforma de Premios QR",
@@ -36,7 +25,7 @@ export const metadata: Metadata = {
   },
   appleWebApp: {
     capable: true,
-    statusBarStyle: "default",
+    statusBarStyle: "black-translucent",
     title: "3E",
   },
   openGraph: {
@@ -56,9 +45,13 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#F97316",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#F2F2F7" },
+    { media: "(prefers-color-scheme: dark)", color: "#000000" },
+  ],
   width: "device-width",
   initialScale: 1,
+  viewportFit: "cover",
 };
 
 export default function RootLayout({
@@ -69,9 +62,9 @@ export default function RootLayout({
   return (
     <html
       lang="es"
-      className={`${plusJakarta.variable} ${geistMono.variable} h-full antialiased`}
+      className="h-full antialiased"
     >
-      <body className="min-h-full bg-[#FAFAF9]" style={{ overflowX: 'hidden', maxWidth: '100vw' }}>
+      <body className="min-h-full" style={{ overflowX: 'hidden', maxWidth: '100vw' }}>
         <ToastProvider>
           <OfflineIndicator />
           <ScrollToTop />

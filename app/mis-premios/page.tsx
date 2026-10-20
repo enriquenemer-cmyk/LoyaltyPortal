@@ -188,7 +188,7 @@ function StatStrip({ claims }: { claims: ClaimRecord[] }) {
   return (
     <div className="grid grid-cols-3 gap-3">
       {[
-        { label: 'Total', value: total, color: '#1C1917', bg: '#FAFAF9', border: '#E8E3DC' },
+        { label: 'Total', value: total, color: 'var(--apple-label)', bg: '#FAFAF9', border: '#E8E3DC' },
         { label: 'Pendientes', value: pending, color: '#F97316', bg: '#FFF7ED', border: '#FED7AA' },
         { label: 'Cobrados', value: delivered, color: '#16a34a', bg: '#f0fdf4', border: '#bbf7d0' },
       ].map(s => (
@@ -251,9 +251,9 @@ export default function MisPremiosPage() {
       <div className="relative overflow-hidden" style={{ background: 'linear-gradient(145deg,#F97316 0%,#EA580C 55%,#7C2D12 100%)' }}>
         {/* Decorative circles */}
         <div aria-hidden className="absolute -top-16 -right-16 w-64 h-64 rounded-full opacity-[0.08]"
-          style={{ background: 'white' }} />
+          style={{ background: 'var(--apple-bg-2)' }} />
         <div aria-hidden className="absolute -bottom-10 -left-10 w-40 h-40 rounded-full opacity-[0.06]"
-          style={{ background: 'white' }} />
+          style={{ background: 'var(--apple-bg-2)' }} />
 
         <div className="relative max-w-lg mx-auto px-5 pt-12 pb-10">
           {/* Logo */}

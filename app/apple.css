@@ -390,3 +390,42 @@ html.is-electron-mac input, html.is-electron-mac textarea, html.is-electron-mac 
   }
   body { background: #fff !important; color: #000 !important; }
 }
+
+/* ── Refinements: grouped cards, large titles, keyframes used by components ── */
+:root { --apple-card-border: rgba(60,60,67,0.08); }
+[data-theme="dark"] { --apple-card-border: rgba(255,255,255,0.08); }
+@keyframes comic-pop-in { 0% { opacity: 0; transform: scale(0.96) translateY(-4px); } 100% { opacity: 1; transform: none; } }
+
+.admin-content .bg-white[class*="border"], .admin-content a.bg-white, .admin-content [class*="rounded-2xl"].bg-white {
+  border: 0.5px solid var(--apple-card-border) !important;
+  box-shadow: var(--apple-shadow-1) !important;
+}
+.admin-content a[class*="rounded-2xl"]:hover, .admin-content a[class*="rounded-xl"]:hover { box-shadow: var(--apple-shadow-2) !important; transform: none !important; }
+.admin-content table { border: 0 !important; box-shadow: none !important; border-radius: 0 !important; background: transparent !important; }
+.admin-content table tbody tr { animation: none !important; }
+.admin-content h1 { font-size: clamp(1.75rem, 2.4vw, 2.125rem); line-height: 1.12; }
+.hero-gradient h1 { font-size: clamp(1.4rem, 2vw, 1.75rem) !important; }
+.hero-gradient { border: 0 !important; }
+.hero-gradient button, .hero-gradient a[style*="background"] { border: 0 !important; box-shadow: none !important; border-radius: 10px !important; }
+.admin-content hr { border: 0 !important; border-top: 0.5px solid var(--apple-sep) !important; }
+.admin-content [class*="bg-orange-50"], .admin-content [class*="bg-amber-50"] { border: 0 !important; border-radius: 12px !important; box-shadow: none !important; }
+.admin-content button:disabled { box-shadow: none !important; }
+.admin-content .rounded-2xl, .admin-content .rounded-xl { animation: none; }
+.apple-sidebar nav a { animation: none !important; }
+.apple-sidebar a[class*="border-orange"] svg { opacity: 1; }
+
+/* Beat legacy .admin-content rules in globals.css by specificity */
+.admin-content h1, .admin-content h2, .admin-content h3, .admin-content h4 { color: var(--apple-label) !important; }
+.admin-content .hero-gradient h1, .admin-content .hero-gradient h2, .admin-content .hero-gradient h3 { color: #fff !important; }
+.admin-content input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]):not([type="file"]),
+.admin-content textarea, .admin-content select {
+  background-color: var(--apple-fill-2) !important;
+  color: var(--apple-label) !important;
+  border: 0.5px solid var(--apple-sep) !important;
+}
+.admin-content input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):focus,
+.admin-content textarea:focus, .admin-content select:focus { background-color: var(--apple-bg-2) !important; border-color: var(--apple-tint) !important; }
+.admin-content button[class*="bg-white"], .admin-content button[style*="background: var(--apple-bg-2)"] {
+  background-color: var(--apple-fill) !important; color: var(--apple-label) !important; border: 0 !important; box-shadow: none !important;
+}
+.admin-content .border-t, .admin-content .border-b, .admin-content tr { border-color: var(--apple-sep) !important; }

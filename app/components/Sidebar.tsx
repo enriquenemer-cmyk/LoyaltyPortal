@@ -870,10 +870,11 @@ function AccordionSection({
         onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = isOpen || hasActiveLink ? `${accent}10` : 'transparent'; }}
       >
         <span
-          className="relative w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-colors"
+          className="relative w-7 h-7 rounded-[7px] flex items-center justify-center shrink-0 transition-colors"
           style={{
-            background: `${accent}15`,
-            color: accent,
+            background: accent,
+            color: '#fff',
+            boxShadow: 'inset 0 0 0 0.5px rgba(0,0,0,0.12)',
           }}
         >
           {section.groupIcon}
@@ -884,7 +885,7 @@ function AccordionSection({
           )}
         </span>
         <span
-          className="flex-1 text-left text-[12.5px] font-bold truncate"
+          className="flex-1 text-left text-[13px] font-semibold truncate"
           style={{ color: 'var(--apple-label)' }}
         >
           {section.label}
@@ -981,8 +982,9 @@ function CompactGroupIcon({
       <div
         className="relative w-9 h-9 mx-auto mb-1 rounded-lg flex items-center justify-center cursor-pointer transition-colors"
         style={{
-          background: `${accent}15`,
-          color: accent,
+          background: accent,
+          color: '#fff',
+          boxShadow: 'inset 0 0 0 0.5px rgba(0,0,0,0.12)',
         }}
       >
         {section.groupIcon}
